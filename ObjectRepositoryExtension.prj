@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Project>
    <description></description>
-   <name>KS_ObjectRepository_list</name>
+   <name>ObjectRepositoryExtension</name>
    <tag></tag>
    <UUID>bd3fbdc6-7194-4788-8432-16d35109a22d</UUID>
    <migratedVersion>5.9.0</migratedVersion>
