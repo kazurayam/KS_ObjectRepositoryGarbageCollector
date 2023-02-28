@@ -23,12 +23,12 @@ class ObjectRepositoryVisitorTest {
 		List<Path> list = visitor.getRsFiles()
 		assertTrue(list.size() > 0)
 		/*
-		list.forEach { p ->
-			println p
-		}
-		*/
+		 list.forEach { p ->
+		 println p
+		 }
+		 */
 	}
-	
+
 	@Test
 	void testGetTestObjects() {
 		visitor = new ObjectRepositoryVisitor(objectRepository)
@@ -39,6 +39,4 @@ class ObjectRepositoryVisitorTest {
 			println p
 		}
 	}
-	
-	
 }
