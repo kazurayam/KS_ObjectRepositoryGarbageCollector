@@ -31,7 +31,7 @@ class ObjectRepositoryVisitor extends SimpleFileVisitor<Path> {
 	@Override
 	public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
 		if (!Files.isDirectory(file) && file.getFileName().toString().endsWith(".rs")) {
-			Path relative = dir.relativize(file).toAbsolutePath().normalize()
+			Path relative = dir.relativize(file).normalize()
 			rsFiles.add(relative);
 		}
 		return FileVisitResult.CONTINUE;
@@ -42,6 +42,16 @@ class ObjectRepositoryVisitor extends SimpleFileVisitor<Path> {
 	}
 
 	List<Path> getRsFiles() {
-		return rsFiles
+		List<Path> result = new ArrayList(rsFiles)
+		Collections.sort(result)
+		return result
+	}
+	
+	List<String> getTestObjects() {
+		List<String> list = new ArrayList<>()
+		getRsFiles().forEach({ p ->
+			list.add(p.toString().replaceAll("\\.rs", ""))
+		})
+		return list
 	}
 }
