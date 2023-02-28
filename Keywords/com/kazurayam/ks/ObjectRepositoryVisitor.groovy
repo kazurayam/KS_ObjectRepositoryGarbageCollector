@@ -46,8 +46,8 @@ class ObjectRepositoryVisitor extends SimpleFileVisitor<Path> {
 		Collections.sort(result)
 		return result
 	}
-	
-	List<String> getTestObjects() {
+
+	List<String> getIDs() {
 		List<String> list = new ArrayList<>()
 		getRsFiles().forEach({ p ->
 			list.add(p.toString().replaceAll("\\.rs", ""))

@@ -14,14 +14,14 @@ import java.nio.file.Files
  */
 public class ObjectRepositoryExtension {
 
-	private ObjectRepositoryExtension() {}
+	ObjectRepositoryExtension() {}
 
 	@Keyword
-	static void apply() {
-		ObjectRepository.metaClass.invokeMethod = { String name, args ->
+	void apply() {
+		ObjectRepository.metaClass.static.invokeMethod = { String name, args ->
 			switch (name) {
 				case "list" :
-					return list(delegate)
+					return this.list()
 					break
 				default :
 				// just do what ObejctRepository is designed to do
@@ -40,11 +40,11 @@ public class ObjectRepositoryExtension {
 	/*
 	 * 
 	 */
-	static List<String> list(ObjectRepository objectRepository) throws IOException {
+	List<String> list() throws IOException {
 		Path dir = Paths.get("./Object Repository")
 		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(dir)
 		Files.walkFileTree(dir, visitor)
-		return visitor.testObjects()
+		return visitor.getIDs()
 	}
 }
 

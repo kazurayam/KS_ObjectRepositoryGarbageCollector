@@ -18,7 +18,8 @@ class ObjectRepositoryExtensionTest {
 
 	@Test
 	void testGetTestObjects() {
-		ObjectRepositoryExtension.apply()
+		ObjectRepositoryExtension ext = new ObjectRepositoryExtension()
+		ext.apply()
 		//
 		List<String> list = ObjectRepository.list()
 		assertTrue(list.size() > 0)
