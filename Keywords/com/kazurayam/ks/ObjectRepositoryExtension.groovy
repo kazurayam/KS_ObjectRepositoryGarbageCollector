@@ -7,6 +7,8 @@ import com.kms.katalon.core.testobject.SelectorMethod
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.nio.file.Files
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 import groovy.json.JsonOutput
 
 /**
@@ -49,14 +51,24 @@ public class ObjectRepositoryExtension {
 	/*
 	 * 
 	 */
-	List<String> list() throws IOException {
+	List<String> list(String pattern = ".*", Boolean isRegex = true) throws IOException {
 		Path dir = Paths.get("./Object Repository")
 		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(dir)
 		Files.walkFileTree(dir, visitor)
-		return visitor.getIDs()
+		List<String> ids = visitor.getIDs()
+		//
+		List<String> result = new ArrayList<>()
+		BiMatcher bim = new BiMatcher(pattern, isRegex)
+		ids.forEach { id ->
+			if (bim.matches(id)) {
+				result.add(id)
+			}
+		}
+		return result;
 	}
 
-	Map<String, Set<String>> xref() throws IOException {
+
+	Map<String, Set<String>> xref(String pattern = ".*", Boolean isRegex = true) throws IOException {
 		Map<String, Set<String>> xref = new TreeMap<>()
 		List<String> idList = this.list()
 		idList.forEach { testObjectId ->
@@ -75,7 +87,7 @@ public class ObjectRepositoryExtension {
 		return xref
 	}
 
-	String xrefAsJson() throws IOException {
+	String xrefAsJson(String pattern = ".*", Boolean isRegex = true) throws IOException {
 		Map<String, Set<String>> xref = this.xref()
 		String json = JsonOutput.toJson(xref)
 		String pp = JsonOutput.prettyPrint(json)
