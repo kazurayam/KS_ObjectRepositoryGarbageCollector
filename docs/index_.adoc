@@ -1,1 +1,9 @@
 = [Katalon Studio] Object Repository Extension
+
+include::s0_intro.adoc[]
+include::s1_install.adoc[]
+include::s2_how_to_use.adoc[]
+include::s3_list.adoc[]
+include::s4_xref.adoc[]
+include::s5_xrefAsJson.adoc[]
+include::s6_conclusion.adoc[]

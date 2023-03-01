@@ -19,10 +19,10 @@ import groovy.json.JsonOutput
  */
 public class ObjectRepositoryExtension {
 
-	ObjectRepositoryExtension() {}
+	private ObjectRepositoryExtension() {}
 
 	@Keyword
-	void apply() {
+	static void apply() {
 		ObjectRepository.metaClass.static.invokeMethod = { String name, args ->
 			switch (name) {
 				case "list" :
@@ -51,7 +51,7 @@ public class ObjectRepositoryExtension {
 	/*
 	 * 
 	 */
-	List<String> list(Object ... args) throws Exception {
+	static List<String> list(Object ... args) throws Exception {
 		if (args.length == 0) {
 			return this.doList("", false)
 		} else if (args.length == 1) {
@@ -61,7 +61,7 @@ public class ObjectRepositoryExtension {
 		}
 	}
 
-	private List<String> doList(String pattern, Boolean isRegex) throws IOException {
+	private static List<String> doList(String pattern, Boolean isRegex) throws IOException {
 		Path dir = Paths.get("./Object Repository")
 		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(dir)
 		Files.walkFileTree(dir, visitor)
@@ -78,7 +78,7 @@ public class ObjectRepositoryExtension {
 	}
 
 
-	Map<String, Set<String>> xref(Object ... args) throws IOException {
+	static Map<String, Set<String>> xref(Object ... args) throws IOException {
 		if (args.length == 0) {
 			return this.doXref("", false)
 		} else if (args.length == 1) {
@@ -88,7 +88,7 @@ public class ObjectRepositoryExtension {
 		}
 	}
 
-	private Map<String, Set<String>> doXref(String pattern, Boolean isRegex) throws IOException {
+	private static Map<String, Set<String>> doXref(String pattern, Boolean isRegex) throws IOException {
 		Map<String, Set<String>> xref = new TreeMap<>()
 		BiMatcher bim = new BiMatcher(pattern, isRegex)
 		List<String> idList = this.list()  // list of IDs of Test Object
@@ -108,7 +108,7 @@ public class ObjectRepositoryExtension {
 		return xref
 	}
 
-	String xrefAsJson(Object ... args) throws IOException {
+	static String xrefAsJson(Object ... args) throws IOException {
 		if (args.length == 0) {
 			return this.doXrefAsJson("", false)
 		} else if (args.length == 1) {
@@ -118,14 +118,14 @@ public class ObjectRepositoryExtension {
 		}
 	}
 
-	private doXrefAsJson(String pattern, Boolean isRegex) throws IOException {
+	private static doXrefAsJson(String pattern, Boolean isRegex) throws IOException {
 		Map<String, Set<String>> xref = this.xref(pattern, isRegex)
 		String json = JsonOutput.toJson(xref)
 		String pp = JsonOutput.prettyPrint(json)
 		return pp
 	}
 
-	private String findSelector(String testObjectId) {
+	private static String findSelector(String testObjectId) {
 		Objects.requireNonNull(testObjectId)
 		TestObject tObj = ObjectRepository.findTestObject(testObjectId)
 		SelectorMethod selectorMethod = tObj.getSelectorMethod()
