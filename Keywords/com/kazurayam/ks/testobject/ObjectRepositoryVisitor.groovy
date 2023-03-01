@@ -1,4 +1,4 @@
-package com.kazurayam.ks
+package com.kazurayam.ks.testobject
 
 import java.nio.file.FileVisitResult
 import java.nio.file.Files
@@ -47,7 +47,7 @@ class ObjectRepositoryVisitor extends SimpleFileVisitor<Path> {
 		return result
 	}
 
-	List<String> getIDs() {
+	List<String> getTestObjectIDs() {
 		List<String> list = new ArrayList<>()
 		getRsFiles().forEach({ p ->
 			list.add(p.toString().replaceAll("\\.rs", ""))

@@ -6,6 +6,7 @@
    <UUID>bd3fbdc6-7194-4788-8432-16d35109a22d</UUID>
    <migratedVersion>5.9.0</migratedVersion>
    <pageLoadTimeout>0</pageLoadTimeout>
+   <projectFileLocation>/Users/kazuakiurayama/katalon-workspace/ObjectRepositoryExtension/ObjectRepositoryExtension.prj</projectFileLocation>
    <sourceContent>
       <sourceFolderList>
          <sourceFolderConfiguration>

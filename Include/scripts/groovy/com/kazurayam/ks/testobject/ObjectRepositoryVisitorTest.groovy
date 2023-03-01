@@ -1,4 +1,4 @@
-package com.kazurayam.ks
+package com.kazurayam.ks.testobject
 
 import static org.hamcrest.CoreMatchers.*
 import static org.junit.Assert.*
@@ -6,6 +6,9 @@ import static org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+
+import com.kazurayam.ks.testobject.ObjectRepositoryVisitor
+
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.nio.file.Files
@@ -33,7 +36,7 @@ class ObjectRepositoryVisitorTest {
 	void testGetTestObjects() {
 		visitor = new ObjectRepositoryVisitor(objectRepository)
 		Files.walkFileTree(objectRepository, visitor)
-		List<String> list = visitor.getTestObjects()
+		List<String> list = visitor.getTestObjectIDs()
 		assertTrue(list.size() > 0)
 		list.forEach { p ->
 			println p
