@@ -15,21 +15,21 @@
       <guid>bc204186-05df-473e-a6b8-4a95f7e7fe65</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/junit4/com.kazurayam.ks/BiMatcherTestRunner</testCaseId>
+      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testobject/BiMatcherTestRunner</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
       <guid>09f22542-da7e-4238-a356-70aa7e2b992d</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/junit4/com.kazurayam.ks/ObjectRepositoryExtensionTestRunner</testCaseId>
+      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testobject/ObjectRepositoryExtensionTestRunner</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
       <guid>3f461ee9-51da-4f52-8ece-8c7dec164cd4</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/junit4/com.kazurayam.ks/ObjectRepositoryVisitorTestRunner</testCaseId>
+      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testobject/ObjectRepositoryVisitorTestRunner</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
 </TestSuiteEntity>

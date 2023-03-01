@@ -1,4 +1,4 @@
-package com.kazurayam.ks
+package com.kazurayam.ks.testobject
 
 import static org.junit.Assert.*
 
@@ -10,6 +10,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
+import com.kazurayam.ks.testobject.ObjectRepositoryExtension
 import com.kms.katalon.core.testobject.ObjectRepository
 import com.kms.katalon.core.testobject.TestObject
 

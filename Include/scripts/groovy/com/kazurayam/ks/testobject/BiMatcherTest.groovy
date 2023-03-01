@@ -1,10 +1,12 @@
-package com.kazurayam.ks
+package com.kazurayam.ks.testobject
 
 import static org.junit.Assert.*
 
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+
+import com.kazurayam.ks.testobject.BiMatcher
 
 
 @RunWith(JUnit4.class)

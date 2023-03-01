@@ -1,4 +1,4 @@
-package com.kazurayam.ks
+package com.kazurayam.ks.testobject
 
 import com.kms.katalon.core.annotation.Keyword
 import com.kms.katalon.core.testobject.ObjectRepository
@@ -60,12 +60,12 @@ public class ObjectRepositoryExtension {
 			return this.doList((String)args[0], (Boolean)args[1])
 		}
 	}
-		
+
 	private List<String> doList(String pattern, Boolean isRegex) throws IOException {
 		Path dir = Paths.get("./Object Repository")
 		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(dir)
 		Files.walkFileTree(dir, visitor)
-		List<String> ids = visitor.getIDs()
+		List<String> ids = visitor.getTestObjectIDs()
 		//
 		List<String> result = new ArrayList<>()
 		BiMatcher bim = new BiMatcher(pattern, isRegex)
@@ -87,8 +87,8 @@ public class ObjectRepositoryExtension {
 			return this.doXref((String)args[0], (Boolean)args[1])
 		}
 	}
-	
-	private Map<String, Set<String>> doXref(String pattern, Boolean isRegex) throws IOException { 
+
+	private Map<String, Set<String>> doXref(String pattern, Boolean isRegex) throws IOException {
 		Map<String, Set<String>> xref = new TreeMap<>()
 		BiMatcher bim = new BiMatcher(pattern, isRegex)
 		List<String> idList = this.list()  // list of IDs of Test Object
@@ -117,14 +117,14 @@ public class ObjectRepositoryExtension {
 			return this.doXrefAsJson((String)args[0], (Boolean)args[1])
 		}
 	}
-	
+
 	private doXrefAsJson(String pattern, Boolean isRegex) throws IOException {
 		Map<String, Set<String>> xref = this.xref(pattern, isRegex)
 		String json = JsonOutput.toJson(xref)
 		String pp = JsonOutput.prettyPrint(json)
 		return pp
 	}
-	
+
 	private String findSelector(String testObjectId) {
 		Objects.requireNonNull(testObjectId)
 		TestObject tObj = ObjectRepository.findTestObject(testObjectId)

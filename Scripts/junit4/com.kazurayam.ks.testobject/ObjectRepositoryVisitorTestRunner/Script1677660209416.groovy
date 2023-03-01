@@ -1,5 +1,5 @@
 import static com.kazurayam.junit4ks.JUnitCustomKeywords.runWithJUnitRunner
 
-import com.kazurayam.ks.ObjectRepositoryVisitorTest
+import com.kazurayam.ks.testobject.ObjectRepositoryVisitorTest
 
 runWithJUnitRunner(ObjectRepositoryVisitorTest.class)

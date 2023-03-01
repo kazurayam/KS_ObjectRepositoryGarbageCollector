@@ -1,4 +1,4 @@
-package com.kazurayam.ks
+package com.kazurayam.ks.testobject
 
 import java.util.regex.Matcher
 import java.util.regex.Pattern
