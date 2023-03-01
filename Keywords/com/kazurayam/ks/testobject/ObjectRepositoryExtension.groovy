@@ -28,11 +28,11 @@ public class ObjectRepositoryExtension {
 				case "list" :
 					return this.list(args)
 					break
-				case "xref" :
-					return this.xref(args)
+				case "reverseLookup" :
+					return this.reverseLookup(args)
 					break
-				case "xrefAsJson" :
-					return this.xrefAsJson(args)
+				case "reverseLookupAsJson" :
+					return this.reverseLookupAsJson(args)
 					break
 				default :
 				// just do what ObejctRepository is designed to do
@@ -78,49 +78,49 @@ public class ObjectRepositoryExtension {
 	}
 
 
-	static Map<String, Set<String>> xref(Object ... args) throws IOException {
+	static Map<String, Set<String>> reverseLookup(Object ... args) throws IOException {
 		if (args.length == 0) {
-			return this.doXref("", false)
+			return this.doReverseLookup("", false)
 		} else if (args.length == 1) {
-			return this.doXref((String)args[0], false)
+			return this.doReverseLookup((String)args[0], false)
 		} else {
-			return this.doXref((String)args[0], (Boolean)args[1])
+			return this.doReverseLookup((String)args[0], (Boolean)args[1])
 		}
 	}
 
-	private static Map<String, Set<String>> doXref(String pattern, Boolean isRegex) throws IOException {
-		Map<String, Set<String>> xref = new TreeMap<>()
+	private static Map<String, Set<String>> doReverseLookup(String pattern, Boolean isRegex) throws IOException {
+		Map<String, Set<String>> result = new TreeMap<>()
 		BiMatcher bim = new BiMatcher(pattern, isRegex)
 		List<String> idList = this.list()  // list of IDs of Test Object
 		idList.forEach { id ->
 			String locator = findSelector(id) // get the locator contained in the Test Object
 			Set<String> idSet
-			if (xref.containsKey(locator)) {
-				idSet = xref.get(locator)
+			if (result.containsKey(locator)) {
+				idSet = result.get(locator)
 			} else {
 				idSet = new TreeSet<>()
 			}
 			if (bim.matches(locator)) {
 				idSet.add(id)
-				xref.put(locator, idSet)
+				result.put(locator, idSet)
 			}
 		}
-		return xref
+		return result
 	}
 
-	static String xrefAsJson(Object ... args) throws IOException {
+	static String reverseLookupAsJson(Object ... args) throws IOException {
 		if (args.length == 0) {
-			return this.doXrefAsJson("", false)
+			return this.doReverseLookupAsJson("", false)
 		} else if (args.length == 1) {
-			return this.doXrefAsJson((String)args[0], false)
+			return this.doReverseLookupAsJson((String)args[0], false)
 		} else {
-			return this.doXrefAsJson((String)args[0], (Boolean)args[1])
+			return this.doReverseLookupAsJson((String)args[0], (Boolean)args[1])
 		}
 	}
 
-	private static doXrefAsJson(String pattern, Boolean isRegex) throws IOException {
-		Map<String, Set<String>> xref = this.xref(pattern, isRegex)
-		String json = JsonOutput.toJson(xref)
+	private static doReverseLookupAsJson(String pattern, Boolean isRegex) throws IOException {
+		Map<String, Set<String>> result = this.reverseLookup(pattern, isRegex)
+		String json = JsonOutput.toJson(result)
 		String pp = JsonOutput.prettyPrint(json)
 		return pp
 	}
