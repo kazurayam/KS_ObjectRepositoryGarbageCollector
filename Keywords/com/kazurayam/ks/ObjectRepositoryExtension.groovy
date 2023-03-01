@@ -70,25 +70,32 @@ public class ObjectRepositoryExtension {
 
 	Map<String, Set<String>> xref(String pattern = ".*", Boolean isRegex = true) throws IOException {
 		Map<String, Set<String>> xref = new TreeMap<>()
-		List<String> idList = this.list()
-		idList.forEach { testObjectId ->
-			TestObject tObj = ObjectRepository.findTestObject(testObjectId)
-			SelectorMethod selectorMethod = tObj.getSelectorMethod()
-			String locator = tObj.getSelectorCollection().getAt(selectorMethod)
+		BiMatcher bim = new BiMatcher(pattern, isRegex)
+		List<String> idList = this.list()  // list of IDs of Test Object
+		idList.forEach { id ->
+			String locator = findSelector(id)
 			Set<String> idSet
 			if (xref.containsKey(locator)) {
 				idSet = xref.get(locator)
 			} else {
 				idSet = new TreeSet<>()
 			}
-			idSet.add(testObjectId)
+			if (bim.matches(locator)) {
+				idSet.add(id)
+			}
 			xref.put(locator, idSet)
 		}
 		return xref
 	}
 
+	private String findSelector(String testObjectId) {
+		TestObject tObj = ObjectRepository.findTestObject(testObjectId)
+		SelectorMethod selectorMethod = tObj.getSelectorMethod()
+		return tObj.getSelectorCollection().getAt(selectorMethod)
+	}
+
 	String xrefAsJson(String pattern = ".*", Boolean isRegex = true) throws IOException {
-		Map<String, Set<String>> xref = this.xref()
+		Map<String, Set<String>> xref = this.xref(pattern, isRegex)
 		String json = JsonOutput.toJson(xref)
 		String pp = JsonOutput.prettyPrint(json)
 		return pp

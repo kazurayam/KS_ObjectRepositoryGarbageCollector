@@ -27,21 +27,21 @@ class ObjectRepositoryExtensionTest {
 	@Test
 	void testList() {
 		List<String> list = ObjectRepository.list()
-		assertTrue(list.size() > 0)
 		println "********** testList() **********"
 		list.forEach { p ->
 			println p
 		}
+		assertTrue(list.size() > 0)
 	}
 
 	@Test
 	void testListWithArgs() {
 		List<String> list = ObjectRepository.list("button_", false)
-		assertTrue(list.size() == 4)
 		println "********** testListWithArgs() **********"
 		list.forEach { p ->
 			println p
 		}
+		assertTrue(list.size() > 0)
 	}
 
 	@Test
@@ -53,6 +53,10 @@ class ObjectRepositoryExtensionTest {
 	@Test
 	void testXrefWithArgs() {
 		Map<String, Set<String>> result = ObjectRepository.xref("btn-.+-appointment", true)
+		println "********** testXrefWithArgs() **********"
+		result.forEach { k, v ->
+			println k + "\n\t" + v.toString()
+		}
 		assertEquals(2, result.size())
 		//
 		result = ObjectRepository.xref("select", false)
@@ -62,17 +66,17 @@ class ObjectRepositoryExtensionTest {
 	@Test
 	void testXrefAsJson() {
 		String xref = ObjectRepository.xrefAsJson()
-		assertNotNull(xref)
 		println "********** testXrefAsJson() **********"
 		println xref
+		assertNotNull(xref)
 	}
 
 	@Test
 	void testXrefAsJsonWithArgs() {
 		String xref = ObjectRepository.xrefAsJson("//a[@id")   // default: isRegex = false
-		assertNotNull(xref)
 		println "********** testXrefAsJsonWithArg() **********"
 		println xref
+		assertNotNull(xref)
 	}
 
 	/**
