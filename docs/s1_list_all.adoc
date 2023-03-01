@@ -1,0 +1,10 @@
+== step1 list all
+
+[source]
+----
+include::https://github.com/kazurayam/ObjectRepositoryExtension/tree/develop/Scripts/sampleUse/step1/Script1677677313086.groovy[]
+----
+
+[source]
+----
+include::./stdout.txt[lines=2..26]

@@ -1,9 +1,12 @@
 = [Katalon Studio] Object Repository Extension
 
 include::s0_intro.adoc[]
-include::s1_install.adoc[]
-include::s2_how_to_use.adoc[]
-include::s3_list.adoc[]
-include::s4_xref.adoc[]
-include::s5_xrefAsJson.adoc[]
-include::s6_conclusion.adoc[]
+include::s1_list_all.adoc[]
+include::s2_list_select_by_String.adoc[]
+include::s3_list_select_by_Regex.adoc[]
+include::s4_reverseLookup_full.adoc[]
+include::s5_reverseLookup_select_by_String.adoc[]
+include::s6_reverseLookup_select_by_Regex.adoc[]
+include::s7_reverseLookupAsJson_full.adoc[]
+include::s8_reverseLookupAsJson_select_by_String.adoc[]
+include::s9_reverseLookupAsJson_select_by_Regex.adoc[]

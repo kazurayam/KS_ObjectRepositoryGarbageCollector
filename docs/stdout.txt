@@ -1,0 +1,179 @@
+
+---------------------- allTestObjectIDs ------------------------------
+Page_CURA Healthcare Service/a_Go to Homepage
+Page_CURA Healthcare Service/a_Make Appointment
+Page_CURA Healthcare Service/button_Book Appointment
+Page_CURA Healthcare Service/button_Login
+Page_CURA Healthcare Service/input_Apply for hospital readmission_hospit_63901f
+Page_CURA Healthcare Service/input_Medicaid_programs
+Page_CURA Healthcare Service/input_Password_password
+Page_CURA Healthcare Service/input_Username_username
+Page_CURA Healthcare Service/input_Visit Date (Required)_visit_date
+Page_CURA Healthcare Service/select_Tokyo CURA Healthcare Center        _5b4107
+Page_CURA Healthcare Service/td_28
+Page_CURA Healthcare Service/textarea_Comment_comment
+Page_CURA Healthcare Service2/a_Go to Homepage
+Page_CURA Healthcare Service2/a_Make Appointment
+Page_CURA Healthcare Service2/button_Book Appointment
+Page_CURA Healthcare Service2/button_Login
+Page_CURA Healthcare Service2/input_Apply for hospital readmission_hospit_63901f
+Page_CURA Healthcare Service2/input_Medicaid_programs
+Page_CURA Healthcare Service2/input_Password_password
+Page_CURA Healthcare Service2/input_Username_username
+Page_CURA Healthcare Service2/input_Visit Date (Required)_visit_date
+Page_CURA Healthcare Service2/select_Tokyo CURA Healthcare Center        _5b4107
+Page_CURA Healthcare Service2/td_28
+Page_CURA Healthcare Service2/textarea_Comment_comment
+
+---------------- idsSelectedByStringContains -------------------------
+Page_CURA Healthcare Service/button_Book Appointment
+Page_CURA Healthcare Service/button_Login
+Page_CURA Healthcare Service2/button_Book Appointment
+Page_CURA Healthcare Service2/button_Login
+
+---------------- idsSelectedByRegex -------------------------
+Page_CURA Healthcare Service/button_Login
+Page_CURA Healthcare Service2/button_Login
+
+---------------- reverseLookup, full ------------------------
+(.//*[normalize-space(text()) and normalize-space(.)='Sa'])[1]/following::td[31]
+	Page_CURA Healthcare Service/td_28
+	Page_CURA Healthcare Service2/td_28
+
+//a[@id='btn-make-appointment']
+	Page_CURA Healthcare Service/a_Make Appointment
+	Page_CURA Healthcare Service2/a_Make Appointment
+
+//button[@id='btn-book-appointment']
+	Page_CURA Healthcare Service/button_Book Appointment
+	Page_CURA Healthcare Service2/button_Book Appointment
+
+//button[@id='btn-login']
+	Page_CURA Healthcare Service/button_Login
+	Page_CURA Healthcare Service2/button_Login
+
+//input[@id='chk_hospotal_readmission']
+	Page_CURA Healthcare Service/input_Apply for hospital readmission_hospit_63901f
+	Page_CURA Healthcare Service2/input_Apply for hospital readmission_hospit_63901f
+
+//input[@id='radio_program_medicaid']
+	Page_CURA Healthcare Service/input_Medicaid_programs
+	Page_CURA Healthcare Service2/input_Medicaid_programs
+
+//input[@id='txt-password']
+	Page_CURA Healthcare Service/input_Password_password
+	Page_CURA Healthcare Service2/input_Password_password
+
+//input[@id='txt-username']
+	Page_CURA Healthcare Service/input_Username_username
+	Page_CURA Healthcare Service2/input_Username_username
+
+//input[@id='txt_visit_date']
+	Page_CURA Healthcare Service/input_Visit Date (Required)_visit_date
+	Page_CURA Healthcare Service2/input_Visit Date (Required)_visit_date
+
+//section[@id='summary']/div/div/div[7]/p/a
+	Page_CURA Healthcare Service/a_Go to Homepage
+	Page_CURA Healthcare Service2/a_Go to Homepage
+
+//select[@id='combo_facility']
+	Page_CURA Healthcare Service/select_Tokyo CURA Healthcare Center        _5b4107
+	Page_CURA Healthcare Service2/select_Tokyo CURA Healthcare Center        _5b4107
+
+//textarea[@id='txt_comment']
+	Page_CURA Healthcare Service/textarea_Comment_comment
+	Page_CURA Healthcare Service2/textarea_Comment_comment
+
+-------- reverseLookup, selected by String.contains ----------
+//a[@id='btn-make-appointment']
+	Page_CURA Healthcare Service/a_Make Appointment
+	Page_CURA Healthcare Service2/a_Make Appointment
+
+//button[@id='btn-book-appointment']
+	Page_CURA Healthcare Service/button_Book Appointment
+	Page_CURA Healthcare Service2/button_Book Appointment
+
+//button[@id='btn-login']
+	Page_CURA Healthcare Service/button_Login
+	Page_CURA Healthcare Service2/button_Login
+
+-------- reverseLookup, selected by Regular Expression ----------
+//button[@id='btn-login']
+	Page_CURA Healthcare Service/button_Login
+	Page_CURA Healthcare Service2/button_Login
+
+----------------- reverseLookupAsJson, full -------------------
+{
+    "(.//*[normalize-space(text()) and normalize-space(.)='Sa'])[1]/following::td[31]": [
+        "Page_CURA Healthcare Service/td_28",
+        "Page_CURA Healthcare Service2/td_28"
+    ],
+    "//a[@id='btn-make-appointment']": [
+        "Page_CURA Healthcare Service/a_Make Appointment",
+        "Page_CURA Healthcare Service2/a_Make Appointment"
+    ],
+    "//button[@id='btn-book-appointment']": [
+        "Page_CURA Healthcare Service/button_Book Appointment",
+        "Page_CURA Healthcare Service2/button_Book Appointment"
+    ],
+    "//button[@id='btn-login']": [
+        "Page_CURA Healthcare Service/button_Login",
+        "Page_CURA Healthcare Service2/button_Login"
+    ],
+    "//input[@id='chk_hospotal_readmission']": [
+        "Page_CURA Healthcare Service/input_Apply for hospital readmission_hospit_63901f",
+        "Page_CURA Healthcare Service2/input_Apply for hospital readmission_hospit_63901f"
+    ],
+    "//input[@id='radio_program_medicaid']": [
+        "Page_CURA Healthcare Service/input_Medicaid_programs",
+        "Page_CURA Healthcare Service2/input_Medicaid_programs"
+    ],
+    "//input[@id='txt-password']": [
+        "Page_CURA Healthcare Service/input_Password_password",
+        "Page_CURA Healthcare Service2/input_Password_password"
+    ],
+    "//input[@id='txt-username']": [
+        "Page_CURA Healthcare Service/input_Username_username",
+        "Page_CURA Healthcare Service2/input_Username_username"
+    ],
+    "//input[@id='txt_visit_date']": [
+        "Page_CURA Healthcare Service/input_Visit Date (Required)_visit_date",
+        "Page_CURA Healthcare Service2/input_Visit Date (Required)_visit_date"
+    ],
+    "//section[@id='summary']/div/div/div[7]/p/a": [
+        "Page_CURA Healthcare Service/a_Go to Homepage",
+        "Page_CURA Healthcare Service2/a_Go to Homepage"
+    ],
+    "//select[@id='combo_facility']": [
+        "Page_CURA Healthcare Service/select_Tokyo CURA Healthcare Center        _5b4107",
+        "Page_CURA Healthcare Service2/select_Tokyo CURA Healthcare Center        _5b4107"
+    ],
+    "//textarea[@id='txt_comment']": [
+        "Page_CURA Healthcare Service/textarea_Comment_comment",
+        "Page_CURA Healthcare Service2/textarea_Comment_comment"
+    ]
+}
+
+------ reverseLookupAsJson, selected by String.contains() -----
+{
+    "//a[@id='btn-make-appointment']": [
+        "Page_CURA Healthcare Service/a_Make Appointment",
+        "Page_CURA Healthcare Service2/a_Make Appointment"
+    ],
+    "//button[@id='btn-book-appointment']": [
+        "Page_CURA Healthcare Service/button_Book Appointment",
+        "Page_CURA Healthcare Service2/button_Book Appointment"
+    ],
+    "//button[@id='btn-login']": [
+        "Page_CURA Healthcare Service/button_Login",
+        "Page_CURA Healthcare Service2/button_Login"
+    ]
+}
+
+------ reverseLookupAsJson, selected by Regular Expression -----
+{
+    "//button[@id='btn-login']": [
+        "Page_CURA Healthcare Service/button_Login",
+        "Page_CURA Healthcare Service2/button_Login"
+    ]
+}
