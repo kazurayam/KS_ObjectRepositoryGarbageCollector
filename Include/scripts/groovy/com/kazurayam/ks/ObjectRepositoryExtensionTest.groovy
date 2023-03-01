@@ -52,15 +52,22 @@ class ObjectRepositoryExtensionTest {
 
 	@Test
 	void testXrefWithArgs() {
-		Map<String, Set<String>> result = ObjectRepository.xref("btn-.+-appointment", true)
+		String pattern = "btn-(.+)-appointment"
+		Map<String, Set<String>> result = ObjectRepository.xref(pattern, true)
 		println "********** testXrefWithArgs() **********"
+		println "pattern: ${pattern}"
 		result.forEach { k, v ->
 			println k + "\n\t" + v.toString()
 		}
 		assertEquals(2, result.size())
 		//
+		pattern = "select"
 		result = ObjectRepository.xref("select", false)
-		assertEquals(2, result.size())
+		println "pattern: ${pattern}"
+		result.forEach { k, v ->
+			println k + "\n\t" + v.toString()
+		}
+		assertEquals(1, result.size())
 	}
 
 	@Test

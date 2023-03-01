@@ -9,7 +9,7 @@ class BiMatcher {
 	private Pattern ptrn = null
 	private Boolean isRegex
 
-	BiMatcher(String pattern = ".*", Boolean isRegex = false) throws IOException {
+	BiMatcher(String pattern = "", Boolean isRegex = false) throws IOException {
 		Objects.requireNonNull(pattern)
 		this.pattern = pattern
 		this.isRegex = isRegex
@@ -19,11 +19,16 @@ class BiMatcher {
 	}
 
 	Boolean matches(String text) {
-		if (isRegex) {
-			Matcher m = ptrn.matcher(text)
-			return m.find()    // will try partial match, not entire match
+		Objects.requireNonNull(text)
+		if (pattern.length() > 0) {
+			if (isRegex) {
+				Matcher m = ptrn.matcher(text)
+				return m.find()    // will try partial match, not entire match
+			} else {
+				return text.contains(pattern)
+			}
 		} else {
-			return text.contains(pattern)
+			return true
 		}
 	}
 }

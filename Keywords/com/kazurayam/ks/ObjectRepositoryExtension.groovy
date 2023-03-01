@@ -26,13 +26,13 @@ public class ObjectRepositoryExtension {
 		ObjectRepository.metaClass.static.invokeMethod = { String name, args ->
 			switch (name) {
 				case "list" :
-					return this.list()
+					return this.list(args)
 					break
 				case "xref" :
-					return this.xref()
+					return this.xref(args)
 					break
 				case "xrefAsJson" :
-					return this.xrefAsJson()
+					return this.xrefAsJson(args)
 					break
 				default :
 				// just do what ObejctRepository is designed to do
@@ -51,7 +51,17 @@ public class ObjectRepositoryExtension {
 	/*
 	 * 
 	 */
-	List<String> list(String pattern = ".*", Boolean isRegex = true) throws IOException {
+	List<String> list(Object ... args) throws Exception {
+		if (args.length == 0) {
+			return this.doList("", false)
+		} else if (args.length == 1) {
+			return this.doList((String)args[0], false)
+		} else {
+			return this.doList((String)args[0], (Boolean)args[1])
+		}
+	}
+		
+	private List<String> doList(String pattern, Boolean isRegex) throws IOException {
 		Path dir = Paths.get("./Object Repository")
 		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(dir)
 		Files.walkFileTree(dir, visitor)
@@ -68,12 +78,22 @@ public class ObjectRepositoryExtension {
 	}
 
 
-	Map<String, Set<String>> xref(String pattern = ".*", Boolean isRegex = true) throws IOException {
+	Map<String, Set<String>> xref(Object ... args) throws IOException {
+		if (args.length == 0) {
+			return this.doXref("", false)
+		} else if (args.length == 1) {
+			return this.doXref((String)args[0], false)
+		} else {
+			return this.doXref((String)args[0], (Boolean)args[1])
+		}
+	}
+	
+	private Map<String, Set<String>> doXref(String pattern, Boolean isRegex) throws IOException { 
 		Map<String, Set<String>> xref = new TreeMap<>()
 		BiMatcher bim = new BiMatcher(pattern, isRegex)
 		List<String> idList = this.list()  // list of IDs of Test Object
 		idList.forEach { id ->
-			String locator = findSelector(id)
+			String locator = findSelector(id) // get the locator contained in the Test Object
 			Set<String> idSet
 			if (xref.containsKey(locator)) {
 				idSet = xref.get(locator)
@@ -82,24 +102,36 @@ public class ObjectRepositoryExtension {
 			}
 			if (bim.matches(locator)) {
 				idSet.add(id)
+				xref.put(locator, idSet)
 			}
-			xref.put(locator, idSet)
 		}
 		return xref
 	}
 
-	private String findSelector(String testObjectId) {
-		TestObject tObj = ObjectRepository.findTestObject(testObjectId)
-		SelectorMethod selectorMethod = tObj.getSelectorMethod()
-		return tObj.getSelectorCollection().getAt(selectorMethod)
+	String xrefAsJson(Object ... args) throws IOException {
+		if (args.length == 0) {
+			return this.doXrefAsJson("", false)
+		} else if (args.length == 1) {
+			return this.doXrefAsJson((String)args[0], false)
+		} else {
+			return this.doXrefAsJson((String)args[0], (Boolean)args[1])
+		}
 	}
-
-	String xrefAsJson(String pattern = ".*", Boolean isRegex = true) throws IOException {
+	
+	private doXrefAsJson(String pattern, Boolean isRegex) throws IOException {
 		Map<String, Set<String>> xref = this.xref(pattern, isRegex)
 		String json = JsonOutput.toJson(xref)
 		String pp = JsonOutput.prettyPrint(json)
 		return pp
 	}
+	
+	private String findSelector(String testObjectId) {
+		Objects.requireNonNull(testObjectId)
+		TestObject tObj = ObjectRepository.findTestObject(testObjectId)
+		SelectorMethod selectorMethod = tObj.getSelectorMethod()
+		return tObj.getSelectorCollection().getAt(selectorMethod)
+	}
+
 }
 
 
