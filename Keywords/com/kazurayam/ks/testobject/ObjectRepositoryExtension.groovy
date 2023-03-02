@@ -159,8 +159,7 @@ public class ObjectRepositoryExtension {
 	throws IOException {
 		List<Map<String, String>> result = this.listWithLocatorRaw(pattern, isRegex)
 		String json = JsonOutput.toJson(result)
-		String pp = JsonOutput.prettyPrint(json)
-		return pp
+		return JsonOutput.prettyPrint(json)
 	}
 
 
@@ -213,8 +212,7 @@ public class ObjectRepositoryExtension {
 	throws IOException {
 		Map<String, Set<String>> result = this.reverseLookupRaw(pattern, isRegex)
 		String json = JsonOutput.toJson(result)
-		String pp = JsonOutput.prettyPrint(json)
-		return pp
+		return JsonOutput.prettyPrint(json)
 	}
 
 
