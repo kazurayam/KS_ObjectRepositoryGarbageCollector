@@ -27,20 +27,23 @@ public class ObjectRepositoryExtension {
 	static void apply() {
 		ObjectRepository.metaClass.static.invokeMethod = { String name, args ->
 			switch (name) {
+				case "listRaw" :
+					return this.listRaw(args)
+					break
 				case "list" :
 					return this.list(args)
 					break
-				case "listWithLocator" :
-				    return this.listWithLocator(args)
+				case "listWithLocatorRaw" :
+					return this.listWithLocatorRaw(args)
 					break
-				case "listWithLocatorAsJson" :
-				    return this.listWithLocatorAsJson(args)
+				case "listWithLocator" :
+					return this.listWithLocator(args)
+					break
+				case "reverseLookupRaw" :
+					return this.reverseLookupRaw(args)
 					break
 				case "reverseLookup" :
 					return this.reverseLookup(args)
-					break
-				case "reverseLookupAsJson" :
-					return this.reverseLookupAsJson(args)
 					break
 				default :
 				// just do what ObejctRepository is designed to do
@@ -57,17 +60,17 @@ public class ObjectRepositoryExtension {
 	}
 
 	//-------------------------------------------------------------------------
-	static List<String> list(Object ... args) throws Exception {
+	static List<String> listRaw(Object ... args) throws Exception {
 		if (args.length == 0) {
-			return this.doList("", false)
+			return doListRaw("", false)
 		} else if (args.length == 1) {
-			return this.doList((String)args[0], false)
+			return doListRaw((String)args[0], false)
 		} else {
-			return this.doList((String)args[0], (Boolean)args[1])
+			return doListRaw((String)args[0], (Boolean)args[1])
 		}
 	}
 
-	private static List<String> doList(String pattern, Boolean isRegex)
+	private static List<String> doListRaw(String pattern, Boolean isRegex)
 			throws IOException {
 		Path dir = getBaseDir()
 		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(dir)
@@ -83,24 +86,41 @@ public class ObjectRepositoryExtension {
 		}
 		return result;
 	}
-	
-	
-	
+
 	//-------------------------------------------------------------------------
-	static List<Map<String, String>> listWithLocator(Object ... args)
-			throws Exception {
+	static String list(Object ... args) throws Exception {
 		if (args.length == 0) {
-			return this.doListWithLocator("", false)
+			return doList("", false)
 		} else if (args.length == 1) {
-			return this.doListWithLocator((String)args[0], false)
+			return doList((String)args[0], false)
 		} else {
-			return this.doListWithLocator((String)args[0], (Boolean)args[1])
+			return doList((String)args[0], (Boolean)args[1])
 		}
 	}
-	
-	private static List<Map<String, String>> doListWithLocator(String pattern, 
-																Boolean isRegex)
+
+	private static String doList(String pattern, Boolean isRegex)
 			throws IOException {
+		List<String> list = listRaw(pattern, isRegex)
+		String json = JsonOutput.toJson(list)
+		String pp = JsonOutput.prettyPrint(json)
+		return pp
+	}
+
+	//-------------------------------------------------------------------------
+	static List<Map<String, String>> listWithLocatorRaw(Object ... args)
+	throws Exception {
+		if (args.length == 0) {
+			return doListWithLocatorRaw("", false)
+		} else if (args.length == 1) {
+			return doListWithLocatorRaw((String)args[0], false)
+		} else {
+			return doListWithLocatorRaw((String)args[0], (Boolean)args[1])
+		}
+	}
+
+	private static List<Map<String, String>> doListWithLocatorRaw(String pattern,
+			Boolean isRegex)
+	throws IOException {
 		Path dir = getBaseDir()
 		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(dir)
 		Files.walkFileTree(dir, visitor)
@@ -122,46 +142,46 @@ public class ObjectRepositoryExtension {
 		return result
 	}
 
-	
+
 	//-------------------------------------------------------------------------
-	static String listWithLocatorAsJson(Object ... args) throws Exception {
+	static String listWithLocator(Object ... args) throws Exception {
 		if (args.length == 0) {
-			return this.doListWithLocatorAsJson("", false)
+			return doListWithLocator("", false)
 		} else if (args.length == 1) {
-			return this.doListWithLocatorAsJson((String)args[0], false)
+			return doListWithLocator((String)args[0], false)
 		} else {
-			return this.doListWithLocatorAsJson((String)args[0], (Boolean)args[1])
+			return doListWithLocator((String)args[0], (Boolean)args[1])
 		}
 	}
-	
-	private static String doListWithLocatorAsJson(String pattern,
-													Boolean isRegex)
-			throws IOException {
-		List<Map<String, String>> result = this.listWithLocator(pattern, isRegex)
+
+	private static String doListWithLocator(String pattern,
+			Boolean isRegex)
+	throws IOException {
+		List<Map<String, String>> result = this.listWithLocatorRaw(pattern, isRegex)
 		String json = JsonOutput.toJson(result)
 		String pp = JsonOutput.prettyPrint(json)
 		return pp
 	}
-	
-	
+
+
 	//-------------------------------------------------------------------------
-	static Map<String, Set<String>> reverseLookup(Object ... args)
-			throws IOException {
+	static Map<String, Set<String>> reverseLookupRaw(Object ... args)
+	throws IOException {
 		if (args.length == 0) {
-			return this.doReverseLookup("", false)
+			return doReverseLookupRaw("", false)
 		} else if (args.length == 1) {
-			return this.doReverseLookup((String)args[0], false)
+			return doReverseLookupRaw((String)args[0], false)
 		} else {
-			return this.doReverseLookup((String)args[0], (Boolean)args[1])
+			return doReverseLookupRaw((String)args[0], (Boolean)args[1])
 		}
 	}
 
-	private static Map<String, Set<String>> doReverseLookup(String pattern,
-															Boolean isRegex)
-			throws IOException {
+	private static Map<String, Set<String>> doReverseLookupRaw(String pattern,
+			Boolean isRegex)
+	throws IOException {
 		Map<String, Set<String>> result = new TreeMap<>()
 		BiMatcher bim = new BiMatcher(pattern, isRegex)
-		List<String> idList = this.list()  // list of IDs of Test Object
+		List<String> idList = listRaw()  // list of IDs of Test Object
 		idList.forEach { id ->
 			String locator = findLocator(id)
 			Set<String> idSet
@@ -179,33 +199,33 @@ public class ObjectRepositoryExtension {
 	}
 
 	//-------------------------------------------------------------------------
-	static String reverseLookupAsJson(Object ... args) throws IOException {
+	static String reverseLookup(Object ... args) throws IOException {
 		if (args.length == 0) {
-			return this.doReverseLookupAsJson("", false)
+			return doReverseLookup("", false)
 		} else if (args.length == 1) {
-			return this.doReverseLookupAsJson((String)args[0], false)
+			return doReverseLookup((String)args[0], false)
 		} else {
-			return this.doReverseLookupAsJson((String)args[0], (Boolean)args[1])
+			return doReverseLookup((String)args[0], (Boolean)args[1])
 		}
 	}
 
-	private static doReverseLookupAsJson(String pattern, Boolean isRegex)
-			throws IOException {
-		Map<String, Set<String>> result = this.reverseLookup(pattern, isRegex)
+	private static doReverseLookup(String pattern, Boolean isRegex)
+	throws IOException {
+		Map<String, Set<String>> result = this.reverseLookupRaw(pattern, isRegex)
 		String json = JsonOutput.toJson(result)
 		String pp = JsonOutput.prettyPrint(json)
 		return pp
 	}
-	
-	
+
+
 	//-------------------------------------------------------------------------
 	// helpers
-	
+
 	private static Path getBaseDir() {
 		Path projectDir = Paths.get(RunConfiguration.getProjectDir())
 		return projectDir.resolve("Object Repository")
 	}
-	
+
 	private static String findLocator(String testObjectId) {
 		Objects.requireNonNull(testObjectId)
 		TestObject tObj = ObjectRepository.findTestObject(testObjectId)

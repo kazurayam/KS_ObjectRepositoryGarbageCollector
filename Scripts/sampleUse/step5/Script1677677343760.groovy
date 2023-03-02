@@ -9,7 +9,7 @@ import com.kms.katalon.core.testobject.ObjectRepository
 ObjectRepositoryExtension.apply()
 
 // step5: reverse Test Object Lookup by locator, selected by String.contains()
-Map<String, Set<String>> result5 = ObjectRepository.reverseLookup("[@id='btn-", false)
+Map<String, Set<String>> result5 = ObjectRepository.reverseLookupRaw("[@id='btn-", false)
 
 println "\n-------- reverseLookup, selected by String.contains ----------"
 result5.keySet().forEach { locator ->
