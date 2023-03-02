@@ -5,7 +5,6 @@ import com.kms.katalon.core.configuration.RunConfiguration
 import com.kms.katalon.core.testobject.ObjectRepository
 import com.kms.katalon.core.testobject.TestObject
 import com.kms.katalon.core.testobject.SelectorMethod
-import com.kms.katalon.core.testobject.SelectorMethod
 
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -57,9 +56,7 @@ public class ObjectRepositoryExtension {
 		}
 	}
 
-	/*
-	 * 
-	 */
+	//-------------------------------------------------------------------------
 	static List<String> list(Object ... args) throws Exception {
 		if (args.length == 0) {
 			return this.doList("", false)
@@ -70,7 +67,8 @@ public class ObjectRepositoryExtension {
 		}
 	}
 
-	private static List<String> doList(String pattern, Boolean isRegex) throws IOException {
+	private static List<String> doList(String pattern, Boolean isRegex)
+			throws IOException {
 		Path dir = getBaseDir()
 		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(dir)
 		Files.walkFileTree(dir, visitor)
@@ -88,10 +86,9 @@ public class ObjectRepositoryExtension {
 	
 	
 	
-	/*
-	 * 
-	 */
-	static List<Map<String, String>> listWithLocator(Object ... args) throws Exception {
+	//-------------------------------------------------------------------------
+	static List<Map<String, String>> listWithLocator(Object ... args)
+			throws Exception {
 		if (args.length == 0) {
 			return this.doListWithLocator("", false)
 		} else if (args.length == 1) {
@@ -101,31 +98,32 @@ public class ObjectRepositoryExtension {
 		}
 	}
 	
-	private static List<Map<String, String>> doListWithLocator(String pattern, Boolean isRegex) throws IOException {
+	private static List<Map<String, String>> doListWithLocator(String pattern, 
+																Boolean isRegex)
+			throws IOException {
 		Path dir = getBaseDir()
 		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(dir)
 		Files.walkFileTree(dir, visitor)
 		List<String> ids = visitor.getTestObjectIDs()
+		BiMatcher bim = new BiMatcher(pattern, isRegex)
 		//
 		List<Map<String, String>> result = new ArrayList<>()
 		ids.forEach { id ->
 			TestObject tObj = ObjectRepository.findTestObject(id)
 			String locator = findLocator(id)
-			Map<String, String> entry = new TreeMap<>()
-			entry.put("id", id)
-			entry.put("locator", locator)
-			entry.put("method", tObj.getSelectorMethod().toString())
-			result.add(entry)
+			if (bim.matches(id)) {
+				Map<String, String> entry = new LinkedHashMap<>()
+				entry.put("id", id)
+				entry.put("method", tObj.getSelectorMethod().toString())
+				entry.put("locator", locator)
+				result.add(entry)
+			}
 		}
-		Collections.sort(result)
 		return result
 	}
 
 	
-	
-	/*
-	 * 
-	 */
+	//-------------------------------------------------------------------------
 	static String listWithLocatorAsJson(Object ... args) throws Exception {
 		if (args.length == 0) {
 			return this.doListWithLocatorAsJson("", false)
@@ -136,15 +134,19 @@ public class ObjectRepositoryExtension {
 		}
 	}
 	
-	private static String doListWithLocatorAsJson(String pattern, Boolean isRegex) throws IOException {
-		
+	private static String doListWithLocatorAsJson(String pattern,
+													Boolean isRegex)
+			throws IOException {
+		List<Map<String, String>> result = this.listWithLocator(pattern, isRegex)
+		String json = JsonOutput.toJson(result)
+		String pp = JsonOutput.prettyPrint(json)
+		return pp
 	}
 	
 	
-	/*
-	 * 
-	 */
-	static Map<String, Set<String>> reverseLookup(Object ... args) throws IOException {
+	//-------------------------------------------------------------------------
+	static Map<String, Set<String>> reverseLookup(Object ... args)
+			throws IOException {
 		if (args.length == 0) {
 			return this.doReverseLookup("", false)
 		} else if (args.length == 1) {
@@ -154,12 +156,14 @@ public class ObjectRepositoryExtension {
 		}
 	}
 
-	private static Map<String, Set<String>> doReverseLookup(String pattern, Boolean isRegex) throws IOException {
+	private static Map<String, Set<String>> doReverseLookup(String pattern,
+															Boolean isRegex)
+			throws IOException {
 		Map<String, Set<String>> result = new TreeMap<>()
 		BiMatcher bim = new BiMatcher(pattern, isRegex)
 		List<String> idList = this.list()  // list of IDs of Test Object
 		idList.forEach { id ->
-			String locator = findLocator(id) // get the locator contained in the Test Object
+			String locator = findLocator(id)
 			Set<String> idSet
 			if (result.containsKey(locator)) {
 				idSet = result.get(locator)
@@ -174,6 +178,7 @@ public class ObjectRepositoryExtension {
 		return result
 	}
 
+	//-------------------------------------------------------------------------
 	static String reverseLookupAsJson(Object ... args) throws IOException {
 		if (args.length == 0) {
 			return this.doReverseLookupAsJson("", false)
@@ -184,7 +189,8 @@ public class ObjectRepositoryExtension {
 		}
 	}
 
-	private static doReverseLookupAsJson(String pattern, Boolean isRegex) throws IOException {
+	private static doReverseLookupAsJson(String pattern, Boolean isRegex)
+			throws IOException {
 		Map<String, Set<String>> result = this.reverseLookup(pattern, isRegex)
 		String json = JsonOutput.toJson(result)
 		String pp = JsonOutput.prettyPrint(json)
@@ -192,7 +198,7 @@ public class ObjectRepositoryExtension {
 	}
 	
 	
-	//-----------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	// helpers
 	
 	private static Path getBaseDir() {
