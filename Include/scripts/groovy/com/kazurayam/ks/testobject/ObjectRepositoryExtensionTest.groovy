@@ -25,9 +25,9 @@ class ObjectRepositoryExtensionTest {
 	}
 
 	@Test
-	void testList() {
-		List<String> list = ObjectRepository.list()
-		println "********** testList() **********"
+	void test_listRaw() {
+		List<String> list = ObjectRepository.listRaw()
+		println "********** testListRaw() **********"
 		list.forEach { p ->
 			println p
 		}
@@ -35,9 +35,9 @@ class ObjectRepositoryExtensionTest {
 	}
 
 	@Test
-	void testList_args() {
-		List<String> list = ObjectRepository.list("button_", false)
-		println "********** testList_args() **********"
+	void test_listRaw_args() {
+		List<String> list = ObjectRepository.listRaw("button_", false)
+		println "********** testListRaw_args() **********"
 		list.forEach { p ->
 			println p
 		}
@@ -45,7 +45,21 @@ class ObjectRepositoryExtensionTest {
 	}
 
 	@Test
-	void testListWithLocatorRaw() {
+	void test_list() {
+		String json = ObjectRepository.list()
+		println "********** test_list **********"
+		println json
+	}
+	
+	@Test
+	void test_list_args() {
+		String json = ObjectRepository.list("button_")
+		println "********** test_list_args **********"
+		println json
+	}
+	
+	@Test
+	void test_listWithLocatorRaw() {
 		List<Map<String, String>> result = ObjectRepository.listWithLocatorRaw()
 		println "********** testListWithLocatorRaw *********"
 		result.forEach { m ->
@@ -54,7 +68,7 @@ class ObjectRepositoryExtensionTest {
 	}
 
 	@Test
-	void testListWithLocatorRaw_args() {
+	void test_listWithLocatorRaw_args() {
 		List<Map<String, String>> result = ObjectRepositoryExtension.listWithLocatorRaw("button_")
 		println "********** testListWithLocatorRaw_args *********"
 		result.forEach { m ->
@@ -63,27 +77,27 @@ class ObjectRepositoryExtensionTest {
 	}
 
 	@Test
-	void testListWithLocator() {
+	void test_listWithLocator() {
 		String json = ObjectRepository.listWithLocator()
 		println "********** testListWithLocator *******"
 		println json
 	}
 
 	@Test
-	void testListWithLocator_args() {
+	void test_listWithLocator_args() {
 		String json = ObjectRepository.listWithLocator("button_")
 		println "********** testListWithLocator_args *******"
 		println json
 	}
 
 	@Test
-	void testReverseLookupRaw() {
+	void test_reverseLookupRaw() {
 		Map<String, Set<String>> result = ObjectRepository.reverseLookupRaw()
 		assertEquals(12, result.size())
 	}
 
 	@Test
-	void testReverseLookupRaw_args() {
+	void test_reverseLookupRaw_args() {
 		String pattern = "btn-(.+)-appointment"
 		Map<String, Set<String>> result = ObjectRepository.reverseLookupRaw(pattern, true)
 		println "********** testRevLookupRaw_args() **********"
@@ -103,7 +117,7 @@ class ObjectRepositoryExtensionTest {
 	}
 
 	@Test
-	void testReverseLookup() {
+	void test_reverseLookup() {
 		String json = ObjectRepository.reverseLookup()
 		println "********** testRevLookupAsJson() **********"
 		println json
@@ -111,7 +125,7 @@ class ObjectRepositoryExtensionTest {
 	}
 
 	@Test
-	void testReverseLookup_args() {
+	void test_reverseLookup_args() {
 		String json = ObjectRepository.reverseLookup("//a[@id")   // default: isRegex = false
 		println "********** testRevLookup_args() **********"
 		println json
@@ -122,7 +136,7 @@ class ObjectRepositoryExtensionTest {
 	 * test if ObjectRepository's ordinary method works
 	 */
 	@Test
-	void testFindTestObject() {
+	void test_findTestObject() {
 		TestObject tObj = ObjectRepository.findTestObject("Page_CURA Healthcare Service/button_Login")
 		assertNotNull(tObj)
 	}

@@ -27,6 +27,9 @@ public class ObjectRepositoryExtension {
 	static void apply() {
 		ObjectRepository.metaClass.static.invokeMethod = { String name, args ->
 			switch (name) {
+				case "listRaw" :
+					return this.listRaw(args)
+					break
 				case "list" :
 					return this.list(args)
 					break
@@ -57,18 +60,18 @@ public class ObjectRepositoryExtension {
 	}
 
 	//-------------------------------------------------------------------------
-	static List<String> list(Object ... args) throws Exception {
+	static List<String> listRaw(Object ... args) throws Exception {
 		if (args.length == 0) {
-			return this.doList("", false)
+			return doListRaw("", false)
 		} else if (args.length == 1) {
-			return this.doList((String)args[0], false)
+			return doListRaw((String)args[0], false)
 		} else {
-			return this.doList((String)args[0], (Boolean)args[1])
+			return doListRaw((String)args[0], (Boolean)args[1])
 		}
 	}
 
-	private static List<String> doList(String pattern, Boolean isRegex)
-	throws IOException {
+	private static List<String> doListRaw(String pattern, Boolean isRegex)
+			throws IOException {
 		Path dir = getBaseDir()
 		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(dir)
 		Files.walkFileTree(dir, visitor)
@@ -84,17 +87,34 @@ public class ObjectRepositoryExtension {
 		return result;
 	}
 
+	//-------------------------------------------------------------------------
+	static String list(Object ... args) throws Exception {
+		if (args.length == 0) {
+			return doList("", false)
+		} else if (args.length == 1) {
+			return doList((String)args[0], false)
+		} else {
+			return doList((String)args[0], (Boolean)args[1])
+		}
+	}
 
+	private static String doList(String pattern, Boolean isRegex)
+			throws IOException {
+		List<String> list = listRaw(pattern, isRegex)
+		String json = JsonOutput.toJson(list)
+		String pp = JsonOutput.prettyPrint(json)
+		return pp
+	}
 
 	//-------------------------------------------------------------------------
 	static List<Map<String, String>> listWithLocatorRaw(Object ... args)
 	throws Exception {
 		if (args.length == 0) {
-			return this.doListWithLocatorRaw("", false)
+			return doListWithLocatorRaw("", false)
 		} else if (args.length == 1) {
-			return this.doListWithLocatorRaw((String)args[0], false)
+			return doListWithLocatorRaw((String)args[0], false)
 		} else {
-			return this.doListWithLocatorRaw((String)args[0], (Boolean)args[1])
+			return doListWithLocatorRaw((String)args[0], (Boolean)args[1])
 		}
 	}
 
@@ -126,11 +146,11 @@ public class ObjectRepositoryExtension {
 	//-------------------------------------------------------------------------
 	static String listWithLocator(Object ... args) throws Exception {
 		if (args.length == 0) {
-			return this.doListWithLocator("", false)
+			return doListWithLocator("", false)
 		} else if (args.length == 1) {
-			return this.doListWithLocator((String)args[0], false)
+			return doListWithLocator((String)args[0], false)
 		} else {
-			return this.doListWithLocator((String)args[0], (Boolean)args[1])
+			return doListWithLocator((String)args[0], (Boolean)args[1])
 		}
 	}
 
@@ -148,11 +168,11 @@ public class ObjectRepositoryExtension {
 	static Map<String, Set<String>> reverseLookupRaw(Object ... args)
 	throws IOException {
 		if (args.length == 0) {
-			return this.doReverseLookupRaw("", false)
+			return doReverseLookupRaw("", false)
 		} else if (args.length == 1) {
-			return this.doReverseLookupRaw((String)args[0], false)
+			return doReverseLookupRaw((String)args[0], false)
 		} else {
-			return this.doReverseLookupRaw((String)args[0], (Boolean)args[1])
+			return doReverseLookupRaw((String)args[0], (Boolean)args[1])
 		}
 	}
 
@@ -161,7 +181,7 @@ public class ObjectRepositoryExtension {
 	throws IOException {
 		Map<String, Set<String>> result = new TreeMap<>()
 		BiMatcher bim = new BiMatcher(pattern, isRegex)
-		List<String> idList = this.list()  // list of IDs of Test Object
+		List<String> idList = listRaw()  // list of IDs of Test Object
 		idList.forEach { id ->
 			String locator = findLocator(id)
 			Set<String> idSet
@@ -181,11 +201,11 @@ public class ObjectRepositoryExtension {
 	//-------------------------------------------------------------------------
 	static String reverseLookup(Object ... args) throws IOException {
 		if (args.length == 0) {
-			return this.doReverseLookup("", false)
+			return doReverseLookup("", false)
 		} else if (args.length == 1) {
-			return this.doReverseLookup((String)args[0], false)
+			return doReverseLookup((String)args[0], false)
 		} else {
-			return this.doReverseLookup((String)args[0], (Boolean)args[1])
+			return doReverseLookup((String)args[0], (Boolean)args[1])
 		}
 	}
 
