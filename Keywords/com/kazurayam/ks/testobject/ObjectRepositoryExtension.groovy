@@ -71,7 +71,7 @@ public class ObjectRepositoryExtension {
 	}
 
 	private static List<String> doListRaw(String pattern, Boolean isRegex)
-			throws IOException {
+	throws IOException {
 		Path dir = getBaseDir()
 		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(dir)
 		Files.walkFileTree(dir, visitor)
@@ -99,7 +99,7 @@ public class ObjectRepositoryExtension {
 	}
 
 	private static String doList(String pattern, Boolean isRegex)
-			throws IOException {
+	throws IOException {
 		List<String> list = listRaw(pattern, isRegex)
 		String json = JsonOutput.toJson(list)
 		String pp = JsonOutput.prettyPrint(json)
