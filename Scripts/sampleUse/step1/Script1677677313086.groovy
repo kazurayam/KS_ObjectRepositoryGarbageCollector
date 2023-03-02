@@ -10,6 +10,7 @@ ObjectRepositoryExtension.apply()
 
 // step1: get a list of IDs of all Test Objects in the Object Repository
 List<String> allTestObjectIDs = ObjectRepository.list()
+
 println "\n---------------------- allTestObjectIDs ------------------------------"
 allTestObjectIDs.forEach { s ->
 	println s

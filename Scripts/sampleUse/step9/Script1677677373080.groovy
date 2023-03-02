@@ -10,5 +10,6 @@ ObjectRepositoryExtension.apply()
 
 // step9: reverse Test Object Lookup by locator in JSON format selected by RegularExpression
 String json9  = ObjectRepository.reverseLookupAsJson("'btn-\\w+'", true)
+
 println "\n------ reverseLookupAsJson, selected by Regular Expression -----"
 println json9

@@ -10,6 +10,7 @@ ObjectRepositoryExtension.apply()
 
 // step2: select Test Object with ID that match certain pattern by String.contains()
 List<String> idsSelectedByStringContains = ObjectRepository.list("button_")
+
 println "\n---------------- idsSelectedByStringContains -------------------------"
 idsSelectedByStringContains.forEach { s ->
 	println s

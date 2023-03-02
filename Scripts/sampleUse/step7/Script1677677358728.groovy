@@ -10,5 +10,6 @@ ObjectRepositoryExtension.apply()
 
 // step7: reverse Test Object Lookup by locator in JSON format
 String json7  = ObjectRepository.reverseLookupAsJson()
+
 println "\n----------------- reverseLookupAsJson, full -------------------"
 println json7

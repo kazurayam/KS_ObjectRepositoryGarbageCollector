@@ -1,1 +1,14 @@
-== `list` method
+== step3: list Test Objects, select IDs by Regular Expression
+
+=== Test Cases/sampleUse/step3
+[source]
+----
+include::../Scripts/sampleUse/step3/Script1677677327691.groovy[]
+----
+
+=== Output
+
+[source]
+----
+include::stdout.txt[lines=34..36]
+----

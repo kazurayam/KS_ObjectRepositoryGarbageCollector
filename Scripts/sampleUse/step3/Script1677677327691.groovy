@@ -12,6 +12,7 @@ ObjectRepositoryExtension.apply()
 
 // step3: select Test Object with ID that match certain pattern by Regular Expression
 List<String> idsSelectedByRegex = ObjectRepository.list('button_\\w+\$', true)
+
 println "\n---------------- idsSelectedByRegex -------------------------"
 idsSelectedByRegex.forEach { s ->
 	println s

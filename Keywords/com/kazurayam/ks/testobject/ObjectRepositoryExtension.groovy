@@ -1,9 +1,12 @@
 package com.kazurayam.ks.testobject
 
 import com.kms.katalon.core.annotation.Keyword
+import com.kms.katalon.core.configuration.RunConfiguration
 import com.kms.katalon.core.testobject.ObjectRepository
 import com.kms.katalon.core.testobject.TestObject
 import com.kms.katalon.core.testobject.SelectorMethod
+import com.kms.katalon.core.testobject.SelectorMethod
+
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.nio.file.Files
@@ -27,6 +30,12 @@ public class ObjectRepositoryExtension {
 			switch (name) {
 				case "list" :
 					return this.list(args)
+					break
+				case "listWithLocator" :
+				    return this.listWithLocator(args)
+					break
+				case "listWithLocatorAsJson" :
+				    return this.listWithLocatorAsJson(args)
 					break
 				case "reverseLookup" :
 					return this.reverseLookup(args)
@@ -62,7 +71,7 @@ public class ObjectRepositoryExtension {
 	}
 
 	private static List<String> doList(String pattern, Boolean isRegex) throws IOException {
-		Path dir = Paths.get("./Object Repository")
+		Path dir = getBaseDir()
 		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(dir)
 		Files.walkFileTree(dir, visitor)
 		List<String> ids = visitor.getTestObjectIDs()
@@ -76,8 +85,65 @@ public class ObjectRepositoryExtension {
 		}
 		return result;
 	}
+	
+	
+	
+	/*
+	 * 
+	 */
+	static List<Map<String, String>> listWithLocator(Object ... args) throws Exception {
+		if (args.length == 0) {
+			return this.doListWithLocator("", false)
+		} else if (args.length == 1) {
+			return this.doListWithLocator((String)args[0], false)
+		} else {
+			return this.doListWithLocator((String)args[0], (Boolean)args[1])
+		}
+	}
+	
+	private static List<Map<String, String>> doListWithLocator(String pattern, Boolean isRegex) throws IOException {
+		Path dir = getBaseDir()
+		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(dir)
+		Files.walkFileTree(dir, visitor)
+		List<String> ids = visitor.getTestObjectIDs()
+		//
+		List<Map<String, String>> result = new ArrayList<>()
+		ids.forEach { id ->
+			TestObject tObj = ObjectRepository.findTestObject(id)
+			String locator = findLocator(id)
+			Map<String, String> entry = new TreeMap<>()
+			entry.put("id", id)
+			entry.put("locator", locator)
+			entry.put("method", tObj.getSelectorMethod().toString())
+			result.add(entry)
+		}
+		Collections.sort(result)
+		return result
+	}
 
-
+	
+	
+	/*
+	 * 
+	 */
+	static String listWithLocatorAsJson(Object ... args) throws Exception {
+		if (args.length == 0) {
+			return this.doListWithLocatorAsJson("", false)
+		} else if (args.length == 1) {
+			return this.doListWithLocatorAsJson((String)args[0], false)
+		} else {
+			return this.doListWithLocatorAsJson((String)args[0], (Boolean)args[1])
+		}
+	}
+	
+	private static String doListWithLocatorAsJson(String pattern, Boolean isRegex) throws IOException {
+		
+	}
+	
+	
+	/*
+	 * 
+	 */
 	static Map<String, Set<String>> reverseLookup(Object ... args) throws IOException {
 		if (args.length == 0) {
 			return this.doReverseLookup("", false)
@@ -93,7 +159,7 @@ public class ObjectRepositoryExtension {
 		BiMatcher bim = new BiMatcher(pattern, isRegex)
 		List<String> idList = this.list()  // list of IDs of Test Object
 		idList.forEach { id ->
-			String locator = findSelector(id) // get the locator contained in the Test Object
+			String locator = findLocator(id) // get the locator contained in the Test Object
 			Set<String> idSet
 			if (result.containsKey(locator)) {
 				idSet = result.get(locator)
@@ -124,8 +190,17 @@ public class ObjectRepositoryExtension {
 		String pp = JsonOutput.prettyPrint(json)
 		return pp
 	}
-
-	private static String findSelector(String testObjectId) {
+	
+	
+	//-----------------------------------------------------------------------------
+	// helpers
+	
+	private static Path getBaseDir() {
+		Path projectDir = Paths.get(RunConfiguration.getProjectDir())
+		return projectDir.resolve("Object Repository")
+	}
+	
+	private static String findLocator(String testObjectId) {
 		Objects.requireNonNull(testObjectId)
 		TestObject tObj = ObjectRepository.findTestObject(testObjectId)
 		SelectorMethod selectorMethod = tObj.getSelectorMethod()

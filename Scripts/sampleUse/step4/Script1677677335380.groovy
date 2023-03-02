@@ -10,6 +10,7 @@ ObjectRepositoryExtension.apply()
 
 // step4: reverse Test Object Lookup by locator, full result
 Map<String, Set<String>> result4 = ObjectRepository.reverseLookup()
+
 println "\n---------------- reverseLookup, full ------------------------"
 result4.keySet().forEach { locator ->
 	println "${locator}"

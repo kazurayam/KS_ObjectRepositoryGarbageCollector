@@ -10,5 +10,6 @@ ObjectRepositoryExtension.apply()
 
 // step8: reverse Test Object Lookup by locator in JSON format selected by String.contains()
 String json8  = ObjectRepository.reverseLookupAsJson("btn-")
+
 println "\n------ reverseLookupAsJson, selected by String.contains() -----"
 println json8

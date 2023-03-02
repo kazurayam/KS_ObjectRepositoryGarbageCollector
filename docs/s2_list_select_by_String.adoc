@@ -1,2 +1,15 @@
-== How to use
+== step2: list Test Objects, select IDs by String.contains("pattern")
+
+=== Test Cases/sampleUse/step2
+[source]
+----
+include::../Scripts/sampleUse/step2/Script1677677321383.groovy[]
+----
+
+=== Output
+
+[source]
+----
+include::stdout.txt[lines=28..32]
+----
 

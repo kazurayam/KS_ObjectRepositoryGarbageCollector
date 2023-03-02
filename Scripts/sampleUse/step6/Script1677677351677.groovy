@@ -10,6 +10,7 @@ ObjectRepositoryExtension.apply()
 
 // step6: reverse Test Object Lookup by locator, selected by Regular Expression
 Map<String, Set<String>> result6 = ObjectRepository.reverseLookup("'btn-\\w+'", true)
+
 println "\n-------- reverseLookup, selected by Regular Expression ----------"
 result6.keySet().forEach { locator ->
 	println "${locator}"
