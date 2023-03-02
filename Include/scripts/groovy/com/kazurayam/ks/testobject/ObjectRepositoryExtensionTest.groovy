@@ -21,8 +21,7 @@ class ObjectRepositoryExtensionTest {
 
 	@BeforeClass
 	static void beforeClass() {
-		ObjectRepositoryExtension ext = new ObjectRepositoryExtension()
-		ext.apply()
+		ObjectRepositoryExtension.apply()
 	}
 
 	@Test
@@ -36,9 +35,9 @@ class ObjectRepositoryExtensionTest {
 	}
 
 	@Test
-	void testListWithArgs() {
+	void testList_args() {
 		List<String> list = ObjectRepository.list("button_", false)
-		println "********** testListWithArgs() **********"
+		println "********** testList_args() **********"
 		list.forEach { p ->
 			println p
 		}
@@ -46,16 +45,48 @@ class ObjectRepositoryExtensionTest {
 	}
 
 	@Test
-	void testXref() {
-		Map<String, Set<String>> result = ObjectRepository.xref()
+	void testListWithLocator() {
+		List<Map<String, String>> result = ObjectRepository.listWithLocator()
+		println "********** testListWithLocator *********"
+		result.forEach { m ->
+			println m
+		}
+	}
+	
+	@Test
+	void testListWithLocator_args() {
+		List<Map<String, String>> result = ObjectRepositoryExtension.listWithLocator("button_")
+		println "********** testListWithLocator_args *********"
+		result.forEach { m ->
+			println m
+		}
+	}
+	
+	@Test
+	void testListWithLocatorAsString() {
+		String json = ObjectRepository.listWithLocatorAsJson()
+		println "********** testListWithLocatorAsString *******"
+		println json
+	}
+	
+	@Test
+	void testListWithLocatorAsString_args() {
+		String json = ObjectRepository.listWithLocatorAsJson("button_")
+		println "********** testListWithLocatorAsString_args *******"
+		println json
+	}
+	
+	@Test
+	void testReverseLookup() {
+		Map<String, Set<String>> result = ObjectRepository.reverseLookup()
 		assertEquals(12, result.size())
 	}
 
 	@Test
-	void testXrefWithArgs() {
+	void testReverseLookup_args() {
 		String pattern = "btn-(.+)-appointment"
-		Map<String, Set<String>> result = ObjectRepository.xref(pattern, true)
-		println "********** testXrefWithArgs() **********"
+		Map<String, Set<String>> result = ObjectRepository.reverseLookup(pattern, true)
+		println "********** testRevLookup_args() **********"
 		println "pattern: ${pattern}"
 		result.forEach { k, v ->
 			println k + "\n\t" + v.toString()
@@ -63,7 +94,7 @@ class ObjectRepositoryExtensionTest {
 		assertEquals(2, result.size())
 		//
 		pattern = "select"
-		result = ObjectRepository.xref("select", false)
+		result = ObjectRepository.reverseLookup("select", false)
 		println "pattern: ${pattern}"
 		result.forEach { k, v ->
 			println k + "\n\t" + v.toString()
@@ -72,19 +103,19 @@ class ObjectRepositoryExtensionTest {
 	}
 
 	@Test
-	void testXrefAsJson() {
-		String xref = ObjectRepository.xrefAsJson()
-		println "********** testXrefAsJson() **********"
-		println xref
-		assertNotNull(xref)
+	void testReverseLookupAsJson() {
+		String json = ObjectRepository.reverseLookupAsJson()
+		println "********** testRevLookupAsJson() **********"
+		println json
+		assertNotNull(json)
 	}
 
 	@Test
-	void testXrefAsJsonWithArgs() {
-		String xref = ObjectRepository.xrefAsJson("//a[@id")   // default: isRegex = false
-		println "********** testXrefAsJsonWithArg() **********"
-		println xref
-		assertNotNull(xref)
+	void testReverseLookupAsJson_args() {
+		String json = ObjectRepository.reverseLookupAsJson("//a[@id")   // default: isRegex = false
+		println "********** testRevLookupAsJson_args() **********"
+		println json
+		assertNotNull(json)
 	}
 
 	/**

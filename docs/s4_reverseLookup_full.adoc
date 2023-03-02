@@ -1,0 +1,18 @@
+== step4: Reverse Locators Lookup
+
+=== Test Cases/sampleUse/step4
+
+The injected `ObjectRepository#reverseLookup()` method can look up locators of Test Objects recorded in the Object Repository. It returns a `java.util.Map` object which has the locators as keys, set of Test Object's IDs as values. The result is just the reverse of the result returned by the `list()` method.
+
+[source]
+----
+include::../Scripts/sampleUse/step4/Script1677677335380.groovy[]
+----
+
+=== Output
+
+[source]
+----
+include::stdout.txt[lines=38..85]
+----
+

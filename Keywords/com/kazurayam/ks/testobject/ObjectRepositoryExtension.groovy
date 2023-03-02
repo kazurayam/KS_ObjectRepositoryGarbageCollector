@@ -1,9 +1,11 @@
 package com.kazurayam.ks.testobject
 
 import com.kms.katalon.core.annotation.Keyword
+import com.kms.katalon.core.configuration.RunConfiguration
 import com.kms.katalon.core.testobject.ObjectRepository
 import com.kms.katalon.core.testobject.TestObject
 import com.kms.katalon.core.testobject.SelectorMethod
+
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.nio.file.Files
@@ -19,20 +21,26 @@ import groovy.json.JsonOutput
  */
 public class ObjectRepositoryExtension {
 
-	ObjectRepositoryExtension() {}
+	private ObjectRepositoryExtension() {}
 
 	@Keyword
-	void apply() {
+	static void apply() {
 		ObjectRepository.metaClass.static.invokeMethod = { String name, args ->
 			switch (name) {
 				case "list" :
 					return this.list(args)
 					break
-				case "xref" :
-					return this.xref(args)
+				case "listWithLocator" :
+				    return this.listWithLocator(args)
 					break
-				case "xrefAsJson" :
-					return this.xrefAsJson(args)
+				case "listWithLocatorAsJson" :
+				    return this.listWithLocatorAsJson(args)
+					break
+				case "reverseLookup" :
+					return this.reverseLookup(args)
+					break
+				case "reverseLookupAsJson" :
+					return this.reverseLookupAsJson(args)
 					break
 				default :
 				// just do what ObejctRepository is designed to do
@@ -48,10 +56,8 @@ public class ObjectRepositoryExtension {
 		}
 	}
 
-	/*
-	 * 
-	 */
-	List<String> list(Object ... args) throws Exception {
+	//-------------------------------------------------------------------------
+	static List<String> list(Object ... args) throws Exception {
 		if (args.length == 0) {
 			return this.doList("", false)
 		} else if (args.length == 1) {
@@ -61,8 +67,9 @@ public class ObjectRepositoryExtension {
 		}
 	}
 
-	private List<String> doList(String pattern, Boolean isRegex) throws IOException {
-		Path dir = Paths.get("./Object Repository")
+	private static List<String> doList(String pattern, Boolean isRegex)
+			throws IOException {
+		Path dir = getBaseDir()
 		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(dir)
 		Files.walkFileTree(dir, visitor)
 		List<String> ids = visitor.getTestObjectIDs()
@@ -76,56 +83,130 @@ public class ObjectRepositoryExtension {
 		}
 		return result;
 	}
-
-
-	Map<String, Set<String>> xref(Object ... args) throws IOException {
+	
+	
+	
+	//-------------------------------------------------------------------------
+	static List<Map<String, String>> listWithLocator(Object ... args)
+			throws Exception {
 		if (args.length == 0) {
-			return this.doXref("", false)
+			return this.doListWithLocator("", false)
 		} else if (args.length == 1) {
-			return this.doXref((String)args[0], false)
+			return this.doListWithLocator((String)args[0], false)
 		} else {
-			return this.doXref((String)args[0], (Boolean)args[1])
+			return this.doListWithLocator((String)args[0], (Boolean)args[1])
+		}
+	}
+	
+	private static List<Map<String, String>> doListWithLocator(String pattern, 
+																Boolean isRegex)
+			throws IOException {
+		Path dir = getBaseDir()
+		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(dir)
+		Files.walkFileTree(dir, visitor)
+		List<String> ids = visitor.getTestObjectIDs()
+		BiMatcher bim = new BiMatcher(pattern, isRegex)
+		//
+		List<Map<String, String>> result = new ArrayList<>()
+		ids.forEach { id ->
+			TestObject tObj = ObjectRepository.findTestObject(id)
+			String locator = findLocator(id)
+			if (bim.matches(id)) {
+				Map<String, String> entry = new LinkedHashMap<>()
+				entry.put("id", id)
+				entry.put("method", tObj.getSelectorMethod().toString())
+				entry.put("locator", locator)
+				result.add(entry)
+			}
+		}
+		return result
+	}
+
+	
+	//-------------------------------------------------------------------------
+	static String listWithLocatorAsJson(Object ... args) throws Exception {
+		if (args.length == 0) {
+			return this.doListWithLocatorAsJson("", false)
+		} else if (args.length == 1) {
+			return this.doListWithLocatorAsJson((String)args[0], false)
+		} else {
+			return this.doListWithLocatorAsJson((String)args[0], (Boolean)args[1])
+		}
+	}
+	
+	private static String doListWithLocatorAsJson(String pattern,
+													Boolean isRegex)
+			throws IOException {
+		List<Map<String, String>> result = this.listWithLocator(pattern, isRegex)
+		String json = JsonOutput.toJson(result)
+		String pp = JsonOutput.prettyPrint(json)
+		return pp
+	}
+	
+	
+	//-------------------------------------------------------------------------
+	static Map<String, Set<String>> reverseLookup(Object ... args)
+			throws IOException {
+		if (args.length == 0) {
+			return this.doReverseLookup("", false)
+		} else if (args.length == 1) {
+			return this.doReverseLookup((String)args[0], false)
+		} else {
+			return this.doReverseLookup((String)args[0], (Boolean)args[1])
 		}
 	}
 
-	private Map<String, Set<String>> doXref(String pattern, Boolean isRegex) throws IOException {
-		Map<String, Set<String>> xref = new TreeMap<>()
+	private static Map<String, Set<String>> doReverseLookup(String pattern,
+															Boolean isRegex)
+			throws IOException {
+		Map<String, Set<String>> result = new TreeMap<>()
 		BiMatcher bim = new BiMatcher(pattern, isRegex)
 		List<String> idList = this.list()  // list of IDs of Test Object
 		idList.forEach { id ->
-			String locator = findSelector(id) // get the locator contained in the Test Object
+			String locator = findLocator(id)
 			Set<String> idSet
-			if (xref.containsKey(locator)) {
-				idSet = xref.get(locator)
+			if (result.containsKey(locator)) {
+				idSet = result.get(locator)
 			} else {
 				idSet = new TreeSet<>()
 			}
 			if (bim.matches(locator)) {
 				idSet.add(id)
-				xref.put(locator, idSet)
+				result.put(locator, idSet)
 			}
 		}
-		return xref
+		return result
 	}
 
-	String xrefAsJson(Object ... args) throws IOException {
+	//-------------------------------------------------------------------------
+	static String reverseLookupAsJson(Object ... args) throws IOException {
 		if (args.length == 0) {
-			return this.doXrefAsJson("", false)
+			return this.doReverseLookupAsJson("", false)
 		} else if (args.length == 1) {
-			return this.doXrefAsJson((String)args[0], false)
+			return this.doReverseLookupAsJson((String)args[0], false)
 		} else {
-			return this.doXrefAsJson((String)args[0], (Boolean)args[1])
+			return this.doReverseLookupAsJson((String)args[0], (Boolean)args[1])
 		}
 	}
 
-	private doXrefAsJson(String pattern, Boolean isRegex) throws IOException {
-		Map<String, Set<String>> xref = this.xref(pattern, isRegex)
-		String json = JsonOutput.toJson(xref)
+	private static doReverseLookupAsJson(String pattern, Boolean isRegex)
+			throws IOException {
+		Map<String, Set<String>> result = this.reverseLookup(pattern, isRegex)
+		String json = JsonOutput.toJson(result)
 		String pp = JsonOutput.prettyPrint(json)
 		return pp
 	}
-
-	private String findSelector(String testObjectId) {
+	
+	
+	//-------------------------------------------------------------------------
+	// helpers
+	
+	private static Path getBaseDir() {
+		Path projectDir = Paths.get(RunConfiguration.getProjectDir())
+		return projectDir.resolve("Object Repository")
+	}
+	
+	private static String findLocator(String testObjectId) {
 		Objects.requireNonNull(testObjectId)
 		TestObject tObj = ObjectRepository.findTestObject(testObjectId)
 		SelectorMethod selectorMethod = tObj.getSelectorMethod()
