@@ -9,7 +9,7 @@ import com.kms.katalon.core.testobject.ObjectRepository
 ObjectRepositoryExtension.apply()
 
 // step9: reverse Test Object Lookup by locator in JSON format selected by RegularExpression
-String json9  = ObjectRepository.reverseLookupAsJson("'btn-\\w+'", true)
+String json9  = ObjectRepository.reverseLookup("'btn-\\w+'", true)
 
-println "\n------ reverseLookupAsJson, selected by Regular Expression -----"
+println "\n------ reverseLookup, selected by Regular Expression -----"
 println json9

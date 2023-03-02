@@ -9,7 +9,7 @@ import com.kms.katalon.core.testobject.ObjectRepository
 ObjectRepositoryExtension.apply()
 
 // step7: reverse Test Object Lookup by locator in JSON format
-String json7  = ObjectRepository.reverseLookupAsJson()
+String json7  = ObjectRepository.reverseLookup()
 
-println "\n----------------- reverseLookupAsJson, full -------------------"
+println "\n----------------- reverseLookup, full -------------------"
 println json7
