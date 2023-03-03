@@ -21,9 +21,9 @@ WebUI.click(findTestObject('Object Repository/Page_CURA Healthcare Service/input
 
 WebUI.click(findTestObject('Object Repository/Page_CURA Healthcare Service/input_Medicaid_programs'))
 
-WebUI.click(findTestObject('Object Repository/Page_CURA Healthcare Service/input_Visit Date (Required)_visit_date'))
+WebUI.click(findTestObject('Object Repository/Page_CURA Healthcare Service/input_Visit Date'))
 
-WebUI.click(findTestObject('Object Repository/Page_CURA Healthcare Service/td_28'))
+WebUI.setText(findTestObject('Object Repository/Page_CURA Healthcare Service/input_Visit Date'), "20230325")
 
 WebUI.setText(findTestObject('Object Repository/Page_CURA Healthcare Service/textarea_Comment_comment'), 'This is a comment')
 

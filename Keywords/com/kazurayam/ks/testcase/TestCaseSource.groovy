@@ -1,28 +1,8 @@
 package com.kazurayam.ks.testcase
 
-import static com.kms.katalon.core.checkpoint.CheckpointFactory.findCheckpoint
-import static com.kms.katalon.core.testcase.TestCaseFactory.findTestCase
-import static com.kms.katalon.core.testdata.TestDataFactory.findTestData
-import static com.kms.katalon.core.testobject.ObjectRepository.findTestObject
-import static com.kms.katalon.core.testobject.ObjectRepository.findWindowsObject
-
-import com.kms.katalon.core.annotation.Keyword
-import com.kms.katalon.core.checkpoint.Checkpoint
-import com.kms.katalon.core.cucumber.keyword.CucumberBuiltinKeywords as CucumberKW
-import com.kms.katalon.core.mobile.keyword.MobileBuiltInKeywords as Mobile
-import com.kms.katalon.core.model.FailureHandling
-import com.kms.katalon.core.testcase.TestCase
-import com.kms.katalon.core.testdata.TestData
-import com.kms.katalon.core.testobject.TestObject
-import com.kms.katalon.core.webservice.keyword.WSBuiltInKeywords as WS
-import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords as WebUI
-import com.kms.katalon.core.windows.keyword.WindowsBuiltinKeywords as Windows
-
-import internal.GlobalVariable
 import java.nio.file.Path
-import java.nio.file.Paths
-import java.util.regex.Pattern
 import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 public class TestCaseSource {
 
@@ -42,7 +22,7 @@ public class TestCaseSource {
 		Objects.requireNonNull(file)
 		this.lines = toLines(file.text)
 	}
-	
+
 	private List<String> toLines(String text) {
 		BufferedReader br = new BufferedReader(new StringReader(text))
 		List<String> lines = new ArrayList<>()
@@ -50,9 +30,9 @@ public class TestCaseSource {
 		while ((line = br.readLine()) != null) {
 			lines.add(line)
 		}
-		return lines		
+		return lines
 	}
-	
+
 	public List<TextSearchResult> searchText(String pattern, Boolean isRegex) {
 		List<TextSearchResult> result = new ArrayList<>()
 		if (pattern.length() == 0) {
@@ -76,9 +56,9 @@ public class TestCaseSource {
 					int matchAt = head.length() + 1
 					int matchEnd = head.length() + matched.length()
 					TextSearchResult tsr = new TextSearchResult.Builder(line, lineNo)
-											.pattern(pattern, isRegex)
-											.matchFound(matchAt, matchEnd)
-											.build()
+							.pattern(pattern, isRegex)
+							.matchFound(matchAt, matchEnd)
+							.build()
 					result.add(tsr)
 				}
 			} else {
@@ -86,9 +66,9 @@ public class TestCaseSource {
 					int matchAt = line.indexOf(pattern) + 1
 					int matchEnd = matchAt +  pattern.length()
 					TextSearchResult tsr = new TextSearchResult.Builder(line, lineNo)
-											.pattern(pattern, isRegex)
-											.matchFound(matchAt, matchEnd)
-											.build()
+							.pattern(pattern, isRegex)
+							.matchFound(matchAt, matchEnd)
+							.build()
 					result.add(tsr)
 				}
 			}

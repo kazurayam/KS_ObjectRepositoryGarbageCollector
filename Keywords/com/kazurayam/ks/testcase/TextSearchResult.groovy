@@ -52,6 +52,11 @@ public class TextSearchResult {
 		return this.hasMatch
 	}
 
+	@Override
+	public String toString() {
+		this.toJson()
+	}
+
 	public String toJson() {
 		StringBuilder sb = new StringBuilder()
 		sb.append("{")
@@ -76,6 +81,28 @@ public class TextSearchResult {
 		sb.append('"hasMatch":')
 		sb.append(JsonOutput.toJson(hasMatch))
 		sb.append("}")
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof TextSearchResult))	{
+			return false
+		}
+		TextSearchResult other = (TextSearchResult)obj
+		return this.lineNo == other.lineNo &&
+				this.line == other.line &&
+				this.pattern == other.pattern &&
+				this.isRegex == other.isRegex
+		// ignore matchAt, matchEnd, hasMatch properties. necessary?
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 7;
+		hash = 31 * hash + lineNo;
+		hash = 31 * hash + line.hashCode()
+		hash = 31 * hash + pattern.hashCode()
+		return hash;
 	}
 
 	public static class Builder {
