@@ -45,9 +45,6 @@ public class ObjectRepositoryExtension {
 				case "reverseLookup" :
 					return this.reverseLookup(args)
 					break
-				case "searchReferences" :
-					return this.searchReferences(args)
-					break
 				default :
 				// just do what ObejctRepository is designed to do
 					def result
@@ -216,21 +213,6 @@ public class ObjectRepositoryExtension {
 		Map<String, Set<String>> result = this.reverseLookupRaw(pattern, isRegex)
 		String json = JsonOutput.toJson(result)
 		return JsonOutput.prettyPrint(json)
-	}
-
-	//-------------------------------------------------------------------------
-	static String searchReferences(Object ... args) throws IOException {
-		if (args.length == 0) {
-			return doSearchReferences("", false)
-		} else if (args.length == 1) {
-			return doSearchReferences((String)args[0], false)
-		} else {
-			return doSearchReferences((String)args[0], (Boolean)args[1])
-		}
-	}
-	private static doSearchReferences(String pattern, Boolean isRegex)
-	throws IOException{
-
 	}
 
 	//-------------------------------------------------------------------------

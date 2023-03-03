@@ -12,7 +12,7 @@ public class ScriptsSearchEngine {
 	ScriptsSearchEngine(Path scriptsDir) {
 		this(scriptsDir, null)
 	}
-	
+
 	ScriptsSearchEngine(Path scriptsDir, String subDir) {
 		Objects.requireNonNull(scriptsDir)
 		assert Files.exists(scriptsDir)
@@ -57,4 +57,6 @@ public class ScriptsSearchEngine {
 	TextSearchResultsCollection searchReferenceToTestObject(String testObjectId) {
 		return this.searchText(testObjectId, false)
 	}
+	
+	
 }
