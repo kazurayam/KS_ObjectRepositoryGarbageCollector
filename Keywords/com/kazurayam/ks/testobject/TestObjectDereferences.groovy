@@ -22,7 +22,7 @@ import internal.GlobalVariable
 
 import java.nio.file.Path
 
-public class TCaseTObjectReferences {
+public class TestObjectDereferences {
 
 	private Path scriptDir
 	private Path objrepDir

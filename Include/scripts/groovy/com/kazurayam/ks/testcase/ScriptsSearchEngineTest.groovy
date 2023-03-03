@@ -44,7 +44,7 @@ public class ScriptsSearchEngineTest {
 	@Test
 	void test_searchText() {
 		String pattern = "https://katalon-demo-cura.herokuapp.com/"
-		TextSearchResultsCollection result =
+		ExternalReferences result =
 				engine.searchText(pattern, false)
 		assertEquals(1, result.size())
 	}
@@ -52,7 +52,7 @@ public class ScriptsSearchEngineTest {
 	@Test
 	void test_searchReferenceToTestObject() {
 		String testObjectId = "Page_CURA Healthcare Service/a_Make Appointment"
-		TextSearchResultsCollection result =
+		ExternalReferences result =
 				engine.searchReferenceToTestObject(testObjectId)
 		assertEquals(1, result.size())
 		println JsonOutput.prettyPrint(result.toJson())

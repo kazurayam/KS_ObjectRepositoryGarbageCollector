@@ -78,7 +78,7 @@ public class ObjectRepositoryExtension {
 		List<String> ids = visitor.getTestObjectIDs()
 		//
 		List<String> result = new ArrayList<>()
-		BiMatcher bim = new BiMatcher(pattern, isRegex)
+		BilingualMatcher bim = new BilingualMatcher(pattern, isRegex)
 		ids.forEach { id ->
 			if (bim.matches(id)) {
 				result.add(id)
@@ -125,7 +125,7 @@ public class ObjectRepositoryExtension {
 		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(dir)
 		Files.walkFileTree(dir, visitor)
 		List<String> ids = visitor.getTestObjectIDs()
-		BiMatcher bim = new BiMatcher(pattern, isRegex)
+		BilingualMatcher bim = new BilingualMatcher(pattern, isRegex)
 		//
 		List<Map<String, String>> result = new ArrayList<>()
 		ids.forEach { id ->
@@ -179,7 +179,7 @@ public class ObjectRepositoryExtension {
 			Boolean isRegex)
 	throws IOException {
 		Map<String, Set<String>> result = new TreeMap<>()
-		BiMatcher bim = new BiMatcher(pattern, isRegex)
+		BilingualMatcher bim = new BilingualMatcher(pattern, isRegex)
 		List<String> idList = listRaw()  // list of IDs of Test Object
 		idList.forEach { id ->
 			String locator = findLocator(id)

@@ -34,9 +34,9 @@ public class ScriptsSearchEngine {
 	/**
 	 * 
 	 */
-	TextSearchResultsCollection searchText(String pattern, Boolean isRegex) {
+	ExternalReferences searchText(String pattern, Boolean isRegex) {
 		Objects.requireNonNull(pattern)
-		TextSearchResultsCollection collection = new TextSearchResultsCollection()
+		ExternalReferences collection = new ExternalReferences()
 		List<Path> groovyFiles = visitor.getGroovyFiles()
 		groovyFiles.forEach { p ->
 			try {
@@ -54,9 +54,7 @@ public class ScriptsSearchEngine {
 	/**
 	 *
 	 */
-	TextSearchResultsCollection searchReferenceToTestObject(String testObjectId) {
+	ExternalReferences searchReferenceToTestObject(String testObjectId) {
 		return this.searchText(testObjectId, false)
 	}
-	
-	
 }

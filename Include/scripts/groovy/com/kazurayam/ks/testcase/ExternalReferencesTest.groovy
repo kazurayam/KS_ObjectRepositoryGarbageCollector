@@ -10,10 +10,10 @@ import org.junit.runners.JUnit4
 import groovy.json.JsonOutput
 
 @RunWith(JUnit4.class)
-public class TextSearchResultsCollectionTest {
+public class ExternalReferencesTest {
 
 	private TextSearchResult tsr
-	private TextSearchResultsCollection collection
+	private ExternalReferences collection
 
 	private static String pattern = "new"
 	private static Boolean isRegex = false
@@ -21,7 +21,7 @@ public class TextSearchResultsCollectionTest {
 
 	@Before
 	void setup() {
-		collection = new TextSearchResultsCollection()
+		collection = new ExternalReferences()
 		tsr = new TextSearchResult.Builder("Hello, new world!", 1)
 				.pattern(pattern, isRegex)
 				.matchFound(8, 10)

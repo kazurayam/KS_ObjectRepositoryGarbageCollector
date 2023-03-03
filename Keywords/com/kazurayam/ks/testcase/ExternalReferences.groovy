@@ -2,11 +2,11 @@ package com.kazurayam.ks.testcase
 
 import groovy.json.JsonOutput
 
-public class TextSearchResultsCollection {
+public class ExternalReferences {
 
 	private Map<String, List<TextSearchResult>> collection
 
-	TextSearchResultsCollection() {
+	ExternalReferences() {
 		collection = new TreeMap<>()
 	}
 
