@@ -29,7 +29,7 @@
       <guid>4463493a-d798-47d9-8702-17834cc65ad5</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testcase/TestCaseSourceTestRunner</testCaseId>
+      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testcase/SearchableTextTestRunner</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>

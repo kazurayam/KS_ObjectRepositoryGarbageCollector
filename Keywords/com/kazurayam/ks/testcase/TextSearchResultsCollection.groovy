@@ -10,6 +10,14 @@ public class TextSearchResultsCollection {
 		collection = new TreeMap<>()
 	}
 
+	void put(String key, List<TextSearchResult> tsrList) {
+		Objects.requireNonNull(key)
+		Objects.requireNonNull(tsrList)
+		tsrList.forEach { tsr ->
+			this.put(key, tsr)
+		}
+	}
+
 	void put(String key, TextSearchResult tsr) {
 		Objects.requireNonNull(key)
 		Objects.requireNonNull(tsr)
@@ -33,6 +41,10 @@ public class TextSearchResultsCollection {
 
 	List<TextSearchResult> get(String key) {
 		return collection.get(key)
+	}
+
+	int size() {
+		return collection.size()
 	}
 
 	@Override

@@ -4,21 +4,21 @@ import java.nio.file.Path
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
-public class TestCaseSource {
+public class SearchableText {
 
 	private List<String> lines = new ArrayList<>()
 
-	public TestCaseSource(String code) {
+	public SearchableText(String code) {
 		Objects.requireNonNull(code)
 		this.lines = toLines(code)
 	}
 
-	public TestCaseSource(Path file) throws IOException {
+	public SearchableText(Path file) throws IOException {
 		Objects.requireNonNull(file)
 		this.lines = toLines(file.toFile().text)
 	}
 
-	public TestCaseSource(File file) throws IOException {
+	public SearchableText(File file) throws IOException {
 		Objects.requireNonNull(file)
 		this.lines = toLines(file.text)
 	}
