@@ -30,15 +30,15 @@ import java.nio.file.Paths
 import groovy.json.JsonOutput
 
 @RunWith(JUnit4.class)
-public class ScriptsSearchEngineTest {
+public class ScriptsSearcherTest {
 
 	private Path scriptsDir
-	private ScriptsSearchEngine engine
+	private ScriptsSearcher engine
 
 	@Before
 	void setup() {
 		scriptsDir = Paths.get("./Scripts").toAbsolutePath()
-		engine = new ScriptsSearchEngine(scriptsDir, "main")
+		engine = new ScriptsSearcher(scriptsDir, "main")
 	}
 
 	@Test

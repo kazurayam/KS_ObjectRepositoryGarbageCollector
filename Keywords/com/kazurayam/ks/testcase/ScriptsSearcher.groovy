@@ -3,17 +3,17 @@ package com.kazurayam.ks.testcase
 import java.nio.file.Files
 import java.nio.file.Path
 
-public class ScriptsSearchEngine {
+public class ScriptsSearcher {
 
 	private Path scriptsDir
 	private Path targetDir
 	private TestCaseScriptsVisitor visitor
 
-	ScriptsSearchEngine(Path scriptsDir) {
+	ScriptsSearcher(Path scriptsDir) {
 		this(scriptsDir, null)
 	}
 
-	ScriptsSearchEngine(Path scriptsDir, String subDir) {
+	ScriptsSearcher(Path scriptsDir, String subDir) {
 		Objects.requireNonNull(scriptsDir)
 		assert Files.exists(scriptsDir)
 		this.scriptsDir = scriptsDir.toAbsolutePath()
