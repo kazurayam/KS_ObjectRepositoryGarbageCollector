@@ -115,7 +115,7 @@ public class ExtendedObjectRepository {
 
 	//-------------------------------------------------------------------------
 
-	private static String findLocator(String testObjectId) {
+	private String findLocator(String testObjectId) {
 		Objects.requireNonNull(testObjectId)
 		TestObject tObj = ObjectRepository.findTestObject(testObjectId)
 		SelectorMethod selectorMethod = tObj.getSelectorMethod()
