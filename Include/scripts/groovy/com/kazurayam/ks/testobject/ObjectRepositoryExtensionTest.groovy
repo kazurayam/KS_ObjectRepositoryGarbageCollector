@@ -62,51 +62,51 @@ class ObjectRepositoryExtensionTest {
 	}
 
 	@Test
-	void test_listWithLocatorRaw() {
-		List<Map<String, String>> result = ObjectRepository.listWithLocatorRaw()
-		println "********** test_listWithLocatorRaw *********"
+	void test_listGistRaw() {
+		List<TestObjectGist> result = ObjectRepository.listGistRaw()
+		println "********** test_listTestObjectGistRaw *********"
 		result.forEach { m ->
 			println m
 		}
 	}
 
 	@Test
-	void test_listWithLocatorRaw_args() {
-		List<Map<String, String>> result = ObjectRepository.listWithLocatorRaw("button_")
-		println "********** test_listWithLocatorRaw_args *********"
+	void test_listGistRaw_args() {
+		List<TestObjectGist> result = ObjectRepository.listGistRaw("button_")
+		println "********** test_listGistRaw_args *********"
 		result.forEach { m ->
 			println m
 		}
 	}
 
 	@Test
-	void test_listWithLocator() {
-		String json = ObjectRepository.listWithLocator()
-		println "********** test_listWithLocator *******"
+	void test_listGist() {
+		String json = ObjectRepository.listGist()
+		println "********** test_listGiest *******"
 		println json
 	}
 
 	@Test
-	void test_listWithLocator_args() {
-		String json = ObjectRepository.listWithLocator("button_")
-		println "********** test_listWithLocator_args *******"
+	void test_listGist_args() {
+		String json = ObjectRepository.listGist("button_")
+		println "********** test_listGist_args *******"
 		println json
 	}
 
 	@Test
 	void test_reverseLookupRaw() {
-		Map<String, Set<String>> result = ObjectRepository.reverseLookupRaw()
+		Map<Locator, Set<TestObjectGist>> result = ObjectRepository.reverseLookupRaw()
 		assertEquals(12, result.size())
 	}
 
 	@Test
 	void test_reverseLookupRaw_args() {
 		String pattern = "btn-(.+)-appointment"
-		Map<String, Set<String>> result = ObjectRepository.reverseLookupRaw(pattern, true)
+		Map<Locator, Set<TestObjectGist>> result = ObjectRepository.reverseLookupRaw(pattern, true)
 		println "********** test_reverseLookupRaw_args() **********"
 		println "pattern: ${pattern}"
 		result.forEach { k, v ->
-			println k + "\n\t" + v.toString()
+			println k.toString() + "\n\t" + v.toString()
 		}
 		assertEquals(2, result.size())
 		//
@@ -114,7 +114,7 @@ class ObjectRepositoryExtensionTest {
 		result = ObjectRepository.reverseLookupRaw("select", false)
 		println "pattern: ${pattern}"
 		result.forEach { k, v ->
-			println k + "\n\t" + v.toString()
+			println k.toString() + "\n\t" + v.toString()
 		}
 		assertEquals(1, result.size())
 	}

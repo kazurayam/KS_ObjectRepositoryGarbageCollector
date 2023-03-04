@@ -48,37 +48,35 @@ public class ExtendedObjectRepository {
 		List<String> result = new ArrayList<>()
 		BilingualMatcher bim = new BilingualMatcher(pattern, isRegex)
 		ids.forEach { id ->
-			logger.debug("pattern=${pattern}, isRegex=${isRegex}, id=${id}, bim.found(id)=${bim.found(id)}")
-			if (bim.found(id)) {
+			logger.debug("pattern=${pattern}, isRegex=${isRegex}, id=${id.value()}, bim.found(id)=${bim.found(id.value())}")
+			if (bim.found(id.toString())) {
 				result.add(id)
 			}
 		}
 		return result;
 	}
 
-	String listWithLocator(String pattern, Boolean isRegex) throws IOException {
-		List<Map<String, String>> result = this.listWithLocatorRaw(pattern, isRegex)
+	String listGist(String pattern, Boolean isRegex) throws IOException {
+		List<TestObjectGist> result = this.listGistRaw(pattern, isRegex)
 		String json = JsonOutput.toJson(result)
 		return JsonOutput.prettyPrint(json)
 	}
 
-	List<Map<String, String>> listWithLocatorRaw(String pattern, Boolean isRegex) throws IOException {
+	List<TestObjectGist> listGistRaw(String pattern, Boolean isRegex) throws IOException {
 		Path dir = getBaseDir()
 		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(dir)
 		Files.walkFileTree(dir, visitor)
-		List<String> ids = visitor.getTestObjectIdList()
+		List<TestObjectId> ids = visitor.getTestObjectIdList()
 		BilingualMatcher bim = new BilingualMatcher(pattern, isRegex)
 		//
-		List<Map<String, String>> result = new ArrayList<>()
+		List<TestObjectGist> result = new ArrayList<>()
 		ids.forEach { id ->
-			TestObject tObj = ObjectRepository.findTestObject(id)
-			String locator = findLocator(id)
-			if (bim.found(id)) {
-				Map<String, String> entry = new LinkedHashMap<>()
-				entry.put("id", id)
-				entry.put("method", tObj.getSelectorMethod().toString())
-				entry.put("locator", locator)
-				result.add(entry)
+			TestObject tObj = ObjectRepository.findTestObject(id.value())
+			Locator locator = findLocator(id)
+			if (bim.found(id.value())) {
+				TestObjectGist gist =
+						new TestObjectGist(id, tObj.getSelectorMethod().toString(), locator)
+				result.add(gist)
 			}
 		}
 		return result
@@ -87,20 +85,21 @@ public class ExtendedObjectRepository {
 	//-------------------------------------------------------------------------
 
 
-	Map<String, Set<String>> reverseLookupRaw(String pattern, Boolean isRegex) throws IOException {
-		Map<String, Set<String>> result = new TreeMap<>()
+	Map<Locator, Set<TestObjectGist>> reverseLookupRaw(String pattern, Boolean isRegex) throws IOException {
+		Map<Locator, Set<TestObjectGist>> result = new TreeMap<>()
 		BilingualMatcher bim = new BilingualMatcher(pattern, isRegex)
-		List<String> idList = this.listRaw("", false)  // list of IDs of Test Object
+		List<TestObjectId> idList = this.listRaw("", false)  // list of IDs of Test Object
 		idList.forEach { id ->
-			String locator = findLocator(id)
-			Set<String> idSet
+			Locator locator = findLocator(id)
+			Set<TestObjectId> idSet
 			if (result.containsKey(locator)) {
 				idSet = result.get(locator)
 			} else {
 				idSet = new TreeSet<>()
 			}
-			if (bim.found(locator)) {
-				idSet.add(id)
+			if (bim.found(locator.value())) {
+				TestObjectGist gist = findGist(id)
+				idSet.add(gist)
 				result.put(locator, idSet)
 			}
 		}
@@ -108,18 +107,28 @@ public class ExtendedObjectRepository {
 	}
 
 	String reverseLookup(String pattern, Boolean isRegex) throws IOException {
-		Map<String, Set<String>> result = this.reverseLookupRaw(pattern, isRegex)
+		Map<Locator, Set<TestObjectGist>> result = this.reverseLookupRaw(pattern, isRegex)
 		String json = JsonOutput.toJson(result)
 		return JsonOutput.prettyPrint(json)
 	}
 
 	//-------------------------------------------------------------------------
 
-	private String findLocator(String testObjectId) {
+	private Locator findLocator(TestObjectId testObjectId) {
 		Objects.requireNonNull(testObjectId)
-		TestObject tObj = ObjectRepository.findTestObject(testObjectId)
+		TestObjectGist gist = findGist(testObjectId)
+		return gist.locator()
+	}
+
+	private TestObjectGist findGist(TestObjectId testObjectId) {
+		Objects.requireNonNull(TestObjectId)
+		TestObject tObj = ObjectRepository.findTestObject(testObjectId.value())
 		SelectorMethod selectorMethod = tObj.getSelectorMethod()
-		return tObj.getSelectorCollection().getAt(selectorMethod)
+		Locator locator = new Locator(tObj.getSelectorCollection().getAt(selectorMethod))
+		TestObjectGist gist = new TestObjectGist(testObjectId,
+				selectorMethod.toString(),
+				locator)
+		return gist
 	}
 
 }

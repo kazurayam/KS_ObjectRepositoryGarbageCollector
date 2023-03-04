@@ -30,11 +30,11 @@ public class ObjectRepositoryExtension {
 				case "list" :
 					return this.list(args)
 					break
-				case "listWithLocatorRaw" :
-					return this.listWithLocatorRaw(args)
+				case "listGistRaw" :
+					return this.listGistRaw(args)
 					break
-				case "listWithLocator" :
-					return this.listWithLocator(args)
+				case "listGist" :
+					return this.listGist(args)
 					break
 				case "reverseLookupRaw" :
 					return this.reverseLookupRaw(args)
@@ -78,30 +78,30 @@ public class ObjectRepositoryExtension {
 		}
 	}
 
-	List<Map<String, String>> listWithLocatorRaw(Object ... args) throws Exception {
+	List<TestObjectGist> listGistRaw(Object ... args) throws Exception {
 		ExtendedObjectRepository exor = new ExtendedObjectRepository()
 		if (args.length == 0) {
-			return exor.listWithLocatorRaw("", false)
+			return exor.listGistRaw("", false)
 		} else if (args.length == 1) {
-			return exor.listWithLocatorRaw((String)args[0], false)
+			return exor.listGistRaw((String)args[0], false)
 		} else {
-			return exor.listWithLocatorRaw((String)args[0], (Boolean)args[1])
+			return exor.listGistRaw((String)args[0], (Boolean)args[1])
 		}
 	}
 
-	String listWithLocator(Object ... args) throws Exception {
+	String listGist(Object ... args) throws Exception {
 		ExtendedObjectRepository exor = new ExtendedObjectRepository()
 		if (args.length == 0) {
-			return exor.listWithLocator("", false)
+			return exor.listGist("", false)
 		} else if (args.length == 1) {
-			return exor.listWithLocator((String)args[0], false)
+			return exor.listGist((String)args[0], false)
 		} else {
-			return exor.listWithLocator((String)args[0], (Boolean)args[1])
+			return exor.listGist((String)args[0], (Boolean)args[1])
 		}
 	}
 
-	Map<String, Set<String>> reverseLookupRaw(Object ... args) throws IOException {
-		ExtendedObjectRepository exor = new ExtendedObjectRepository()	
+	Map<Locator, Set<TestObjectGist>> reverseLookupRaw(Object ... args) throws IOException {
+		ExtendedObjectRepository exor = new ExtendedObjectRepository()
 		if (args.length == 0) {
 			return exor.reverseLookupRaw("", false)
 		} else if (args.length == 1) {

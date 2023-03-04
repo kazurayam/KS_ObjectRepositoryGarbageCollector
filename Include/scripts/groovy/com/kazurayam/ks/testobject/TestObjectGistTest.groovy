@@ -12,9 +12,9 @@ public class TestObjectGistTest {
 	
 	private TestObjectGist gist
 	
-	String id = "testObjectX"
+	TestObjectId id = new TestObjectId("testObjectX")
 	String method = "BASIC"
-	String locator = "//div[@id=\"main\"]"
+	Locator locator = new Locator("//div[@id=\"main\"]")
 	
 	@Before
 	void setup() {

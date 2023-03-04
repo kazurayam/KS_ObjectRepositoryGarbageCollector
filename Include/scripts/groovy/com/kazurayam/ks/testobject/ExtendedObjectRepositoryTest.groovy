@@ -58,26 +58,26 @@ public class ExtendedObjectRepositoryTest {
 	}
 
 	@Test
-	void test_listWithLocator_default() {
+	void test_listGist_default() {
 		String pattern = ""
 		Boolean isRegex = false
-		String json = instance.listWithLocator(pattern, isRegex)
-		println "********** test_listWithLocator_default *********"
+		String json = instance.listGist(pattern, isRegex)
+		println "********** test_listGist_default *********"
 		println json
 		List<Map<String, String>> result =
-				instance.listWithLocatorRaw(pattern, isRegex)
+				instance.listGistRaw(pattern, isRegex)
 		assertTrue( result.size() > 0 )
 	}
 
 	@Test
-	void test_listWithLocator_arg_string() {
+	void test_listGist_arg_string() {
 		String pattern = "button_"
 		Boolean isRegex = false
-		String json = instance.listWithLocatorRaw(pattern, isRegex)
-		println "********** test_listWithLocatorRaw_arg *********"
+		String json = instance.listGistRaw(pattern, isRegex)
+		println "********** test_listGistRaw_arg *********"
 		println json
 		List<Map<String, String>> result =
-				instance.listWithLocatorRaw(pattern, isRegex)
+				instance.listGistRaw(pattern, isRegex)
 		assertTrue( result.size() > 0 )
 	}
 

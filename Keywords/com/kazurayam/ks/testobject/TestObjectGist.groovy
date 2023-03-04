@@ -2,13 +2,13 @@ package com.kazurayam.ks.testobject
 
 import groovy.json.JsonOutput
 
-public class TestObjectGist {
-	
-	private String id       // "Page_CURA Healthcare Service/a_Go to Homepage"
+public class TestObjectGist implements Comparable<TestObjectGist> {
+
+	private TestObjectId id       // "Page_CURA Healthcare Service/a_Go to Homepage"
 	private String method   // "BASIC", "XPATH", "CSS"
-	private String locator  // "//section[@id='summary']/div/div/div[7]/p/a"
-	
-	TestObjectGist(String id, String method, String locator) {
+	private Locator locator  // "//section[@id='summary']/div/div/div[7]/p/a"
+
+	TestObjectGist(TestObjectId id, String method, Locator locator) {
 		Objects.requireNonNull(id)
 		Objects.requireNonNull(method)
 		Objects.requireNonNull(locator)
@@ -16,19 +16,19 @@ public class TestObjectGist {
 		this.method = method
 		this.locator = locator
 	}
-	
-	String id() {
+
+	TestObjectId id() {
 		return id
 	}
-	
+
 	String method() {
 		return method
 	}
-	
-	String locator() {
+
+	Locator locator() {
 		return locator
 	}
-	
+
 	@Override
 	boolean equals(Object obj) {
 		if (!(obj instanceof TestObjectGist)) {
@@ -39,21 +39,21 @@ public class TestObjectGist {
 				this.method == other.method &&
 				this.locator == other.locator
 	}
-	
+
 	@Override
 	int hashCode() {
 		int hash = 7;
-		hash = 31 * hash + id;
+		hash = 31 * hash + id.hashCode();
 		hash = 31 * hash + method.hashCode()
 		hash = 31 * hash + locator.hashCode()
 		return hash;
 	}
-	
+
 	@Override
 	String toString() {
 		return this.toJson()
 	}
-	
+
 	String toJson() {
 		StringBuilder sb = new StringBuilder()
 		sb.append("{")
@@ -67,5 +67,14 @@ public class TestObjectGist {
 		sb.append(JsonOutput.toJson(locator))
 		sb.append("}")
 		return sb.toString()
+	}
+
+	@Override
+	int compareTo(TestObjectGist other) {
+		if (this.id.value == other.id.value) {
+			return 0
+		} else {
+			return this.id.value.compareTo(other.id.value)
+		}
 	}
 }
