@@ -23,7 +23,8 @@ class ObjectRepositoryExtensionTest {
 
 	@BeforeClass
 	static void beforeClass() {
-		ObjectRepositoryExtension.apply()
+		ObjectRepositoryExtension ext = new ObjectRepositoryExtension()
+		ext.apply()
 	}
 
 	@Test
@@ -71,7 +72,7 @@ class ObjectRepositoryExtensionTest {
 
 	@Test
 	void test_listWithLocatorRaw_args() {
-		List<Map<String, String>> result = ObjectRepositoryExtension.listWithLocatorRaw("button_")
+		List<Map<String, String>> result = ObjectRepository.listWithLocatorRaw("button_")
 		println "********** test_listWithLocatorRaw_args *********"
 		result.forEach { m ->
 			println m

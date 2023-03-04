@@ -56,18 +56,16 @@ public class ExtendedObjectRepositoryTest {
 		List list = instance.listRaw(pattern, true)
 		assertTrue( list.size() > 0 )
 	}
-	
-	//-------------------------------------------------------------------------
-	
+
 	@Test
 	void test_listWithLocator_default() {
 		String pattern = ""
 		Boolean isRegex = false
-		String json = instance.listWithLocator(pattern, isRegex)	
+		String json = instance.listWithLocator(pattern, isRegex)
 		println "********** test_listWithLocator_default *********"
 		println json
-		List<Map<String, String>> result = 
-			instance.listWithLocatorRaw(pattern, isRegex)
+		List<Map<String, String>> result =
+				instance.listWithLocatorRaw(pattern, isRegex)
 		assertTrue( result.size() > 0 )
 	}
 
@@ -78,8 +76,8 @@ public class ExtendedObjectRepositoryTest {
 		String json = instance.listWithLocatorRaw(pattern, isRegex)
 		println "********** test_listWithLocatorRaw_arg *********"
 		println json
-		List<Map<String, String>> result = 
-			ObjectRepositoryExtension.listWithLocatorRaw(pattern, isRegex)
+		List<Map<String, String>> result =
+				instance.listWithLocatorRaw(pattern, isRegex)
 		assertTrue( result.size() > 0 )
 	}
 

@@ -18,10 +18,10 @@ import com.kms.katalon.core.testobject.TestObject
  */
 public class ObjectRepositoryExtension {
 
-	private ObjectRepositoryExtension() {}
+	ObjectRepositoryExtension() {}
 
 	@Keyword
-	static void apply() {
+	void apply() {
 		ObjectRepository.metaClass.static.invokeMethod = { String name, args ->
 			switch (name) {
 				case "listRaw" :
@@ -56,8 +56,7 @@ public class ObjectRepositoryExtension {
 		}
 	}
 
-	//-------------------------------------------------------------------------
-	static List<String> listRaw(Object ... args) throws Exception {
+	List<String> listRaw(Object ... args) throws Exception {
 		ExtendedObjectRepository exor = new ExtendedObjectRepository()
 		if (args.length == 0) {
 			return exor.listRaw("", false)
@@ -68,8 +67,7 @@ public class ObjectRepositoryExtension {
 		}
 	}
 
-	//-------------------------------------------------------------------------
-	static String list(Object ... args) throws Exception {
+	String list(Object ... args) throws Exception {
 		ExtendedObjectRepository exor = new ExtendedObjectRepository()
 		if (args.length == 0) {
 			return exor.list("", false)
@@ -80,8 +78,7 @@ public class ObjectRepositoryExtension {
 		}
 	}
 
-	//-------------------------------------------------------------------------
-	static List<Map<String, String>> listWithLocatorRaw(Object ... args) throws Exception {
+	List<Map<String, String>> listWithLocatorRaw(Object ... args) throws Exception {
 		ExtendedObjectRepository exor = new ExtendedObjectRepository()
 		if (args.length == 0) {
 			return exor.listWithLocatorRaw("", false)
@@ -92,7 +89,7 @@ public class ObjectRepositoryExtension {
 		}
 	}
 
-	static String listWithLocator(Object ... args) throws Exception {
+	String listWithLocator(Object ... args) throws Exception {
 		ExtendedObjectRepository exor = new ExtendedObjectRepository()
 		if (args.length == 0) {
 			return exor.listWithLocator("", false)
@@ -103,10 +100,7 @@ public class ObjectRepositoryExtension {
 		}
 	}
 
-
-	//-------------------------------------------------------------------------
-	
-	static Map<String, Set<String>> reverseLookupRaw(Object ... args) throws IOException {
+	Map<String, Set<String>> reverseLookupRaw(Object ... args) throws IOException {
 		ExtendedObjectRepository exor = new ExtendedObjectRepository()	
 		if (args.length == 0) {
 			return exor.reverseLookupRaw("", false)
@@ -117,7 +111,7 @@ public class ObjectRepositoryExtension {
 		}
 	}
 
-	static String reverseLookup(Object ... args) throws IOException {
+	String reverseLookup(Object ... args) throws IOException {
 		ExtendedObjectRepository exor = new ExtendedObjectRepository()
 		if (args.length == 0) {
 			return exor.reverseLookup("", false)
