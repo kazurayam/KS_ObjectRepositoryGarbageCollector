@@ -1,5 +1,6 @@
 package com.kazurayam.ks.testobject
 
+import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -16,19 +17,66 @@ class ObjectRepositoryGC {
 
 	private static final projectDir = Paths.get(".")
 
-	private Path objectRepositoryDir
-	private Path scriptsDir
+	private Path   objrepoDir // non null
+	private Path   scriptsDir // non null
+	private String objrepoSubpath // can be null
+	private String scriptsSubpath // can be null
 
-	ObjectRepositoryGC() {
-		this(projectDir.resolve("Object Repository"), projectDir.resolve("Scripts"))
-	}
-
-	ObjectRepositoryGC(Path objectRepositoryDir, Path scriptsDir) {
-		this.objectRepositoryDir = objectRepositoryDir
-		this.scriptsDir = scriptsDir
+	private ObjectRepositoryGC(Builder builder) {
+		this.objrepoDir = builder.objrepoDir
+		this.scriptsDir = builder.scriptsDir
+		this.objrepoSubpath = builder.objrepoSubpath
+		this.scriptsSubpath = builder.scriptsSubpath
 	}
 
 	void dryrun() {
 		throw new RuntimeException("TODO")
+	}
+	
+	
+	
+	
+	/**
+	 * Joshua Bloch's Builder pattern in Effective Java
+	 * 
+	 * @author kazuarayam
+	 */
+	public static class Builder {
+		
+		private Path   objrepoDir // non null
+		private Path   scriptsDir // non null
+		
+		private String objrepoSubpath // can be null
+		private String scriptsSubpath // can be null
+		
+		Builder(Path objrepoDir, Path scriptsDir) {
+			Objects.requireNonNull(objrepoDir)
+			assert Files.exists(objrepoDir)
+			Objects.requireNonNull(scriptsDir)
+			assert Files.exists(scriptsDir)
+			this.objrepoDir = objrepoDir
+			this.scriptsDir = scriptsDir
+		}
+		
+		Builder objrepoSubpath(String subpath) {
+			Objects.requireNonNull(subpath)
+			Path p = objrepoDir.resolve(subpath)
+			assert Files.exists(p)
+			this.objrepoSubpath = subpath
+			return this
+		}
+		
+		Builder scriptsSubpath(String subpath) {
+			Objects.requireNonNull(subpath)
+			Path p = scriptsSubpath,resolve(subpath)
+			assert Files.exists(p)
+			this.scriptsSubpath = subpath
+			return this
+		}
+		
+		ObjectRepositoryGC build() {
+			return new ObjectRepositoryGC(this)
+		}
+		
 	}
 }
