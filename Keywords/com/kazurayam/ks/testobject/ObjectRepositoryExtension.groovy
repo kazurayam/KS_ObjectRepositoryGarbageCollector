@@ -61,49 +61,26 @@ public class ObjectRepositoryExtension {
 
 	//-------------------------------------------------------------------------
 	static List<String> listRaw(Object ... args) throws Exception {
+		ExtendedObjectRepository exor = new ExtendedObjectRepository()
 		if (args.length == 0) {
-			return doListRaw("", false)
+			return exor.listRaw("", false)
 		} else if (args.length == 1) {
-			return doListRaw((String)args[0], false)
+			return exor.listRaw((String)args[0], false)
 		} else {
-			return doListRaw((String)args[0], (Boolean)args[1])
+			return exor.listRaw((String)args[0], (Boolean)args[1])
 		}
-	}
-
-	private static List<String> doListRaw(String pattern, Boolean isRegex)
-	throws IOException {
-		Path dir = getBaseDir()
-		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(dir)
-		Files.walkFileTree(dir, visitor)
-		List<String> ids = visitor.getTestObjectIDs()
-		//
-		List<String> result = new ArrayList<>()
-		BilingualMatcher bim = new BilingualMatcher(pattern, isRegex)
-		ids.forEach { id ->
-			if (bim.found(id)) {
-				result.add(id)
-			}
-		}
-		return result;
 	}
 
 	//-------------------------------------------------------------------------
 	static String list(Object ... args) throws Exception {
+		ExtendedObjectRepository exor = new ExtendedObjectRepository()
 		if (args.length == 0) {
-			return doList("", false)
+			return exor.list("", false)
 		} else if (args.length == 1) {
-			return doList((String)args[0], false)
+			return exor.list((String)args[0], false)
 		} else {
-			return doList((String)args[0], (Boolean)args[1])
+			return exor.list((String)args[0], (Boolean)args[1])
 		}
-	}
-
-	private static String doList(String pattern, Boolean isRegex)
-	throws IOException {
-		List<String> list = listRaw(pattern, isRegex)
-		String json = JsonOutput.toJson(list)
-		String pp = JsonOutput.prettyPrint(json)
-		return pp
 	}
 
 	//-------------------------------------------------------------------------
