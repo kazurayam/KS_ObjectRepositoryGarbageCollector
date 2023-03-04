@@ -18,7 +18,7 @@ class BilingualMatcher {
 		}
 	}
 
-	Boolean matches(String text) {
+	Boolean found(String text) {
 		Objects.requireNonNull(text)
 		if (pattern.length() > 0) {
 			if (isRegex) {

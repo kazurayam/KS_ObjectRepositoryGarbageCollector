@@ -80,7 +80,7 @@ public class ObjectRepositoryExtension {
 		List<String> result = new ArrayList<>()
 		BilingualMatcher bim = new BilingualMatcher(pattern, isRegex)
 		ids.forEach { id ->
-			if (bim.matches(id)) {
+			if (bim.found(id)) {
 				result.add(id)
 			}
 		}
@@ -131,7 +131,7 @@ public class ObjectRepositoryExtension {
 		ids.forEach { id ->
 			TestObject tObj = ObjectRepository.findTestObject(id)
 			String locator = findLocator(id)
-			if (bim.matches(id)) {
+			if (bim.found(id)) {
 				Map<String, String> entry = new LinkedHashMap<>()
 				entry.put("id", id)
 				entry.put("method", tObj.getSelectorMethod().toString())
@@ -189,7 +189,7 @@ public class ObjectRepositoryExtension {
 			} else {
 				idSet = new TreeSet<>()
 			}
-			if (bim.matches(locator)) {
+			if (bim.found(locator)) {
 				idSet.add(id)
 				result.put(locator, idSet)
 			}

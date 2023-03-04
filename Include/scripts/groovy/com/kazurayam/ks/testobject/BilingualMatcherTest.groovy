@@ -17,15 +17,15 @@ public class BilingualMatcherTest {
 	@Test
 	public void test_isRegex() {
 		BilingualMatcher bim = new BilingualMatcher("button\\[@id", true)
-		assertTrue(bim.matches("//button[@id='foo']"))
-		assertFalse(bim.matches("//a[@id='bar']"))
+		assertTrue(bim.found("//button[@id='foo']"))
+		assertFalse(bim.found("//a[@id='bar']"))
 	}
 
 	@Test
 	public void test_isNotRegex() {
 		BilingualMatcher bim = new BilingualMatcher("button[@id", false)
-		assertTrue(bim.matches("//button[@id='foo']"))
-		assertFalse(bim.matches("//a[@id='bar']"))
+		assertTrue(bim.found("//button[@id='foo']"))
+		assertFalse(bim.found("//a[@id='bar']"))
 	}
 
 	/**
@@ -34,7 +34,7 @@ public class BilingualMatcherTest {
 	@Test
 	public void test_default() {
 		BilingualMatcher bim = new BilingualMatcher("button[@id")
-		assertTrue(bim.matches("//button[@id='foo']"))
-		assertFalse(bim.matches("//a[@id='bar']"))
+		assertTrue(bim.found("//button[@id='foo']"))
+		assertFalse(bim.found("//a[@id='bar']"))
 	}
 }

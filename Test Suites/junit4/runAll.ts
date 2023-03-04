@@ -54,6 +54,13 @@
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
+      <guid>d6ec36e9-4c0d-4841-8187-6eab022fe441</guid>
+      <isReuseDriver>false</isReuseDriver>
+      <isRun>true</isRun>
+      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testobject/ExtendedObjectRepositoryTestRunner</testCaseId>
+      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
+   </testCaseLink>
+   <testCaseLink>
       <guid>09f22542-da7e-4238-a356-70aa7e2b992d</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
@@ -63,7 +70,7 @@
    <testCaseLink>
       <guid>64b2fa24-ba36-48a1-bf7f-0626bae9d6fc</guid>
       <isReuseDriver>false</isReuseDriver>
-      <isRun>true</isRun>
+      <isRun>false</isRun>
       <testCaseId>Test Cases/junit4/com.kazurayam.ks.testobject/ObjectRepositoryGCTestRunner</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
