@@ -4,13 +4,13 @@ import groovy.json.JsonOutput
 
 public class ExternalReferences {
 
-	private Map<String, List<TextSearchResult>> collection
+	private Map<TestCaseId, List<TextSearchResult>> collection
 
 	ExternalReferences() {
 		collection = new TreeMap<>()
 	}
 
-	void put(String key, List<TextSearchResult> tsrList) {
+	void put(TestCaseId key, List<TextSearchResult> tsrList) {
 		Objects.requireNonNull(key)
 		Objects.requireNonNull(tsrList)
 		tsrList.forEach { tsr ->
@@ -18,7 +18,7 @@ public class ExternalReferences {
 		}
 	}
 
-	void put(String key, TextSearchResult tsr) {
+	void put(TestCaseId key, TextSearchResult tsr) {
 		Objects.requireNonNull(key)
 		Objects.requireNonNull(tsr)
 		List<TextSearchResult> tsrList
@@ -31,15 +31,15 @@ public class ExternalReferences {
 		collection.put(key, tsrList)
 	}
 
-	Set<String> keySet() {
+	Set<TestCaseId> keySet() {
 		return collection.keySet()
 	}
 
-	boolean containsKey(String key) {
+	boolean containsKey(TestCaseId key) {
 		return collection.containsKey(key)
 	}
 
-	List<TextSearchResult> get(String key) {
+	List<TextSearchResult> get(TestCaseId key) {
 		return collection.get(key)
 	}
 
@@ -56,7 +56,7 @@ public class ExternalReferences {
 		StringBuilder sb = new StringBuilder()
 		sb.append('{')
 		String sep1 = ""
-		collection.keySet().forEach { String k ->
+		collection.keySet().forEach { TestCaseId k ->
 			sb.append(sep1)
 			sb.append(JsonOutput.toJson(k))
 			sb.append(':')

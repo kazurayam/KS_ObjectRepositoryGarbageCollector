@@ -43,7 +43,8 @@ public class ScriptsSearcher {
 				Path file = targetDir.resolve(p)
 				SearchableText source = new SearchableText(file)
 				List<TextSearchResult> searchResults = source.searchText(pattern, isRegex)
-				collection.put(p.toString(), searchResults)
+				TestCaseId id = new TestCaseId(p.toString())
+				collection.put(id, searchResults)
 			} catch (IOException e) {
 				throw new RuntimeException(e)
 			}
