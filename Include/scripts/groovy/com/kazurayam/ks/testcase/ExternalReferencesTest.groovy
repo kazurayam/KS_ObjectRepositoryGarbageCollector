@@ -17,7 +17,7 @@ public class ExternalReferencesTest {
 
 	private static String pattern = "new"
 	private static Boolean isRegex = false
-	private static String sourcePath = "src/main/my/hello.groovy"
+	private static TestCaseId id = new TestCaseId("src/main/my/hello.groovy")
 
 	@Before
 	void setup() {
@@ -26,7 +26,7 @@ public class ExternalReferencesTest {
 				.pattern(pattern, isRegex)
 				.matchFound(8, 10)
 				.build()
-		collection.put(sourcePath, tsr)
+		collection.put(id, tsr)
 	}
 
 	@Test
@@ -36,12 +36,12 @@ public class ExternalReferencesTest {
 
 	@Test
 	void test_containsKey() {
-		assertTrue(collection.containsKey(sourcePath))
+		assertTrue(collection.containsKey(id))
 	}
 
 	@Test
 	void test_get() {
-		assertEquals(1, collection.get(sourcePath).size())
+		assertEquals(1, collection.get(id).size())
 	}
 
 	@Test
