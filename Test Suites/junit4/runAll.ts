@@ -81,4 +81,11 @@
       <testCaseId>Test Cases/junit4/com.kazurayam.ks.testobject/ObjectRepositoryVisitorTestRunner</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
+   <testCaseLink>
+      <guid>619f6786-74a9-4b39-a52c-c76131aa04ac</guid>
+      <isReuseDriver>false</isReuseDriver>
+      <isRun>true</isRun>
+      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testobject/TestObjectGistTestRunner</testCaseId>
+      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
+   </testCaseLink>
 </TestSuiteEntity>

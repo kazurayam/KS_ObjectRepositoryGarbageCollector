@@ -43,7 +43,7 @@ public class ExtendedObjectRepository {
 		Path dir = getBaseDir()
 		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(dir)
 		Files.walkFileTree(dir, visitor)
-		List<String> ids = visitor.getTestObjectIDs()
+		List<String> ids = visitor.getTestObjectIdList()
 		//
 		List<String> result = new ArrayList<>()
 		BilingualMatcher bim = new BilingualMatcher(pattern, isRegex)
@@ -66,7 +66,7 @@ public class ExtendedObjectRepository {
 		Path dir = getBaseDir()
 		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(dir)
 		Files.walkFileTree(dir, visitor)
-		List<String> ids = visitor.getTestObjectIDs()
+		List<String> ids = visitor.getTestObjectIdList()
 		BilingualMatcher bim = new BilingualMatcher(pattern, isRegex)
 		//
 		List<Map<String, String>> result = new ArrayList<>()
@@ -83,10 +83,10 @@ public class ExtendedObjectRepository {
 		}
 		return result
 	}
-	
+
 	//-------------------------------------------------------------------------
-	
-	
+
+
 	Map<String, Set<String>> reverseLookupRaw(String pattern, Boolean isRegex) throws IOException {
 		Map<String, Set<String>> result = new TreeMap<>()
 		BilingualMatcher bim = new BilingualMatcher(pattern, isRegex)
