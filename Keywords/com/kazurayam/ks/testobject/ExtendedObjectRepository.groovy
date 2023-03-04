@@ -24,7 +24,12 @@ import java.nio.file.Paths
 import java.nio.file.Files
 import groovy.json.JsonOutput
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
 public class ExtendedObjectRepository {
+	
+	private static Logger logger = LoggerFactory.getLogger(ExtendedObjectRepository.class)
 
 	private Path baseDir
 
@@ -58,6 +63,7 @@ public class ExtendedObjectRepository {
 		List<String> result = new ArrayList<>()
 		BilingualMatcher bim = new BilingualMatcher(pattern, isRegex)
 		ids.forEach { id ->
+			logger.debug("pattern=${pattern}, isRegex=${isRegex}, id=${id}, bim.found(id)=${bim.found(id)}")
 			if (bim.found(id)) {
 				result.add(id)
 			}

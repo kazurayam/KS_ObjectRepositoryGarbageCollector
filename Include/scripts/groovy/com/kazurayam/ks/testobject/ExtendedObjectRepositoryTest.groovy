@@ -31,39 +31,29 @@ public class ExtendedObjectRepositoryTest {
 		String json = instance.list("", false)
 		println '********** test_list **********'
 		println json
+		//
+		List list = instance.listRaw("", false)
+		assertTrue( list.size() > 0 )
 	}
 	
 	@Test
 	void test_list_arg_string() {
-		String json = instance.list("button_", false)
+		String pattern = "button_"
+		String json = instance.list(pattern, false)
 		println '********** test_list_arg_string **********'
 		println json
+		List list = instance.listRaw(pattern, true)
+		assertTrue( list.size() > 0 )
 	}
 	
 	@Test
 	void test_list_arg_regex() {
-		String pattern = "btn-(.+)-appointment"
+		String pattern = "button_(\\w+)"
 		String json = instance.list(pattern, true)
 		println '********** test_list_arg_regex **********'
 		println json
-	}
-	
-	@Test
-	void test_listRaw_default() {
-		List<String> list = instance.listRaw("", false)
-		assertTrue( list.size() > 0 )
-	}
-	
-	@Test
-	void test_listRaw_arg_string() {
-		List<String> list = instance.listRaw("button_", false)
-		assertTrue( list.size() > 0 )
-	}
-	
-	@Test
-	void test_listRaw_arg_regex() {
-		String pattern = "btn-(.+)-appointment"
-		List<String> list = instance.listRaw(pattern, true)
+		//
+		List list = instance.listRaw(pattern, true)
 		assertTrue( list.size() > 0 )
 	}
 	
