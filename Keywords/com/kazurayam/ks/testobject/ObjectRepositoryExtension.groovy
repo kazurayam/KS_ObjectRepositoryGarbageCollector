@@ -1,16 +1,15 @@
 package com.kazurayam.ks.testobject
 
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
+
 import com.kms.katalon.core.annotation.Keyword
 import com.kms.katalon.core.configuration.RunConfiguration
 import com.kms.katalon.core.testobject.ObjectRepository
-import com.kms.katalon.core.testobject.TestObject
 import com.kms.katalon.core.testobject.SelectorMethod
+import com.kms.katalon.core.testobject.TestObject
 
-import java.nio.file.Path
-import java.nio.file.Paths
-import java.nio.file.Files
-import java.util.regex.Matcher
-import java.util.regex.Pattern
 import groovy.json.JsonOutput
 
 /**
@@ -84,59 +83,27 @@ public class ObjectRepositoryExtension {
 	}
 
 	//-------------------------------------------------------------------------
-	static List<Map<String, String>> listWithLocatorRaw(Object ... args)
-	throws Exception {
+	static List<Map<String, String>> listWithLocatorRaw(Object ... args) throws Exception {
+		ExtendedObjectRepository exor = new ExtendedObjectRepository()
 		if (args.length == 0) {
-			return doListWithLocatorRaw("", false)
+			return exor.listWithLocatorRaw("", false)
 		} else if (args.length == 1) {
-			return doListWithLocatorRaw((String)args[0], false)
+			return exor.listWithLocatorRaw((String)args[0], false)
 		} else {
-			return doListWithLocatorRaw((String)args[0], (Boolean)args[1])
+			return exor.listWithLocatorRaw((String)args[0], (Boolean)args[1])
 		}
 	}
-
-	private static List<Map<String, String>> doListWithLocatorRaw(String pattern,
-			Boolean isRegex)
-	throws IOException {
-		Path dir = getBaseDir()
-		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(dir)
-		Files.walkFileTree(dir, visitor)
-		List<String> ids = visitor.getTestObjectIDs()
-		BilingualMatcher bim = new BilingualMatcher(pattern, isRegex)
-		//
-		List<Map<String, String>> result = new ArrayList<>()
-		ids.forEach { id ->
-			TestObject tObj = ObjectRepository.findTestObject(id)
-			String locator = findLocator(id)
-			if (bim.found(id)) {
-				Map<String, String> entry = new LinkedHashMap<>()
-				entry.put("id", id)
-				entry.put("method", tObj.getSelectorMethod().toString())
-				entry.put("locator", locator)
-				result.add(entry)
-			}
-		}
-		return result
-	}
-
 
 	//-------------------------------------------------------------------------
 	static String listWithLocator(Object ... args) throws Exception {
+		ExtendedObjectRepository exor = new ExtendedObjectRepository()
 		if (args.length == 0) {
-			return doListWithLocator("", false)
+			return exor.listWithLocator("", false)
 		} else if (args.length == 1) {
-			return doListWithLocator((String)args[0], false)
+			return exor.listWithLocator((String)args[0], false)
 		} else {
-			return doListWithLocator((String)args[0], (Boolean)args[1])
+			return exor.listWithLocator((String)args[0], (Boolean)args[1])
 		}
-	}
-
-	private static String doListWithLocator(String pattern,
-			Boolean isRegex)
-	throws IOException {
-		List<Map<String, String>> result = this.listWithLocatorRaw(pattern, isRegex)
-		String json = JsonOutput.toJson(result)
-		return JsonOutput.prettyPrint(json)
 	}
 
 
