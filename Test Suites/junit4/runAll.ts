@@ -21,7 +21,7 @@
    <testCaseLink>
       <guid>64b2fa24-ba36-48a1-bf7f-0626bae9d6fc</guid>
       <isReuseDriver>false</isReuseDriver>
-      <isRun>false</isRun>
+      <isRun>true</isRun>
       <testCaseId>Test Cases/junit4/com.kazurayam.ks.gc/ObjectRepositoryGCTestRunner</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>

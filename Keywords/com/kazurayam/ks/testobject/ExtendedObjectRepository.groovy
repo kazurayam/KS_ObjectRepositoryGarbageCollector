@@ -23,6 +23,10 @@ public class ExtendedObjectRepository {
 		this(Paths.get(".").resolve("Object Repository"), null)
 	}
 
+	ExtendedObjectRepository(Path baseDir) {
+		this(baseDir, null)
+	}
+	
 	ExtendedObjectRepository(Path baseDir, String subpath) {
 		Objects.requireNonNull(baseDir)
 		assert Files.exists(baseDir)
