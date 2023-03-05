@@ -1,4 +1,4 @@
-package com.kazurayam.ks.testcase
+package com.kazurayam.ks.gc
 
 import static org.junit.Assert.*
 
@@ -7,13 +7,18 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
+import com.kazurayam.ks.gc.Database
+import com.kazurayam.ks.testcase.TestCaseId
+import com.kazurayam.ks.testcase.TextSearchResult
+import com.kazurayam.ks.testcase.TextSearchResult.Builder
+
 import groovy.json.JsonOutput
 
 @RunWith(JUnit4.class)
-public class ExternalReferencesTest {
+public class DatabaseTest {
 
 	private TextSearchResult tsr
-	private ExternalReferences collection
+	private Database collection
 
 	private static String pattern = "new"
 	private static Boolean isRegex = false
@@ -21,7 +26,7 @@ public class ExternalReferencesTest {
 
 	@Before
 	void setup() {
-		collection = new ExternalReferences()
+		collection = new Database()
 		tsr = new TextSearchResult.Builder("Hello, new world!", 1)
 				.pattern(pattern, isRegex)
 				.matchFound(8, 10)

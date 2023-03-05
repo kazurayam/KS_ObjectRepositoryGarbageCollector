@@ -1,4 +1,4 @@
-package com.kazurayam.ks.testobject
+package com.kazurayam.ks.gc
 
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -10,6 +10,8 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.junit.runners.MethodSorters;
 
+import com.kazurayam.ks.gc.ObjectRepositoryGC
+
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(JUnit4.class)
@@ -17,7 +19,7 @@ import org.junit.runners.MethodSorters;
 public class ObjectRepositoryGCTest {
 
 	private static ObjectRepositoryGC gc
-	
+
 	@BeforeClass
 	static void beforeClass() {
 		Path projectDir = Paths.get(".")

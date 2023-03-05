@@ -2,7 +2,7 @@ package com.kazurayam.ks.testcase
 
 import groovy.json.JsonOutput
 
-public class TextSearchResult {
+public class TextSearchResult implements Comparable<TextSearchResult> {
 
 	private String line
 	private int lineNo
@@ -105,6 +105,33 @@ public class TextSearchResult {
 		return hash;
 	}
 
+	@Override
+	int compareTo(TextSearchResult other) {
+		int v
+		v = this.lineNo == other.lineNo
+		if (v != 0) {
+			return v
+		} else {
+			v = this.line.compareTo(other.line)
+			if (v != 0) {
+				return v
+			} else {
+				v = this.pattern.compareTo(other.pattern)
+				if (v != 0) {
+					return v
+				} else {
+					Boolean b1 = (Boolean)this.isRegex
+					Boolean b2 = (Boolean)other.isRegex
+					return b1.compareTo(b2)
+				}
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * 
+	 */
 	public static class Builder {
 		String line
 		int lineNo

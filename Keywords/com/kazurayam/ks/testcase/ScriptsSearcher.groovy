@@ -3,6 +3,8 @@ package com.kazurayam.ks.testcase
 import java.nio.file.Files
 import java.nio.file.Path
 
+import com.kazurayam.ks.gc.Database
+
 public class ScriptsSearcher {
 
 	private Path scriptsDir
@@ -34,9 +36,9 @@ public class ScriptsSearcher {
 	/**
 	 * 
 	 */
-	ExternalReferences searchText(String pattern, Boolean isRegex) {
+	Database searchText(String pattern, Boolean isRegex) {
 		Objects.requireNonNull(pattern)
-		ExternalReferences collection = new ExternalReferences()
+		Database collection = new Database()
 		List<Path> groovyFiles = visitor.getGroovyFiles()
 		groovyFiles.forEach { p ->
 			try {
@@ -55,7 +57,7 @@ public class ScriptsSearcher {
 	/**
 	 *
 	 */
-	ExternalReferences searchReferenceToTestObject(String testObjectId) {
+	Database searchReferenceToTestObject(String testObjectId) {
 		return this.searchText(testObjectId, false)
 	}
 }

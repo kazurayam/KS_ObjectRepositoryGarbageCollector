@@ -1,4 +1,4 @@
-package com.kazurayam.ks.testobject
+package com.kazurayam.ks.gc
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -29,26 +29,29 @@ class ObjectRepositoryGC {
 		this.scriptsSubpath = builder.scriptsSubpath
 	}
 
+	/**
+	 * 
+	 */
 	void dryrun() {
 		throw new RuntimeException("TODO")
 	}
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * Joshua Bloch's Builder pattern in Effective Java
 	 * 
 	 * @author kazuarayam
 	 */
 	public static class Builder {
-		
+
 		private Path   objrepoDir // non null
 		private Path   scriptsDir // non null
-		
+
 		private String objrepoSubpath // can be null
 		private String scriptsSubpath // can be null
-		
+
 		Builder(Path objrepoDir, Path scriptsDir) {
 			Objects.requireNonNull(objrepoDir)
 			assert Files.exists(objrepoDir)
@@ -57,7 +60,7 @@ class ObjectRepositoryGC {
 			this.objrepoDir = objrepoDir
 			this.scriptsDir = scriptsDir
 		}
-		
+
 		Builder objrepoSubpath(String subpath) {
 			Objects.requireNonNull(subpath)
 			Path p = objrepoDir.resolve(subpath)
@@ -65,18 +68,19 @@ class ObjectRepositoryGC {
 			this.objrepoSubpath = subpath
 			return this
 		}
-		
+
 		Builder scriptsSubpath(String subpath) {
 			Objects.requireNonNull(subpath)
-			Path p = scriptsSubpath,resolve(subpath)
+			Path p = scriptsDir.resolve(subpath)
 			assert Files.exists(p)
 			this.scriptsSubpath = subpath
 			return this
 		}
-		
+
 		ObjectRepositoryGC build() {
 			return new ObjectRepositoryGC(this)
 		}
-		
+
 	}
+	
 }

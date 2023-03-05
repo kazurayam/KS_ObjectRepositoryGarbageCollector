@@ -1,12 +1,15 @@
-package com.kazurayam.ks.testcase
+package com.kazurayam.ks.gc
+
+import com.kazurayam.ks.testcase.TestCaseId
+import com.kazurayam.ks.testcase.TextSearchResult
 
 import groovy.json.JsonOutput
 
-public class ExternalReferences {
+public class Database {
 
 	private Map<TestCaseId, List<TextSearchResult>> collection
 
-	ExternalReferences() {
+	Database() {
 		collection = new TreeMap<>()
 	}
 
