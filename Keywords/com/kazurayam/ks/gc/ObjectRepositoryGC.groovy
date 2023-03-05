@@ -108,7 +108,7 @@ class ObjectRepositoryGC {
 	 */
 	List<TestObjectId> garbagesRaw() {
 		Set<TestObjectId> tmp = new TreeSet<>()
-		Map<TestObjectId, Set<TCTOReference>> resolved = this.resolve()
+		Map<TestObjectId, Set<TCTOReference>> resolved = this.resolveRaw()
 		resolved.keySet().forEach { testObjectId ->
 			Set<TCTOReference> value = resolved.get(testObjectId)
 			if (value.size() == 0) {
@@ -125,8 +125,8 @@ class ObjectRepositoryGC {
 
 	String garbages() {
 		List<TestObjectId> garbages = garbagesRaw()
-		String json = JsonOutput.toJson(garbates)
-		String pp = JsonOutput.pp()
+		String json = JsonOutput.toJson(garbages)
+		String pp = JsonOutput.prettyPrint(json)
 		return pp
 	}
 
