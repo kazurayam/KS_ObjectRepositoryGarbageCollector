@@ -60,11 +60,12 @@ public class TCTOReference implements Comparable<TCTOReference> {
 
 	@Override
 	int compareTo(TCTOReference other) {
-		int v
-		if ((v = this.testCaseId.compareTo(other.testCaseId)) != 0) {
+		int v = this.testCaseId.compareTo(other.testCaseId)
+		if (v != 0) {
 			return v
 		} else {
-			if ((v = this.textSearchResult.compareTo(other.textSearchResult) != 0)) {
+			v = this.textSearchResult.compareTo(other.textSearchResult)
+			if (v != 0) {
 				return v
 			} else {
 				return this.testObjectGist.compareTo(other.testObjectGist)

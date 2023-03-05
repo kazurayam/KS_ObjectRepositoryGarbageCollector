@@ -2,52 +2,53 @@ package com.kazurayam.ks.gc
 
 import com.kazurayam.ks.testcase.TestCaseId
 import com.kazurayam.ks.testcase.TextSearchResult
+import com.kazurayam.ks.gc.TCTOReference
 
 import groovy.json.JsonOutput
 
 public class Database {
 
-	private Map<TestCaseId, List<TextSearchResult>> collection
+	private Map<TestCaseId, Set<TCTOReference>> db
 
 	Database() {
-		collection = new TreeMap<>()
+		db = new TreeMap<>()
 	}
 
-	void put(TestCaseId key, List<TextSearchResult> tsrList) {
+	void put(TestCaseId key, Set<TCTOReference> references) {
 		Objects.requireNonNull(key)
-		Objects.requireNonNull(tsrList)
-		tsrList.forEach { tsr ->
-			this.put(key, tsr)
+		Objects.requireNonNull(references)
+		references.forEach { ref ->
+			this.put(key, ref)
 		}
 	}
 
-	void put(TestCaseId key, TextSearchResult tsr) {
+	void put(TestCaseId key, TCTOReference reference) {
 		Objects.requireNonNull(key)
-		Objects.requireNonNull(tsr)
-		List<TextSearchResult> tsrList
-		if (collection.containsKey(key)) {
-			tsrList = collection.get(key)
+		Objects.requireNonNull(reference)
+		Set<TCTOReference> refs
+		if (db.containsKey(key)) {
+			refs = db.get(key)
 		} else {
-			tsrList = new ArrayList<>()
+			refs = new TreeSet<>()
 		}
-		tsrList.add(tsr)
-		collection.put(key, tsrList)
+		refs.add(reference)
+		db.put(key, refs)
 	}
 
 	Set<TestCaseId> keySet() {
-		return collection.keySet()
+		return db.keySet()
 	}
 
 	boolean containsKey(TestCaseId key) {
-		return collection.containsKey(key)
+		return db.containsKey(key)
 	}
 
-	List<TextSearchResult> get(TestCaseId key) {
-		return collection.get(key)
+	Set <TCTOReference> get(TestCaseId key) {
+		return db.get(key)
 	}
 
 	int size() {
-		return collection.size()
+		return db.size()
 	}
 
 	@Override
@@ -59,16 +60,16 @@ public class Database {
 		StringBuilder sb = new StringBuilder()
 		sb.append('{')
 		String sep1 = ""
-		collection.keySet().forEach { TestCaseId k ->
+		db.keySet().forEach { TestCaseId k ->
 			sb.append(sep1)
 			sb.append(JsonOutput.toJson(k))
 			sb.append(':')
-			List<TextSearchResult> tsrList = collection.get(k)
+			Set<TCTOReference> setRef = db.get(k)
 			sb.append('[')
 			String sep2 = ""
-			tsrList.forEach { tsr ->
+			setRef.forEach { ref ->
 				sb.append(sep2)
-				sb.append(tsr.toJson())
+				sb.append(ref.toJson())
 				sep2 = ","
 			}
 			sb.append(']')

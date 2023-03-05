@@ -1,6 +1,6 @@
 import static com.kazurayam.junit4ks.JUnitCustomKeywords.runWithJUnitRunner
 
-import com.kazurayam.ks.gc.ReferencesCollectionTest
+import com.kazurayam.ks.gc.DatabaseTest
 
-runWithJUnitRunner(ReferencesCollectionTest.class)
+runWithJUnitRunner(DatabaseTest.class)
 

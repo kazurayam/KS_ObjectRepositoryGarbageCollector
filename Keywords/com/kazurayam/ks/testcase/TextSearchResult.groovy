@@ -108,7 +108,7 @@ public class TextSearchResult implements Comparable<TextSearchResult> {
 	@Override
 	int compareTo(TextSearchResult other) {
 		int v
-		v = this.lineNo == other.lineNo
+		v = this.lineNo - other.lineNo
 		if (v != 0) {
 			return v
 		} else {
