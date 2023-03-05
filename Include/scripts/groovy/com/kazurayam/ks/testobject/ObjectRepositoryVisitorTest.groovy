@@ -36,7 +36,7 @@ class ObjectRepositoryVisitorTest {
 	void testGetTestObjects() {
 		visitor = new ObjectRepositoryVisitor(objectRepository)
 		Files.walkFileTree(objectRepository, visitor)
-		List<String> list = visitor.getTestObjectIDs()
+		List<String> list = visitor.getTestObjectIdList()
 		assertTrue(list.size() > 0)
 		list.forEach { p ->
 			println p

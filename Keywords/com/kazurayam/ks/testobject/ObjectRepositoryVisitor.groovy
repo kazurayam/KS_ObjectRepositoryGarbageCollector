@@ -47,10 +47,11 @@ class ObjectRepositoryVisitor extends SimpleFileVisitor<Path> {
 		return result
 	}
 
-	List<String> getTestObjectIDs() {
-		List<String> list = new ArrayList<>()
+	List<TestObjectId> getTestObjectIdList() {
+		List<TestObjectId> list = new ArrayList<>()
 		getRsFiles().forEach({ p ->
-			list.add(p.toString().replaceAll("\\.rs", ""))
+			TestObjectId toi = new TestObjectId(p.toString().replaceAll("\\.rs", ""))
+			list.add(toi)
 		})
 		return list
 	}
