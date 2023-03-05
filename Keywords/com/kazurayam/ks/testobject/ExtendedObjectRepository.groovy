@@ -17,19 +17,21 @@ public class ExtendedObjectRepository {
 	private static Logger logger = LoggerFactory.getLogger(ExtendedObjectRepository.class)
 
 	private Path baseDir
+	private String subpath = null
 
 	ExtendedObjectRepository() {
-		this(Paths.get(".").resolve("Object Repository"))
+		this(Paths.get(".").resolve("Object Repository"), null)
 	}
 
-	ExtendedObjectRepository(Path baseDir) {
+	ExtendedObjectRepository(Path baseDir, String subpath) {
 		Objects.requireNonNull(baseDir)
 		assert Files.exists(baseDir)
 		this.baseDir = baseDir
+		this.subpath = subpath
 	}
 
-	Path getBaseDir() {
-		return baseDir
+	Path getTargetDir() {
+		return (subpath != null) ? baseDir.resolve("subpath") : baseDir
 	}
 
 	String list(String pattern, Boolean isRegex) throws IOException {
@@ -40,8 +42,8 @@ public class ExtendedObjectRepository {
 	}
 
 	List<String> listRaw(String pattern, Boolean isRegex) throws IOException {
-		Path dir = getBaseDir()
-		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(dir)
+		Path dir = getTargetDir()
+		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(baseDir)
 		Files.walkFileTree(dir, visitor)
 		List<String> ids = visitor.getTestObjectIdList()
 		//
@@ -63,8 +65,8 @@ public class ExtendedObjectRepository {
 	}
 
 	List<TestObjectGist> listGistRaw(String pattern, Boolean isRegex) throws IOException {
-		Path dir = getBaseDir()
-		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(dir)
+		Path dir = getTargetDir()
+		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(baseDir)
 		Files.walkFileTree(dir, visitor)
 		List<TestObjectId> ids = visitor.getTestObjectIdList()
 		BilingualMatcher bim = new BilingualMatcher(pattern, isRegex)

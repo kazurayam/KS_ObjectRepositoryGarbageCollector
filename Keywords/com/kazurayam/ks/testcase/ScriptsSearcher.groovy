@@ -29,16 +29,27 @@ public class ScriptsSearcher {
 
 	private TestCaseScriptsVisitor init(Path scriptsDir) throws IOException {
 		TestCaseScriptsVisitor vis = new TestCaseScriptsVisitor(scriptsDir)
-		Files.walkFileTree(scriptsDir, vis)
+		Files.walkFileTree(targetDir, vis)
 		return vis
+	}
+
+	List<TextSearchResult> searchIn(TestCaseId testCaseId, String pattern, Boolean isRegex) {
+		Objects.requireNonNull(testCaseId)
+		Objects.requireNonNull(pattern)
+		Objects.requireNonNull(isRegex)
+		Path groovyFile = scriptsDir.resolve(testCaseId.value() + ".rs")
+		SearchableText source = new SearchableText(file)
+		List<TextSearchResult> searchResults = source.searchText(pattern, isRegex)
+		return searchResults
 	}
 
 	/**
 	 * 
 	 */
-	Database searchText(String pattern, Boolean isRegex) {
+	Map<TestCaseId, List<TextSearchResult>> searchText(String pattern, Boolean isRegex) {
 		Objects.requireNonNull(pattern)
-		Database collection = new Database()
+		Objects.requireNonNull(isRegex)
+		Map<TestCaseId, List<TextSearchResult>> result = new TreeMap<>()
 		List<Path> groovyFiles = visitor.getGroovyFiles()
 		groovyFiles.forEach { p ->
 			try {
@@ -46,18 +57,18 @@ public class ScriptsSearcher {
 				SearchableText source = new SearchableText(file)
 				List<TextSearchResult> searchResults = source.searchText(pattern, isRegex)
 				TestCaseId id = new TestCaseId(p.toString())
-				collection.put(id, searchResults)
+				result.put(id, searchResults)
 			} catch (IOException e) {
 				throw new RuntimeException(e)
 			}
 		}
-		return collection
+		return result
 	}
 
 	/**
 	 *
 	 */
-	Database searchReferenceToTestObject(String testObjectId) {
+	Map<TestCaseId, List<TextSearchResult>> searchReferenceToTestObject(String testObjectId) {
 		return this.searchText(testObjectId, false)
 	}
 }

@@ -2,6 +2,7 @@ package com.kazurayam.ks.gc
 
 import com.kazurayam.ks.testcase.TestCaseId
 import com.kazurayam.ks.testcase.TextSearchResult
+import com.kazurayam.ks.testobject.TestObjectId
 import com.kazurayam.ks.gc.TCTOReference
 
 import groovy.json.JsonOutput
@@ -43,8 +44,28 @@ public class Database {
 		return db.containsKey(key)
 	}
 
-	Set <TCTOReference> get(TestCaseId key) {
+	Set<TCTOReference> get(TestCaseId key) {
 		return db.get(key)
+	}
+	
+	Set<TCTOReference> getAll() {
+		Set<TCTOReference> result = new TreeSet<>()
+		Set<TestCaseId> testCaseIdSet = this.keySet()
+		testCaseIdSet.forEach { testCaseId ->
+			Set<TCTOReference> part = db.get(testCaseId)
+			result.addAll(part)
+		}
+		return result
+	}
+	
+	Set<TestObjectId> getAllTestObjectId() {
+		Set<TestObjectId> result = new TreeSet<>()
+		Set<TCTOReference> allRefs = this.getAll()
+		allRefs.forEach { ref ->
+			TestObjectId testObjectId = ref.testObjectGist().id()
+			result.add(testObjectId)
+		}
+		return result
 	}
 
 	int size() {
