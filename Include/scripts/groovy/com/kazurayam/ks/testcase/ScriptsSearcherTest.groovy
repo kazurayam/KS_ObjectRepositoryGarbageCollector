@@ -28,15 +28,15 @@ public class ScriptsSearcherTest {
 	void test_searchText() {
 		String pattern = "https://katalon-demo-cura.herokuapp.com/"
 		Map<TestCaseId, List<TextSearchResult>> result =
-			searcher.searchText(pattern, false)
+				searcher.searchText(pattern, false)
 		assertEquals(2, result.size())
 	}
 
 	@Test
 	void test_searchReferenceToTestObject() {
 		String testObjectId = "Page_CURA Healthcare Service/a_Make Appointment"
-		Map<TestCaseId, List<TextSearchResult>> result = 
-			searcher.searchReferenceToTestObject(testObjectId)
+		Map<TestCaseId, List<TextSearchResult>> result =
+				searcher.searchReferenceToTestObject(testObjectId)
 		assertEquals(2, result.size())
 		println JsonOutput.prettyPrint(JsonOutput.toJson(result))
 	}

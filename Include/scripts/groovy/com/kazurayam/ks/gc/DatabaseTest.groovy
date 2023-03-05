@@ -19,12 +19,13 @@ public class DatabaseTest {
 
 	private Database db
 	private TestCaseId testCaseId
-	
+	private TCTOReference reference
+
 	@Before
 	void setup() {
 		db = new Database()
 		testCaseId = new TestCaseId("main/TC1")
-		TCTOReference reference = TCTOReferenceTest.createSampleInstance()
+		reference = TCTOReferenceTest.createSampleInstance()
 		db.put(testCaseId, reference)
 	}
 
@@ -42,11 +43,14 @@ public class DatabaseTest {
 	void test_get() {
 		Set<TCTOReference> set = db.get(testCaseId)
 		assertEquals(1, set.size())
+		assertTrue(set.contains(reference))
 	}
 
 	@Test
 	void test_toString() {
+		String s = db.toString()
 		println db.toString()
+		assertTrue(s.contains("main/TC1"))
 	}
 
 	@Test

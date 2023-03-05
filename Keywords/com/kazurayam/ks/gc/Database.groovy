@@ -47,7 +47,7 @@ public class Database {
 	Set<TCTOReference> get(TestCaseId key) {
 		return db.get(key)
 	}
-	
+
 	Set<TCTOReference> getAll() {
 		Set<TCTOReference> result = new TreeSet<>()
 		Set<TestCaseId> testCaseIdSet = this.keySet()
@@ -57,7 +57,7 @@ public class Database {
 		}
 		return result
 	}
-	
+
 	Set<TestObjectId> getAllTestObjectId() {
 		Set<TestObjectId> result = new TreeSet<>()
 		Set<TCTOReference> allRefs = this.getAll()
@@ -83,7 +83,7 @@ public class Database {
 		String sep1 = ""
 		db.keySet().forEach { TestCaseId k ->
 			sb.append(sep1)
-			sb.append(JsonOutput.toJson(k))
+			sb.append(k.toJson())
 			sb.append(':')
 			Set<TCTOReference> setRef = db.get(k)
 			sb.append('[')
