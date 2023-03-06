@@ -18,7 +18,7 @@ public class ScriptsSearcher {
 	ScriptsSearcher(Path scriptsDir, String subPath) {
 		Objects.requireNonNull(scriptsDir)
 		assert Files.exists(scriptsDir)
-		this.scriptsDir = scriptsDir.toAbsolutePath().normalize()  // calling .normalize() is significant 
+		this.scriptsDir = scriptsDir.toAbsolutePath().normalize()  // calling .normalize() is significant
 		this.visitor = init(scriptsDir, subPath)
 	}
 
@@ -75,7 +75,7 @@ public class ScriptsSearcher {
 			try {
 				SearchableText source = new SearchableText(groovyFile)
 				List<TextSearchResult> searchResults = source.searchText(pattern, isRegex)
-				TestCaseId id = resolveTestCaseId(scriptsDir, groovyFile)
+				TestCaseId id = new TestCaseId(scriptsDir, groovyFile)
 				result.put(id, searchResults)
 			} catch (IOException e) {
 				throw new RuntimeException(e)
@@ -83,11 +83,7 @@ public class ScriptsSearcher {
 		}
 		return result
 	}
-	
-	private TestCaseId resolveTestCaseId(Path scriptsDir, Path groovyFile) {
-		Path relative = scriptsDir.relativize(groovyFile)
-		return new TestCaseId(relative.getParent().toString())
-	}
+
 	
 
 	/**

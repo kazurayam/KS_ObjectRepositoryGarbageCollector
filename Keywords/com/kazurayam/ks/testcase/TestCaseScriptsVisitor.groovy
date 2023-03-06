@@ -20,7 +20,7 @@ public class TestCaseScriptsVisitor extends SimpleFileVisitor<Path> {
 	TestCaseScriptsVisitor(Path scriptsDir) {
 		Objects.requireNonNull(scriptsDir)
 		assert Files.exists(scriptsDir)
-		this.scriptsDir = scriptsDir
+		this.scriptsDir = scriptsDir.toAbsolutePath()
 		groovyFiles = new ArrayList<Path>()
 	}
 
@@ -48,7 +48,8 @@ public class TestCaseScriptsVisitor extends SimpleFileVisitor<Path> {
 	List<TestCaseId> getTestCaseIdList() {
 		List<TestCaseId> list = new ArrayList<>()
 		getGroovyFiles().forEach ({ p ->
-			TestCaseId id = new TestCaseId(p.getParent().toString())
+			Path relative = scriptsDir.relativize(p.getParent())
+			TestCaseId id = new TestCaseId(relative.toString())
 			list.add(id)
 		})
 		return list

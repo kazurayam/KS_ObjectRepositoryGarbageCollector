@@ -1,5 +1,6 @@
 package com.kazurayam.ks.testcase
 
+import java.nio.file.Path
 import groovy.json.JsonOutput
 
 public class TestCaseId implements Comparable<TestCaseId> {
@@ -7,7 +8,14 @@ public class TestCaseId implements Comparable<TestCaseId> {
 	private String value
 
 	TestCaseId(String value) {
+		Objects.requireNonNull(value)
+		assert !(value.startsWith('/')), "value='${value}' should not start with '/'"
 		this.value = value
+	}
+
+	TestCaseId(Path scriptsDir, Path groovyFile) {
+		Path relative = scriptsDir.relativize(groovyFile)
+		value = relative.getParent().toString()
 	}
 
 	String value() {
@@ -32,7 +40,7 @@ public class TestCaseId implements Comparable<TestCaseId> {
 	String toString() {
 		return value
 	}
-	
+
 	String toJson() {
 		return JsonOutput.toJson(value)
 	}
