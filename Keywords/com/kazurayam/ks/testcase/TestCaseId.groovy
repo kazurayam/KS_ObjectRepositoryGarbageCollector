@@ -15,7 +15,7 @@ public class TestCaseId implements Comparable<TestCaseId> {
 
 	TestCaseId(Path scriptsDir, Path groovyFile) {
 		Path relative = scriptsDir.relativize(groovyFile)
-		value = relative.getParent().toString()
+		this.value = relative.getParent().toString()
 	}
 
 	String value() {

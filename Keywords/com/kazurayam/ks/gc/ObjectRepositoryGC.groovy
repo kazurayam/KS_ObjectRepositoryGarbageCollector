@@ -35,8 +35,8 @@ class ObjectRepositoryGC {
 	private Database db;
 
 	private ObjectRepositoryGC(Builder builder) {
-		this.objrepoDir = builder.objrepoDir
-		this.scriptsDir = builder.scriptsDir
+		this.objrepoDir = builder.objrepoDir.toAbsolutePath().normalize()
+		this.scriptsDir = builder.scriptsDir.toAbsolutePath().normalize()
 		this.objrepoSubpath = builder.objrepoSubpath
 		this.scriptsSubpath = builder.scriptsSubpath
 		this.scan()
@@ -58,17 +58,18 @@ class ObjectRepositoryGC {
 
 		// scan the Scripts directory to make a list of TestCaseIds
 		Path targetDir = (scriptsSubpath != null) ? scriptsDir.resolve(scriptsSubpath) : scriptsDir
-		assert targetDir != null
-		TestCaseScriptsVisitor tcsVisitor = new TestCaseScriptsVisitor(scriptsDir)
-		assert tcsVisitor != null
-		Files.walkFileTree(targetDir, tcsVisitor)
-		List<TestCaseId> testCaseIdList = tcsVisitor.getTestCaseIdList()
+		TestCaseScriptsVisitor testCaseScriptsVisitor = new TestCaseScriptsVisitor(scriptsDir)
+		Files.walkFileTree(targetDir, testCaseScriptsVisitor)
+		List<TestCaseId> testCaseIdList = testCaseScriptsVisitor.getTestCaseIdList()
 
 		// Iterate over the list of TestCaseIds.
 		// Read the TestCase script, check if it contains any references to the TestObjects.
 		// If true, record the reference into the database
 		ScriptsSearcher scriptSearcher = new ScriptsSearcher(scriptsDir, scriptsSubpath)
 		testCaseIdList.forEach { testCaseId ->
+			
+			assert ! testCaseId.value().startsWith("..")
+			
 			gistList.forEach { gist ->
 				TestObjectId testObjectId = gist.id()
 				List<TextSearchResult> textSearchResultList =
