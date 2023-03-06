@@ -27,7 +27,7 @@ public class TestCaseScriptsVisitorTest {
 		assertTrue(list.size() > 0)
 		println JsonOutput.prettyPrint(toJson(list))
 		list.forEach { p ->
-			assertTrue("`${p.toString()}` is expected to starts with 'main'", p.toString().startsWith("main"))
+			assertTrue("`${p.toString()}` is expected to contain a string 'main'", p.toString().contains("main"))
 		}
 	}
 

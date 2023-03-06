@@ -26,9 +26,8 @@ public class TestCaseScriptsVisitor extends SimpleFileVisitor<Path> {
 
 	@Override
 	public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
-		if (!Files.isDirectory(file) && file.getFileName().toString().endsWith(".groovy")) {
-			Path relative = scriptsDir.relativize(file).normalize()
-			groovyFiles.add(relative)
+		if ( !Files.isDirectory(file) && file.getFileName().toString().endsWith(".groovy")) {
+			groovyFiles.add(file.toAbsolutePath().normalize())
 		}
 		return FileVisitResult.CONTINUE;
 	}

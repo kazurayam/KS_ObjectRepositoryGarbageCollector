@@ -43,11 +43,11 @@ public class ScriptsSearcherTest {
 		TestCaseId testCaseId1 = result.keySet().getAt(0)   // main/New Test Case/Script1677842574205.groovy
 		TestCaseId testCaseId2 = result.keySet().getAt(1)   // main/TC1/Script1677544889443.groovy
 		assertTrue("'${testCaseId1}' should start with 'main'",
-			testCaseId1.value().startsWith("main"))
+				testCaseId1.value().startsWith("main"))
 		assertTrue("'${testCaseId2}' should have value with 'line'",
-			result.get(testCaseId2).get(0).toJson().contains("line"))
+				result.get(testCaseId2).get(0).toJson().contains("line"))
 	}
-	
+
 	@Test
 	void test_searchIn() {
 		TestCaseId testCaseId = new TestCaseId("main/TC1")

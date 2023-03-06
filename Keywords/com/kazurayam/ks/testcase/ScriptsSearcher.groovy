@@ -9,29 +9,29 @@ import java.util.stream.Collectors
 public class ScriptsSearcher {
 
 	private Path scriptsDir
-	private Path targetDir
 	private TestCaseScriptsVisitor visitor
 
 	ScriptsSearcher(Path scriptsDir) {
 		this(scriptsDir, null)
 	}
 
-	ScriptsSearcher(Path scriptsDir, String subDir) {
+	ScriptsSearcher(Path scriptsDir, String subPath) {
 		Objects.requireNonNull(scriptsDir)
 		assert Files.exists(scriptsDir)
-		this.scriptsDir = scriptsDir.toAbsolutePath()
-		if (subDir == null) {
-			this.targetDir = scriptsDir
-		} else {
-			this.targetDir = scriptsDir.resolve(subDir)
-		}
-		this.visitor = init(targetDir)
+		this.scriptsDir = scriptsDir.toAbsolutePath().normalize()  // calling .normalize() is significant 
+		this.visitor = init(scriptsDir, subPath)
 	}
 
-	private TestCaseScriptsVisitor init(Path scriptsDir) throws IOException {
-		TestCaseScriptsVisitor vis = new TestCaseScriptsVisitor(scriptsDir)
-		Files.walkFileTree(targetDir, vis)
-		return vis
+	private TestCaseScriptsVisitor init(Path scriptsDir, subPath) throws IOException {
+		TestCaseScriptsVisitor visitor = new TestCaseScriptsVisitor(scriptsDir)
+		Path targetDir
+		if (subPath == null) {
+			targetDir = scriptsDir
+		} else {
+			targetDir = scriptsDir.resolve(subPath)
+		}
+		Files.walkFileTree(targetDir, visitor)
+		return visitor
 	}
 
 	List<TextSearchResult> searchIn(TestCaseId testCaseId, String pattern, Boolean isRegex) {
@@ -71,12 +71,11 @@ public class ScriptsSearcher {
 		Objects.requireNonNull(isRegex)
 		Map<TestCaseId, List<TextSearchResult>> result = new TreeMap<>()
 		List<Path> groovyFiles = visitor.getGroovyFiles()
-		groovyFiles.forEach { p ->
+		groovyFiles.forEach { groovyFile ->
 			try {
-				Path file = targetDir.resolve(p)
-				SearchableText source = new SearchableText(file)
+				SearchableText source = new SearchableText(groovyFile)
 				List<TextSearchResult> searchResults = source.searchText(pattern, isRegex)
-				TestCaseId id = new TestCaseId(p.toString())
+				TestCaseId id = resolveTestCaseId(scriptsDir, groovyFile)
 				result.put(id, searchResults)
 			} catch (IOException e) {
 				throw new RuntimeException(e)
@@ -84,6 +83,12 @@ public class ScriptsSearcher {
 		}
 		return result
 	}
+	
+	private TestCaseId resolveTestCaseId(Path scriptsDir, Path groovyFile) {
+		Path relative = scriptsDir.relativize(groovyFile)
+		return new TestCaseId(relative.getParent().toString())
+	}
+	
 
 	/**
 	 *

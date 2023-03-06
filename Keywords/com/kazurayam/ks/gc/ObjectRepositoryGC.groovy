@@ -57,18 +57,18 @@ class ObjectRepositoryGC {
 		List<TestObjectGist> gistList = extOR.listGistRaw("", false)
 
 		// scan the Scripts directory to make a list of TestCaseIds
-		Path sdir = (scriptsSubpath != null) ? scriptsDir.resolve(scriptsSubpath) : scriptsDir
-		assert sdir != null
+		Path targetDir = (scriptsSubpath != null) ? scriptsDir.resolve(scriptsSubpath) : scriptsDir
+		assert targetDir != null
 		TestCaseScriptsVisitor tcsVisitor = new TestCaseScriptsVisitor(scriptsDir)
 		assert tcsVisitor != null
-		Files.walkFileTree(sdir, tcsVisitor)
+		Files.walkFileTree(targetDir, tcsVisitor)
 		List<TestCaseId> testCaseIdList = tcsVisitor.getTestCaseIdList()
 
 		// Iterate over the list of TestCaseIds.
 		// Read the TestCase script, check if it contains any references to the TestObjects.
 		// If true, record the reference into the database
 		ScriptsSearcher scriptSearcher = new ScriptsSearcher(scriptsDir, scriptsSubpath)
-		testCaseIdList.forEach { testCaseId -> 
+		testCaseIdList.forEach { testCaseId ->
 			gistList.forEach { gist ->
 				TestObjectId testObjectId = gist.id()
 				List<TextSearchResult> textSearchResultList =
