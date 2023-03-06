@@ -39,7 +39,7 @@ class ObjectRepositoryGC {
 		this.scriptsDir = builder.scriptsDir
 		this.objrepoSubpath = builder.objrepoSubpath
 		this.scriptsSubpath = builder.scriptsSubpath
-		this.db = new Database()
+		this.scan()
 	}
 
 	/*
@@ -51,13 +51,16 @@ class ObjectRepositoryGC {
 	 * find a list of "garbage" Test Objects which are not used by any of the Test Cases.
 	 */
 	public void scan() {
+		this.db = new Database()
 		// scan the Object Repository directory to make a list of TestObjectGists
 		ExtendedObjectRepository extOR = new ExtendedObjectRepository(objrepoDir, objrepoSubpath)
 		List<TestObjectGist> gistList = extOR.listGistRaw("", false)
 
 		// scan the Scripts directory to make a list of TestCaseIds
-		Path sdir = (scriptsSubpath != null) ? scriptsDir.resolve(scriptsSubpath) : scriptsSubpath
+		Path sdir = (scriptsSubpath != null) ? scriptsDir.resolve(scriptsSubpath) : scriptsDir
+		assert sdir != null
 		TestCaseScriptsVisitor tcsVisitor = new TestCaseScriptsVisitor(scriptsDir)
+		assert tcsVisitor != null
 		Files.walkFileTree(sdir, tcsVisitor)
 		List<TestCaseId> testCaseIdList = tcsVisitor.getTestCaseIdList()
 
@@ -65,7 +68,7 @@ class ObjectRepositoryGC {
 		// Read the TestCase script, check if it contains any references to the TestObjects.
 		// If true, record the reference into the database
 		ScriptsSearcher scriptSearcher = new ScriptsSearcher(scriptsDir, scriptsSubpath)
-		testCaseIdList.forEach { testCaseId ->
+		testCaseIdList.forEach { testCaseId -> 
 			gistList.forEach { gist ->
 				TestObjectId testObjectId = gist.id()
 				List<TextSearchResult> textSearchResultList =

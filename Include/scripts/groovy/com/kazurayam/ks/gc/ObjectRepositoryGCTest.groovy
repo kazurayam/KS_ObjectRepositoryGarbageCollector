@@ -30,7 +30,6 @@ public class ObjectRepositoryGCTest {
 		Path objectRepositoryDir = projectDir.resolve("Object Repository")
 		Path scriptsDir = projectDir.resolve("Scripts")
 		gc = new ObjectRepositoryGC.Builder(objectRepositoryDir, scriptsDir).build()
-		gc.scan()
 	}
 
 	@Test

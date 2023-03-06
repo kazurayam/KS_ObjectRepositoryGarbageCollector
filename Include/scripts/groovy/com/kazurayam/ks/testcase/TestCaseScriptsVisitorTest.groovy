@@ -16,15 +16,19 @@ import groovy.json.JsonOutput
 public class TestCaseScriptsVisitorTest {
 
 	private static final Path scriptsDir = Paths.get("./Scripts")
+	private static final String subpath = "main"
 	private TestCaseScriptsVisitor visitor
 
 	@Test
 	void test_getScripts() throws IOException {
 		visitor = new TestCaseScriptsVisitor(scriptsDir)
-		Files.walkFileTree(scriptsDir, visitor)
+		Files.walkFileTree(scriptsDir.resolve(subpath), visitor)
 		List<Path> list = visitor.getGroovyFiles()
 		assertTrue(list.size() > 0)
 		println JsonOutput.prettyPrint(toJson(list))
+		list.forEach { p ->
+			assertTrue("`${p.toString()}` is expected to starts with 'main'", p.toString().startsWith("main"))
+		}
 	}
 
 	private String toJson(List<Path> it) {
