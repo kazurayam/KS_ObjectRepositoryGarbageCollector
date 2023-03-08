@@ -1,1 +1,18 @@
+plugins {
+  id 'java'
+  id "com.katalon.gradle-plugin" version "0.1.1"
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation group: 'com.kazurayam', name: 'junit4ks', version: '1.6.1'  
+  implementation group: 'com.amazonaws', name: 'jmespath-java', version: '1.12.405'
+  implementation group: 'io.burt', name: 'jmespath', version: '0.5.1', ext: 'pom'
+  implementation group: 'io.burt', name: 'jmespath-jackson', version: '0.5.1'
+}
+
 version = "0.1.6-SNAPSHOT"
+

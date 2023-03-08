@@ -57,14 +57,14 @@ public class TestObjectGist implements Comparable<TestObjectGist> {
 	String toJson() {
 		StringBuilder sb = new StringBuilder()
 		sb.append("{")
-		sb.append("\"id\":")
-		sb.append(JsonOutput.toJson(id))
+		sb.append("\"testObjectId\":")
+		sb.append(JsonOutput.toJson(id.value()))
 		sb.append(",")
 		sb.append("\"method\":")
 		sb.append(JsonOutput.toJson(method))
 		sb.append(",")
 		sb.append("\"locator\":")
-		sb.append(JsonOutput.toJson(locator))
+		sb.append(JsonOutput.toJson(locator.value()))
 		sb.append("}")
 		return sb.toString()
 	}

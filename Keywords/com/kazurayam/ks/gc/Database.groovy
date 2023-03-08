@@ -48,16 +48,6 @@ public class Database {
 		return db.get(key)
 	}
 
-	Set<TCTOReference> getAll() {
-		Set<TCTOReference> result = new TreeSet<>()
-		Set<TestCaseId> testCaseIdSet = this.keySet()
-		testCaseIdSet.forEach { testCaseId ->
-			Set<TCTOReference> part = db.get(testCaseId)
-			result.addAll(part)
-		}
-		return result
-	}
-
 	Set<TestObjectId> getAllTestObjectId() {
 		Set<TestObjectId> result = new TreeSet<>()
 		Set<TCTOReference> allRefs = this.getAll()

@@ -6,3 +6,7 @@ Please refer to the following URL for more detail.
 
 - https://kazurayam.github.io/ObjectRepositoryExtension/
 
+
+
+https://mvnrepository.com/artifact/com.amazonaws/jmespath-java/1.12.420 JMESPath
+

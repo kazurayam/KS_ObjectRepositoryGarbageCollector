@@ -35,4 +35,8 @@ public class TestObjectId implements Comparable<TestObjectId>{
 	int compareTo(TestObjectId other) {
 		return this.value.compareTo(other.value)
 	}
+
+	String toJson() {
+		return '"${value}"'
+	}
 }

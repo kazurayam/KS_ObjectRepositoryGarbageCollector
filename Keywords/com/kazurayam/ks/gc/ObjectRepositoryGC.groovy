@@ -67,9 +67,9 @@ class ObjectRepositoryGC {
 		// If true, record the reference into the database
 		ScriptsSearcher scriptSearcher = new ScriptsSearcher(scriptsDir, scriptsSubpath)
 		testCaseIdList.forEach { testCaseId ->
-			
+
 			assert ! testCaseId.value().startsWith("..")
-			
+
 			gistList.forEach { gist ->
 				TestObjectId testObjectId = gist.id()
 				List<TextSearchResult> textSearchResultList =
@@ -86,13 +86,25 @@ class ObjectRepositoryGC {
 		return db
 	}
 
-
+	
+	/**
+	 * 
+	 */
 	Map<TestObjectId, Set<TCTOReference>> resolveRaw() {
-		Map<TestObjectId, Set<TCTOReference>> result = new TreeMap<>()
 		Set<TCTOReference> allReferences = db.getAll()
-		allReferences.forEach { ref ->
-			TestObjectId testObjectId = ref.testObjectGist().id()
-			result.put(testObjectId, ref)
+		Map<TestObjectId, Set<TCTOReference>> result = new TreeMap<>()
+		allReferences.forEach { tctoRef ->
+			TestCaseId testCaseId = tctoRef.testCaseId()
+			TestObjectId testObjectId = tctoRef.testObjectGist().id() 
+			if (result.containsKey(testObjectId)) {
+				Set<TCTOReference> set = result.get(testObjectId)
+				set.add(tctoRef)
+				result.put(testObjectId, set)
+			} else {
+				Set<TCTOReference> set = new TreeSet<>()
+				set.add(tctoRef)
+				result.put(testObjectId, set)
+			}
 		}
 		return result
 	}

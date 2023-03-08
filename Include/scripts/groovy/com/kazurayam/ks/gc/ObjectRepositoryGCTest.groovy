@@ -36,18 +36,18 @@ public class ObjectRepositoryGCTest {
 	void test_db() {
 		Database db = gc.db()
 		assertNotNull(db)
-		println "********** test_ db **********"
+		println "********** test_db **********"
 		println JsonOutput.prettyPrint(db.toJson())
 		assertNotEquals(0, db.size())
 	}
 
 	@Test
 	void test_resolveRaw() {
-		Map<TestObjectId, Set<TCTOReference>> resolution = gc.resolveRaw()
-		assertNotNull(resolution)
+		Map<TestObjectId, Set<TCTOReference>> resolved = gc.resolveRaw()
+		assertNotNull(resolved)
 		println "********** test_resolveRaw **********"
-		println JsonOutput.prettyPrint(JsonOutput.toJson(resolution))
-		assertTrue(resolution.contains())
+		println JsonOutput.prettyPrint(JsonOutput.toJson(resolved))
+		assertTrue(resolved.contains(new TestObjectId("Page_CURA Healthcare Service/a_Go to Homepage")))
 	}
 
 	@Test
