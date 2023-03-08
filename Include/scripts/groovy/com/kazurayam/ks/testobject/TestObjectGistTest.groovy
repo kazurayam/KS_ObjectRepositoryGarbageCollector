@@ -13,18 +13,18 @@ public class TestObjectGistTest {
 
 	private TestObjectGist gist
 
-	TestObjectId id = new TestObjectId("testObjectX")
+	TestObjectId testObjectId = new TestObjectId("testObjectX")
 	String method = "BASIC"
 	Locator locator = new Locator('//div[@id="main"]')
 
 	@Before
 	void setup() {
-		gist = new TestObjectGist(id, method, locator)
+		gist = new TestObjectGist(testObjectId, method, locator)
 	}
 
 	@Test
-	void test_id() {
-		assertEquals(id, gist.id())
+	void test_testObjectId() {
+		assertEquals(testObjectId, gist.testObjectId())
 	}
 
 	@Test
