@@ -51,9 +51,9 @@ class ObjectRepositoryGC {
 	 * find a list of "garbage" Test Objects which are not used by any of the Test Cases.
 	 */
 	public void scan() {
-		
+
 		this.db = new Database()
-		
+
 		// scan the Object Repository directory to make a list of TestObjectGists
 		ExtendedObjectRepository extOR = new ExtendedObjectRepository(objrepoDir, objrepoSubpath)
 		List<TestObjectGist> gistList = extOR.listGistRaw("", false)
@@ -101,11 +101,38 @@ class ObjectRepositoryGC {
 	/**
 	 *
 	 */
-	String resolve() {
+	String resolve(Boolean requirePrettyPrint = false) {
 		Map<TestObjectId, Set<TCTOReference>> resolved = this.resolveRaw()
-		String json = JsonOutput.toJson(resolved)
-		String pp = JsonOutput.prettyPrint(json)
-		return pp
+		StringBuilder sb = new StringBuilder()
+		sb.append("[")
+		String sep1 = ""
+		resolved.keySet().forEach { testObjectId ->
+			sb.append(sep1)
+			sb.append("{")
+			sb.append(JsonOutput.toJson("testObjectId"))
+			sb.append(":")
+			sb.append(testObjectId.toJson())
+			sb.append(",")
+			sb.append(JsonOutput.toJson("TCTOReferences"))
+			sb.append(":")
+			sb.append("[")
+			Set<TCTOReference> refs = resolved.get(testObjectId)
+			String sep2 = ""
+			refs.forEach { ref ->
+				sb.append(sep2)
+				sb.append(ref.toJson())
+				sep2 = ","
+			}
+			sb.append("]")
+			sb.append("}")
+			sep1 = ","
+		}
+		sb.append("]")
+		if (requirePrettyPrint) {
+			return JsonOutput.prettyPrint(sb.toString())
+		} else {
+			return sb.toString()
+		}
 	}
 
 	/**

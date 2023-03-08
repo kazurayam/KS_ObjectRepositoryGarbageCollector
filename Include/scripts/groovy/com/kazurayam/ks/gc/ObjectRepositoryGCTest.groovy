@@ -16,13 +16,20 @@ import com.kazurayam.ks.testobject.TestObjectId
 import com.kazurayam.ks.gc.TCTOReference
 
 import groovy.json.JsonOutput
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
+import io.burt.jmespath.Expression
+import io.burt.jmespath.JmesPath
+import io.burt.jmespath.jackson.JacksonRuntime
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(JUnit4.class)
-
 public class ObjectRepositoryGCTest {
 
 	private static ObjectRepositoryGC gc
+	
+	private static JmesPath<JsonNode> jmespath
+	private static ObjectMapper objectMapper
 
 	@BeforeClass
 	static void beforeClass() {
@@ -30,6 +37,9 @@ public class ObjectRepositoryGCTest {
 		Path objectRepositoryDir = projectDir.resolve("Object Repository")
 		Path scriptsDir = projectDir.resolve("Scripts")
 		gc = new ObjectRepositoryGC.Builder(objectRepositoryDir, scriptsDir).build()
+		//
+		jmespath = new JacksonRuntime()
+		objectMapper = new ObjectMapper()
 	}
 
 	@Test
@@ -45,14 +55,17 @@ public class ObjectRepositoryGCTest {
 	void test_resolveRaw() {
 		Map<TestObjectId, Set<TCTOReference>> resolved = gc.resolveRaw()
 		assertNotNull(resolved)
-		println "********** test_resolveRaw **********"
-		println JsonOutput.prettyPrint(JsonOutput.toJson(resolved))
-		assertTrue(resolved.keySet().contains(new TestObjectId("Page_CURA Healthcare Service/a_Go to Homepage")))
+		TestObjectId toi = new TestObjectId("Page_CURA Healthcare Service/a_Go to Homepage")
+		assertTrue(resolved.keySet().contains(toi))
+		Set<TCTOReference> refs = resolved.get(toi)
+		List<TCTOReference> refList = refs as List
+		assertEquals(1, refList.size())
+		assertEquals(toi, refList.get(0).testObjectGist().testObjectId())
 	}
 
 	@Test
 	void test_resolve() {
-		String json = gc.resolve()
+		String json = gc.resolve(true)
 		println "********** test_resolve **********"
 		println json
 	}

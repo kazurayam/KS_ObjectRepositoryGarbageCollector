@@ -33,7 +33,7 @@ public class TCTOReferenceTest {
 
 	private static JmesPath<JsonNode> jmespath
 	private static ObjectMapper objectMapper
-	
+
 	@BeforeClass
 	static void beforeClass() {
 		jmespath = new JacksonRuntime()
