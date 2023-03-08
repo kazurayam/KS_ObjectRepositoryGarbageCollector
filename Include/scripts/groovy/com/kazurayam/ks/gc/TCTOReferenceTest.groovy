@@ -79,7 +79,7 @@ public class TCTOReferenceTest {
 	@Test
 	void test_testObjectGist() {
 		TestObjectGist gist = instance.testObjectGist()
-		assertEquals("Page_CURA Healthcare Service/a_Make Appointment", gist.id().value())
+		assertEquals("Page_CURA Healthcare Service/a_Make Appointment", gist.testObjectId().value())
 		assertEquals("""//a[@id='btn-make-appointment']""", gist.locator().value())
 	}
 

@@ -47,7 +47,7 @@ public class ObjectRepositoryGCTest {
 		assertNotNull(resolved)
 		println "********** test_resolveRaw **********"
 		println JsonOutput.prettyPrint(JsonOutput.toJson(resolved))
-		assertTrue(resolved.contains(new TestObjectId("Page_CURA Healthcare Service/a_Go to Homepage")))
+		assertTrue(resolved.keySet().contains(new TestObjectId("Page_CURA Healthcare Service/a_Go to Homepage")))
 	}
 
 	@Test

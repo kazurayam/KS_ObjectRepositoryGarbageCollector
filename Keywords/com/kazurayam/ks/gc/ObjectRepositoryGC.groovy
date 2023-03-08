@@ -51,7 +51,9 @@ class ObjectRepositoryGC {
 	 * find a list of "garbage" Test Objects which are not used by any of the Test Cases.
 	 */
 	public void scan() {
+		
 		this.db = new Database()
+		
 		// scan the Object Repository directory to make a list of TestObjectGists
 		ExtendedObjectRepository extOR = new ExtendedObjectRepository(objrepoDir, objrepoSubpath)
 		List<TestObjectGist> gistList = extOR.listGistRaw("", false)
@@ -67,16 +69,13 @@ class ObjectRepositoryGC {
 		// If true, record the reference into the database
 		ScriptsSearcher scriptSearcher = new ScriptsSearcher(scriptsDir, scriptsSubpath)
 		testCaseIdList.forEach { testCaseId ->
-
-			assert ! testCaseId.value().startsWith("..")
-
 			gistList.forEach { gist ->
-				TestObjectId testObjectId = gist.id()
+				TestObjectId testObjectId = gist.testObjectId()
 				List<TextSearchResult> textSearchResultList =
 						scriptSearcher.searchIn(testCaseId, testObjectId.value(), false)
 				textSearchResultList.forEach { textSearchResult ->
 					TCTOReference reference = new TCTOReference(testCaseId, textSearchResult, gist)
-					db.put(testCaseId, reference)
+					db.add(reference)
 				}
 			}
 		}
@@ -86,24 +85,15 @@ class ObjectRepositoryGC {
 		return db
 	}
 
-	
+
 	/**
 	 * 
 	 */
 	Map<TestObjectId, Set<TCTOReference>> resolveRaw() {
-		Set<TestObjectId> allTestObjectId = db.getAllTestObjectId()
+		Set<TestObjectId> allTestObjectIds = db.getAllTestObjectIdsContained()
 		Map<TestObjectId, Set<TCTOReference>> result = new TreeMap<>()
-		allTestObjectId.forEach { testObjectId ->
-			if (result.containsKey(testObjectId)) {
-				Set<TCTOReference> set = result.get(testObjectId)
-				
-				set.add(tctoRef)
-				result.put(testObjectId, set)
-			} else {
-				Set<TCTOReference> set = new TreeSet<>()
-				set.add(tctoRef)
-				result.put(testObjectId, set)
-			}
+		allTestObjectIds.forEach { testObjectId ->
+			result.put(testObjectId, db.findTCTOReferencesOf(testObjectId))
 		}
 		return result
 	}
