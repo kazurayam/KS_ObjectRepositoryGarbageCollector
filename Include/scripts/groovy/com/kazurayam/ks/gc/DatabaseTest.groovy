@@ -29,36 +29,31 @@ public class DatabaseTest {
 		db = new Database()
 		testCaseId = new TestCaseId("main/TC1")
 		reference = TCTOReferenceTest.createSampleInstance()
+		db.add(reference)
+		//
 		assertEquals("main/TC1", reference.testCaseId().value())
-		testObjectId = reference.testObjectGist().id()
-		assertEquals("Page_CURA Healthcare Service/a_Make Appointment", testObjectId.value())
-		db.put(testCaseId, reference)
+		testObjectId = reference.testObjectGist().testObjectId()
+		assertEquals("Page_CURA Healthcare Service/a_Make Appointment",
+			testObjectId.value())	
 	}
 
 	@Test
-	void test_keySet_size() {
-		assertEquals(1, db.keySet().size())
-	}
-
-	@Test
-	void test_containsKey() {
-		assertTrue(db.containsKey(testCaseId))
+	void test_size() {
+		assertEquals(1, db.size())
 	}
 
 	@Test
 	void test_get() {
-		Set<TCTOReference> set = db.get(testCaseId)
-		assertEquals(1, set.size())
-		assertTrue(set.contains(reference))
-		println "********** test_get **********"
-		set.forEach { TCTOReference ref ->
-			assertEquals(testCaseId, ref.testCaseId())
-			assertEquals(testObjectId, ref.testObjectGist().id())
-			println "ref.testCaseId()=${ref.testCaseId()}"
-			println "ref.testObjectGist().id()=${ref.testObjectGist().id()}"
-		}
+		TCTOReference ref = db.get(0)
+		assertNotNull(ref)	
 	}
-
+	
+	@Test
+	void test_getAll() {
+		Set<TCTOReference> allRefs = db.getAll()
+		assertEquals(1, allRefs.size())
+	}
+	
 	@Test
 	void test_toString() {
 		String s = db.toString()
@@ -71,6 +66,48 @@ public class DatabaseTest {
 	@Test
 	void test_toJson() {
 		println "*********** test_toJson **********"
-		println JsonOutput.prettyPrint(db.toJson())
+		println JsonOutput.prettyPrint(db.toJson(true))
+	}
+	
+	@Test
+	void test_findTCTOReferencesOf_TestCaseId() {
+		Set<TCTOReference> filled = db.findTCTOReferencesOf(new TestCaseId("main/TC1"))
+		assertEquals(1, filled.size())
+		//
+		Set<TCTOReference> empty = db.findTCTOReferencesOf(new TestCaseId("foo"))
+		assertEquals(0, empty.size())
+	}
+	
+	@Test
+	void test_containsTestCaseId() {
+		assertTrue(db.containsTestCaseId(new TestCaseId("main/TC1")))
+		assertFalse(db.containsTestCaseId(new TestCaseId("foo")))
+	}
+	
+	@Test
+	void test_getAllTestCaseIdsContaind() {
+		Set<TestCaseId> testCaseIds = db.getAllTestCaseIdsContained()
+		assertEquals(1, testCaseIds.size())
+	}
+	
+	@Test
+	void test_findTCTOReferencesOf_TestObjectId() {
+		Set<TCTOReference> filled = db.findTCTOReferencesOf(new TestObjectId("Page_CURA Healthcare Service/a_Make Appointment"))
+		assertEquals(1, filled.size())
+		//
+		Set<TCTOReference> empty = db.findTCTOReferencesOf(new TestObjectId("bar"))
+		assertEquals(0, empty.size())
+	}
+	
+	@Test
+	void test_containsTestObjectId() {
+		assertTrue(db.containsTestObjectId(new TestObjectId("Page_CURA Healthcare Service/a_Make Appointment")))
+		assertFalse(db.containsTestObjectId(new TestObjectId("bar")))
+	}
+	
+	@Test
+	void test_getAllTestObjectIdsContained() {
+		Set<TestObjectId> testObjectIds = db.getAllTestObjectIdsContained()
+		assertEquals(1, testObjectIds.size())
 	}
 }

@@ -91,13 +91,12 @@ class ObjectRepositoryGC {
 	 * 
 	 */
 	Map<TestObjectId, Set<TCTOReference>> resolveRaw() {
-		Set<TCTOReference> allReferences = db.getAll()
+		Set<TestObjectId> allTestObjectId = db.getAllTestObjectId()
 		Map<TestObjectId, Set<TCTOReference>> result = new TreeMap<>()
-		allReferences.forEach { tctoRef ->
-			TestCaseId testCaseId = tctoRef.testCaseId()
-			TestObjectId testObjectId = tctoRef.testObjectGist().id() 
+		allTestObjectId.forEach { testObjectId ->
 			if (result.containsKey(testObjectId)) {
 				Set<TCTOReference> set = result.get(testObjectId)
+				
 				set.add(tctoRef)
 				result.put(testObjectId, set)
 			} else {

@@ -11,6 +11,7 @@ import org.junit.runners.JUnit4
 import org.junit.runners.MethodSorters;
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.kazurayam.ks.testcase.TestCaseId
 import com.kazurayam.ks.testcase.TextSearchResult
 import com.kazurayam.ks.testobject.Locator
@@ -31,10 +32,12 @@ public class TCTOReferenceTest {
 	private TestObjectGist testObjectGist
 
 	private static JmesPath<JsonNode> jmespath
-
+	private static ObjectMapper objectMapper
+	
 	@BeforeClass
 	static void beforeClass() {
 		jmespath = new JacksonRuntime()
+		objectMapper = new ObjectMapper()
 	}
 
 	/*
@@ -86,13 +89,14 @@ public class TCTOReferenceTest {
 		println instance.toJson(true)
 		assertTrue(instance.toJson().contains("Page_CURA Healthcare Service/a_Make Appointment"))
 		//
+		JsonNode input = objectMapper.readTree(instance.toJson())
 		Expression<JsonNode> expression = jmespath.compile("testObjectGist.testObjectId")
-		JsonNode result = expression.search(instance.toJson())
-		assertEquals("Page_CURA Healthcare Service/a_Make Appointment", result.toString())
+		JsonNode result = expression.search(input)
+		assertEquals("\"Page_CURA Healthcare Service/a_Make Appointment\"", result.toString())
 		//
 		expression = jmespath.compile("testObjectGist.locator")
-		result = expression.search(instance.toJson())
-		assertEquals("//a[@id='btn-make-appointment']", result.toString())
+		result = expression.search(input)
+		assertEquals("\"//a[@id='btn-make-appointment']\"", result.toString())
 	}
 
 	@Test
