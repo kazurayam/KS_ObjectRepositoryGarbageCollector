@@ -82,8 +82,6 @@ class ObjectRepositoryGC {
 			}
 		}
 
-		//
-
 	}
 
 	Database db() {
@@ -106,7 +104,7 @@ class ObjectRepositoryGC {
 	/**
 	 *
 	 */
-	String resolve(Boolean requirePrettyPrint = false) {
+	String resolve() {
 		Map<TestObjectId, Set<TCTOReference>> resolved = this.resolveRaw()
 		StringBuilder sb = new StringBuilder()
 		sb.append("[")
@@ -133,11 +131,7 @@ class ObjectRepositoryGC {
 			sep1 = ","
 		}
 		sb.append("]")
-		if (requirePrettyPrint) {
-			return JsonOutput.prettyPrint(sb.toString())
-		} else {
-			return sb.toString()
-		}
+		return JsonOutput.prettyPrint(sb.toString())
 	}
 
 	/**

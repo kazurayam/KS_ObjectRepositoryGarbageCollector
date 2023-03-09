@@ -38,7 +38,7 @@ public class ExtendedObjectRepository {
 		return (subpath != null) ? baseDir.resolve("subpath") : baseDir
 	}
 
-	String list(String pattern, Boolean isRegex, Boolean requirePrettyPrint = false) throws IOException {
+	String list(String pattern, Boolean isRegex) throws IOException {
 		List<TestObjectId> list = listRaw(pattern, isRegex)
 		StringBuilder sb = new StringBuilder()
 		sb.append("[")
@@ -49,11 +49,7 @@ public class ExtendedObjectRepository {
 			sep = ","
 		}
 		sb.append("]")
-		if (requirePrettyPrint) {
-			return JsonOutput.prettyPrint(sb.toString())
-		} else {
-			return sb.toString()
-		}
+		return JsonOutput.prettyPrint(sb.toString())
 	}
 
 	List<TestObjectId> listRaw(String pattern, Boolean isRegex) throws IOException {

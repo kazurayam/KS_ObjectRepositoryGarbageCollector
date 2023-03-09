@@ -36,7 +36,7 @@ public class Locator implements Comparable<Locator> {
 	int compareTo(Locator other) {
 		return this.value.compareTo(other.value)
 	}
-	
+
 	String toJson() {
 		return '"${value}"'
 	}

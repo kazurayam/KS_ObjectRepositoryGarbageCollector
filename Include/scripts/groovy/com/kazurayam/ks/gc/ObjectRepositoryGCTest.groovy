@@ -65,7 +65,7 @@ public class ObjectRepositoryGCTest {
 
 	@Test
 	void test_resolve() {
-		String json = gc.resolve(true)
+		String json = gc.resolve()
 		println "********** test_resolve **********"
 		println json
 	}

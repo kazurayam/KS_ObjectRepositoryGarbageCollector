@@ -54,7 +54,7 @@ public class TCTOReference implements Comparable<TCTOReference> {
 		return toJson()
 	}
 
-	String toJson(Boolean requirePrettyPrint = false) {
+	String toJson() {
 		StringBuilder sb = new StringBuilder()
 		sb.append("{")
 		sb.append(JsonOutput.toJson("testCaseId"))
@@ -69,11 +69,7 @@ public class TCTOReference implements Comparable<TCTOReference> {
 		sb.append(":")
 		sb.append(testObjectGist.toJson())
 		sb.append("}")
-		if (requirePrettyPrint) {
-			return JsonOutput.prettyPrint(sb.toString())
-		} else {
-			return sb.toString()
-		}
+		return JsonOutput.prettyPrint(sb.toString())
 	}
 
 	@Override

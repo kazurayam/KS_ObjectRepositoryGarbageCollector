@@ -43,7 +43,7 @@ public class Database {
 		return toJson()
 	}
 
-	String toJson(Boolean requirePrettyPrint = false) {
+	String toJson() {
 		StringBuilder sb = new StringBuilder()
 		sb.append('[')
 		String sep1 = ""
@@ -54,11 +54,7 @@ public class Database {
 			sep1 = ','
 		}
 		sb.append(']')
-		if (requirePrettyPrint) {
-			return JsonOutput.prettyPrint(sb.toString())
-		} else {
-			return sb.toString()
-		}
+		return JsonOutput.prettyPrint(sb.toString())
 	}
 
 	//-------------------------------------------------------------------------

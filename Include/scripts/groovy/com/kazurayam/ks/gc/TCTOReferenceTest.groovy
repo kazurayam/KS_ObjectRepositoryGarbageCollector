@@ -86,7 +86,7 @@ public class TCTOReferenceTest {
 	@Test
 	void test_toJson() {
 		println "********** test_toJson **********"
-		println instance.toJson(true)
+		println instance.toJson()
 		assertTrue(instance.toJson().contains("Page_CURA Healthcare Service/a_Make Appointment"))
 		//
 		JsonNode input = objectMapper.readTree(instance.toJson())

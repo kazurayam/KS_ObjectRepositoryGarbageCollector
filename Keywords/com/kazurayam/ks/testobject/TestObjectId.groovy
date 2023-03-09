@@ -1,5 +1,7 @@
 package com.kazurayam.ks.testobject
+
 import groovy.json.JsonOutput
+
 public class TestObjectId implements Comparable<TestObjectId>{
 
 	private String value

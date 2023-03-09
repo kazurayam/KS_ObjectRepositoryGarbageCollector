@@ -66,7 +66,7 @@ public class DatabaseTest {
 	@Test
 	void test_toJson() {
 		println "*********** test_toJson **********"
-		println JsonOutput.prettyPrint(db.toJson(true))
+		println JsonOutput.prettyPrint(db.toJson())
 	}
 
 	@Test
