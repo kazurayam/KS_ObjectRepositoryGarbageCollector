@@ -50,7 +50,7 @@
       <guid>1ff47ea8-346c-43e9-9a5f-4d60f14abcd3</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testcase/TestCaseIdTest</testCaseId>
+      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testcase/TestCaseIdTestRunner</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
@@ -79,6 +79,13 @@
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
       <testCaseId>Test Cases/junit4/com.kazurayam.ks.testobject/ExtendedObjectRepositoryTestRunner</testCaseId>
+      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
+   </testCaseLink>
+   <testCaseLink>
+      <guid>65c95429-2ae6-41c4-a83f-819e28c0cc77</guid>
+      <isReuseDriver>false</isReuseDriver>
+      <isRun>true</isRun>
+      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testobject/LocatorTestRunner</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>

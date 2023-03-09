@@ -1,5 +1,6 @@
 package com.kazurayam.ks.testobject
 
+import groovy.json.JsonOutput
 
 public class Locator implements Comparable<Locator> {
 
@@ -38,6 +39,12 @@ public class Locator implements Comparable<Locator> {
 	}
 
 	String toJson() {
-		return '"${value}"'
+		StringBuilder sb = new StringBuilder()
+		sb.append("{")
+		sb.append(JsonOutput.toJson("Locator"))
+		sb.append(":")
+		sb.append(JsonOutput.toJson(value))
+		sb.append("}")
+		return sb.toString()
 	}
 }
