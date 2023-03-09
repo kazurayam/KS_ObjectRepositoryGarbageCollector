@@ -66,7 +66,7 @@ public class TestObjectGist implements Comparable<TestObjectGist> {
 		sb.append("\"locator\":")
 		sb.append(JsonOutput.toJson(locator.value()))
 		sb.append("}")
-		return sb.toString()
+		return JsonOutput.prettyPrint(sb.toString())
 	}
 
 	@Override

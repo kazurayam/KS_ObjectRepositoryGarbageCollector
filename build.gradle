@@ -8,11 +8,18 @@ repositories {
 }
 
 dependencies {
-  testImplementation group: 'com.kazurayam', name: 'junit4ks', version: '1.6.1'
-  testImplementation group: 'com.amazonaws', name: 'jmespath-java', version: '1.12.405'
-  testImplementation group: 'io.burt', name: 'jmespath', version: '0.5.1', ext: 'pom'
-  testImplementation group: 'io.burt', name: 'jmespath-jackson', version: '0.5.1'
+  implementation group: 'com.kazurayam', name: 'junit4ks', version: '1.6.1'
+  implementation group: 'com.amazonaws', name: 'jmespath-java', version: '1.12.405'
+  implementation group: 'io.burt', name: 'jmespath', version: '0.5.1', ext: 'pom'
+  implementation group: 'io.burt', name: 'jmespath-jackson', version: '0.5.1'
 }
 
-version = "0.1.7"
+version = "0.1.8-SNAPSHOT"
+
+task removeGroovyAllJar(type: Delete) {
+  delete files("${projectDir}/Drivers/katalon_generated_groovy-all-2.4.21.jar")
+}
+
+katalonCopyDependencies.finalizedBy removeGroovyAllJar
+
 

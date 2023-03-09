@@ -161,6 +161,7 @@ class ObjectRepositoryGC {
 		sb.append("[")
 		String sep = ""
 		garbages.forEach { toi ->
+			sb.append(sep)
 			sb.append(toi.toJson())
 			sep = ","
 		}
