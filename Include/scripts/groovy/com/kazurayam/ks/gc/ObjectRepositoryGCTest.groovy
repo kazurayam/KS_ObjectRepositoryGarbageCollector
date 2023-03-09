@@ -73,7 +73,12 @@ public class ObjectRepositoryGCTest {
 	@Test
 	void test_garbagesRaw() {
 		List<TestObjectId> garbages = gc.garbagesRaw()
+		println "********** test_garbagesRaw **********"
+		garbages.forEach { toi ->
+			println toi.toString()
+		}
 		assertNotNull(garbages)
+		assertTrue(garbages.contains(new TestObjectId("Page_CURA Healthcare Service/a_Foo")))
 	}
 
 	@Test

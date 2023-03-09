@@ -163,9 +163,15 @@ class ObjectRepositoryGC {
 
 	String garbages() {
 		List<TestObjectId> garbages = garbagesRaw()
-		String json = JsonOutput.toJson(garbages)
-		String pp = JsonOutput.prettyPrint(json)
-		return pp
+		StringBuilder sb = new StringBuilder()
+		sb.append("[")
+		String sep = ""
+		garbages.forEach { toi ->
+			sb.append(toi.toJson())
+			sep = ","
+		}
+		sb.append("]")
+		return JsonOutput.prettyPrint(sb.toString())
 	}
 
 	/**
