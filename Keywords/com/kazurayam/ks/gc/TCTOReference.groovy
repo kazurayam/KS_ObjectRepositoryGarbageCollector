@@ -3,6 +3,7 @@ package com.kazurayam.ks.gc
 import com.kazurayam.ks.testcase.TestCaseId
 import com.kazurayam.ks.testcase.TextSearchResult
 import com.kazurayam.ks.testobject.TestObjectGist
+import groovy.json.JsonOutput
 
 public class TCTOReference implements Comparable<TCTOReference> {
 
@@ -53,9 +54,26 @@ public class TCTOReference implements Comparable<TCTOReference> {
 		return toJson()
 	}
 
-	String toJson() {
+	String toJson(Boolean requirePrettyPrint = false) {
 		StringBuilder sb = new StringBuilder()
-		return sb.toString()
+		sb.append("{")
+		sb.append(JsonOutput.toJson("testCaseId"))
+		sb.append(":")
+		sb.append(testCaseId.toJson())
+		sb.append(",")
+		sb.append(JsonOutput.toJson("textSearchResult"))
+		sb.append(":")
+		sb.append(textSearchResult.toJson())
+		sb.append(",")
+		sb.append(JsonOutput.toJson("testObjectGist"))
+		sb.append(":")
+		sb.append(testObjectGist.toJson())
+		sb.append("}")
+		if (requirePrettyPrint) {
+			return JsonOutput.prettyPrint(sb.toString())
+		} else {
+			return sb.toString()
+		}
 	}
 
 	@Override

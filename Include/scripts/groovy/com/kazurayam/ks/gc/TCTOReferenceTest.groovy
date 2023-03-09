@@ -9,11 +9,18 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.junit.runners.MethodSorters;
+
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.kazurayam.ks.testcase.TestCaseId
 import com.kazurayam.ks.testcase.TextSearchResult
+import com.kazurayam.ks.testobject.Locator
 import com.kazurayam.ks.testobject.TestObjectGist
 import com.kazurayam.ks.testobject.TestObjectId
-import com.kazurayam.ks.testobject.Locator
+
+import io.burt.jmespath.Expression
+import io.burt.jmespath.JmesPath
+import io.burt.jmespath.jackson.JacksonRuntime
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(JUnit4.class)
@@ -24,8 +31,14 @@ public class TCTOReferenceTest {
 	private TextSearchResult textSearchResult
 	private TestObjectGist testObjectGist
 
+	private static JmesPath<JsonNode> jmespath
+	private static ObjectMapper objectMapper
+
 	@BeforeClass
-	static void beforeClass() {}
+	static void beforeClass() {
+		jmespath = new JacksonRuntime()
+		objectMapper = new ObjectMapper()
+	}
 
 	/*
 	 * convenient method to create an instance of TCTOReference as text fixture
@@ -66,7 +79,30 @@ public class TCTOReferenceTest {
 	@Test
 	void test_testObjectGist() {
 		TestObjectGist gist = instance.testObjectGist()
-		assertEquals("Page_CURA Healthcare Service/a_Make Appointment", gist.id().value())
+		assertEquals("Page_CURA Healthcare Service/a_Make Appointment", gist.testObjectId().value())
 		assertEquals("""//a[@id='btn-make-appointment']""", gist.locator().value())
+	}
+
+	@Test
+	void test_toJson() {
+		println "********** test_toJson **********"
+		println instance.toJson(true)
+		assertTrue(instance.toJson().contains("Page_CURA Healthcare Service/a_Make Appointment"))
+		//
+		JsonNode input = objectMapper.readTree(instance.toJson())
+		Expression<JsonNode> expression = jmespath.compile("testObjectGist.testObjectId")
+		JsonNode result = expression.search(input)
+		assertEquals("\"Page_CURA Healthcare Service/a_Make Appointment\"", result.toString())
+		//
+		expression = jmespath.compile("testObjectGist.locator")
+		result = expression.search(input)
+		assertEquals("\"//a[@id='btn-make-appointment']\"", result.toString())
+	}
+
+	@Test
+	void test_toString() {
+		println "********** test_toString **********"
+		println instance.toString()
+		assertTrue(instance.toJson().contains("Page_CURA Healthcare Service/a_Make Appointment"))
 	}
 }

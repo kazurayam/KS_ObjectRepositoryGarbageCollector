@@ -34,6 +34,7 @@ public class ExtendedObjectRepositoryTest {
 		//
 		List list = instance.listRaw("", false)
 		assertTrue( list.size() > 0 )
+		assertTrue( json.contains("a_Make Appointment"))
 	}
 
 	@Test
@@ -44,6 +45,7 @@ public class ExtendedObjectRepositoryTest {
 		println json
 		List list = instance.listRaw(pattern, true)
 		assertTrue( list.size() > 0 )
+		assertTrue(json.contains("button_Login"))
 	}
 
 	@Test
@@ -55,30 +57,43 @@ public class ExtendedObjectRepositoryTest {
 		//
 		List list = instance.listRaw(pattern, true)
 		assertTrue( list.size() > 0 )
+		assertTrue(json.contains("button_Login"))
 	}
 
 	@Test
 	void test_listGist_default() {
 		String pattern = ""
 		Boolean isRegex = false
-		String json = instance.listGist(pattern, isRegex)
+		String json = instance.listGist(pattern, isRegex, true)
 		println "********** test_listGist_default *********"
 		println json
 		List<Map<String, String>> result =
 				instance.listGistRaw(pattern, isRegex)
 		assertTrue( result.size() > 0 )
+		assertTrue("json should contain 'a_Make Appointment'", json.contains("a_Make Appointment"))
 	}
 
 	@Test
-	void test_listGist_arg_string() {
+	void test_listGistRaw_arg_string() {
 		String pattern = "button_"
 		Boolean isRegex = false
 		String json = instance.listGistRaw(pattern, isRegex)
-		println "********** test_listGistRaw_arg *********"
+		println "********** test_listGistRaw_arg_string *********"
 		println json
 		List<Map<String, String>> result =
 				instance.listGistRaw(pattern, isRegex)
 		assertTrue( result.size() > 0 )
+		assertTrue(json.contains("button_Login"))
 	}
 
+	@Test
+	void test_getAllTestObjectIds() {
+		Set<TestObjectId> allTOI = instance.getAllTestObjectIds()
+		println "********** test_getAllTestObjectIds **********"
+		allTOI.forEach({ toi ->
+			println toi
+			assertNotNull(toi.value())
+			assertNotEquals("", toi.value())
+		})
+	}
 }

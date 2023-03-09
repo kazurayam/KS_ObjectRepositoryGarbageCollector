@@ -1,5 +1,5 @@
 package com.kazurayam.ks.testobject
-
+import groovy.json.JsonOutput
 public class TestObjectId implements Comparable<TestObjectId>{
 
 	private String value
@@ -34,5 +34,9 @@ public class TestObjectId implements Comparable<TestObjectId>{
 	@Override
 	int compareTo(TestObjectId other) {
 		return this.value.compareTo(other.value)
+	}
+
+	String toJson() {
+		return JsonOutput.toJson(value)
 	}
 }

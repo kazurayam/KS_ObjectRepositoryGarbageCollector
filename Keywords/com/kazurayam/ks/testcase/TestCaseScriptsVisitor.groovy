@@ -20,15 +20,14 @@ public class TestCaseScriptsVisitor extends SimpleFileVisitor<Path> {
 	TestCaseScriptsVisitor(Path scriptsDir) {
 		Objects.requireNonNull(scriptsDir)
 		assert Files.exists(scriptsDir)
-		this.scriptsDir = scriptsDir
+		this.scriptsDir = scriptsDir.toAbsolutePath().normalize()
 		groovyFiles = new ArrayList<Path>()
 	}
 
 	@Override
 	public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
-		if (!Files.isDirectory(file) && file.getFileName().toString().endsWith(".groovy")) {
-			Path relative = scriptsDir.relativize(file).normalize()
-			groovyFiles.add(relative)
+		if ( !Files.isDirectory(file) && file.getFileName().toString().endsWith(".groovy")) {
+			groovyFiles.add(file.toAbsolutePath().normalize())
 		}
 		return FileVisitResult.CONTINUE;
 	}
@@ -48,8 +47,8 @@ public class TestCaseScriptsVisitor extends SimpleFileVisitor<Path> {
 
 	List<TestCaseId> getTestCaseIdList() {
 		List<TestCaseId> list = new ArrayList<>()
-		getGroovyFiles().forEach ({ p ->
-			TestCaseId id = new TestCaseId(p.getParent().toString())
+		getGroovyFiles().forEach ({ groovyFile ->
+			TestCaseId id = new TestCaseId(scriptsDir, groovyFile)
 			list.add(id)
 		})
 		return list

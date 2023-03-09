@@ -1,75 +1,41 @@
 package com.kazurayam.ks.gc
 
-import com.kazurayam.ks.testcase.TestCaseId
-import com.kazurayam.ks.testcase.TextSearchResult
-import com.kazurayam.ks.testobject.TestObjectId
-import com.kazurayam.ks.gc.TCTOReference
+import java.util.stream.Collectors
 
+import com.kazurayam.ks.testcase.TestCaseId
+import com.kazurayam.ks.testobject.TestObjectId
 import groovy.json.JsonOutput
 
 public class Database {
 
-	private Map<TestCaseId, Set<TCTOReference>> db
+	private Set<TCTOReference> db
 
 	Database() {
-		db = new TreeMap<>()
+		db = new TreeSet<>()
 	}
 
-	void put(TestCaseId key, Set<TCTOReference> references) {
-		Objects.requireNonNull(key)
+	void addAll(Set<TCTOReference> references) {
 		Objects.requireNonNull(references)
 		references.forEach { ref ->
-			this.put(key, ref)
+			this.add(ref)
 		}
 	}
 
-	void put(TestCaseId key, TCTOReference reference) {
-		Objects.requireNonNull(key)
+	void add(TCTOReference reference) {
 		Objects.requireNonNull(reference)
-		Set<TCTOReference> refs
-		if (db.containsKey(key)) {
-			refs = db.get(key)
-		} else {
-			refs = new TreeSet<>()
-		}
-		refs.add(reference)
-		db.put(key, refs)
-	}
-
-	Set<TestCaseId> keySet() {
-		return db.keySet()
-	}
-
-	boolean containsKey(TestCaseId key) {
-		return db.containsKey(key)
-	}
-
-	Set<TCTOReference> get(TestCaseId key) {
-		return db.get(key)
-	}
-	
-	Set<TCTOReference> getAll() {
-		Set<TCTOReference> result = new TreeSet<>()
-		Set<TestCaseId> testCaseIdSet = this.keySet()
-		testCaseIdSet.forEach { testCaseId ->
-			Set<TCTOReference> part = db.get(testCaseId)
-			result.addAll(part)
-		}
-		return result
-	}
-	
-	Set<TestObjectId> getAllTestObjectId() {
-		Set<TestObjectId> result = new TreeSet<>()
-		Set<TCTOReference> allRefs = this.getAll()
-		allRefs.forEach { ref ->
-			TestObjectId testObjectId = ref.testObjectGist().id()
-			result.add(testObjectId)
-		}
-		return result
+		db.add(reference)
 	}
 
 	int size() {
 		return db.size()
+	}
+
+	TCTOReference get(int x) {
+		return (this.getAll() as List).get(x)
+	}
+
+	Set<TCTOReference> getAll() {
+		return new TreeSet<>(db)
 	}
 
 	@Override
@@ -77,26 +43,66 @@ public class Database {
 		return toJson()
 	}
 
-	String toJson() {
+	String toJson(Boolean requirePrettyPrint = false) {
 		StringBuilder sb = new StringBuilder()
-		sb.append('{')
+		sb.append('[')
 		String sep1 = ""
-		db.keySet().forEach { TestCaseId k ->
+		List list = db as List
+		list.forEach { TCTOReference ref ->
 			sb.append(sep1)
-			sb.append(JsonOutput.toJson(k))
-			sb.append(':')
-			Set<TCTOReference> setRef = db.get(k)
-			sb.append('[')
-			String sep2 = ""
-			setRef.forEach { ref ->
-				sb.append(sep2)
-				sb.append(ref.toJson())
-				sep2 = ","
-			}
-			sb.append(']')
+			sb.append(ref.toJson())
 			sep1 = ','
 		}
-		sb.append('}')
-		return sb.toString()
+		sb.append(']')
+		if (requirePrettyPrint) {
+			return JsonOutput.prettyPrint(sb.toString())
+		} else {
+			return sb.toString()
+		}
 	}
+
+	//-------------------------------------------------------------------------
+
+	Set<TCTOReference> findTCTOReferencesOf(TestCaseId testCaseId) {
+		return db.stream()
+				.filter({ tctoRef ->
+					tctoRef.testCaseId() == testCaseId
+				})
+				.collect(Collectors.toSet())
+	}
+
+	boolean containsTestCaseId(TestCaseId testCaseId) {
+		return this.findTCTOReferencesOf(testCaseId).size() > 0
+	}
+
+	Set<TestCaseId> getAllTestCaseIdsContained() {
+		return db.stream()
+				.map({ tctoRef ->
+					tctoRef.testCaseId()
+				})
+				.collect(Collectors.toSet())
+	}
+
+	//-------------------------------------------------------------------------
+
+	Set<TCTOReference> findTCTOReferencesOf(TestObjectId testObjectId) {
+		return db.stream()
+				.filter({ tctoRef ->
+					tctoRef.testObjectGist().testObjectId() == testObjectId
+				})
+				.collect(Collectors.toSet())
+	}
+
+	boolean containsTestObjectId(TestObjectId testObjectId) {
+		return this.findTCTOReferencesOf(testObjectId).size() > 0
+	}
+
+	Set<TestObjectId> getAllTestObjectIdsContained() {
+		return db.stream()
+				.map({ tctoRef ->
+					tctoRef.testObjectGist().testObjectId()
+				})
+				.collect(Collectors.toSet())
+	}
+
 }

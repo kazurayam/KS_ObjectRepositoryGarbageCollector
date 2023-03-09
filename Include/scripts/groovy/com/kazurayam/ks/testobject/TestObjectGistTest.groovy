@@ -6,24 +6,25 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import groovy.json.JsonOutput
 
 @RunWith(JUnit4.class)
 public class TestObjectGistTest {
-	
+
 	private TestObjectGist gist
-	
-	TestObjectId id = new TestObjectId("testObjectX")
+
+	TestObjectId testObjectId = new TestObjectId("testObjectX")
 	String method = "BASIC"
-	Locator locator = new Locator("//div[@id=\"main\"]")
-	
+	Locator locator = new Locator('//div[@id="main"]')
+
 	@Before
 	void setup() {
-		gist = new TestObjectGist(id, method, locator)
+		gist = new TestObjectGist(testObjectId, method, locator)
 	}
 
 	@Test
-	void test_id() {
-		assertEquals(id, gist.id())
+	void test_testObjectId() {
+		assertEquals(testObjectId, gist.testObjectId())
 	}
 
 	@Test
@@ -35,10 +36,17 @@ public class TestObjectGistTest {
 	void test_locator() {
 		assertEquals(locator, gist.locator())
 	}
-	
+
 	@Test
 	void test_toString() {
-		println gist.toString()
+		String s = gist.toString()
+		println "********** TestObjectGistTest#toString **********"
+		println s
+		assertTrue("toString() should contain 'testObjectX'", 
+					s.contains('testObjectX')
+					)
+		assertTrue('toString() should contain //div[@id=\\"main\\"]', 
+					s.contains('//div[@id=\\"main\\"]')
+			)
 	}
-
 }

@@ -32,14 +32,15 @@ class ObjectRepositoryGC {
 	private String objrepoSubpath // can be null
 	private String scriptsSubpath // can be null
 
-	private Database db;
+	private Database db
+	private Set<TestObjectId> allTestObjectIds
 
 	private ObjectRepositoryGC(Builder builder) {
-		this.objrepoDir = builder.objrepoDir
-		this.scriptsDir = builder.scriptsDir
+		this.objrepoDir = builder.objrepoDir.toAbsolutePath().normalize()
+		this.scriptsDir = builder.scriptsDir.toAbsolutePath().normalize()
 		this.objrepoSubpath = builder.objrepoSubpath
 		this.scriptsSubpath = builder.scriptsSubpath
-		this.db = new Database()
+		this.scan()
 	}
 
 	/*
@@ -51,15 +52,19 @@ class ObjectRepositoryGC {
 	 * find a list of "garbage" Test Objects which are not used by any of the Test Cases.
 	 */
 	public void scan() {
+
+		this.db = new Database()
+
 		// scan the Object Repository directory to make a list of TestObjectGists
 		ExtendedObjectRepository extOR = new ExtendedObjectRepository(objrepoDir, objrepoSubpath)
+		allTestObjectIds = extOR.getAllTestObjectIds()
 		List<TestObjectGist> gistList = extOR.listGistRaw("", false)
 
 		// scan the Scripts directory to make a list of TestCaseIds
-		Path sdir = (scriptsSubpath != null) ? scriptsDir.resolve(scriptsSubpath) : scriptsSubpath
-		TestCaseScriptsVisitor tcsVisitor = new TestCaseScriptsVisitor(scriptsDir)
-		Files.walkFileTree(sdir, tcsVisitor)
-		List<TestCaseId> testCaseIdList = tcsVisitor.getTestCaseIdList()
+		Path targetDir = (scriptsSubpath != null) ? scriptsDir.resolve(scriptsSubpath) : scriptsDir
+		TestCaseScriptsVisitor testCaseScriptsVisitor = new TestCaseScriptsVisitor(scriptsDir)
+		Files.walkFileTree(targetDir, testCaseScriptsVisitor)
+		List<TestCaseId> testCaseIdList = testCaseScriptsVisitor.getTestCaseIdList()
 
 		// Iterate over the list of TestCaseIds.
 		// Read the TestCase script, check if it contains any references to the TestObjects.
@@ -67,15 +72,18 @@ class ObjectRepositoryGC {
 		ScriptsSearcher scriptSearcher = new ScriptsSearcher(scriptsDir, scriptsSubpath)
 		testCaseIdList.forEach { testCaseId ->
 			gistList.forEach { gist ->
-				TestObjectId testObjectId = gist.id()
+				TestObjectId testObjectId = gist.testObjectId()
 				List<TextSearchResult> textSearchResultList =
 						scriptSearcher.searchIn(testCaseId, testObjectId.value(), false)
 				textSearchResultList.forEach { textSearchResult ->
 					TCTOReference reference = new TCTOReference(testCaseId, textSearchResult, gist)
-					db.put(testCaseId, reference)
+					db.add(reference)
 				}
 			}
 		}
+
+		//
+
 	}
 
 	Database db() {
@@ -83,12 +91,14 @@ class ObjectRepositoryGC {
 	}
 
 
+	/**
+	 * 
+	 */
 	Map<TestObjectId, Set<TCTOReference>> resolveRaw() {
+		Set<TestObjectId> allTestObjectIds = db.getAllTestObjectIdsContained()
 		Map<TestObjectId, Set<TCTOReference>> result = new TreeMap<>()
-		Set<TCTOReference> allReferences = db.getAll()
-		allReferences.forEach { ref ->
-			TestObjectId testObjectId = ref.testObjectGist().id()
-			result.put(testObjectId, ref)
+		allTestObjectIds.forEach { testObjectId ->
+			result.put(testObjectId, db.findTCTOReferencesOf(testObjectId))
 		}
 		return result
 	}
@@ -96,11 +106,38 @@ class ObjectRepositoryGC {
 	/**
 	 *
 	 */
-	String resolve() {
+	String resolve(Boolean requirePrettyPrint = false) {
 		Map<TestObjectId, Set<TCTOReference>> resolved = this.resolveRaw()
-		String json = JsonOutput.toJson(resolved)
-		String pp = JsonOutput.prettyPrint(json)
-		return pp
+		StringBuilder sb = new StringBuilder()
+		sb.append("[")
+		String sep1 = ""
+		resolved.keySet().forEach { testObjectId ->
+			sb.append(sep1)
+			sb.append("{")
+			sb.append(JsonOutput.toJson("testObjectId"))
+			sb.append(":")
+			sb.append(testObjectId.toJson())
+			sb.append(",")
+			sb.append(JsonOutput.toJson("TCTOReferences"))
+			sb.append(":")
+			sb.append("[")
+			Set<TCTOReference> refs = resolved.get(testObjectId)
+			String sep2 = ""
+			refs.forEach { ref ->
+				sb.append(sep2)
+				sb.append(ref.toJson())
+				sep2 = ","
+			}
+			sb.append("]")
+			sb.append("}")
+			sep1 = ","
+		}
+		sb.append("]")
+		if (requirePrettyPrint) {
+			return JsonOutput.prettyPrint(sb.toString())
+		} else {
+			return sb.toString()
+		}
 	}
 
 	/**
@@ -109,9 +146,10 @@ class ObjectRepositoryGC {
 	List<TestObjectId> garbagesRaw() {
 		Set<TestObjectId> tmp = new TreeSet<>()
 		Map<TestObjectId, Set<TCTOReference>> resolved = this.resolveRaw()
-		resolved.keySet().forEach { testObjectId ->
+		// allTestObjectIds are set in the init() method
+		allTestObjectIds.forEach { testObjectId ->
 			Set<TCTOReference> value = resolved.get(testObjectId)
-			if (value.size() == 0) {
+			if (value == null) {
 				// Oh, this TestObject must be a garbage
 				// as no Test Case uses this
 				tmp.add(testObjectId)
@@ -125,9 +163,15 @@ class ObjectRepositoryGC {
 
 	String garbages() {
 		List<TestObjectId> garbages = garbagesRaw()
-		String json = JsonOutput.toJson(garbages)
-		String pp = JsonOutput.prettyPrint(json)
-		return pp
+		StringBuilder sb = new StringBuilder()
+		sb.append("[")
+		String sep = ""
+		garbages.forEach { toi ->
+			sb.append(toi.toJson())
+			sep = ","
+		}
+		sb.append("]")
+		return JsonOutput.prettyPrint(sb.toString())
 	}
 
 	/**
