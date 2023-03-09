@@ -27,7 +27,7 @@ import io.burt.jmespath.jackson.JacksonRuntime
 public class ObjectRepositoryGCTest {
 
 	private static ObjectRepositoryGC gc
-	
+
 	private static JmesPath<JsonNode> jmespath
 	private static ObjectMapper objectMapper
 
@@ -81,5 +81,6 @@ public class ObjectRepositoryGCTest {
 		String json = gc.garbages()
 		println "********** test_garbages **********"
 		println json
+		assertTrue("json should contain 'a_Foo'", json.contains("a_Foo"))
 	}
 }

@@ -26,7 +26,7 @@ public class ExtendedObjectRepository {
 	ExtendedObjectRepository(Path baseDir) {
 		this(baseDir, null)
 	}
-	
+
 	ExtendedObjectRepository(Path baseDir, String subpath) {
 		Objects.requireNonNull(baseDir)
 		assert Files.exists(baseDir)
@@ -38,34 +38,56 @@ public class ExtendedObjectRepository {
 		return (subpath != null) ? baseDir.resolve("subpath") : baseDir
 	}
 
-	String list(String pattern, Boolean isRegex) throws IOException {
-		List<String> list = listRaw(pattern, isRegex)
-		String json = JsonOutput.toJson(list)
-		String pp = JsonOutput.prettyPrint(json)
-		return pp
+	String list(String pattern, Boolean isRegex, Boolean requirePrettyPrint = false) throws IOException {
+		List<TestObjectId> list = listRaw(pattern, isRegex)
+		StringBuilder sb = new StringBuilder()
+		sb.append("[")
+		String sep = ""
+		list.forEach { toi ->
+			sb.append(sep)
+			sb.append(toi.toJson())
+			sep = ","
+		}
+		sb.append("]")
+		if (requirePrettyPrint) {
+			return JsonOutput.prettyPrint(sb.toString())
+		} else {
+			return sb.toString()
+		}
 	}
 
-	List<String> listRaw(String pattern, Boolean isRegex) throws IOException {
+	List<TestObjectId> listRaw(String pattern, Boolean isRegex) throws IOException {
 		Path dir = getTargetDir()
 		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(baseDir)
 		Files.walkFileTree(dir, visitor)
-		List<String> ids = visitor.getTestObjectIdList()
+		List<TestObjectId> ids = visitor.getTestObjectIdList()
 		//
-		List<String> result = new ArrayList<>()
+		List<TestObjectId> result = new ArrayList<>()
 		BilingualMatcher bim = new BilingualMatcher(pattern, isRegex)
-		ids.forEach { id ->
-			logger.debug("pattern=${pattern}, isRegex=${isRegex}, id=${id.value()}, bim.found(id)=${bim.found(id.value())}")
-			if (bim.found(id.toString())) {
-				result.add(id)
+		ids.forEach { testObjectId ->
+			if (bim.found(testObjectId.value().toString())) {
+				result.add(testObjectId)
 			}
 		}
 		return result;
 	}
 
-	String listGist(String pattern, Boolean isRegex) throws IOException {
+	String listGist(String pattern, Boolean isRegex, Boolean requirePrettyPrint = false) throws IOException {
 		List<TestObjectGist> result = this.listGistRaw(pattern, isRegex)
-		String json = JsonOutput.toJson(result)
-		return JsonOutput.prettyPrint(json)
+		StringBuilder sb = new StringBuilder()
+		sb.append("[")
+		String sep = ""
+		result.forEach { tog ->
+			sb.append(sep)
+			sb.append(tog.toJson())
+			sep = ","
+		}
+		sb.append("]")
+		if (requirePrettyPrint) {
+			return JsonOutput.prettyPrint(sb.toString())
+		} else {
+			return sb.toString()
+		}
 	}
 
 	List<TestObjectGist> listGistRaw(String pattern, Boolean isRegex) throws IOException {
@@ -135,6 +157,20 @@ public class ExtendedObjectRepository {
 				selectorMethod.toString(),
 				locator)
 		return gist
+	}
+
+	//-------------------------------------------------------------------------
+
+	public Set<TestObjectId> getAllTestObjectIds() {
+		Set<TestObjectId> result = new TreeSet<>()
+		List<TestObjectGist> allGist = listGistRaw("", false)
+		allGist.forEach { gist ->
+			TestObjectId toi = gist.testObjectId()
+			if (toi != null && toi.value() != "") {
+				result.add(toi)
+			}
+		}
+		return result
 	}
 
 }

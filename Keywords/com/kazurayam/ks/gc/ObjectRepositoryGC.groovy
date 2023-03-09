@@ -32,7 +32,8 @@ class ObjectRepositoryGC {
 	private String objrepoSubpath // can be null
 	private String scriptsSubpath // can be null
 
-	private Database db;
+	private Database db
+	private Set<TestObjectId> allTestObjectIds
 
 	private ObjectRepositoryGC(Builder builder) {
 		this.objrepoDir = builder.objrepoDir.toAbsolutePath().normalize()
@@ -56,6 +57,7 @@ class ObjectRepositoryGC {
 
 		// scan the Object Repository directory to make a list of TestObjectGists
 		ExtendedObjectRepository extOR = new ExtendedObjectRepository(objrepoDir, objrepoSubpath)
+		allTestObjectIds = extOR.getAllTestObjectIds()
 		List<TestObjectGist> gistList = extOR.listGistRaw("", false)
 
 		// scan the Scripts directory to make a list of TestCaseIds
@@ -79,6 +81,9 @@ class ObjectRepositoryGC {
 				}
 			}
 		}
+
+		//
+
 	}
 
 	Database db() {
@@ -141,9 +146,10 @@ class ObjectRepositoryGC {
 	List<TestObjectId> garbagesRaw() {
 		Set<TestObjectId> tmp = new TreeSet<>()
 		Map<TestObjectId, Set<TCTOReference>> resolved = this.resolveRaw()
-		resolved.keySet().forEach { testObjectId ->
+		// allTestObjectIds are set in the init() method
+		allTestObjectIds.forEach { testObjectId ->
 			Set<TCTOReference> value = resolved.get(testObjectId)
-			if (value.size() == 0) {
+			if (value == null) {
 				// Oh, this TestObject must be a garbage
 				// as no Test Case uses this
 				tmp.add(testObjectId)
