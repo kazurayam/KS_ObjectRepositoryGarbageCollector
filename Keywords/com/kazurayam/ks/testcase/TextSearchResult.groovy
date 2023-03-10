@@ -65,9 +65,9 @@ public class TextSearchResult implements Comparable<TextSearchResult> {
 		sb.append(valueAsJson())
 		sb.append("}")
 		return JsonOutput.prettyPrint(sb.toString())
-	
+
 	}
-	
+
 	public String valueAsJson() {
 		StringBuilder sb = new StringBuilder()
 		sb.append("{")

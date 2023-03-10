@@ -115,9 +115,9 @@ class ObjectRepositoryGC {
 		resolved.keySet().forEach { testObjectId ->
 			sb.append(sep1)
 			sb.append("{")
-			sb.append(JsonOutput.toJson("testObjectId"))
+			sb.append(JsonOutput.toJson("TestObjectId"))
 			sb.append(":")
-			sb.append(testObjectId.toJson())
+			sb.append(JsonOutput.toJson(testObjectId.value()))
 			sb.append(",")
 			sb.append(JsonOutput.toJson("TCTOReferences"))
 			sb.append(":")

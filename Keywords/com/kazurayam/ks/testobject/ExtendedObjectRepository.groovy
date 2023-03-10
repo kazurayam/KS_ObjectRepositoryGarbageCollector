@@ -42,7 +42,7 @@ public class ExtendedObjectRepository {
 		List<TestObjectId> list = listTestObjectIdRaw(pattern, isRegex)
 		StringBuilder sb = new StringBuilder()
 		sb.append("{")
-		sb.append(JsonOutput.toJson("ExtendedObjectRepository#list"))
+		sb.append(JsonOutput.toJson("ExtendedObjectRepository#listTestObjectId"))
 		sb.append(":")
 		sb.append("[")
 		String sep = ""
