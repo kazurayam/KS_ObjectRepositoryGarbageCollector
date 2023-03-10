@@ -107,6 +107,9 @@ class ObjectRepositoryGC {
 	String resolve() {
 		Map<TestObjectId, Set<TCTOReference>> resolved = this.resolveRaw()
 		StringBuilder sb = new StringBuilder()
+		sb.append("{")
+		sb.append(JsonOutput.toJson("ObjectRepositoryGC#resolve"))
+		sb.append(":")
 		sb.append("[")
 		String sep1 = ""
 		resolved.keySet().forEach { testObjectId ->
@@ -131,6 +134,7 @@ class ObjectRepositoryGC {
 			sep1 = ","
 		}
 		sb.append("]")
+		sb.append("}")
 		return JsonOutput.prettyPrint(sb.toString())
 	}
 
@@ -158,6 +162,9 @@ class ObjectRepositoryGC {
 	String garbages() {
 		List<TestObjectId> garbages = garbagesRaw()
 		StringBuilder sb = new StringBuilder()
+		sb.append("{")
+		sb.append(JsonOutput.toJson("ObjectRepositoryGC#garbages"))
+		sb.append(":")
 		sb.append("[")
 		String sep = ""
 		garbages.forEach { toi ->
@@ -166,6 +173,7 @@ class ObjectRepositoryGC {
 			sep = ","
 		}
 		sb.append("]")
+		sb.append("}")
 		return JsonOutput.prettyPrint(sb.toString())
 	}
 
