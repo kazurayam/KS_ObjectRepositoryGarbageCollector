@@ -60,6 +60,9 @@ public class TextSearchResult implements Comparable<TextSearchResult> {
 	public String toJson() {
 		StringBuilder sb = new StringBuilder()
 		sb.append("{")
+		sb.append(JsonOutput.toJson("TextSearchResult"))
+		sb.append(":")
+		sb.append("{")
 		sb.append('"lineNo":')
 		sb.append(JsonOutput.toJson(lineNo))
 		sb.append(',')
@@ -80,6 +83,7 @@ public class TextSearchResult implements Comparable<TextSearchResult> {
 		sb.append(',')
 		sb.append('"hasMatch":')
 		sb.append(JsonOutput.toJson(hasMatch))
+		sb.append("}")
 		sb.append("}")
 	}
 
