@@ -43,8 +43,11 @@ public class Database {
 		return toJson()
 	}
 
-	String toJson(Boolean requirePrettyPrint = false) {
+	String toJson() {
 		StringBuilder sb = new StringBuilder()
+		sb.append("{")
+		sb.append(JsonOutput.toJson("Database"))
+		sb.append(":")
 		sb.append('[')
 		String sep1 = ""
 		List list = db as List
@@ -54,11 +57,8 @@ public class Database {
 			sep1 = ','
 		}
 		sb.append(']')
-		if (requirePrettyPrint) {
-			return JsonOutput.prettyPrint(sb.toString())
-		} else {
-			return sb.toString()
-		}
+		sb.append("}")
+		return JsonOutput.prettyPrint(sb.toString())
 	}
 
 	//-------------------------------------------------------------------------

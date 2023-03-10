@@ -42,7 +42,13 @@ public class TestCaseId implements Comparable<TestCaseId> {
 	}
 
 	String toJson() {
-		return JsonOutput.toJson(value)
+		StringBuilder sb = new StringBuilder()
+		sb.append("{")
+		sb.append(JsonOutput.toJson("TestCaseId"))
+		sb.append(":")
+		sb.append(JsonOutput.toJson(value))
+		sb.append("}")
+		return sb.toString()
 	}
 
 	@Override

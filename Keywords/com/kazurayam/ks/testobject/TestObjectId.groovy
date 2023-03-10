@@ -1,5 +1,7 @@
 package com.kazurayam.ks.testobject
+
 import groovy.json.JsonOutput
+
 public class TestObjectId implements Comparable<TestObjectId>{
 
 	private String value
@@ -37,6 +39,13 @@ public class TestObjectId implements Comparable<TestObjectId>{
 	}
 
 	String toJson() {
-		return JsonOutput.toJson(value)
+		StringBuilder sb = new StringBuilder()
+		sb.append("{")
+		sb.append(JsonOutput.toJson("TestObjectId"))
+		sb.append(":")
+		sb.append(JsonOutput.toJson(value))
+		sb.append("}")
+		sb.toString()
+		return sb.toString()
 	}
 }

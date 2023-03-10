@@ -27,35 +27,35 @@ public class ExtendedObjectRepositoryTest {
 	}
 
 	@Test
-	void test_list_default() {
-		String json = instance.list("", false)
-		println '********** test_list_default **********'
+	void test_listTestObjectId_default() {
+		String json = instance.listTestObjectId()
+		println '********** test_listTestObjectId_default **********'
 		println json
 		//
-		List list = instance.listRaw("", false)
+		List list = instance.listTestObjectIdRaw()
 		assertTrue( list.size() > 0 )
 		assertTrue( json.contains("a_Make Appointment"))
 	}
 
 	@Test
-	void test_list_byString() {
+	void test_listTestObjectId_byString() {
 		String pattern = "button_"
-		String json = instance.list(pattern, false)
-		println '********** test_list_byString **********'
+		String json = instance.listTestObjectId(pattern, false)
+		println '********** test_listTestObjectId_byString **********'
 		println json
-		List list = instance.listRaw(pattern, true)
+		List list = instance.listTestObjectIdRaw(pattern, true)
 		assertTrue( list.size() > 0 )
 		assertTrue(json.contains("button_Login"))
 	}
 
 	@Test
-	void test_list_byRegex() {
+	void test_listTestObjectId_byRegex() {
 		String pattern = "button_(\\w+)"
-		String json = instance.list(pattern, true)
-		println '********** test_list_byRegex **********'
+		String json = instance.listTestObjectId(pattern, true)
+		println '********** test_listTestObjectId_byRegex **********'
 		println json
 		//
-		List list = instance.listRaw(pattern, true)
+		List list = instance.listTestObjectIdRaw(pattern, true)
 		assertTrue( list.size() > 0 )
 		assertTrue(json.contains("button_Login"))
 	}
@@ -64,7 +64,7 @@ public class ExtendedObjectRepositoryTest {
 	void test_listGist_default() {
 		String pattern = ""
 		Boolean isRegex = false
-		String json = instance.listGist(pattern, isRegex, true)
+		String json = instance.listGist(pattern, isRegex)
 		println "********** test_listGist_default *********"
 		println json
 		List<Map<String, String>> result =
@@ -95,5 +95,18 @@ public class ExtendedObjectRepositoryTest {
 			assertNotNull(toi.value())
 			assertNotEquals("", toi.value())
 		})
+	}
+	
+	@Test
+	void test_reverseLookupRaw() {
+		Map<Locator, Set<TestObjectGist>> result = instance.reverseLookupRaw()
+		// TODO
+	}
+	
+	@Test
+	void test_reverseLookup() {
+		String json = instance.reverseLookup()
+		println "********** test_reverseLookup **********"
+		println json
 	}
 }

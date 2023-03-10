@@ -85,16 +85,17 @@ public class TCTOReferenceTest {
 
 	@Test
 	void test_toJson() {
+		String json = instance.toJson()
 		println "********** test_toJson **********"
-		println instance.toJson(true)
-		assertTrue(instance.toJson().contains("Page_CURA Healthcare Service/a_Make Appointment"))
+		println json
+		assertTrue(json.contains("Page_CURA Healthcare Service/a_Make Appointment"))
 		//
 		JsonNode input = objectMapper.readTree(instance.toJson())
-		Expression<JsonNode> expression = jmespath.compile("testObjectGist.testObjectId")
+		Expression<JsonNode> expression = jmespath.compile("TCTOReference.TestObjectGist.TestObjectId")
 		JsonNode result = expression.search(input)
 		assertEquals("\"Page_CURA Healthcare Service/a_Make Appointment\"", result.toString())
 		//
-		expression = jmespath.compile("testObjectGist.locator")
+		expression = jmespath.compile("TCTOReference.TestObjectGist.Locator")
 		result = expression.search(input)
 		assertEquals("\"//a[@id='btn-make-appointment']\"", result.toString())
 	}

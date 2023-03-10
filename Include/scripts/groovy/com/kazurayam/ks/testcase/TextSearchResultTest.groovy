@@ -35,11 +35,8 @@ public class TextSearchResultTest {
 
 	@Test
 	void test_toJson() {
+		println "********** test_toJson **********"
 		println tsr.toJson()
 	}
 
-	@Test
-	void test_prettyPrint() {
-		println JsonOutput.prettyPrint(tsr.toJson())
-	}
 }

@@ -3,6 +3,7 @@ package com.kazurayam.ks.testcase
 import java.nio.file.Path
 import java.util.regex.Matcher
 import java.util.regex.Pattern
+import groovy.json.JsonOutput
 
 public class SearchableText {
 
@@ -33,7 +34,7 @@ public class SearchableText {
 		return lines
 	}
 
-	public List<TextSearchResult> searchText(String pattern, Boolean isRegex) {
+	public List<TextSearchResult> searchText(String pattern = "", Boolean isRegex = false) {
 		List<TextSearchResult> result = new ArrayList<>()
 		if (pattern.length() == 0) {
 			return result    // no search will be performed; return an empty list
@@ -74,5 +75,27 @@ public class SearchableText {
 			}
 		}
 		return result
+	}
+	
+	@Override
+	public String toString() {
+		return toJson()
+	}
+	
+	public String toJson() {
+		StringBuilder sb = new StringBuilder()
+		sb.append("{")
+		sb.append(JsonOutput.toJson("SearchableText"))
+		sb.append(":")
+		sb.append("[")
+		String sep = ""
+		lines.forEach { line ->
+			sb.append(sep)
+			sb.append(JsonOutput.toJson(line))
+			sep = ","
+		}
+		sb.append("]")
+		sb.append("}")
+		return JsonOutput.prettyPrint(sb.toString())
 	}
 }

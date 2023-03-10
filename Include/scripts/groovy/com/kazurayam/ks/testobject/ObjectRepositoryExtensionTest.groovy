@@ -28,9 +28,9 @@ class ObjectRepositoryExtensionTest {
 	}
 
 	@Test
-	void test_listRaw() {
-		List<String> list = ObjectRepository.listRaw()
-		println "********** test_listRaw() **********"
+	void test_listTestObjectIdRaw() {
+		List<String> list = ObjectRepository.listTestObjectIdRaw()
+		println "********** test_listTestObjectIdRaw() **********"
 		list.forEach { p ->
 			println p
 		}
@@ -38,9 +38,9 @@ class ObjectRepositoryExtensionTest {
 	}
 
 	@Test
-	void test_listRaw_args() {
-		List<String> list = ObjectRepository.listRaw("button_", false)
-		println "********** test_listRaw_args() **********"
+	void test_listTestObjectIdRaw_args() {
+		List<String> list = ObjectRepository.listTestObjectIdRaw("button_", false)
+		println "********** test_listTestObjectIdRaw_args() **********"
 		list.forEach { p ->
 			println p
 		}
@@ -48,23 +48,23 @@ class ObjectRepositoryExtensionTest {
 	}
 
 	@Test
-	void test_list() {
-		String json = ObjectRepository.list()
-		println "********** test_list **********"
+	void test_listTestObjectId() {
+		String json = ObjectRepository.listTestObjectId()
+		println "********** test_listTestObjectId **********"
 		println json
 	}
 
 	@Test
-	void test_list_args() {
-		String json = ObjectRepository.list("button_")
-		println "********** test_list_args **********"
+	void test_listTestObjectId_args() {
+		String json = ObjectRepository.listTestObjectId("button_")
+		println "********** test_listTestObjectId_args **********"
 		println json
 	}
 
 	@Test
 	void test_listGistRaw() {
 		List<TestObjectGist> result = ObjectRepository.listGistRaw()
-		println "********** test_listTestObjectGistRaw *********"
+		println "********** test_listGistRaw *********"
 		result.forEach { m ->
 			println m
 		}
@@ -82,7 +82,7 @@ class ObjectRepositoryExtensionTest {
 	@Test
 	void test_listGist() {
 		String json = ObjectRepository.listGist()
-		println "********** test_listGiest *******"
+		println "********** test_listGist *******"
 		println json
 	}
 
