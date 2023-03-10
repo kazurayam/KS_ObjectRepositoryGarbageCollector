@@ -42,11 +42,11 @@ public class TestObjectGistTest {
 		String s = gist.toString()
 		println "********** TestObjectGistTest#toString **********"
 		println s
-		assertTrue("toString() should contain 'testObjectX'", 
-					s.contains('testObjectX')
-					)
-		assertTrue('toString() should contain //div[@id=\\"main\\"]', 
-					s.contains('//div[@id=\\"main\\"]')
-			)
+		assertTrue("toString() should contain 'testObjectX'",
+				s.contains('testObjectX')
+				)
+		assertTrue('toString() should contain //div[@id=\\"main\\"]',
+				s.contains('//div[@id=\\"main\\"]')
+				)
 	}
 }

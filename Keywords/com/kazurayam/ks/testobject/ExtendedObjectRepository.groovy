@@ -38,9 +38,12 @@ public class ExtendedObjectRepository {
 		return (subpath != null) ? baseDir.resolve("subpath") : baseDir
 	}
 
-	String list(String pattern, Boolean isRegex) throws IOException {
-		List<TestObjectId> list = listRaw(pattern, isRegex)
+	String listTestObjectId(String pattern = "", Boolean isRegex = false) throws IOException {
+		List<TestObjectId> list = listTestObjectIdRaw(pattern, isRegex)
 		StringBuilder sb = new StringBuilder()
+		sb.append("{")
+		sb.append(JsonOutput.toJson("ExtendedObjectRepository#list"))
+		sb.append(":")
 		sb.append("[")
 		String sep = ""
 		list.forEach { toi ->
@@ -49,10 +52,11 @@ public class ExtendedObjectRepository {
 			sep = ","
 		}
 		sb.append("]")
+		sb.append("}")
 		return JsonOutput.prettyPrint(sb.toString())
 	}
 
-	List<TestObjectId> listRaw(String pattern, Boolean isRegex) throws IOException {
+	List<TestObjectId> listTestObjectIdRaw(String pattern = "", Boolean isRegex = false) throws IOException {
 		Path dir = getTargetDir()
 		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(baseDir)
 		Files.walkFileTree(dir, visitor)
@@ -68,9 +72,12 @@ public class ExtendedObjectRepository {
 		return result;
 	}
 
-	String listGist(String pattern, Boolean isRegex, Boolean requirePrettyPrint = false) throws IOException {
+	String listGist(String pattern, Boolean isRegex) throws IOException {
 		List<TestObjectGist> result = this.listGistRaw(pattern, isRegex)
 		StringBuilder sb = new StringBuilder()
+		sb.append("{")
+		sb.append(JsonOutput.toJson("ExtendedObjectRepository#listGist"))
+		sb.append(":")
 		sb.append("[")
 		String sep = ""
 		result.forEach { tog ->
@@ -79,11 +86,8 @@ public class ExtendedObjectRepository {
 			sep = ","
 		}
 		sb.append("]")
-		if (requirePrettyPrint) {
-			return JsonOutput.prettyPrint(sb.toString())
-		} else {
-			return sb.toString()
-		}
+		sb.append("}")
+		return JsonOutput.prettyPrint(sb.toString())
 	}
 
 	List<TestObjectGist> listGistRaw(String pattern, Boolean isRegex) throws IOException {
@@ -109,10 +113,10 @@ public class ExtendedObjectRepository {
 	//-------------------------------------------------------------------------
 
 
-	Map<Locator, Set<TestObjectGist>> reverseLookupRaw(String pattern, Boolean isRegex) throws IOException {
+	Map<Locator, Set<TestObjectGist>> reverseLookupRaw(String pattern = "", Boolean isRegex = false) throws IOException {
 		Map<Locator, Set<TestObjectGist>> result = new TreeMap<>()
 		BilingualMatcher bim = new BilingualMatcher(pattern, isRegex)
-		List<TestObjectId> idList = this.listRaw("", false)  // list of IDs of Test Object
+		List<TestObjectId> idList = this.listTestObjectIdRaw("", false)  // list of IDs of Test Object
 		idList.forEach { id ->
 			Locator locator = findLocator(id)
 			Set<TestObjectId> idSet
@@ -130,10 +134,34 @@ public class ExtendedObjectRepository {
 		return result
 	}
 
-	String reverseLookup(String pattern, Boolean isRegex) throws IOException {
+	String reverseLookup(String pattern = "", Boolean isRegex = false) throws IOException {
 		Map<Locator, Set<TestObjectGist>> result = this.reverseLookupRaw(pattern, isRegex)
-		String json = JsonOutput.toJson(result)
-		return JsonOutput.prettyPrint(json)
+		StringBuilder sb = new StringBuilder()
+		sb.append("{")
+		sb.append(JsonOutput.toJson("ExtendedObjectRepository#reverseLookup"))
+		sb.append(":")
+		sb.append("[")
+		String sep1 = ""
+		result.keySet().forEach { locator ->
+			sb.append(sep1)
+			sb.append("{")
+			sb.append(locator.toJson())
+			sb.append(",")
+			sb.append("[")
+			Set<TestObjectGist> gists = result.get(locator)
+			String sep2 = ""
+			gists.forEach { gist ->
+				sb.append(sep2)
+				sb.append(gist.toJson())
+				sep2 = ","
+			}
+			sb.append("]")
+			sb.append("}")
+			sep1 = ","
+		}
+		sb.append("]")
+		sb.append("}")
+		return JsonOutput.prettyPrint(sb.toString())
 	}
 
 	//-------------------------------------------------------------------------
