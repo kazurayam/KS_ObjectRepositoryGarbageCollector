@@ -41,9 +41,7 @@ The sample project has a Test Case named [Test Cases/main/TC1](https://github.co
 
     WebUI.click(findTestObject('Object Repository/Page_CURA Healthcare Service/a_Go to Homepage'))
 
-This script contains lines that contain a fragment `findTestObjcet(…​)`.
-
-A call `findTestObject(…​)` method refers to a **Test Object**. If you read through the script, you would find that it contains 13 lines with `findTestObject(…​)` call. However, if you read it very carefully, you will find that some lines are referring to the same Test Objects. In fact, this script refers to 11 Test objects.
+This script contains lines with fragment `findTestObject(…​)`. A call `findTestObject(…​)` method refers to a **Test Object**. If you read the script, you would find that it contains 13 lines with `findTestObject(…​)` call. However, if you read it carefully, you will find that some lines are referring to the same Test Objects. In fact, this script refers to 11 Test objects.
 
 On the other hand, you can look at the `Object Repository` directory in the Katalon Studio GUI. The directory tree would look like this:
 
@@ -51,12 +49,12 @@ On the other hand, you can look at the `Object Repository` directory in the Kata
 
 You can find that in the `Object Repository` there are 15 Test Objects defined.
 
-**Problem** : There are 15 Test Objects defined, whereas 11 Test Objects are used by Test Cases. 15 minus 11 = 4 Test Objects are not actually used by Test Cases. In other words, there are 4 garbages. *How can you tell which Test Objects are garbages?*
+**Problem** : There are 15 Test Objects defined, whereas 11 Test Objects are used by Test Cases. 15 minus 11 = 4 Test Objects are not used by Test Cases. In other words, there are 4 garbages. *How can you tell which Test Objects are garbages?*
 
-This sample Katalon Studio project has just 15 Test Objects. It is a small project. I believe that many Katalon users have larger projects with 50 Test Objects, 100, 300, …​ possibly even more. The more Test Objects you have, the more garbages you would have. The more garbages you have, the more it becomes difficult to remove them. *Large scale Katalon Studio projects always contain a lot of garbages*
+This sample Katalon Studio project has just 15 Test Objects. It is a small project. I believe that many Katalon users have larger projects with 50 Test Objects, 100, 300, …​ possibly even more. The more Test Objects you have, the more garbages you would have. The more garbages you have, the more it becomes difficult to find them. *Large scale Katalon Studio projects always contain a lot of garbages*
 
-Any Katalon project with a lot of unused Test Objects is hard to maintain. Users would want to remove the garbages but, of course, they do not want to break their projects. Therefore they definitely want a tool that provides a list of unused Test Objects.
+In order to keep Katalon projects maintainable, users would want to remove the garbages. But they do not want to break their projects. They definitely want a tool that provides a list of unused Test Objects.
 
 *Unfortunately Katalon Studio provides no such tool that shows you a list of unused Test Objects.*
 
-So I have developed it.
+Therefore I have developed it.
