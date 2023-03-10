@@ -1,6 +1,5 @@
 == Problem to solve
 
-You can download a Katalon Studio project at https://github.com/kazurayam/ObjectRepositoryGarbageCollection/releases which presents the sample code.
 
 The sample project has a Test Case named link:https://github.com/kazurayam/ObjectRepositoryGarbageCollection/blob/develop/Scripts/main/TC1/Script1677544889443.groovy[Test Cases/main/TC1], which is as follows:
 

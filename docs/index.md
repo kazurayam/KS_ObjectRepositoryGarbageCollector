@@ -1,8 +1,8 @@
 # \[Katalon Studio\] Object Repository Garbage Collection
 
-## Problem to solve
-
 You can download a Katalon Studio project at <https://github.com/kazurayam/ObjectRepositoryGarbageCollection/releases> which presents the sample code.
+
+## Problem to solve
 
 The sample project has a Test Case named [Test Cases/main/TC1](https://github.com/kazurayam/ObjectRepositoryGarbageCollection/blob/develop/Scripts/main/TC1/Script1677544889443.groovy), which is as follows:
 
