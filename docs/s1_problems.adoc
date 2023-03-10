@@ -2,18 +2,19 @@
 
 You can download a Katalon Studio project at https://github.com/kazurayam/ObjectRepositoryGarbageCollection/releases which presents the sample code.
 
-The sample project has a Test Case named link:https://github.com/kazurayam/ObjectRepositoryGarbageCollection/blob/develop/Scripts/main/TC1/Script1677544889443.groovy[Test Cases/main/TC1]. The script contains many lines that include such fragment `findTestObjcet(...)`, for example:
+The sample project has a Test Case named link:https://github.com/kazurayam/ObjectRepositoryGarbageCollection/blob/develop/Scripts/main/TC1/Script1677544889443.groovy[Test Cases/main/TC1], which is as follows:
 
 [source, groovy]
 ----
-WebUI.click(findTestObject('Object Repository/Page_CURA Healthcare Service/a_Make Appointment'))
+include::../Scripts/main/TC1/Script1677544889443.groovy[]
 ----
 
-The method call `findTestObject(...)` method looks up the *Test Objects*. If you read through the script, you would find that it contains 13 lines with `findTestObject(...)` call. However, if you read it very carefully, you will find that some lines are referring to the same Test Objects. In fact, there are 11 Test objects referred by this script.
+
+The script contains many lines that include such fragment `findTestObjcet(...)`. A call `findTestObject(...)` method refers to a *Test Object*. If you read through the script, you would find that it contains 13 lines with `findTestObject(...)` call. However, if you read it very carefully, you will find that some lines are referring to the same Test Objects. In fact, there are 11 Test objects referred by this script.
 
 On the other hand, you can look at the `Object Repository` directory in the Katalon Studio GUI. The directory tree would look like this:
 
-![Object Repository with 15 Test Objects](https://kazurayam.github.io/ObjectRepositoryGarbageCollection/images/1_1_ObjectRepositoryContains15TestObjects.png)
+image:https://kazurayam.github.io/ObjectRepositoryGarbageCollection/images/1_1_ObjectRepositoryContains15TestObjects.png[Object Repository with 15 Test Objects]
 
 You can find that in the `Object Repository` there are 15 Test Objects defined.
 
