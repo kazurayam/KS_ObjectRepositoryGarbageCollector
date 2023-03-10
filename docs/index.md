@@ -57,4 +57,6 @@ This sample Katalon Studio project has just 15 Test Objects. It is a small proje
 
 Any Katalon project with a lot of unused Test Objects is hard to maintain. Users would want to remove the garbages but, of course, they do not want to break their projects. Therefore they definitely want a tool that provides a list of unused Test Objects.
 
-*Unfortunately Katalon Studio provides no such tool that tells you unused Test Objects.*
+*Unfortunately Katalon Studio provides no such tool that shows you a list of unused Test Objects.*
+
+So I have developed it.
