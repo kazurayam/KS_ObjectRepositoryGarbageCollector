@@ -24,11 +24,11 @@ public class ObjectRepositoryExtension {
 	void apply() {
 		ObjectRepository.metaClass.static.invokeMethod = { String name, args ->
 			switch (name) {
-				case "listRaw" :
-					return this.listRaw(args)
+				case "listTestObjectIdRaw" :
+					return this.listTestObjectIdRaw(args)
 					break
-				case "list" :
-					return this.list(args)
+				case "listTestObjectId" :
+					return this.listTestObjectId(args)
 					break
 				case "listGistRaw" :
 					return this.listGistRaw(args)
@@ -56,25 +56,25 @@ public class ObjectRepositoryExtension {
 		}
 	}
 
-	List<String> listRaw(Object ... args) throws Exception {
+	List<String> listTestObjectIdRaw(Object ... args) throws Exception {
 		ExtendedObjectRepository exor = new ExtendedObjectRepository()
 		if (args.length == 0) {
-			return exor.listRaw("", false)
+			return exor.listTestObjectIdRaw("", false)
 		} else if (args.length == 1) {
-			return exor.listRaw((String)args[0], false)
+			return exor.listTestObjectIdRaw((String)args[0], false)
 		} else {
-			return exor.listRaw((String)args[0], (Boolean)args[1])
+			return exor.listTestObjectIdRaw((String)args[0], (Boolean)args[1])
 		}
 	}
 
-	String list(Object ... args) throws Exception {
+	String listTestObjectId(Object ... args) throws Exception {
 		ExtendedObjectRepository exor = new ExtendedObjectRepository()
 		if (args.length == 0) {
-			return exor.list("", false)
+			return exor.listTestObjectId("", false)
 		} else if (args.length == 1) {
-			return exor.list((String)args[0], false)
+			return exor.listTestObjectId((String)args[0], false)
 		} else {
-			return exor.list((String)args[0], (Boolean)args[1])
+			return exor.listTestObjectId((String)args[0], (Boolean)args[1])
 		}
 	}
 

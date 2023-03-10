@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Project>
    <description></description>
-   <name>ObjectRepositoryExtension</name>
+   <name>ObjectRepositoryGarbageCollection</name>
    <tag></tag>
    <UUID>bd3fbdc6-7194-4788-8432-16d35109a22d</UUID>
    <migratedVersion>5.9.0</migratedVersion>
    <pageLoadTimeout>0</pageLoadTimeout>
-   <projectFileLocation>/Users/kazuakiurayama/katalon-workspace/ObjectRepositoryExtension/ObjectRepositoryExtension.prj</projectFileLocation>
+   <projectFileLocation>/Users/kazuakiurayama/katalon-workspace/ObjectRepositoryGarbageCollection/ObjectRepositoryGarbageCollection.prj</projectFileLocation>
    <sourceContent>
       <sourceFolderList>
          <sourceFolderConfiguration>
