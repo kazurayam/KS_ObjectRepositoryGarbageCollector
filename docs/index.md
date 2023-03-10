@@ -55,4 +55,4 @@ You can find that in the `Object Repository` there are 15 Test Objects defined.
 
 This sample Katalon Studio project has just 15 Test Objects. It is a small project. I believe that many Katalon users have larger projects with 50 Test Objects, 100, 300, …​ possibly even more. The more Test Objects you have, the more garbages you would have. The more garbages you have, the more it is difficult to remove them. *Large scale Katalon Studio projects always contain a lot of garbages*
 
-Any Katalon project with many unused Test Objects is hard to maintain. Users would want to remove the garbages safely with confidence. Therefore they definitely want a tool that provides a list of unused Test Objects. *Unfortunately Katalon Studio provide no such tool to find garbage Test Objects.*
+Any Katalon project with a lot of unused Test Objects is hard to maintain. Users would want to remove the garbages safely with confidence. Therefore they definitely want a tool that provides a list of unused Test Objects. *Unfortunately Katalon Studio provide no tool to find unused Test Objects.*
