@@ -59,6 +59,13 @@ public class TestObjectGist implements Comparable<TestObjectGist> {
 		sb.append("{")
 		sb.append(JsonOutput.toJson("TestObjectGist"))
 		sb.append(":")
+		sb.append(valueAsJson())
+		sb.append("}")
+		return JsonOutput.prettyPrint(sb.toString())
+	}
+	
+	public valueAsJson() {
+		StringBuilder sb = new StringBuilder()
 		sb.append("{")
 		sb.append(JsonOutput.toJson("TestObjectId"))
 		sb.append(":")
@@ -71,7 +78,6 @@ public class TestObjectGist implements Comparable<TestObjectGist> {
 		sb.append(JsonOutput.toJson("Locator"))
 		sb.append(":")
 		sb.append(JsonOutput.toJson(locator.value()))
-		sb.append("}")
 		sb.append("}")
 		return JsonOutput.prettyPrint(sb.toString())
 	}
