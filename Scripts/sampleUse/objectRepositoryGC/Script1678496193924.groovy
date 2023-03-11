@@ -24,12 +24,7 @@ Path scriptsDir = projectDir.resolve("Scripts")
 
 ObjectRepositoryGC gc = new ObjectRepositoryGC.Builder(objrepoDir, scriptsDir)
 							.scriptsSubpath("main")
-							//.objrepoSubpath("Page_CURA Healthcare Service")
+							.objrepoSubpath("Page_CURA Healthcare Service")
 							.build()
 String json = gc.garbages()
 report.text = json
-
-
-
-
-
