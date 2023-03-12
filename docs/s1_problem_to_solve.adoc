@@ -1,7 +1,8 @@
 == Problem to solve
 
+Let me start with explaining what problem this library is designed to solve.
 
-The sample project has a Test Case named link:https://github.com/kazurayam/ObjectRepositoryGarbageCollection/blob/develop/Scripts/main/TC1/Script1677544889443.groovy[Test Cases/main/TC1], which is as follows:
+I will present a sample Katalon Studio project that has a Test Case named link:https://github.com/kazurayam/ObjectRepositoryGarbageCollection/blob/develop/Scripts/main/TC1/Script1677544889443.groovy[Test Cases/main/TC1]. The script is as follows:
 
 [source, groovy]
 ----

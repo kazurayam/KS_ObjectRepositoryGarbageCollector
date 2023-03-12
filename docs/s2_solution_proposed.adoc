@@ -1,4 +1,5 @@
-== step2: list Test Objects, select IDs by String.contains("pattern")
+== Solution proposed
+
 
 === Test Cases/sampleUse/step2
 [source]

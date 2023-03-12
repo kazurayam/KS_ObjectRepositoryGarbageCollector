@@ -12,6 +12,7 @@ import com.kazurayam.ks.testobject.ExtendedObjectRepository
 import com.kazurayam.ks.testobject.TestObjectGist
 import com.kazurayam.ks.testobject.TestObjectId
 import groovy.json.JsonOutput
+import com.kms.katalon.core.configuration.RunConfiguration
 
 
 /**
@@ -190,7 +191,23 @@ class ObjectRepositoryGC {
 		private String objrepoSubpath // can be null
 		private String scriptsSubpath // can be null
 
+		Builder() {
+			Path projectDir = Paths.get(RunConfiguration.getProjectDir())
+			Path objrepoDir = projectDir.resolve("Object Repository")
+			Path scriptsDir = projectDir.resolve("Scripts")
+			init(objrepoDir, scriptsDir)
+			
+		}
+		
 		Builder(Path objrepoDir, Path scriptsDir) {
+			init(objrepoDir, scriptsDir)
+		}
+		
+		Builder(File objrepoDir, File scriptsDir) {
+			init(objrepoDir.toPath(), scriptsDir.toPath())
+		}
+		
+		private void init(Path objrepoDir, Path scriptsDir) {
 			Objects.requireNonNull(objrepoDir)
 			Objects.requireNonNull(scriptsDir)
 			assert Files.exists(objrepoDir)
