@@ -15,7 +15,8 @@ import com.kms.katalon.core.configuration.RunConfiguration
 // and the Scripts directory
 ObjectRepositoryGC gc = new ObjectRepositoryGC.Builder().build()
 
-// the gc instance can compile a list of garbate Test Objects
+// the gc.garbages() method call can compile a list of garbate Test Objects,
+// output the information in a JSON string
 String json = gc.garbages()
 println json
 
