@@ -30,8 +30,8 @@ class ObjectRepositoryGC {
 
 	private Path   objrepoDir // non null
 	private Path   scriptsDir // non null
-	private String objrepoSubpath // can be null
-	private String scriptsSubpath // can be null
+	private List<String> objrepoSubpathList // could be empty
+	private List<String> scriptsSubpathList // could be empty
 
 	private Database db
 	private Set<TestObjectId> allTestObjectIds
@@ -39,8 +39,8 @@ class ObjectRepositoryGC {
 	private ObjectRepositoryGC(Builder builder) {
 		this.objrepoDir = builder.objrepoDir.toAbsolutePath().normalize()
 		this.scriptsDir = builder.scriptsDir.toAbsolutePath().normalize()
-		this.objrepoSubpath = builder.objrepoSubpath
-		this.scriptsSubpath = builder.scriptsSubpath
+		this.objrepoSubpathList = builder.objrepoSubpathList
+		this.scriptsSubpathList = builder.scriptsSubpathList
 		this.scan()
 	}
 
@@ -53,9 +53,21 @@ class ObjectRepositoryGC {
 	 * find a list of "garbage" Test Objects which are not used by any of the Test Cases.
 	 */
 	public void scan() {
-
+		println "invoked scan()"
 		this.db = new Database()
+		objrepoSubpathList.forEach { objrepoSubpath ->
+			scriptsSubpathList.forEach { scriptsSubpath ->
+				scanSub(this.db, this.objrepoDir, objrepoSubpath, this.scriptsDir, scriptsSubpath)
+			}
+		}
+	}
 
+	private void scanSub(Database db, Path objrepoDir, String objrepoSubpath, Path scriptsDir, String scriptsSubpath) {
+		println "invoked scanSub"
+		println "objrepoDir=${objrepoDir.toString()}"
+		println "objrepoSubpath=${objrepoSubpath}"
+		println "scriptsDir=${scriptsDir.toString()}"
+		println "scriptsSubpath=${scriptsSubpath}"
 		// scan the Object Repository directory to make a list of TestObjectGists
 		ExtendedObjectRepository extOR = new ExtendedObjectRepository(objrepoDir, objrepoSubpath)
 		allTestObjectIds = extOR.getAllTestObjectIds()
@@ -82,8 +94,9 @@ class ObjectRepositoryGC {
 				}
 			}
 		}
-
 	}
+
+
 
 	Database db() {
 		return db
@@ -188,25 +201,24 @@ class ObjectRepositoryGC {
 		private Path   objrepoDir // non null
 		private Path   scriptsDir // non null
 
-		private String objrepoSubpath // can be null
-		private String scriptsSubpath // can be null
+		private List<String> objrepoSubpathList // could be empty
+		private List<String> scriptsSubpathList // could be empty
 
 		Builder() {
-			Path projectDir = Paths.get(RunConfiguration.getProjectDir())
+			Path projectDir = Paths.get(RunConfiguration.getProjectDir()).toAbsolutePath().normalize()
 			Path objrepoDir = projectDir.resolve("Object Repository")
 			Path scriptsDir = projectDir.resolve("Scripts")
 			init(objrepoDir, scriptsDir)
-			
 		}
-		
+
 		Builder(Path objrepoDir, Path scriptsDir) {
 			init(objrepoDir, scriptsDir)
 		}
-		
+
 		Builder(File objrepoDir, File scriptsDir) {
 			init(objrepoDir.toPath(), scriptsDir.toPath())
 		}
-		
+
 		private void init(Path objrepoDir, Path scriptsDir) {
 			Objects.requireNonNull(objrepoDir)
 			Objects.requireNonNull(scriptsDir)
@@ -214,21 +226,36 @@ class ObjectRepositoryGC {
 			assert Files.exists(scriptsDir)
 			this.objrepoDir = objrepoDir
 			this.scriptsDir = scriptsDir
+			this.objrepoSubpathList = new ArrayList<>()
+			this.objrepoSubpathList.add("")
+			this.scriptsSubpathList = new ArrayList<>()
+			this.scriptsSubpathList.add("")
+
 		}
 
-		Builder objrepoSubpath(String subpath) {
-			Objects.requireNonNull(subpath)
-			Path p = objrepoDir.resolve(subpath)
-			assert Files.exists(p)
-			this.objrepoSubpath = subpath
+		Builder objrepoSubpath(String... subpaths) {
+			Objects.requireNonNull(subpaths)
+			if (this.objrepoSubpathList.contains("")) {
+				this.objrepoSubpathList.remove("")
+			}
+			(subpaths as List).forEach { subpath ->
+				Path p = objrepoDir.resolve(subpath)
+				assert Files.exists(p): "${p} does not exist"
+				this.objrepoSubpathList.add(subpath)
+			}
 			return this
 		}
 
-		Builder scriptsSubpath(String subpath) {
-			Objects.requireNonNull(subpath)
-			Path p = scriptsDir.resolve(subpath)
-			assert Files.exists(p)
-			this.scriptsSubpath = subpath
+		Builder scriptsSubpath(String... subpaths) {
+			Objects.requireNonNull(subpaths)
+			if (this.scriptsSubpathList.contains("")) {
+				this.scriptsSubpathList.remove("")
+			}
+			(subpaths as List).forEach { subpath ->
+				Path p = scriptsDir.resolve(subpath)
+				assert Files.exists(p): "${p} does not exist"
+				this.scriptsSubpathList.add(subpath)
+			}
 			return this
 		}
 
