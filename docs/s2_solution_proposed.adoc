@@ -1,0 +1,20 @@
+== Solution proposed
+
+=== How to install the library
+
+
+You can download a Katalon Studio project at https://github.com/kazurayam/ObjectRepositoryGarbageCollection/releases which presents the sample code.
+
+=== Test Cases/sampleUse/step2
+[source]
+----
+include::../Scripts/sampleUse/step2/Script1677677321383.groovy[]
+----
+
+=== Output
+
+[source]
+----
+include::stdout.txt[lines=28..32]
+----
+

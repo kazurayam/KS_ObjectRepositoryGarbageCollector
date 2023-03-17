@@ -22,7 +22,7 @@ public class ObjectRepositoryExtension {
 
 	@Keyword
 	void apply() {
-		ObjectRepository.metaClass.static.invokeMethod = { String name, args ->
+		ObjectRepository.metaClass.'static'.invokeMethod = { String name, args ->
 			switch (name) {
 				case "listTestObjectIdRaw" :
 					return this.listTestObjectIdRaw(args)
@@ -43,7 +43,7 @@ public class ObjectRepositoryExtension {
 					return this.reverseLookup(args)
 					break
 				default :
-				// just do what ObejctRepository is designed to do
+				// just do what ObejctRepository is originally designed to do
 					def result
 					try {
 						result = delegate.metaClass.getMetaMethod(name, args).invoke(delegate, args)

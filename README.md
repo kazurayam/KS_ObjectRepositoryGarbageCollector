@@ -1,12 +1,7 @@
-# [Katalon Studio] Object Repository Extension
+# [Katalon Studio] Object Repository Garbage Collection
 
-This project provides a jar file which contains a set of custom Groovy classes that extends the functionality of [Katalon Studio](https://katalon.com/katalon-studio). The classes modifies `com.kms.katalon.core.testobject.ObjectRepository` class dynamically. The `ObjectRepository` will be added a few methods that enable user to search Test Object entities and Locators contained.
+This project provides a jar file which contains a set of custom Groovy classes that extends the functionality of [Katalon Studio](https://katalon.com/katalon-studio).
 
 Please refer to the following URL for more detail.
 
-- https://kazurayam.github.io/ObjectRepositoryExtension/
-
-
-
-https://mvnrepository.com/artifact/com.amazonaws/jmespath-java/1.12.420 JMESPath
-
+- https://kazurayam.github.io/ObjectRepositoryGarbageCollection/

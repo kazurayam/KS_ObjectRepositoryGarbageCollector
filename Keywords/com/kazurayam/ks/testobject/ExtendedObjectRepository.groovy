@@ -35,7 +35,7 @@ public class ExtendedObjectRepository {
 	}
 
 	Path getTargetDir() {
-		return (subpath != null) ? baseDir.resolve("subpath") : baseDir
+		return (subpath != null) ? baseDir.resolve(subpath) : baseDir
 	}
 
 	String listTestObjectId(String pattern = "", Boolean isRegex = false) throws IOException {
@@ -91,8 +91,8 @@ public class ExtendedObjectRepository {
 	}
 
 	List<TestObjectGist> listGistRaw(String pattern, Boolean isRegex) throws IOException {
-		Path dir = getTargetDir()
 		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(baseDir)
+		Path dir = getTargetDir()
 		Files.walkFileTree(dir, visitor)
 		List<TestObjectId> ids = visitor.getTestObjectIdList()
 		BilingualMatcher bim = new BilingualMatcher(pattern, isRegex)
@@ -175,6 +175,7 @@ public class ExtendedObjectRepository {
 	private TestObjectGist findGist(TestObjectId testObjectId) {
 		Objects.requireNonNull(TestObjectId)
 		TestObject tObj = ObjectRepository.findTestObject(testObjectId.value())
+		assert tObj != null: "ObjectRepository.findTestObject('${testObjectId.value()}') returned null"
 		SelectorMethod selectorMethod = tObj.getSelectorMethod()
 		Locator locator = new Locator(tObj.getSelectorCollection().getAt(selectorMethod))
 		TestObjectGist gist = new TestObjectGist(testObjectId,

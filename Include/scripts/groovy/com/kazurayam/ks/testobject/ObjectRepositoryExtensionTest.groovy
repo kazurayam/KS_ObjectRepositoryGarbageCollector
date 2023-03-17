@@ -23,7 +23,7 @@ class ObjectRepositoryExtensionTest {
 
 	@BeforeClass
 	static void beforeClass() {
-		ObjectRepositoryExtension ext = new ObjectRepositoryExtension()
+		ObjectRepositoryExtension ext = new ObjectRepositoryExtension(objectRepository)
 		ext.apply()
 	}
 

@@ -26,6 +26,10 @@ import io.burt.jmespath.jackson.JacksonRuntime
 @RunWith(JUnit4.class)
 public class ObjectRepositoryGCTest {
 
+	private static Path projectDir = Paths.get(".")
+	private static Path objectRepositoryDir = projectDir.resolve("Object Repository")
+	private static Path scriptsDir = projectDir.resolve("Scripts")
+
 	private static ObjectRepositoryGC gc
 
 	private static JmesPath<JsonNode> jmespath
@@ -33,11 +37,7 @@ public class ObjectRepositoryGCTest {
 
 	@BeforeClass
 	static void beforeClass() {
-		Path projectDir = Paths.get(".")
-		Path objectRepositoryDir = projectDir.resolve("Object Repository")
-		Path scriptsDir = projectDir.resolve("Scripts")
 		gc = new ObjectRepositoryGC.Builder(objectRepositoryDir, scriptsDir).build()
-		//
 		jmespath = new JacksonRuntime()
 		objectMapper = new ObjectMapper()
 	}
@@ -87,5 +87,19 @@ public class ObjectRepositoryGCTest {
 		println "********** test_garbages **********"
 		println json
 		assertTrue("json should contain 'a_Foo'", json.contains("a_Foo"))
+	}
+
+	@Test
+	void test_Builder_objrepoSubpath() {
+		ObjectRepositoryGC gc = new ObjectRepositoryGC.Builder(objectRepositoryDir, scriptsDir)
+									.objrepoSubpath("Page_CURA Healthcare Service")
+									.build()
+	}
+
+	@Test
+	void test_Builder_scriptsSubpath() {
+		ObjectRepositoryGC gc = new ObjectRepositoryGC.Builder(objectRepositoryDir, scriptsDir)
+									.scriptsSubpath("main")
+									.build()
 	}
 }

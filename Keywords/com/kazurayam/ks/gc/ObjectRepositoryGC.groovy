@@ -12,6 +12,7 @@ import com.kazurayam.ks.testobject.ExtendedObjectRepository
 import com.kazurayam.ks.testobject.TestObjectGist
 import com.kazurayam.ks.testobject.TestObjectId
 import groovy.json.JsonOutput
+import com.kms.katalon.core.configuration.RunConfiguration
 
 
 /**
@@ -61,8 +62,8 @@ class ObjectRepositoryGC {
 		List<TestObjectGist> gistList = extOR.listGistRaw("", false)
 
 		// scan the Scripts directory to make a list of TestCaseIds
-		Path targetDir = (scriptsSubpath != null) ? scriptsDir.resolve(scriptsSubpath) : scriptsDir
 		TestCaseScriptsVisitor testCaseScriptsVisitor = new TestCaseScriptsVisitor(scriptsDir)
+		Path targetDir = (scriptsSubpath != null) ? scriptsDir.resolve(scriptsSubpath) : scriptsDir
 		Files.walkFileTree(targetDir, testCaseScriptsVisitor)
 		List<TestCaseId> testCaseIdList = testCaseScriptsVisitor.getTestCaseIdList()
 
@@ -190,10 +191,26 @@ class ObjectRepositoryGC {
 		private String objrepoSubpath // can be null
 		private String scriptsSubpath // can be null
 
+		Builder() {
+			Path projectDir = Paths.get(RunConfiguration.getProjectDir())
+			Path objrepoDir = projectDir.resolve("Object Repository")
+			Path scriptsDir = projectDir.resolve("Scripts")
+			init(objrepoDir, scriptsDir)
+			
+		}
+		
 		Builder(Path objrepoDir, Path scriptsDir) {
+			init(objrepoDir, scriptsDir)
+		}
+		
+		Builder(File objrepoDir, File scriptsDir) {
+			init(objrepoDir.toPath(), scriptsDir.toPath())
+		}
+		
+		private void init(Path objrepoDir, Path scriptsDir) {
 			Objects.requireNonNull(objrepoDir)
-			assert Files.exists(objrepoDir)
 			Objects.requireNonNull(scriptsDir)
+			assert Files.exists(objrepoDir)
 			assert Files.exists(scriptsDir)
 			this.objrepoDir = objrepoDir
 			this.scriptsDir = scriptsDir
@@ -218,7 +235,6 @@ class ObjectRepositoryGC {
 		ObjectRepositoryGC build() {
 			return new ObjectRepositoryGC(this)
 		}
-
 	}
 
 }

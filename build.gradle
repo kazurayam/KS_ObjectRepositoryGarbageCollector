@@ -1,25 +1,176 @@
 plugins {
-  id 'java'
-  id "com.katalon.gradle-plugin" version "0.1.1"
+  id 'groovy'
+  id 'maven-publish'
+  id 'signing'
+}
+
+group = 'com.kazurayam'
+version = "0.1.10"
+
+def defaultEncoding = 'UTF-8'
+tasks.withType(AbstractCompile).each {it.options.encoding = defaultEncoding }
+tasks.withType(GroovyCompile).each {it.groovyOptions.encoding = defaultEncoding}
+
+ext {
+    isReleaseVersion = ! version.endsWith("SNAPSHOT")
+    AUTO_IMPORTED_JAR_PREFIX = 'AUTOIMPORTED_'
+    groovyVersion   = '2.4.21'
+}
+
+configurations {
+    generateDocs
 }
 
 repositories {
   mavenCentral()
+  mavenLocal()
+}
+
+configurations {
+  myconf
 }
 
 dependencies {
-  implementation group: 'com.kazurayam', name: 'junit4ks', version: '1.6.1'
-  implementation group: 'com.amazonaws', name: 'jmespath-java', version: '1.12.405'
-  implementation group: 'io.burt', name: 'jmespath', version: '0.5.1', ext: 'pom'
-  implementation group: 'io.burt', name: 'jmespath-jackson', version: '0.5.1'
+  myconf group: 'com.kazurayam', name: 'junit4ks', version: '1.6.1'
+  myconf group: 'com.amazonaws', name: 'jmespath-java', version: '1.12.405'
+  myconf group: 'io.burt', name: 'jmespath', version: '0.5.1', ext: 'pom'
+  myconf group: 'io.burt', name: 'jmespath-jackson', version: '0.5.1'
+  //
+  implementation fileTree(dir: "/Applications/katalon Studio.app/Contents/Eclipse/plugins", include: ['*.jar'])
+  implementation fileTree(dir: "/Applications/katalon Studio.app/Contents/Eclipse/configuration/resources/lib", include: ['*.jar'])
+  implementation "org.codehaus.groovy:groovy-all:${groovyVersion}"
+  testImplementation group: 'com.kazurayam', name: 'junit4ks', version: '1.6.1'
+  testImplementation group: 'com.amazonaws', name: 'jmespath-java', version: '1.12.405'
+  testImplementation group: 'io.burt', name: 'jmespath', version: '0.5.1', ext: 'pom'
+  testImplementation group: 'io.burt', name: 'jmespath-jackson', version: '0.5.1'
+  generateDocs "org.codehaus.groovy:groovy-all:${groovyVersion}"
 }
 
-version = "0.1.9"
-
-task removeGroovyAllJar(type: Delete) {
-  delete files("${projectDir}/Drivers/katalon_generated_groovy-all-2.4.21.jar")
+sourceSets {
+    main {
+        groovy {
+            srcDirs = ['Keywords', 'Libs']
+            excludes = ['CustomKeywords.groovy', "Temp*.groovy"]
+        }
+    }
+    test {
+        groovy {
+            srcDirs = ['Include/scripts/groovy']
+        }
+    }
 }
 
-katalonCopyDependencies.finalizedBy removeGroovyAllJar
+task drivers {
+  doFirst {
+    delete fileTree("Drivers") {
+      include("**/" + AUTO_IMPORTED_JAR_PREFIX + "*")
+    }
+  }
+  doLast {
+    copy { copySpec ->
+      copySpec
+        .from(project.getConfigurations().getByName("myconf"))
+        .into("Drivers")
+        .include(
+          "**/junit4ks*.jar",
+          "**/jmespath-java*.jar",
+          "**/jmespath*.jar",
+          "**/jmespath-jackson*.jar"
+        )
+        .rename({ s ->
+          AUTO_IMPORTED_JAR_PREFIX + s
+        })
+    }
+  }
+}
 
+sourceSets {
+  main {
+    groovy {
+      srcDirs = ['Keywords', 'Libs']
+      exclude 'CustomKeywords.groovy'
+      exclude 'Temp*.groovy'
+    }
+  }
+  test {
+    groovy {
+      srcDirs = ['Include/scripts/groovy']
+    }
+  }
+}
 
+task groovydoc(type: Groovydoc, overwrite:true) {
+    source = sourceSets.main.groovy
+    groovyClasspath = project.configurations.generateDocs
+    include 'com/kazurayam/ks/*'
+    exclude '**/*Test.groovy'
+}
+task publishGroovydoc(type: Copy) {
+    from 'build/docs/groovydoc'
+    into 'docs/api'
+}
+groovydoc.finalizedBy publishGroovydoc
+
+task groovydocJar(type: Jar) {
+    archiveClassifier = 'javadoc'
+    from groovydoc
+}
+
+task sourcesJar(type: Jar) {
+    archiveClassifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+publishing {
+    publications {
+        junit4ks(MavenPublication) {
+            artifact sourcesJar
+            artifact groovydocJar
+            pom {
+                groupId = project.group
+                name = project.rootProject.name
+                description = 'A Katalon Studio plugin that rerports a list of garbage Test Objects unused by any of Test Cases'
+                url = 'https://kazurayam.github.io/ObjectRepositoryGarbageCollection'
+                from components.java
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'https://www.apache.org.licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'kazurayam'
+                        name = 'URAYAMA,kazuaki'
+                        email = 'kazuaki.urayama@gmail.com'
+                    }
+                }
+                scm {
+                    connection = "scm:git:https://github.com/kazurayam/${project.rootProject.name}.git"
+                    developerConnection = "scm:git:git@github.com:kazurayam/${project.rootProject.name}.git"
+                    url = "https://github.com/kazurayam/${project.rootProject.name}"
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            def releaseRepo = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotRepo = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            url = isReleaseVersion ? releaseRepo: snapshotRepo
+            credentials {
+                username = project.hasProperty('ossrhUsername') ? ossrhUsername : "Unknown user"
+                password = project.hasProperty('ossrhPassword') ? ossrhPassword : "Unknown password"
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.junit4ks
+}
+
+// I do not want to sign the SNAPSHOT
+tasks.withType(Sign) {
+    onlyIf { isReleaseVersion }
+}
