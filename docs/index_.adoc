@@ -1,5 +1,4 @@
 = [Katalon Studio] Object Repository Garbage Collection
 
-You can download a Katalon Studio project at https://github.com/kazurayam/ObjectRepositoryGarbageCollection/releases which presents the sample code.
-
-include::s1_problems.adoc[]
+include::s1_problem_to_solve.adoc[]
+include::s2_solution_proposed.adoc[]

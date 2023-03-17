@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.kazurayam'
-version = "0.1.10-SNAPSHOT"
+version = "0.1.10"
 
 def defaultEncoding = 'UTF-8'
 tasks.withType(AbstractCompile).each {it.options.encoding = defaultEncoding }
@@ -14,6 +14,7 @@ tasks.withType(GroovyCompile).each {it.groovyOptions.encoding = defaultEncoding}
 ext {
     isReleaseVersion = ! version.endsWith("SNAPSHOT")
     AUTO_IMPORTED_JAR_PREFIX = 'AUTOIMPORTED_'
+    groovyVersion   = '2.4.21'
 }
 
 configurations {
@@ -34,7 +35,29 @@ dependencies {
   myconf group: 'com.amazonaws', name: 'jmespath-java', version: '1.12.405'
   myconf group: 'io.burt', name: 'jmespath', version: '0.5.1', ext: 'pom'
   myconf group: 'io.burt', name: 'jmespath-jackson', version: '0.5.1'
-  generateDocs "org.codehaus.groovy:groovy-all:2.4.21"
+  //
+  implementation fileTree(dir: "/Applications/katalon Studio.app/Contents/Eclipse/plugins", include: ['*.jar'])
+  implementation fileTree(dir: "/Applications/katalon Studio.app/Contents/Eclipse/configuration/resources/lib", include: ['*.jar'])
+  implementation "org.codehaus.groovy:groovy-all:${groovyVersion}"
+  testImplementation group: 'com.kazurayam', name: 'junit4ks', version: '1.6.1'
+  testImplementation group: 'com.amazonaws', name: 'jmespath-java', version: '1.12.405'
+  testImplementation group: 'io.burt', name: 'jmespath', version: '0.5.1', ext: 'pom'
+  testImplementation group: 'io.burt', name: 'jmespath-jackson', version: '0.5.1'
+  generateDocs "org.codehaus.groovy:groovy-all:${groovyVersion}"
+}
+
+sourceSets {
+    main {
+        groovy {
+            srcDirs = ['Keywords', 'Libs']
+            excludes = ['CustomKeywords.groovy', "Temp*.groovy"]
+        }
+    }
+    test {
+        groovy {
+            srcDirs = ['Include/scripts/groovy']
+        }
+    }
 }
 
 task drivers {

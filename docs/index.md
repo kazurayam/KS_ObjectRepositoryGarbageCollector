@@ -1,10 +1,10 @@
 # \[Katalon Studio\] Object Repository Garbage Collection
 
-You can download a Katalon Studio project at <https://github.com/kazurayam/ObjectRepositoryGarbageCollection/releases> which presents the sample code.
-
 ## Problem to solve
 
-The sample project has a Test Case named [Test Cases/main/TC1](https://github.com/kazurayam/ObjectRepositoryGarbageCollection/blob/develop/Scripts/main/TC1/Script1677544889443.groovy), which is as follows:
+Let me start with explaining what problem this library is designed to solve.
+
+I will present a sample Katalon Studio project that has a Test Case named [Test Cases/main/TC1](https://github.com/kazurayam/ObjectRepositoryGarbageCollection/blob/develop/Scripts/main/TC1/Script1677544889443.groovy). The script is as follows:
 
     import static com.kms.katalon.core.testobject.ObjectRepository.findTestObject
     import com.kms.katalon.core.model.FailureHandling as FailureHandling
@@ -58,3 +58,32 @@ In order to keep Katalon projects maintainable, users would want to remove the g
 *Unfortunately Katalon Studio provides no such tool that shows you a list of unused Test Objects.*
 
 Therefore I have developed it.
+== Solution proposed
+
+### How to install the library
+
+You can download a Katalon Studio project at <https://github.com/kazurayam/ObjectRepositoryGarbageCollection/releases> which presents the sample code.
+
+### Test Cases/sampleUse/step2
+
+    import com.kazurayam.ks.testobject.ObjectRepositoryExtension
+    import com.kms.katalon.core.testobject.ObjectRepository
+
+    /*
+     * Test Caes/sampleUse/step2
+     */
+
+    // modify com.kms.katalon.core.testobject.ObjectRepository class on the fly
+    ObjectRepositoryExtension.apply()
+
+    // step2: select Test Object with ID that match certain pattern by String.contains()
+    List<String> idsSelectedByStringContains = ObjectRepository.list("button_")
+
+    println "\n---------------- idsSelectedByStringContains -------------------------"
+    idsSelectedByStringContains.forEach { s ->
+        println s
+    }
+
+### Output
+
+    Unresolved directive in s2_solution_proposed.adoc - include::stdout.txt[lines=28..32]

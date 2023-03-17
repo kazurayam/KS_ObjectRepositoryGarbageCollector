@@ -175,6 +175,7 @@ public class ExtendedObjectRepository {
 	private TestObjectGist findGist(TestObjectId testObjectId) {
 		Objects.requireNonNull(TestObjectId)
 		TestObject tObj = ObjectRepository.findTestObject(testObjectId.value())
+		assert tObj != null: "ObjectRepository.findTestObject('${testObjectId.value()}') returned null"
 		SelectorMethod selectorMethod = tObj.getSelectorMethod()
 		Locator locator = new Locator(tObj.getSelectorCollection().getAt(selectorMethod))
 		TestObjectGist gist = new TestObjectGist(testObjectId,

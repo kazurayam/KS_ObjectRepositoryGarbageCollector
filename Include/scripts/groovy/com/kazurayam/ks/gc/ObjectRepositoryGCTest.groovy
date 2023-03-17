@@ -29,7 +29,7 @@ public class ObjectRepositoryGCTest {
 	private static Path projectDir = Paths.get(".")
 	private static Path objectRepositoryDir = projectDir.resolve("Object Repository")
 	private static Path scriptsDir = projectDir.resolve("Scripts")
-	
+
 	private static ObjectRepositoryGC gc
 
 	private static JmesPath<JsonNode> jmespath
