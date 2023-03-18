@@ -17,8 +17,17 @@ import com.kms.katalon.core.testobject.TestObject
  * @author kazurayam
  */
 public class ObjectRepositoryExtension {
+	
+	ExtendedObjectRepository extOR
 
-	ObjectRepositoryExtension() {}
+	ObjectRepositoryExtension() {
+		this(new ExtendedObjectRepository())
+	}
+	
+	ObjectRepositoryExtension(ExtendedObjectRepository extOR) {
+		Objects.requireNonNull(extOR)
+		this.extOR = extOR
+	}
 
 	@Keyword
 	void apply() {
@@ -57,68 +66,62 @@ public class ObjectRepositoryExtension {
 	}
 
 	List<String> listTestObjectIdRaw(Object ... args) throws Exception {
-		ExtendedObjectRepository exor = new ExtendedObjectRepository()
 		if (args.length == 0) {
-			return exor.listTestObjectIdRaw("", false)
+			return extOR.listTestObjectIdRaw("", false)
 		} else if (args.length == 1) {
-			return exor.listTestObjectIdRaw((String)args[0], false)
+			return extOR.listTestObjectIdRaw((String)args[0], false)
 		} else {
-			return exor.listTestObjectIdRaw((String)args[0], (Boolean)args[1])
+			return extOR.listTestObjectIdRaw((String)args[0], (Boolean)args[1])
 		}
 	}
 
 	String listTestObjectId(Object ... args) throws Exception {
-		ExtendedObjectRepository exor = new ExtendedObjectRepository()
 		if (args.length == 0) {
-			return exor.listTestObjectId("", false)
+			return extOR.listTestObjectId("", false)
 		} else if (args.length == 1) {
-			return exor.listTestObjectId((String)args[0], false)
+			return extOR.listTestObjectId((String)args[0], false)
 		} else {
-			return exor.listTestObjectId((String)args[0], (Boolean)args[1])
+			return extOR.listTestObjectId((String)args[0], (Boolean)args[1])
 		}
 	}
 
 	List<TestObjectGist> listGistRaw(Object ... args) throws Exception {
-		ExtendedObjectRepository exor = new ExtendedObjectRepository()
 		if (args.length == 0) {
-			return exor.listGistRaw("", false)
+			return extOR.listGistRaw("", false)
 		} else if (args.length == 1) {
-			return exor.listGistRaw((String)args[0], false)
+			return extOR.listGistRaw((String)args[0], false)
 		} else {
-			return exor.listGistRaw((String)args[0], (Boolean)args[1])
+			return extOR.listGistRaw((String)args[0], (Boolean)args[1])
 		}
 	}
 
 	String listGist(Object ... args) throws Exception {
-		ExtendedObjectRepository exor = new ExtendedObjectRepository()
 		if (args.length == 0) {
-			return exor.listGist("", false)
+			return extOR.listGist("", false)
 		} else if (args.length == 1) {
-			return exor.listGist((String)args[0], false)
+			return extOR.listGist((String)args[0], false)
 		} else {
-			return exor.listGist((String)args[0], (Boolean)args[1])
+			return extOR.listGist((String)args[0], (Boolean)args[1])
 		}
 	}
 
 	Map<Locator, Set<TestObjectGist>> reverseLookupRaw(Object ... args) throws IOException {
-		ExtendedObjectRepository exor = new ExtendedObjectRepository()
 		if (args.length == 0) {
-			return exor.reverseLookupRaw("", false)
+			return extOR.reverseLookupRaw("", false)
 		} else if (args.length == 1) {
-			return exor.reverseLookupRaw((String)args[0], false)
+			return extOR.reverseLookupRaw((String)args[0], false)
 		} else {
-			return exor.reverseLookupRaw((String)args[0], (Boolean)args[1])
+			return extOR.reverseLookupRaw((String)args[0], (Boolean)args[1])
 		}
 	}
 
 	String reverseLookup(Object ... args) throws IOException {
-		ExtendedObjectRepository exor = new ExtendedObjectRepository()
 		if (args.length == 0) {
-			return exor.reverseLookup("", false)
+			return extOR.reverseLookup("", false)
 		} else if (args.length == 1) {
-			return exor.reverseLookup((String)args[0], false)
+			return extOR.reverseLookup((String)args[0], false)
 		} else {
-			return exor.reverseLookup((String)args[0], (Boolean)args[1])
+			return extOR.reverseLookup((String)args[0], (Boolean)args[1])
 		}
 	}
 
