@@ -61,27 +61,27 @@ public class ExtendedObjectRepositoryTest {
 	}
 
 	@Test
-	void test_listGist_default() {
+	void test_listEssence_default() {
 		String pattern = ""
 		Boolean isRegex = false
-		String json = instance.listGist(pattern, isRegex)
-		println "********** test_listGist_default *********"
+		String json = instance.listEssence(pattern, isRegex)
+		println "********** test_listEssence_default *********"
 		println json
 		List<Map<String, String>> result =
-				instance.listGistRaw(pattern, isRegex)
+				instance.listEssenceRaw(pattern, isRegex)
 		assertTrue( result.size() > 0 )
 		assertTrue("json should contain 'a_Make Appointment'", json.contains("a_Make Appointment"))
 	}
 
 	@Test
-	void test_listGistRaw_arg_string() {
+	void test_listEssencetRaw_arg_string() {
 		String pattern = "button_"
 		Boolean isRegex = false
-		String json = instance.listGistRaw(pattern, isRegex)
-		println "********** test_listGistRaw_arg_string *********"
+		String json = instance.listEssenceRaw(pattern, isRegex)
+		println "********** test_listEssenceRaw_arg_string *********"
 		println json
 		List<Map<String, String>> result =
-				instance.listGistRaw(pattern, isRegex)
+				instance.listEssenceRaw(pattern, isRegex)
 		assertTrue( result.size() > 0 )
 		assertTrue(json.contains("button_Login"))
 	}
@@ -96,13 +96,13 @@ public class ExtendedObjectRepositoryTest {
 			assertNotEquals("", toi.value())
 		})
 	}
-	
+
 	@Test
 	void test_reverseLookupRaw() {
-		Map<Locator, Set<TestObjectGist>> result = instance.reverseLookupRaw()
+		Map<Locator, Set<TestObjectEssence>> result = instance.reverseLookupRaw()
 		// TODO
 	}
-	
+
 	@Test
 	void test_reverseLookup() {
 		String json = instance.reverseLookup()

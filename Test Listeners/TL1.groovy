@@ -1,4 +1,4 @@
-import com.kazurayam.ks.testobject.ObjectRepositoryExtension
+import com.kazurayam.ks.testobject.ObjectRepositoryExtender
 import com.kms.katalon.core.annotation.BeforeTestSuite
 import com.kms.katalon.core.context.TestSuiteContext
 
@@ -6,7 +6,7 @@ class TL1 {
 	
 	@BeforeTestSuite
 	def beforeTestSuite(TestSuiteContext testSuiteContext) {
-		ObjectRepositoryExtension ext = new ObjectRepositoryExtension()
+		ObjectRepositoryExtender ext = new ObjectRepositoryExtender()
 		ext.apply()
 	}
 }

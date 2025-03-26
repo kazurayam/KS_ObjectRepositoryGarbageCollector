@@ -12,6 +12,11 @@ import org.slf4j.LoggerFactory
 
 import groovy.json.JsonOutput
 
+/**
+ * ExtendedObjectRepository wraps the so-called "Object Repository" directory,
+ * implements various accessors for the contents in the directory.
+ * 
+ */
 public class ExtendedObjectRepository {
 
 	private static Logger logger = LoggerFactory.getLogger(ExtendedObjectRepository.class)
@@ -63,20 +68,20 @@ public class ExtendedObjectRepository {
 		List<TestObjectId> ids = visitor.getTestObjectIdList()
 		//
 		List<TestObjectId> result = new ArrayList<>()
-		BilingualMatcher bim = new BilingualMatcher(pattern, isRegex)
+		RegexOptedTextMatcher m = new RegexOptedTextMatcher(pattern, isRegex)
 		ids.forEach { testObjectId ->
-			if (bim.found(testObjectId.value().toString())) {
+			if (m.found(testObjectId.value().toString())) {
 				result.add(testObjectId)
 			}
 		}
 		return result;
 	}
 
-	String listGist(String pattern, Boolean isRegex) throws IOException {
-		List<TestObjectGist> result = this.listGistRaw(pattern, isRegex)
+	String listEssence(String pattern, Boolean isRegex) throws IOException {
+		List<TestObjectEssence> result = this.listEssenceRaw(pattern, isRegex)
 		StringBuilder sb = new StringBuilder()
 		sb.append("{")
-		sb.append(JsonOutput.toJson("ExtendedObjectRepository#listGist"))
+		sb.append(JsonOutput.toJson("ExtendedObjectRepository#listEssence"))
 		sb.append(":")
 		sb.append("[")
 		String sep = ""
@@ -90,20 +95,20 @@ public class ExtendedObjectRepository {
 		return JsonOutput.prettyPrint(sb.toString())
 	}
 
-	List<TestObjectGist> listGistRaw(String pattern, Boolean isRegex) throws IOException {
+	List<TestObjectEssence> listEssenceRaw(String pattern, Boolean isRegex) throws IOException {
 		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(baseDir)
 		Path dir = getTargetDir()
 		Files.walkFileTree(dir, visitor)
 		List<TestObjectId> ids = visitor.getTestObjectIdList()
-		BilingualMatcher bim = new BilingualMatcher(pattern, isRegex)
+		RegexOptedTextMatcher m = new RegexOptedTextMatcher(pattern, isRegex)
 		//
-		List<TestObjectGist> result = new ArrayList<>()
+		List<TestObjectEssence> result = new ArrayList<>()
 		ids.forEach { id ->
 			TestObject tObj = ObjectRepository.findTestObject(id.value())
 			Locator locator = findLocator(id)
-			if (bim.found(id.value())) {
-				TestObjectGist gist =
-						new TestObjectGist(id, tObj.getSelectorMethod().toString(), locator)
+			if (m.found(id.value())) {
+				TestObjectEssence gist =
+						new TestObjectEssence(id, tObj.getSelectorMethod().toString(), locator)
 				result.add(gist)
 			}
 		}
@@ -113,9 +118,9 @@ public class ExtendedObjectRepository {
 	//-------------------------------------------------------------------------
 
 
-	Map<Locator, Set<TestObjectGist>> reverseLookupRaw(String pattern = "", Boolean isRegex = false) throws IOException {
-		Map<Locator, Set<TestObjectGist>> result = new TreeMap<>()
-		BilingualMatcher bim = new BilingualMatcher(pattern, isRegex)
+	Map<Locator, Set<TestObjectEssence>> reverseLookupRaw(String pattern = "", Boolean isRegex = false) throws IOException {
+		Map<Locator, Set<TestObjectEssence>> result = new TreeMap<>()
+		RegexOptedTextMatcher m = new RegexOptedTextMatcher(pattern, isRegex)
 		List<TestObjectId> idList = this.listTestObjectIdRaw("", false)  // list of IDs of Test Object
 		idList.forEach { id ->
 			Locator locator = findLocator(id)
@@ -125,8 +130,8 @@ public class ExtendedObjectRepository {
 			} else {
 				idSet = new TreeSet<>()
 			}
-			if (bim.found(locator.value())) {
-				TestObjectGist gist = findGist(id)
+			if (m.found(locator.value())) {
+				TestObjectEssence gist = findGist(id)
 				idSet.add(gist)
 				result.put(locator, idSet)
 			}
@@ -135,7 +140,7 @@ public class ExtendedObjectRepository {
 	}
 
 	String reverseLookup(String pattern = "", Boolean isRegex = false) throws IOException {
-		Map<Locator, Set<TestObjectGist>> result = this.reverseLookupRaw(pattern, isRegex)
+		Map<Locator, Set<TestObjectEssence>> result = this.reverseLookupRaw(pattern, isRegex)
 		StringBuilder sb = new StringBuilder()
 		sb.append("{")
 		sb.append(JsonOutput.toJson("ExtendedObjectRepository#reverseLookup"))
@@ -148,7 +153,7 @@ public class ExtendedObjectRepository {
 			sb.append(locator.toJson())
 			sb.append(",")
 			sb.append("[")
-			Set<TestObjectGist> gists = result.get(locator)
+			Set<TestObjectEssence> gists = result.get(locator)
 			String sep2 = ""
 			gists.forEach { gist ->
 				sb.append(sep2)
@@ -168,17 +173,17 @@ public class ExtendedObjectRepository {
 
 	private Locator findLocator(TestObjectId testObjectId) {
 		Objects.requireNonNull(testObjectId)
-		TestObjectGist gist = findGist(testObjectId)
+		TestObjectEssence gist = findGist(testObjectId)
 		return gist.locator()
 	}
 
-	private TestObjectGist findGist(TestObjectId testObjectId) {
+	private TestObjectEssence findGist(TestObjectId testObjectId) {
 		Objects.requireNonNull(TestObjectId)
 		TestObject tObj = ObjectRepository.findTestObject(testObjectId.value())
 		assert tObj != null: "ObjectRepository.findTestObject('${testObjectId.value()}') returned null"
 		SelectorMethod selectorMethod = tObj.getSelectorMethod()
 		Locator locator = new Locator(tObj.getSelectorCollection().getAt(selectorMethod))
-		TestObjectGist gist = new TestObjectGist(testObjectId,
+		TestObjectEssence gist = new TestObjectEssence(testObjectId,
 				selectorMethod.toString(),
 				locator)
 		return gist
@@ -188,7 +193,7 @@ public class ExtendedObjectRepository {
 
 	public Set<TestObjectId> getAllTestObjectIds() {
 		Set<TestObjectId> result = new TreeSet<>()
-		List<TestObjectGist> allGist = listGistRaw("", false)
+		List<TestObjectEssence> allGist = listEssenceRaw("", false)
 		allGist.forEach { gist ->
 			TestObjectId toi = gist.testObjectId()
 			if (toi != null && toi.value() != "") {
@@ -197,5 +202,4 @@ public class ExtendedObjectRepository {
 		}
 		return result
 	}
-
 }

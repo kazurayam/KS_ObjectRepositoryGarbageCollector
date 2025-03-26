@@ -13,7 +13,6 @@ tasks.withType(GroovyCompile).each {it.groovyOptions.encoding = defaultEncoding}
 
 ext {
     isReleaseVersion = ! version.endsWith("SNAPSHOT")
-    AUTO_IMPORTED_JAR_PREFIX = 'AUTOIMPORTED_'
     groovyVersion   = '3.0.17'
 }
 
@@ -25,8 +24,6 @@ repositories {
   mavenCentral()
   mavenLocal()
 }
-
-
 
 dependencies {
     implementation fileTree(dir: "Drivers", include:['*.jar'])

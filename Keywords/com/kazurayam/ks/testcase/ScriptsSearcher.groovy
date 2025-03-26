@@ -2,8 +2,6 @@ package com.kazurayam.ks.testcase
 
 import java.nio.file.Files
 import java.nio.file.Path
-
-import com.kazurayam.ks.gc.Database
 import java.util.stream.Collectors
 
 public class ScriptsSearcher {
