@@ -65,7 +65,7 @@ public class ObjectRepositoryExtender {
 		}
 	}
 
-	List<String> listTestObjectIdRaw(Object ... args) throws Exception {
+	private List<String> listTestObjectIdRaw(Object ... args) throws Exception {
 		if (args.length == 0) {
 			return extOR.listTestObjectIdRaw("", false)
 		} else if (args.length == 1) {
@@ -75,7 +75,7 @@ public class ObjectRepositoryExtender {
 		}
 	}
 
-	String listTestObjectId(Object ... args) throws Exception {
+	private String listTestObjectId(Object ... args) throws Exception {
 		if (args.length == 0) {
 			return extOR.listTestObjectId("", false)
 		} else if (args.length == 1) {
@@ -85,7 +85,7 @@ public class ObjectRepositoryExtender {
 		}
 	}
 
-	List<TestObjectEssence> listEssenceRaw(Object ... args) throws Exception {
+	private List<TestObjectEssence> listEssenceRaw(Object ... args) throws Exception {
 		if (args.length == 0) {
 			return extOR.listEssenceRaw("", false)
 		} else if (args.length == 1) {
@@ -95,7 +95,7 @@ public class ObjectRepositoryExtender {
 		}
 	}
 
-	String listEssence(Object ... args) throws Exception {
+	private String listEssence(Object ... args) throws Exception {
 		if (args.length == 0) {
 			return extOR.listEssence("", false)
 		} else if (args.length == 1) {
@@ -105,7 +105,7 @@ public class ObjectRepositoryExtender {
 		}
 	}
 
-	Map<Locator, Set<TestObjectEssence>> reverseLookupRaw(Object ... args) throws IOException {
+	private Map<Locator, Set<TestObjectEssence>> reverseLookupRaw(Object ... args) throws IOException {
 		if (args.length == 0) {
 			return extOR.reverseLookupRaw("", false)
 		} else if (args.length == 1) {
@@ -115,7 +115,7 @@ public class ObjectRepositoryExtender {
 		}
 	}
 
-	String reverseLookup(Object ... args) throws IOException {
+	private String reverseLookup(Object ... args) throws IOException {
 		if (args.length == 0) {
 			return extOR.reverseLookup("", false)
 		} else if (args.length == 1) {

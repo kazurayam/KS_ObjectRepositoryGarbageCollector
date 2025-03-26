@@ -57,7 +57,7 @@ public class TestObjectEssence implements Comparable<TestObjectEssence> {
 	String toJson() {
 		StringBuilder sb = new StringBuilder()
 		sb.append("{")
-		sb.append(JsonOutput.toJson("TestObjectGist"))
+		sb.append(JsonOutput.toJson("TestObjectEssence"))
 		sb.append(":")
 		sb.append(valueAsJson())
 		sb.append("}")
