@@ -63,7 +63,7 @@ public class TestObjectGist implements Comparable<TestObjectGist> {
 		sb.append("}")
 		return JsonOutput.prettyPrint(sb.toString())
 	}
-	
+
 	public valueAsJson() {
 		StringBuilder sb = new StringBuilder()
 		sb.append("{")

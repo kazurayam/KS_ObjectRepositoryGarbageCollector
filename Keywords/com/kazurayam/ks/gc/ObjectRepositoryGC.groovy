@@ -230,7 +230,6 @@ class ObjectRepositoryGC {
 			this.objrepoSubpathList.add("")
 			this.scriptsSubpathList = new ArrayList<>()
 			this.scriptsSubpathList.add("")
-
 		}
 
 		Builder objrepoSubpath(String... subpaths) {
@@ -263,5 +262,4 @@ class ObjectRepositoryGC {
 			return new ObjectRepositoryGC(this)
 		}
 	}
-
 }
