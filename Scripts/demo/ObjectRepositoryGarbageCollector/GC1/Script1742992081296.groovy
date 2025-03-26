@@ -5,6 +5,8 @@ import java.nio.file.Paths
 import com.kazurayam.ks.testobject.gc.ObjectRepositoryGarbageCollector
 import com.kms.katalon.core.configuration.RunConfiguration
 
+import demo.Reporter
+
 /**
  * outputs a JSON file which contains a list of garbage Test Objects
  * in the Object Repository directory.
@@ -18,11 +20,11 @@ ObjectRepositoryGarbageCollector gc = new ObjectRepositoryGarbageCollector.Build
 // the gc.garbages() method call can compile a list of garbate Test Objects,
 // output the information in a JSON string
 String json = gc.garbages()
-println json
 
 // write it into a file
-Path projectDir = Paths.get(RunConfiguration.getProjectDir())
-Path buildDir = projectDir.resolve("build")
-Files.createDirectories(buildDir)
-Path report = buildDir.resolve("demoA.json")
-report.text = json
+Reporter rp = new Reporter("ObjectRepositoryGarbageCollector/GC1.md")
+rp.report("## Output of TestCases/demo/ObjectRepositoryGarbageCollector/GC1\n",
+	"gc.garbages() returned\n",
+	"```",
+	json,
+	"```")

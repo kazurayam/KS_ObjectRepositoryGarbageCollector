@@ -3,6 +3,8 @@ package com.kazurayam.ks.testobject.gc
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.time.LocalDateTime
+import java.time.Duration
 
 import com.kazurayam.ks.testcase.ScriptsSearcher
 import com.kazurayam.ks.testcase.TestCaseId
@@ -45,6 +47,11 @@ class ObjectRepositoryGarbageCollector {
 		this.scan()
 	}
 
+	private LocalDateTime startedAt
+	private LocalDateTime finishedAt
+	private int numberOfTestCases = 0
+	private int numberOfTestObjects = 0
+
 	/*
 	 * This method will scan the "Object Repository" folder and the "Scripts" folder.
 	 * to create an instance of Database internally and fill it with information found 
@@ -56,30 +63,38 @@ class ObjectRepositoryGarbageCollector {
 	public void scan() {
 		println "invoked scan()"
 		this.db = new Database()
+		startedAt = LocalDateTime.now()
 		objrepoSubpathList.forEach { objrepoSubpath ->
 			scriptsSubpathList.forEach { scriptsSubpath ->
 				scanSub(this.db, this.objrepoDir, objrepoSubpath, this.scriptsDir, scriptsSubpath)
 			}
 		}
+		finishedAt = LocalDateTime.now()
 	}
 
 	private void scanSub(Database db, Path objrepoDir, String objrepoSubpath, Path scriptsDir, String scriptsSubpath) {
-		println "invoked scanSub"
-		println "objrepoDir=${objrepoDir.toString()}"
-		println "objrepoSubpath=${objrepoSubpath}"
-		println "scriptsDir=${scriptsDir.toString()}"
-		println "scriptsSubpath=${scriptsSubpath}"
+		//println "invoked scanSub"
+		//println "objrepoDir=${objrepoDir.toString()}"
+		//println "objrepoSubpath=${objrepoSubpath}"
+		//println "scriptsDir=${scriptsDir.toString()}"
+		//println "scriptsSubpath=${scriptsSubpath}"
 		// scan the Object Repository directory to make a list of TestObjectGists
 		ExtendedObjectRepository extOR = new ExtendedObjectRepository(objrepoDir, objrepoSubpath)
 		allTestObjectIds = extOR.getAllTestObjectIds()
 		List<TestObjectEssence> gistList = extOR.listEssenceRaw("", false)
-
+		
+		//
+		numberOfTestObjects = gistList.size()
+		
 		// scan the Scripts directory to make a list of TestCaseIds
 		TestCaseScriptsVisitor testCaseScriptsVisitor = new TestCaseScriptsVisitor(scriptsDir)
 		Path targetDir = (scriptsSubpath != null) ? scriptsDir.resolve(scriptsSubpath) : scriptsDir
 		Files.walkFileTree(targetDir, testCaseScriptsVisitor)
 		List<TestCaseId> testCaseIdList = testCaseScriptsVisitor.getTestCaseIdList()
-
+		
+		//
+		numberOfTestCases = testCaseIdList.size()
+		
 		// Iterate over the list of TestCaseIds.
 		// Read the TestCase script, check if it contains any references to the TestObjects.
 		// If true, record the reference into the database
@@ -178,7 +193,15 @@ class ObjectRepositoryGarbageCollector {
 		List<TestObjectId> garbages = garbagesRaw()
 		StringBuilder sb = new StringBuilder()
 		sb.append("{")
-		sb.append(JsonOutput.toJson("ObjectRepositoryGC#garbages"))
+		sb.append(JsonOutput.toJson("stats"))
+		sb.append(":")
+		sb.append(JsonOutput.toJson(stats()))
+		sb.append(",")
+		sb.append(JsonOutput.toJson("Number of garbages"))
+		sb.append(":")
+		sb.append(JsonOutput.toJson(garbages.size()))
+		sb.append(",")
+		sb.append(JsonOutput.toJson("garbages"))
 		sb.append(":")
 		sb.append("[")
 		String sep = ""
@@ -191,6 +214,16 @@ class ObjectRepositoryGarbageCollector {
 		sb.append("}")
 		return JsonOutput.prettyPrint(sb.toString())
 	}
+
+	private Map<String, Number> stats() {
+		Map<String, Number> stats = new LinkedHashMap<String, Number>()
+		stats.put("Number of TestCases", numberOfTestCases)
+		stats.put("Number of TestObjects", numberOfTestObjects)
+		Duration timeTaken = Duration.between(startedAt, finishedAt)
+		stats.put("Duration seconds", timeTaken.getSeconds())
+		return stats
+	}
+
 
 	/**
 	 * Joshua Bloch's Builder pattern in Effective Java
