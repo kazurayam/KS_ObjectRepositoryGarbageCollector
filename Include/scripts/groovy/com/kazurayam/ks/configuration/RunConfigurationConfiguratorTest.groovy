@@ -17,12 +17,15 @@ import com.kazurayam.ks.configuration.RunConfigurationConfigurator
 
 @RunWith(JUnit4.class)
 public class RunConfigurationConfiguratorTest {
-	
+
 	@Test
 	public void test_configure() {
 		RunConfigurationConfigurator.configure()
+		//
 		String projectDir = RunConfiguration.getProjectDir()
+		println "projectDir=${projectDir}"
 		assertNotNull projectDir, "RunConfiguration.getProjectDir() returned null"
+		Path currentDir = Paths.get(".").normalize().toAbsolutePath()
+		assertEquals currentDir.toString(), projectDir
 	}
-	
 }

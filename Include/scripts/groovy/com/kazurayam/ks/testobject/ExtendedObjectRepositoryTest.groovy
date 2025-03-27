@@ -2,6 +2,9 @@ package com.kazurayam.ks.testobject
 
 import static org.junit.Assert.*
 
+import java.nio.file.Path
+import java.nio.file.Paths
+
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.FixMethodOrder;
@@ -10,9 +13,6 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.junit.runners.MethodSorters;
 
-import java.nio.file.Path
-import java.nio.file.Paths
-import java.nio.file.Files
 import com.kazurayam.ks.configuration.RunConfigurationConfigurator
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -21,7 +21,7 @@ import com.kazurayam.ks.configuration.RunConfigurationConfigurator
 public class ExtendedObjectRepositoryTest {
 
 	private ExtendedObjectRepository instance
-	
+
 	@BeforeClass
 	static void beforeClass() {
 		RunConfigurationConfigurator.configure()

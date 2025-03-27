@@ -1,5 +1,6 @@
 package com.kazurayam.ks.testobject
 
+import static com.kms.katalon.core.testobject.ObjectRepository.findTestObject
 import static org.junit.Assert.*
 
 import java.nio.file.Path
@@ -12,6 +13,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.junit.runners.MethodSorters;
 
+import com.kazurayam.ks.configuration.RunConfigurationConfigurator
 import com.kms.katalon.core.testobject.ObjectRepository
 import com.kms.katalon.core.testobject.TestObject
 
@@ -23,6 +25,8 @@ class ObjectRepositoryExtenderTest {
 
 	@BeforeClass
 	static void beforeClass() {
+		RunConfigurationConfigurator.configure()
+		//
 		ExtendedObjectRepository eor = new ExtendedObjectRepository(objectRepository)
 		ObjectRepositoryExtender ext = new ObjectRepositoryExtender(eor)
 		ext.apply()
@@ -142,6 +146,6 @@ class ObjectRepositoryExtenderTest {
 	@Test
 	void test_findTestObject() {
 		TestObject tObj = ObjectRepository.findTestObject("Page_CURA Healthcare Service/button_Login")
-		assertNotNull(tObj)
+		assertNotNull('ObjectRepository.findTestObject("Page_CURA Healthcare Service/button_Login") returned null', tObj)
 	}
 }
