@@ -81,26 +81,26 @@ class ObjectRepositoryGarbageCollector {
 		// scan the Object Repository directory to make a list of TestObjectGists
 		ExtendedObjectRepository extOR = new ExtendedObjectRepository(objrepoDir, objrepoSubpath)
 		allTestObjectIds = extOR.getAllTestObjectIds()
-		List<TestObjectEssence> gistList = extOR.listEssenceRaw("", false)
-		
+		List<TestObjectEssence> essenceList = extOR.listEssenceRaw("", false)
+
 		//
-		numberOfTestObjects = gistList.size()
-		
+		numberOfTestObjects = essenceList.size()
+
 		// scan the Scripts directory to make a list of TestCaseIds
 		TestCaseScriptsVisitor testCaseScriptsVisitor = new TestCaseScriptsVisitor(scriptsDir)
 		Path targetDir = (scriptsSubpath != null) ? scriptsDir.resolve(scriptsSubpath) : scriptsDir
 		Files.walkFileTree(targetDir, testCaseScriptsVisitor)
 		List<TestCaseId> testCaseIdList = testCaseScriptsVisitor.getTestCaseIdList()
-		
+
 		//
 		numberOfTestCases = testCaseIdList.size()
-		
+
 		// Iterate over the list of TestCaseIds.
 		// Read the TestCase script, check if it contains any references to the TestObjects.
 		// If true, record the reference into the database
 		ScriptsSearcher scriptSearcher = new ScriptsSearcher(scriptsDir, scriptsSubpath)
 		testCaseIdList.forEach { testCaseId ->
-			gistList.forEach { gist ->
+			essenceList.forEach { gist ->
 				TestObjectId testObjectId = gist.testObjectId()
 				List<TextSearchResult> textSearchResultList =
 						scriptSearcher.searchIn(testCaseId, testObjectId.value(), false)

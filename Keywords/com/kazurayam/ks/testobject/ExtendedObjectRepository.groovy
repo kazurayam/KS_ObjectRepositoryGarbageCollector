@@ -173,11 +173,11 @@ public class ExtendedObjectRepository {
 
 	private Locator findLocator(TestObjectId testObjectId) {
 		Objects.requireNonNull(testObjectId)
-		TestObjectEssence gist = findGist(testObjectId)
+		TestObjectEssence gist = findEssence(testObjectId)
 		return gist.locator()
 	}
 
-	private TestObjectEssence findGist(TestObjectId testObjectId) {
+	private TestObjectEssence findEssence(TestObjectId testObjectId) {
 		Objects.requireNonNull(TestObjectId)
 		TestObject tObj = ObjectRepository.findTestObject(testObjectId.value())
 		assert tObj != null: "ObjectRepository.findTestObject('${testObjectId.value()}') returned null"
@@ -193,8 +193,8 @@ public class ExtendedObjectRepository {
 
 	public Set<TestObjectId> getAllTestObjectIds() {
 		Set<TestObjectId> result = new TreeSet<>()
-		List<TestObjectEssence> allGist = listEssenceRaw("", false)
-		allGist.forEach { gist ->
+		List<TestObjectEssence> allEssence = listEssenceRaw("", false)
+		allEssence.forEach { gist ->
 			TestObjectId toi = gist.testObjectId()
 			if (toi != null && toi.value() != "") {
 				result.add(toi)

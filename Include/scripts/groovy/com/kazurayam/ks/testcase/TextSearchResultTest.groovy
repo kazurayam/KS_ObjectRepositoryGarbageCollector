@@ -38,5 +38,4 @@ public class TextSearchResultTest {
 		println "********** test_toJson **********"
 		println tsr.toJson()
 	}
-
 }

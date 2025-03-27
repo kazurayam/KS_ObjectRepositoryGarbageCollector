@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestSuiteEntity>
    <description></description>
-   <name>allSteps</name>
+   <name>runAll</name>
    <tag></tag>
    <isRerun>false</isRerun>
    <mailRecipient></mailRecipient>
@@ -10,65 +10,65 @@
    <pageLoadTimeoutDefault>true</pageLoadTimeoutDefault>
    <rerunFailedTestCasesOnly>false</rerunFailedTestCasesOnly>
    <rerunImmediately>false</rerunImmediately>
-   <testSuiteGuid>9a7dda00-a6bd-4cfc-a902-97a59c5d44e4</testSuiteGuid>
+   <testSuiteGuid>b6d3c16e-728f-44cb-ae60-6e911a0b8c11</testSuiteGuid>
    <testCaseLink>
-      <guid>2c09a583-d9a9-4153-964f-2dd46ea9bc19</guid>
+      <guid>c385c5c2-4e24-44ad-abba-eee090df343f</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
       <testCaseId>Test Cases/demo/ObjectRepositoryExtender/case1</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
-      <guid>770436c1-96b0-40c7-9b1f-64ff36087237</guid>
+      <guid>e8ffbd94-9432-4f54-9c0f-bf0d5c75f373</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
       <testCaseId>Test Cases/demo/ObjectRepositoryExtender/case2</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
-      <guid>46290d73-0035-40e1-92bd-229a23e155a4</guid>
+      <guid>c039ab73-6543-4531-8d28-3db895d3d496</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
       <testCaseId>Test Cases/demo/ObjectRepositoryExtender/case3</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
-      <guid>5666a813-1d17-4b9f-9be9-305b8f9bf0bd</guid>
+      <guid>d360da43-543f-498e-92c0-d716a6bf2a14</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
       <testCaseId>Test Cases/demo/ObjectRepositoryExtender/case4</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
-      <guid>76303562-d065-481b-96ae-ce785f84c38b</guid>
+      <guid>cb83aa57-7dca-44c7-9940-9321f70d8174</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
       <testCaseId>Test Cases/demo/ObjectRepositoryExtender/case5</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
-      <guid>beb2dad7-b218-4a19-b0b7-fac9fafa62c0</guid>
+      <guid>bc066deb-e2e2-4b5e-9f8e-0f3115a64db2</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
       <testCaseId>Test Cases/demo/ObjectRepositoryExtender/case6</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
-      <guid>f938fc02-f9b4-4c51-be7e-19601e342a98</guid>
+      <guid>17f800c4-ae8c-4741-9403-2b2eb27848dd</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
       <testCaseId>Test Cases/demo/ObjectRepositoryExtender/case7</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
-      <guid>1b01b01a-5c5c-4f39-a390-f51ef575de84</guid>
+      <guid>eae5c3f9-ef33-4ed2-ab63-74f2b4d05a32</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
       <testCaseId>Test Cases/demo/ObjectRepositoryExtender/case8</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
-      <guid>bedc7484-f8d4-4dea-a370-6be7c5966b94</guid>
+      <guid>f26371f5-b2b1-48d2-b7f5-460a90bc5462</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
       <testCaseId>Test Cases/demo/ObjectRepositoryExtender/case9</testCaseId>

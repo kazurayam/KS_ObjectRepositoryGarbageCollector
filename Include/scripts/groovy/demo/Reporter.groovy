@@ -9,8 +9,7 @@ import com.kms.katalon.core.configuration.RunConfiguration
 
 class Reporter {
 
-	private Path outDir = Paths.get(RunConfiguration.getProjectDir())
-	.resolve("build").resolve("demoReports")
+	private Path outDir = Paths.get(RunConfiguration.getProjectDir()).resolve("build").resolve("reports").resolve("demo")
 	private Path outFile
 
 	Reporter() {

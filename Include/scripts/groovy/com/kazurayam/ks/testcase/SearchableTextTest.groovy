@@ -16,7 +16,7 @@ import groovy.json.JsonOutput
 @RunWith(JUnit4.class)
 public class SearchableTextTest {
 
-	private Path TC1 = Paths.get(RunConfiguration.getProjectDir()).resolve("Scripts/main/TC1/Script1677544889443.groovy")
+	private Path TC1 = Paths.get(".").resolve("Scripts/main/TC1/Script1677544889443.groovy")
 
 	@Test
 	void test_searchText() {
@@ -36,7 +36,7 @@ public class SearchableTextTest {
 		sb.append("]")
 		println JsonOutput.prettyPrint(sb.toString())
 	}
-	
+
 	@Test
 	void test_toJson() {
 		SearchableText searchableText = new SearchableText(TC1)

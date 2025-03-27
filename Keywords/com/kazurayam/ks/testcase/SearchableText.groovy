@@ -76,12 +76,12 @@ public class SearchableText {
 		}
 		return result
 	}
-	
+
 	@Override
 	public String toString() {
 		return toJson()
 	}
-	
+
 	public String toJson() {
 		StringBuilder sb = new StringBuilder()
 		sb.append("{")

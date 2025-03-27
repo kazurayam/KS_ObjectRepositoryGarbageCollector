@@ -17,7 +17,7 @@ class RegexOptedTextMatcher {
 			ptrn = Pattern.compile(pattern)
 		}
 	}
-	
+
 	Boolean found(String text) {
 		Objects.requireNonNull(text)
 		if (pattern.length() > 0) {
