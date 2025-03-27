@@ -20,11 +20,11 @@ import groovy.json.JsonOutput
 
 /**
  * A sort of "Garbage Collector" for the "Object Repository" of Katalon Studio.
- * It reports list of Test Objects with metadata which Test Case scripts use the Test Object. 
+ * It reports list of Test Objects with metadata which Test Case scripts use the Test Object.
  * This class can report a list of "unused" Test Objects, which I call "garbages".
- * 
+ *
  * This class just compiles a report. It does not actually remove or change Test Objects at all.
- * 
+ *
  * @author kazurayam
  */
 class ObjectRepositoryGarbageCollector {
@@ -52,9 +52,18 @@ class ObjectRepositoryGarbageCollector {
 	private int numberOfTestCases = 0
 	private int numberOfTestObjects = 0
 
+	/**
+	 * will scan the './Test Cases/' folder and the './Object Repository' folder,
+	 * lookup the unused Test Objects, print the result into the stdout.
+	 */
+	public static void main(String[] args) {
+		ObjectRepositoryGarbageCollector gc = new ObjectRepositoryGarbageCollector.Builder().build()
+		println gc.garbages()
+	}
+
 	/*
 	 * This method will scan the "Object Repository" folder and the "Scripts" folder.
-	 * to create an instance of Database internally and fill it with information found 
+	 * to create an instance of Database internally and fill it with information found
 	 * out of the directories.
 	 * You can retrieve the Database by calling "db()" method.
 	 * You can retrieve an Garbage Collection plan by calling "xref()" method, in which you can
@@ -78,7 +87,7 @@ class ObjectRepositoryGarbageCollector {
 		//println "objrepoSubpath=${objrepoSubpath}"
 		//println "scriptsDir=${scriptsDir.toString()}"
 		//println "scriptsSubpath=${scriptsSubpath}"
-		// scan the Object Repository directory to make a list of TestObjectGists
+		// scan the Object Repository directory to make a list of TestObjectEssences
 		ExtendedObjectRepository extOR = new ExtendedObjectRepository(objrepoDir, objrepoSubpath)
 		allTestObjectIds = extOR.getAllTestObjectIds()
 		List<TestObjectEssence> essenceList = extOR.listEssenceRaw("", false)
@@ -100,12 +109,12 @@ class ObjectRepositoryGarbageCollector {
 		// If true, record the reference into the database
 		ScriptsSearcher scriptSearcher = new ScriptsSearcher(scriptsDir, scriptsSubpath)
 		testCaseIdList.forEach { testCaseId ->
-			essenceList.forEach { gist ->
-				TestObjectId testObjectId = gist.testObjectId()
+			essenceList.forEach { essence ->
+				TestObjectId testObjectId = essence.testObjectId()
 				List<TextSearchResult> textSearchResultList =
 						scriptSearcher.searchIn(testCaseId, testObjectId.value(), false)
 				textSearchResultList.forEach { textSearchResult ->
-					TCTOReference reference = new TCTOReference(testCaseId, textSearchResult, gist)
+					TCTOReference reference = new TCTOReference(testCaseId, textSearchResult, essence)
 					db.add(reference)
 				}
 			}
@@ -120,7 +129,7 @@ class ObjectRepositoryGarbageCollector {
 
 
 	/**
-	 * 
+	 *
 	 */
 	Map<TestObjectId, Set<TCTOReference>> resolveRaw() {
 		Set<TestObjectId> allTestObjectIds = db.getAllTestObjectIdsContained()
@@ -169,7 +178,7 @@ class ObjectRepositoryGarbageCollector {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	List<TestObjectId> garbagesRaw() {
 		Set<TestObjectId> tmp = new TreeSet<>()
@@ -227,7 +236,7 @@ class ObjectRepositoryGarbageCollector {
 
 	/**
 	 * Joshua Bloch's Builder pattern in Effective Java
-	 * 
+	 *
 	 * @author kazuarayam
 	 */
 	public static class Builder {

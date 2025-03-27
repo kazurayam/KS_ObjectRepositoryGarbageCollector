@@ -7,6 +7,7 @@ public class TestObjectId implements Comparable<TestObjectId>{
 	private String value
 
 	TestObjectId(String value) {
+		Objects.requireNonNull(value)
 		this.value = value
 	}
 

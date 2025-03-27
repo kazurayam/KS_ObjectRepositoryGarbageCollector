@@ -24,7 +24,7 @@ public class TCTOReferenceTest {
 	private TCTOReference instance
 	private TestCaseId testCaseId
 	private TextSearchResult textSearchResult
-	private TestObjectEssence testObjectGist
+	private TestObjectEssence testObjectEssence
 
 	@BeforeClass
 	static void beforeClass() {}
@@ -46,11 +46,11 @@ public class TCTOReferenceTest {
 		TextSearchResult textSearchResult = new TextSearchResult.Builder(line, 9)
 				.pattern(locValue, false)
 				.build()
-		TestObjectEssence testObjectGist = new TestObjectEssence(
+		TestObjectEssence testObjectEssence = new TestObjectEssence(
 				new TestObjectId(togValue),
 				"BASIC",
 				new Locator(locValue))
-		return new TCTOReference(testCaseId, textSearchResult, testObjectGist)
+		return new TCTOReference(testCaseId, textSearchResult, testObjectEssence)
 	}
 
 	@Test
@@ -79,11 +79,11 @@ public class TCTOReferenceTest {
 		assertTrue(json.contains("Page_CURA Healthcare Service/a_Make Appointment"))
 		//
 		//JsonNode input = objectMapper.readTree(instance.toJson())
-		//Expression<JsonNode> expression = jmespath.compile("TCTOReference.TestObjectGist.TestObjectId")
+		//Expression<JsonNode> expression = jmespath.compile("TCTOReference.TestObjectEssence.TestObjectId")
 		//JsonNode result = expression.search(input)
 		//assertEquals("\"Page_CURA Healthcare Service/a_Make Appointment\"", result.toString())
 		//
-		//expression = jmespath.compile("TCTOReference.TestObjectGist.Locator")
+		//expression = jmespath.compile("TCTOReference.TestObjectEssence.Locator")
 		//result = expression.search(input)
 		//assertEquals("\"//a[@id='btn-make-appointment']\"", result.toString())
 	}

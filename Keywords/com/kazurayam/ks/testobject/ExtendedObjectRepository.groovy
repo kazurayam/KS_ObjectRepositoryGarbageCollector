@@ -15,7 +15,7 @@ import groovy.json.JsonOutput
 /**
  * ExtendedObjectRepository wraps the so-called "Object Repository" directory,
  * implements various accessors for the contents in the directory.
- * 
+ *
  */
 public class ExtendedObjectRepository {
 
@@ -107,9 +107,9 @@ public class ExtendedObjectRepository {
 			TestObject tObj = ObjectRepository.findTestObject(id.value())
 			Locator locator = findLocator(id)
 			if (m.found(id.value())) {
-				TestObjectEssence gist =
+				TestObjectEssence essence =
 						new TestObjectEssence(id, tObj.getSelectorMethod().toString(), locator)
-				result.add(gist)
+				result.add(essence)
 			}
 		}
 		return result
@@ -131,8 +131,8 @@ public class ExtendedObjectRepository {
 				idSet = new TreeSet<>()
 			}
 			if (m.found(locator.value())) {
-				TestObjectEssence gist = findGist(id)
-				idSet.add(gist)
+				TestObjectEssence essence = findEssence(id)
+				idSet.add(essence)
 				result.put(locator, idSet)
 			}
 		}
@@ -153,11 +153,11 @@ public class ExtendedObjectRepository {
 			sb.append(locator.toJson())
 			sb.append(",")
 			sb.append("[")
-			Set<TestObjectEssence> gists = result.get(locator)
+			Set<TestObjectEssence> essences = result.get(locator)
 			String sep2 = ""
-			gists.forEach { gist ->
+			essences.forEach { essence ->
 				sb.append(sep2)
-				sb.append(gist.toJson())
+				sb.append(essence.toJson())
 				sep2 = ","
 			}
 			sb.append("]")
@@ -173,8 +173,8 @@ public class ExtendedObjectRepository {
 
 	private Locator findLocator(TestObjectId testObjectId) {
 		Objects.requireNonNull(testObjectId)
-		TestObjectEssence gist = findEssence(testObjectId)
-		return gist.locator()
+		TestObjectEssence essence= findEssence(testObjectId)
+		return essence.locator()
 	}
 
 	private TestObjectEssence findEssence(TestObjectId testObjectId) {
@@ -183,10 +183,10 @@ public class ExtendedObjectRepository {
 		assert tObj != null: "ObjectRepository.findTestObject('${testObjectId.value()}') returned null"
 		SelectorMethod selectorMethod = tObj.getSelectorMethod()
 		Locator locator = new Locator(tObj.getSelectorCollection().getAt(selectorMethod))
-		TestObjectEssence gist = new TestObjectEssence(testObjectId,
+		TestObjectEssence essence = new TestObjectEssence(testObjectId,
 				selectorMethod.toString(),
 				locator)
-		return gist
+		return essence
 	}
 
 	//-------------------------------------------------------------------------
@@ -194,8 +194,8 @@ public class ExtendedObjectRepository {
 	public Set<TestObjectId> getAllTestObjectIds() {
 		Set<TestObjectId> result = new TreeSet<>()
 		List<TestObjectEssence> allEssence = listEssenceRaw("", false)
-		allEssence.forEach { gist ->
-			TestObjectId toi = gist.testObjectId()
+		allEssence.forEach { essence ->
+			TestObjectId toi = essence.testObjectId()
 			if (toi != null && toi.value() != "") {
 				result.add(toi)
 			}

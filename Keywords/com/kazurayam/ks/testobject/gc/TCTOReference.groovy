@@ -16,6 +16,9 @@ public class TCTOReference implements Comparable<TCTOReference> {
 	private TestObjectEssence testObjectEssence
 
 	TCTOReference(TestCaseId testCaseId, TextSearchResult textSearchResult, TestObjectEssence testObjectEssence) {
+		Objects.requireNonNull(testCaseId)
+		Objects.requireNonNull(textSearchResult)
+		Objects.requireNonNull(testObjectEssence)
 		this.testCaseId = testCaseId
 		this.textSearchResult = textSearchResult
 		this.testObjectEssence = testObjectEssence

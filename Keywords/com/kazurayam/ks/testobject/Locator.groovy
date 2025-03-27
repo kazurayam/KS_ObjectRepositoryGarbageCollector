@@ -7,6 +7,7 @@ public class Locator implements Comparable<Locator> {
 	private String value
 
 	Locator(String value) {
+		Objects.requireNonNull(value)
 		this.value = value
 	}
 

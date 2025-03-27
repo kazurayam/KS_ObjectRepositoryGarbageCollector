@@ -6,15 +6,17 @@ public class TestObjectEssence implements Comparable<TestObjectEssence> {
 
 	private TestObjectId testObjectId       // "Page_CURA Healthcare Service/a_Go to Homepage"
 	private String method   // "BASIC", "XPATH", "CSS"
-	private Locator locator  // "//section[@id='summary']/div/div/div[7]/p/a"
+	private Locator locator  // "//section[@id='summary']/div/div/div[7]/p/a" ; could be null
 
 	TestObjectEssence(TestObjectId testObjectId, String method, Locator locator) {
 		Objects.requireNonNull(testObjectId)
-		Objects.requireNonNull(method)
-		Objects.requireNonNull(locator)
 		this.testObjectId = testObjectId
-		this.method = method
-		this.locator = locator
+		if (method != null) {
+			this.method = method
+		}
+		if (locator != null) {
+			this.locator = locator
+		}
 	}
 
 	TestObjectId testObjectId() {
@@ -35,17 +37,19 @@ public class TestObjectEssence implements Comparable<TestObjectEssence> {
 			return false
 		}
 		TestObjectEssence other = (TestObjectEssence)obj
-		return this.testObjectId == other.testObjectId &&
-				this.method == other.method &&
-				this.locator == other.locator
+		return this.testObjectId == other.testObjectId;
 	}
 
 	@Override
 	int hashCode() {
 		int hash = 7;
 		hash = 31 * hash + testObjectId.hashCode();
-		hash = 31 * hash + method.hashCode()
-		hash = 31 * hash + locator.hashCode()
+		if (method != null) {
+			hash = 31 * hash + method.hashCode()
+		}
+		if (locator != null) {
+			hash = 31 * hash + locator.hashCode()
+		}
 		return hash;
 	}
 
