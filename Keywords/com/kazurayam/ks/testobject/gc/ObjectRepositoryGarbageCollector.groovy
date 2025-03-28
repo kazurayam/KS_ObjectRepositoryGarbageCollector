@@ -229,8 +229,13 @@ class ObjectRepositoryGarbageCollector {
 		stats.put("Number of TestCases", numberOfTestCases)
 		stats.put("Number of TestObjects", numberOfTestObjects)
 		Duration timeTaken = Duration.between(startedAt, finishedAt)
-		stats.put("Duration seconds", timeTaken.getSeconds())
+		stats.put("Duration seconds", toSeconds(timeTaken))
 		return stats
+	}
+
+	private Double toSeconds(Duration dur) {
+		Double v = dur.toMillis() / 1000
+		return v
 	}
 
 
