@@ -19,8 +19,8 @@ ObjectRepositoryGarbageCollector gc = new ObjectRepositoryGarbageCollector.Build
 String json = gc.garbages()
 								
 // write it into a file
-Reporter rp = new Reporter("ObjectRepositoryGarbageCollector/GC2.md")
-rp.report("## Output of Test Cases/demo/ObjectRepositoryGarbageCollector/GC2\n",
+Reporter rp = new Reporter("ObjectRepositoryGarbageCollector/GC2.adoc")
+rp.report("=== Output of Test Cases/demo/ObjectRepositoryGarbageCollector/GC2\n",
 	"gc.garbages() returned\n",
 	"```", 
 	json, 

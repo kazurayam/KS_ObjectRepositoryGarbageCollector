@@ -1,20 +1,24 @@
-== Solution proposed
+== Solution
 
 === How to install the library
 
+You can download the jar from the [Releases](https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector/releases) page. Download the `KS_ObjectRepositoryGarbageCollector-x.x.x.jar`; locate it into the `Driviers` folder of your local Katalon Studio project.
 
-You can download a Katalon Studio project at https://github.com/kazurayam/ObjectRepositoryGarbageCollection/releases which presents the sample code.
+In order to confirm if you have the library, open your project in Katalon Studio, open "Project" > "Settings" to check the "Library Management". In the dialog, the jar should be found in the dialog:
 
-=== Test Cases/sampleUse/step2
+image:https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/images/2_1_LibraryManagement.png[]
+
+
+=== A demonstration: run the ObjectRepositoryGarbageCollector
+
+Here I made a script `Test Cases/ObjectRepositoryGarbageCollector/GC1`:
+
 [source]
 ----
-include::../Scripts/sampleUse/step2/Script1677677321383.groovy[]
+include::../Scripts/demo/ObjectRepositoryGarbageCollector/GC1/Script1742992081296.groovy[]
 ----
 
-=== Output
+When I run the script in Katalon Studio, I got the following output in the console:
 
-[source]
-----
-include::stdout.txt[lines=28..32]
-----
+include::../build/reports/demo/ObjectRepositoryGarbageCollector/GC1.adoc[]
 

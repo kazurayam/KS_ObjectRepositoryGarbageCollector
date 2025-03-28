@@ -58,32 +58,76 @@ In order to keep Katalon projects maintainable, users would want to remove the g
 *Unfortunately Katalon Studio provides no such tool that shows you a list of unused Test Objects.*
 
 Therefore I have developed it.
-== Solution proposed
+== Solution
 
 ### How to install the library
 
-You can download a Katalon Studio project at <https://github.com/kazurayam/ObjectRepositoryGarbageCollection/releases> which presents the sample code.
+You can download the jar from the \[Releases\](<https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector/releases>) page. Download the `KS_ObjectRepositoryGarbageCollector-x.x.x.jar`; locate it into the `Driviers` folder of your local Katalon Studio project.
 
-### Test Cases/sampleUse/step2
+In order to confirm if you have the library, open your project in Katalon Studio, open "Project" &gt; "Settings" to check the "Library Management". In the dialog, the jar should be found in the dialog:
 
-    import com.kazurayam.ks.testobject.ObjectRepositoryExtension
-    import com.kms.katalon.core.testobject.ObjectRepository
+![2 1 LibraryManagement](https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/images/2_1_LibraryManagement.png)
 
-    /*
-     * Test Caes/sampleUse/step2
+### A demonstration: run the ObjectRepositoryGarbageCollector
+
+Here I made a script `Test Cases/ObjectRepositoryGarbageCollector/GC1`:
+
+    import java.nio.file.Files
+    import java.nio.file.Path
+    import java.nio.file.Paths
+
+    import com.kazurayam.ks.testobject.gc.ObjectRepositoryGarbageCollector
+    import com.kms.katalon.core.configuration.RunConfiguration
+
+    import demo.Reporter
+
+    /**
+     * outputs a JSON file which contains a list of garbage Test Objects
+     * in the Object Repository directory.
+     * A garbage Test Object is a Test Object which is unused by any of Test Cases.
      */
 
-    // modify com.kms.katalon.core.testobject.ObjectRepository class on the fly
-    ObjectRepositoryExtension.apply()
+    // the Garbage Collector instance will scan the Object Repository directory
+    // and the Scripts directory
+    ObjectRepositoryGarbageCollector gc = new ObjectRepositoryGarbageCollector.Builder().build()
 
-    // step2: select Test Object with ID that match certain pattern by String.contains()
-    List<String> idsSelectedByStringContains = ObjectRepository.list("button_")
+    // the gc.garbages() method call can compile a list of garbate Test Objects,
+    // output the information in a JSON string
+    String json = gc.garbages()
 
-    println "\n---------------- idsSelectedByStringContains -------------------------"
-    idsSelectedByStringContains.forEach { s ->
-        println s
+    // write it into a file
+    Reporter rp = new Reporter("ObjectRepositoryGarbageCollector/GC1.adoc")
+    rp.report("=== Output of TestCases/demo/ObjectRepositoryGarbageCollector/GC1\n",
+        "gc.garbages() returned\n",
+        "```",
+        json,
+        "```")
+
+When I run the script in Katalon Studio, I got the following output in the console:
+
+### Output of TestCases/demo/ObjectRepositoryGarbageCollector/GC1
+
+gc.garbages() returned
+
+    {
+        "stats": {
+            "Number of TestCases": 30,
+            "Number of TestObjects": 15,
+            "Duration seconds": 2.214
+        },
+        "Number of garbages": 4,
+        "garbages": [
+            {
+                "TestObjectId": "Page_CURA Healthcare Service/a_Foo"
+            },
+            {
+                "TestObjectId": "Page_CURA Healthcare Service/td_28"
+            },
+            {
+                "TestObjectId": "Page_CURA Healthcare Service2/a_Go to Homepage"
+            },
+            {
+                "TestObjectId": "Page_CURA Healthcare Service2/td_28"
+            }
+        ]
     }
-
-### Output
-
-    Unresolved directive in s2_solution_proposed.adoc - include::stdout.txt[lines=28..32]
