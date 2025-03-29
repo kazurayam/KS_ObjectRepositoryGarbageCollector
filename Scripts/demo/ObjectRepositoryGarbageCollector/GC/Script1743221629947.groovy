@@ -1,4 +1,4 @@
-// demo/ObjectRepositoryGarbageCollector/GC1
+// demo/ObjectRepositoryGarbageCollector/GC
 
 import com.kazurayam.ks.reporting.Shorthand
 import com.kazurayam.ks.testobject.gc.ObjectRepositoryGarbageCollector

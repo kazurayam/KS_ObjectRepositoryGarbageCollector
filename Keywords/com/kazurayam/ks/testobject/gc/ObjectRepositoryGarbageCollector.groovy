@@ -19,9 +19,8 @@ import groovy.json.JsonOutput
 
 
 /**
- * A sort of "Garbage Collector" for the "Object Repository" of Katalon Studio.
- * It reports list of Test Objects with metadata which Test Case scripts use the Test Object.
- * This class can report a list of "unused" Test Objects, which I call "garbages".
+ * A sort of "Garbage Collector" for the "Object Repository" of a Katalon Studio project.
+ * This class can lookup a list of unused Test Objects = "garbages".
  *
  * This class just compiles a report. It does not actually remove or change Test Objects at all.
  *
@@ -31,19 +30,19 @@ class ObjectRepositoryGarbageCollector {
 
 	private static final projectDir = Paths.get(".").normalize().toAbsolutePath()
 
-	private Path   objrepoDir // non null
-	private Path   scriptsDir // non null
-	private List<String> objrepoSubpathList // could be empty
-	private List<String> scriptsSubpathList // could be empty
+	private Path   objectRepositoryDir // non null
+	private Path   testCasesDir // non null
+	private List<String> objectRepositorySubpaths // could be empty
+	private List<String> testCasesSubpaths // could be empty
 
 	private Database db
 	private Set<TestObjectId> allTestObjectIds
 
 	private ObjectRepositoryGarbageCollector(Builder builder) {
-		this.objrepoDir = builder.objrepoDir.toAbsolutePath().normalize()
-		this.scriptsDir = builder.scriptsDir.toAbsolutePath().normalize()
-		this.objrepoSubpathList = builder.objrepoSubpathList
-		this.scriptsSubpathList = builder.scriptsSubpathList
+		this.objectRepositoryDir = builder.objectRepositoryDir.toAbsolutePath().normalize()
+		this.testCasesDir = builder.testCasesDir.toAbsolutePath().normalize()
+		this.objectRepositorySubpaths = builder.objectRepositorySubpaths
+		this.testCasesSubpaths = builder.testCasesSubpaths
 		this.scan()
 	}
 
@@ -73,22 +72,17 @@ class ObjectRepositoryGarbageCollector {
 		println "invoked scan()"
 		this.db = new Database()
 		startedAt = LocalDateTime.now()
-		objrepoSubpathList.forEach { objrepoSubpath ->
-			scriptsSubpathList.forEach { scriptsSubpath ->
-				scanSub(this.db, this.objrepoDir, objrepoSubpath, this.scriptsDir, scriptsSubpath)
+		objectRepositorySubpaths.forEach { objectRepositorySubpath ->
+			testCasesSubpaths.forEach { testCasesSubpath ->
+				scanSub(this.db, this.objectRepositoryDir, objectRepositorySubpath, this.testCasesDir, testCasesSubpath)
 			}
 		}
 		finishedAt = LocalDateTime.now()
 	}
 
-	private void scanSub(Database db, Path objrepoDir, String objrepoSubpath, Path scriptsDir, String scriptsSubpath) {
-		//println "invoked scanSub"
-		//println "objrepoDir=${objrepoDir.toString()}"
-		//println "objrepoSubpath=${objrepoSubpath}"
-		//println "scriptsDir=${scriptsDir.toString()}"
-		//println "scriptsSubpath=${scriptsSubpath}"
+	private void scanSub(Database db, Path objrepoDir, String objectRepositorySubpath, Path scriptsDir, String testCasesSubpath) {
 		// scan the Object Repository directory to make a list of TestObjectEssences
-		ExtendedObjectRepository extOR = new ExtendedObjectRepository(objrepoDir, objrepoSubpath)
+		ExtendedObjectRepository extOR = new ExtendedObjectRepository(objrepoDir, objectRepositorySubpath)
 		allTestObjectIds = extOR.getAllTestObjectIds()
 		List<TestObjectEssence> essenceList = extOR.listEssenceRaw("", false)
 
@@ -97,7 +91,7 @@ class ObjectRepositoryGarbageCollector {
 
 		// scan the Scripts directory to make a list of TestCaseIds
 		TestCaseScriptsVisitor testCaseScriptsVisitor = new TestCaseScriptsVisitor(scriptsDir)
-		Path targetDir = (scriptsSubpath != null) ? scriptsDir.resolve(scriptsSubpath) : scriptsDir
+		Path targetDir = (testCasesSubpath != null) ? scriptsDir.resolve(testCasesSubpath) : scriptsDir
 		Files.walkFileTree(targetDir, testCaseScriptsVisitor)
 		List<TestCaseId> testCaseIdList = testCaseScriptsVisitor.getTestCaseIdList()
 
@@ -107,7 +101,7 @@ class ObjectRepositoryGarbageCollector {
 		// Iterate over the list of TestCaseIds.
 		// Read the TestCase script, check if it contains any references to the TestObjects.
 		// If true, record the reference into the database
-		ScriptsSearcher scriptSearcher = new ScriptsSearcher(scriptsDir, scriptsSubpath)
+		ScriptsSearcher scriptSearcher = new ScriptsSearcher(scriptsDir, testCasesSubpath)
 		testCaseIdList.forEach { testCaseId ->
 			essenceList.forEach { essence ->
 				TestObjectId testObjectId = essence.testObjectId()
@@ -206,6 +200,14 @@ class ObjectRepositoryGarbageCollector {
 		sb.append(":")
 		sb.append(JsonOutput.toJson(projectDir.getFileName().toString()))
 		sb.append(",")
+		sb.append(JsonOutput.toJson("objectRepositorySubpath"))
+		sb.append(":")
+		sb.append(JsonOutput.toJson(objectRepositorySubpaths))
+		sb.append(",")
+		sb.append(JsonOutput.toJson("testCasesSubpath"))
+		sb.append(":")
+		sb.append(JsonOutput.toJson(testCasesSubpaths))
+		sb.append(",")
 		sb.append(JsonOutput.toJson("stats"))
 		sb.append(":")
 		sb.append(JsonOutput.toJson(stats()))
@@ -250,11 +252,11 @@ class ObjectRepositoryGarbageCollector {
 	 */
 	public static class Builder {
 
-		private Path   objrepoDir // non null
-		private Path   scriptsDir // non null
+		private Path   objectRepositoryDir // non null
+		private Path   testCasesDir // non null
 
-		private List<String> objrepoSubpathList // could be empty
-		private List<String> scriptsSubpathList // could be empty
+		private List<String> objectRepositorySubpaths // could be empty
+		private List<String> testCasesSubpaths // could be empty
 
 		Builder() {
 			Path projectDir = Paths.get(RunConfiguration.getProjectDir()).toAbsolutePath().normalize()
@@ -276,36 +278,36 @@ class ObjectRepositoryGarbageCollector {
 			Objects.requireNonNull(scriptsDir)
 			assert Files.exists(objrepoDir)
 			assert Files.exists(scriptsDir)
-			this.objrepoDir = objrepoDir
-			this.scriptsDir = scriptsDir
-			this.objrepoSubpathList = new ArrayList<>()
-			this.objrepoSubpathList.add("")
-			this.scriptsSubpathList = new ArrayList<>()
-			this.scriptsSubpathList.add("")
+			this.objectRepositoryDir = objrepoDir
+			this.testCasesDir = scriptsDir
+			this.objectRepositorySubpaths = new ArrayList<>()
+			this.objectRepositorySubpaths.add("")
+			this.testCasesSubpaths = new ArrayList<>()
+			this.testCasesSubpaths.add("")
 		}
 
-		Builder objrepoSubpath(String... subpaths) {
+		Builder objectRepositorySubpath(String... subpaths) {
 			Objects.requireNonNull(subpaths)
-			if (this.objrepoSubpathList.contains("")) {
-				this.objrepoSubpathList.remove("")
+			if (this.objectRepositorySubpaths.contains("")) {
+				this.objectRepositorySubpaths.remove("")
 			}
 			(subpaths as List).forEach { subpath ->
-				Path p = objrepoDir.resolve(subpath)
+				Path p = objectRepositoryDir.resolve(subpath)
 				assert Files.exists(p): "${p} does not exist"
-				this.objrepoSubpathList.add(subpath)
+				this.objectRepositorySubpaths.add(subpath)
 			}
 			return this
 		}
 
-		Builder scriptsSubpath(String... subpaths) {
+		Builder testCasesSubpath(String... subpaths) {
 			Objects.requireNonNull(subpaths)
-			if (this.scriptsSubpathList.contains("")) {
-				this.scriptsSubpathList.remove("")
+			if (this.testCasesSubpaths.contains("")) {
+				this.testCasesSubpaths.remove("")
 			}
 			(subpaths as List).forEach { subpath ->
-				Path p = scriptsDir.resolve(subpath)
+				Path p = testCasesDir.resolve(subpath)
 				assert Files.exists(p): "${p} does not exist"
-				this.scriptsSubpathList.add(subpath)
+				this.testCasesSubpaths.add(subpath)
 			}
 			return this
 		}
