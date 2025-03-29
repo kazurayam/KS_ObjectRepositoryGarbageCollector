@@ -13,7 +13,8 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.junit.runners.MethodSorters;
 
-import com.kazurayam.ks.configuration.RunConfigurationConfigurator
+import com.kazurayam.ks.reporting.Shorthand
+import internal.GlobalVariable
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(JUnit4.class)
@@ -22,25 +23,23 @@ public class ExtendedObjectRepositoryTest {
 
 	private ExtendedObjectRepository instance
 
-	@BeforeClass
-	static void beforeClass() {
-		RunConfigurationConfigurator.configure()
-	}
-
 	@Before
 	void setup() {
 		Path objectRepositoryDir = Paths.get(".").resolve("Object Repository")
 		instance = new ExtendedObjectRepository(objectRepositoryDir)
 	}
+	
+	@Test
+	void test_getTestObjectIdList() {
+		List list = instance.getTestObjectIdList()
+		assertTrue( list.size() > 0 )
+	}
 
 	@Test
-	void test_listTestObjectId_default() {
-		String json = instance.listTestObjectId()
-		println '********** test_listTestObjectId_default **********'
-		println json
-		//
-		List list = instance.listTestObjectIdRaw()
-		assertTrue( list.size() > 0 )
+	void test_jsonifyTestObjectIdList_default() {
+		String json = instance.jsonifyTestObjectIdList()
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName("test_jsonifyTestObjectIdList_default").build()
+		sh.write(json)
 		assertTrue( json.contains("a_Make Appointment"))
 	}
 

@@ -33,17 +33,17 @@ public class ObjectRepositoryExtender {
 	void apply() {
 		ObjectRepository.metaClass.'static'.invokeMethod = { String name, args ->
 			switch (name) {
-				case "listTestObjectIdRaw" :
-					return this.listTestObjectIdRaw(args)
+				case "getTestObjectIdList" :
+					return this.getTestObjectIdList(args)
 					break
-				case "listTestObjectId" :
-					return this.listTestObjectId(args)
+				case "jsonifyTestObjectIdList" :
+					return this.jsonifyTestObjectIdList(args)
 					break
-				case "listEssenceRaw" :
-					return this.listEssenceRaw(args)
+				case "getTestObjectEssenceList" :
+					return this.getTestObjectEssenceList(args)
 					break
-				case "listEssence" :
-					return this.listEssence(args)
+				case "jsonifyTestObjectEssenceList" :
+					return this.jsonifyTestObjectEssenceList(args)
 					break
 				case "reverseLookupRaw" :
 					return this.reverseLookupRaw(args)

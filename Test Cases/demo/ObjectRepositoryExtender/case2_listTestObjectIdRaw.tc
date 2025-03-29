@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>case1</name>
+   <name>case2_listTestObjectIdRaw</name>
    <tag></tag>
    <comment></comment>
    <recordOption>OTHER</recordOption>
-   <testCaseGuid>9e3646dc-2d46-4e68-b2c0-5e54e0956cda</testCaseGuid>
+   <testCaseGuid>7b27ad26-6bc3-47cd-8803-0c5f38313820</testCaseGuid>
 </TestCaseEntity>

@@ -1,5 +1,9 @@
 package com.kazurayam.ks.testobject
 
+import com.kms.katalon.core.testobject.ObjectRepository
+import com.kms.katalon.core.testobject.TestObject
+import com.kms.katalon.core.testobject.SelectorMethod
+
 import groovy.json.JsonOutput
 
 public class TestObjectId implements Comparable<TestObjectId>{
@@ -14,7 +18,18 @@ public class TestObjectId implements Comparable<TestObjectId>{
 	String value() {
 		return value
 	}
-
+	
+	TestObjectEssence toTestObjectEssence() {
+		TestObject tObj = ObjectRepository.findTestObject(this.value())
+		assert tObj != null: "ObjectRepository.findTestObject('${this.value()}') returned null"
+		SelectorMethod selectorMethod = tObj.getSelectorMethod()
+		Locator locator = new Locator(tObj.getSelectorCollection().getAt(selectorMethod))
+		TestObjectEssence essence = new TestObjectEssence(this.value(),
+				selectorMethod.toString(),
+				locator)
+		return essence
+	}
+	
 	@Override
 	boolean equals(Object obj) {
 		if (!(obj instanceof TestObjectId)) {

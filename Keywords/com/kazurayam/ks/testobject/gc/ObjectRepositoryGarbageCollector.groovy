@@ -69,7 +69,6 @@ class ObjectRepositoryGarbageCollector {
 	 * find a list of "garbage" Test Objects which are not used by any of the Test Cases.
 	 */
 	public void scan() {
-		println "invoked scan()"
 		this.db = new Database()
 		startedAt = LocalDateTime.now()
 		objectRepositorySubpaths.forEach { objectRepositorySubpath ->

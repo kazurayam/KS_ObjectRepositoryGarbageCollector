@@ -1,6 +1,8 @@
+import com.kazurayam.ks.reporting.Shorthand
 import com.kazurayam.ks.testobject.ObjectRepositoryExtender
 import com.kms.katalon.core.testobject.ObjectRepository
-import demo.Reporter
+
+import internal.GlobalVariable
 
 /*
  * Test Caes/demo/ObjectRepositoryExtender/case2
@@ -18,6 +20,5 @@ list.each { s ->
 	sb.append("\n")
 }
 
-Reporter rp = new Reporter("ObjectRepositoryExtender/case2.md")
-rp.report('## ObjectRepository.listTestObjectIdRaw("button_") returned',
-	'```', sb.toString(), '```')
+Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName('listTestObjectIdRaw.txt').build()
+sh.write(sb.toString())

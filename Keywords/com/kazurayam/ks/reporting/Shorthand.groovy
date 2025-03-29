@@ -1,4 +1,5 @@
 package com.kazurayam.ks.reporting
+
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path
@@ -12,6 +13,11 @@ class Shorthand {
 
 	private Shorthand(Builder builder) {
 		this.filePath = builder.filePath
+	}
+
+	Path write(List<String> content) {
+		String[] strings = content.toArray(new String[0])
+		this.write(strings)
 	}
 
 	Path write(String... content) {
@@ -31,11 +37,11 @@ class Shorthand {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public static class Builder {
 		private Path baseDir = Paths.get(RunConfiguration.getProjectDir()).resolve("build")
-						.resolve("tmp").resolve("testOutput").normalize().toAbsolutePath()
+		.resolve("tmp").resolve("testOutput").normalize().toAbsolutePath()
 		private String subDir = null
 		private String fileName = "out.txt"
 		private Path filePath

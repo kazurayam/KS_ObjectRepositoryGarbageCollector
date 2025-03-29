@@ -1,14 +1,16 @@
 package com.kazurayam.ks.testobject
 
-import com.kms.katalon.core.testobject.ObjectRepository
-import com.kms.katalon.core.testobject.TestObject
+import static com.kms.katalon.core.testobject.ObjectRepository.findTestObject
+
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import com.kms.katalon.core.testobject.SelectorMethod
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+
+import com.kms.katalon.core.testobject.ObjectRepository
+import com.kms.katalon.core.testobject.TestObject
 
 import groovy.json.JsonOutput
 
@@ -42,26 +44,8 @@ public class ExtendedObjectRepository {
 	Path getTargetDir() {
 		return (subpath != null) ? baseDir.resolve(subpath) : baseDir
 	}
-
-	String listTestObjectId(String pattern = "", Boolean isRegex = false) throws IOException {
-		List<TestObjectId> list = listTestObjectIdRaw(pattern, isRegex)
-		StringBuilder sb = new StringBuilder()
-		sb.append("{")
-		sb.append(JsonOutput.toJson("ExtendedObjectRepository#listTestObjectId"))
-		sb.append(":")
-		sb.append("[")
-		String sep = ""
-		list.forEach { toi ->
-			sb.append(sep)
-			sb.append(toi.toJson())
-			sep = ","
-		}
-		sb.append("]")
-		sb.append("}")
-		return JsonOutput.prettyPrint(sb.toString())
-	}
-
-	List<TestObjectId> listTestObjectIdRaw(String pattern = "", Boolean isRegex = false) throws IOException {
+	
+	List<TestObjectId> getTestObjectIdList(String pattern = "", Boolean isRegex = false) throws IOException {
 		Path dir = getTargetDir()
 		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(baseDir)
 		Files.walkFileTree(dir, visitor)
@@ -77,17 +61,17 @@ public class ExtendedObjectRepository {
 		return result;
 	}
 
-	String listEssence(String pattern, Boolean isRegex) throws IOException {
-		List<TestObjectEssence> result = this.listEssenceRaw(pattern, isRegex)
+	String jsonifyTestObjectIdList(String pattern = "", Boolean isRegex = false) throws IOException {
+		List<TestObjectId> list = getTestObjectIdList(pattern, isRegex)
 		StringBuilder sb = new StringBuilder()
 		sb.append("{")
-		sb.append(JsonOutput.toJson("ExtendedObjectRepository#listEssence"))
+		sb.append(JsonOutput.toJson("ExtendedObjectRepository#TestObjectIdList"))
 		sb.append(":")
 		sb.append("[")
 		String sep = ""
-		result.forEach { tog ->
+		list.forEach { toi ->
 			sb.append(sep)
-			sb.append(tog.toJson())
+			sb.append(toi.toJson())
 			sep = ","
 		}
 		sb.append("]")
@@ -95,7 +79,7 @@ public class ExtendedObjectRepository {
 		return JsonOutput.prettyPrint(sb.toString())
 	}
 
-	List<TestObjectEssence> listEssenceRaw(String pattern, Boolean isRegex) throws IOException {
+	List<TestObjectEssence> getTestObjectEssenceList(String pattern, Boolean isRegex = false) throws IOException {
 		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(baseDir)
 		Path dir = getTargetDir()
 		Files.walkFileTree(dir, visitor)
@@ -115,13 +99,32 @@ public class ExtendedObjectRepository {
 		return result
 	}
 
+	String jsonifyTestObjectEssenceList(String pattern, Boolean isRegex) throws IOException {
+		List<TestObjectEssence> result = getTestObjectEssenceList(pattern, isRegex)
+		StringBuilder sb = new StringBuilder()
+		sb.append("{")
+		sb.append(JsonOutput.toJson("ExtendedObjectRepository#TestObjectEssenceList"))
+		sb.append(":")
+		sb.append("[")
+		String sep = ""
+		result.forEach { tog ->
+			sb.append(sep)
+			sb.append(tog.toJson())
+			sep = ","
+		}
+		sb.append("]")
+		sb.append("}")
+		return JsonOutput.prettyPrint(sb.toString())
+	}
+
+	
 	//-------------------------------------------------------------------------
 
 
-	Map<Locator, Set<TestObjectEssence>> reverseLookupRaw(String pattern = "", Boolean isRegex = false) throws IOException {
+	Map<Locator, Set<TestObjectEssence>> getBackwardReferences(String pattern = "", Boolean isRegex = false) throws IOException {
 		Map<Locator, Set<TestObjectEssence>> result = new TreeMap<>()
 		RegexOptedTextMatcher m = new RegexOptedTextMatcher(pattern, isRegex)
-		List<TestObjectId> idList = this.listTestObjectIdRaw("", false)  // list of IDs of Test Object
+		List<TestObjectId> idList = getTestObjectIdList("", false)  // list of IDs of Test Object
 		idList.forEach { id ->
 			Locator locator = findLocator(id)
 			Set<TestObjectId> idSet
@@ -131,7 +134,7 @@ public class ExtendedObjectRepository {
 				idSet = new TreeSet<>()
 			}
 			if (m.found(locator.value())) {
-				TestObjectEssence essence = findEssence(id)
+				TestObjectEssence essence = getTestObjectEssenceList(id, isRegex)
 				idSet.add(essence)
 				result.put(locator, idSet)
 			}
@@ -139,11 +142,11 @@ public class ExtendedObjectRepository {
 		return result
 	}
 
-	String reverseLookup(String pattern = "", Boolean isRegex = false) throws IOException {
-		Map<Locator, Set<TestObjectEssence>> result = this.reverseLookupRaw(pattern, isRegex)
+	String jsonifyBackwardReferences(String pattern = "", Boolean isRegex = false) throws IOException {
+		Map<Locator, Set<TestObjectEssence>> result = getBackwardReferences(pattern, isRegex)
 		StringBuilder sb = new StringBuilder()
 		sb.append("{")
-		sb.append(JsonOutput.toJson("ExtendedObjectRepository#reverseLookup"))
+		sb.append(JsonOutput.toJson("ExtendedObjectRepository#backwardReferences"))
 		sb.append(":")
 		sb.append("[")
 		String sep1 = ""
@@ -173,27 +176,15 @@ public class ExtendedObjectRepository {
 
 	private Locator findLocator(TestObjectId testObjectId) {
 		Objects.requireNonNull(testObjectId)
-		TestObjectEssence essence= findEssence(testObjectId)
+		TestObjectEssence essence= testObjectId.toTestObjectEssence()
 		return essence.locator()
-	}
-
-	private TestObjectEssence findEssence(TestObjectId testObjectId) {
-		Objects.requireNonNull(TestObjectId)
-		TestObject tObj = ObjectRepository.findTestObject(testObjectId.value())
-		assert tObj != null: "ObjectRepository.findTestObject('${testObjectId.value()}') returned null"
-		SelectorMethod selectorMethod = tObj.getSelectorMethod()
-		Locator locator = new Locator(tObj.getSelectorCollection().getAt(selectorMethod))
-		TestObjectEssence essence = new TestObjectEssence(testObjectId,
-				selectorMethod.toString(),
-				locator)
-		return essence
 	}
 
 	//-------------------------------------------------------------------------
 
 	public Set<TestObjectId> getAllTestObjectIds() {
-		Set<TestObjectId> result = new TreeSet<>()
-		List<TestObjectEssence> allEssence = listEssenceRaw("", false)
+		Set<TestObjectId> result = new TreeSet<>()   // ordered set
+		List<TestObjectEssence> allEssence = getTestObjectEssenceList("", false)
 		allEssence.forEach { essence ->
 			TestObjectId toi = essence.testObjectId()
 			if (toi != null && toi.value() != "") {
