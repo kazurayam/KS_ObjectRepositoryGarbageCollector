@@ -6,20 +6,15 @@ import java.nio.file.Paths
 
 import com.kms.katalon.core.configuration.RunConfiguration
 
-
 class Shorthand {
 
 	private Path filePath
-	private TargetDocumentFormat docFormat
-	private String syntaxHighlighting
 
 	private Shorthand(Builder builder) {
 		this.filePath = builder.filePath
-		this.docFormat = builder.docFormat
-		this.syntaxHighlighting = builder.syntaxHighlighting
 	}
 
-	void write(String... content) {
+	Path write(String... content) {
 		OutputStream os = filePath.newOutputStream()
 		OutputStreamWriter osw = new OutputStreamWriter(os, StandardCharsets.UTF_8)
 		BufferedWriter bw = new BufferedWriter(osw)
@@ -32,77 +27,18 @@ class Shorthand {
 		pw.flush()
 		pw.close()
 		os.close()
-	}
-
-	void code(String... code) {
-		OutputStream os = filePath.newOutputStream()
-		OutputStreamWriter osw = new OutputStreamWriter(os, StandardCharsets.UTF_8)
-		BufferedWriter bw = new BufferedWriter(osw)
-		PrintWriter pw = new PrintWriter(bw)
-		//
-		if (docFormat == TargetDocumentFormat.ASCIIDOC) {
-			pw.println("[source,${syntaxHighlighting}]")
-			pw.println("----")
-		} else {
-			pw.println("```")
-		}
-		// print the lines of the code
-		code.each { it ->
-			pw.println(it)
-		}
-		if (docFormat == TargetDocumentFormat.ASCIIDOC) {
-			pw.println("----")
-		} else {
-			pw.println("````")
-		}
-		//
-		pw.flush()
-		pw.close()
-		os.close()
-	}
-
-	void codeWithHeader(String header, String... code) {
-		Objects.requireNonNull(header)
-		OutputStream os = filePath.newOutputStream()
-		OutputStreamWriter osw = new OutputStreamWriter(os, StandardCharsets.UTF_8)
-		BufferedWriter bw = new BufferedWriter(osw)
-		PrintWriter pw = new PrintWriter(bw)
-		//
-		pw.println(header)
-		//
-		if (docFormat == TargetDocumentFormat.ASCIIDOC) {
-			pw.println("[source,${syntaxHighlighting}]")
-			pw.println("----")
-		} else {
-			pw.println("```")
-		}
-		//
-		code.each { it ->
-			pw.println(it)
-		}
-		if (docFormat == TargetDocumentFormat.ASCIIDOC) {
-			pw.println("----")
-		} else {
-			pw.println("````")
-		}
-		//
-		pw.flush()
-		pw.close()
-		os.close()
+		return filePath
 	}
 
 	/**
 	 * 
 	 */
 	public static class Builder {
-		private Path baseDir = Paths.get(RunConfiguration.getProjectDir())
-		.resolve("build").resolve("reports")
-		.normalize().toAbsolutePath()
+		private Path baseDir = Paths.get(RunConfiguration.getProjectDir()).resolve("build")
+						.resolve("tmp").resolve("testOutput").normalize().toAbsolutePath()
 		private String subDir = null
-		private String fileName = "report.txt"
+		private String fileName = "out.txt"
 		private Path filePath
-		private TargetDocumentFormat docFormat = TargetDocumentFormat.MARKDOWN
-		private String syntaxHighlighting = "groovy"
 
 		Builder() {}
 		Builder(Path baseDir) {
@@ -120,16 +56,6 @@ class Shorthand {
 		Builder fileName(String f) {
 			Objects.requireNonNull(f)
 			this.fileName = f
-			return this
-		}
-		Builder docFormat(TargetDocumentFormat docFormat) {
-			Objects.requireNonNull(docFormat)
-			this.docFormat = docFormat
-			return this
-		}
-		Builder syntaxHighlighting(String syntaxHighlighting) {
-			Objects.requireNonNull(syntaxHighlighting)
-			this.syntaxHighlighting = syntaxHighlighting
 			return this
 		}
 		Shorthand build() {

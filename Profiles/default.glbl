@@ -4,4 +4,9 @@
    <name>default</name>
    <tag></tag>
    <defaultProfile>true</defaultProfile>
+   <GlobalVariableEntity>
+      <description></description>
+      <initValue>'FOO'</initValue>
+      <name>TESTCASE_ID</name>
+   </GlobalVariableEntity>
 </GlobalVariableEntities>

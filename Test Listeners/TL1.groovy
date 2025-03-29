@@ -1,12 +1,14 @@
-import com.kazurayam.ks.testobject.ObjectRepositoryExtender
-import com.kms.katalon.core.annotation.BeforeTestSuite
-import com.kms.katalon.core.context.TestSuiteContext
+import com.kms.katalon.core.annotation.BeforeTestCase
+import com.kms.katalon.core.context.TestCaseContext
+
+import internal.GlobalVariable
 
 class TL1 {
 	
-	@BeforeTestSuite
-	def beforeTestSuite(TestSuiteContext testSuiteContext) {
-		ObjectRepositoryExtender ext = new ObjectRepositoryExtender()
-		ext.apply()
+	@BeforeTestCase
+	def beforeTestCase(TestCaseContext testCaseContext) {
+		// shorten "Test Cases/main/TC1" -> "main/TC1"
+		GlobalVariable.TESTCASE_ID = testCaseContext.getTestCaseId().replace("Test Cases/", "")
 	}
+	
 }
