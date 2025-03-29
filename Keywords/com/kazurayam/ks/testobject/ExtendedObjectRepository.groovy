@@ -60,7 +60,7 @@ public class ExtendedObjectRepository {
 		}
 		return result;
 	}
-	
+
 	public Set<TestObjectId> getAllTestObjectIdSet() {
 		Set<TestObjectId> result = new TreeSet<>()   // ordered set
 		List<TestObjectEssence> allEssence = getTestObjectEssenceList("", false)
@@ -191,5 +191,4 @@ public class ExtendedObjectRepository {
 		TestObjectEssence essence= testObjectId.toTestObjectEssence()
 		return essence.locator()
 	}
-
 }

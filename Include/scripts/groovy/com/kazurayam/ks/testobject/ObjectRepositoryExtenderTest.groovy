@@ -1,5 +1,7 @@
 package com.kazurayam.ks.testobject
 
+import com.kazurayam.ks.reporting.Shorthand
+
 import static com.kms.katalon.core.testobject.ObjectRepository.findTestObject
 import static org.junit.Assert.*
 
@@ -16,6 +18,7 @@ import org.junit.runners.MethodSorters;
 import com.kazurayam.ks.configuration.RunConfigurationConfigurator
 import com.kms.katalon.core.testobject.ObjectRepository
 import com.kms.katalon.core.testobject.TestObject
+import internal.GlobalVariable
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(JUnit4.class)
@@ -28,76 +31,100 @@ class ObjectRepositoryExtenderTest {
 		RunConfigurationConfigurator.configure()
 		//
 		ExtendedObjectRepository eor = new ExtendedObjectRepository(objectRepository)
-		ObjectRepositoryExtender ext = new ObjectRepositoryExtender(eor)
-		ext.apply()
+		new ObjectRepositoryExtender(eor).apply()
 	}
 
 	@Test
-	void test_listTestObjectIdRaw() {
-		List<String> list = ObjectRepository.listTestObjectIdRaw()
-		println "********** test_listTestObjectIdRaw() **********"
-		list.forEach { p ->
-			println p
+	void test_getTestObjectIdList() {
+		List<TestObjectId> list = ObjectRepository.getTestObjectIdList()
+		assertTrue(list.size() > 0)
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+						.fileName("test_getTestObjectIdList.txt").build()
+		StringBuilder sb = new StringBuilder()
+		list.forEach { toi ->
+			sb.append(toi.value())
+			sb.append("\n")
 		}
+		sh.write(sb.toString())
+	}
+
+	@Test
+	void test_getTestObjectIdList_filterByString() {
+		List<TestObjectId> list = ObjectRepository.listTestObjectIdRaw("button_", false)
 		assertTrue(list.size() > 0)
 	}
 
 	@Test
-	void test_listTestObjectIdRaw_args() {
-		List<String> list = ObjectRepository.listTestObjectIdRaw("button_", false)
-		println "********** test_listTestObjectIdRaw_args() **********"
-		list.forEach { p ->
-			println p
-		}
+	void test_jsonifyTestObjectIdList() {
+		String json = ObjectRepository.jsonifyTestObjectIdList()
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+						.fileName("test_jsonifyTestObjectIdList.json").build()
+		sh.write(json)
+		assertTrue(json.contains("a_Make Appointment"))
+	}
+
+	@Test
+	void test_jsonifyTestObjectIdList_filterByString() {
+		String json = ObjectRepository.jsonifyTestObjectIdList("button_")
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+						.fileName("test_jsonifyTestObjectIdList.json").build()
+		sh.write(json)
+		assertTrue(json.contains("a_Make Appointment"))
+	}
+	
+	//-----------------------------------------------------------------
+
+	@Test
+	void test_getTestObjectEssenceList() {
+		List<TestObjectEssence> list = ObjectRepository.getTestObjectEssenceList()
 		assertTrue(list.size() > 0)
-	}
-
-	@Test
-	void test_listTestObjectId() {
-		String json = ObjectRepository.listTestObjectId()
-		println "********** test_listTestObjectId **********"
-		println json
-	}
-
-	@Test
-	void test_listTestObjectId_args() {
-		String json = ObjectRepository.listTestObjectId("button_")
-		println "********** test_listTestObjectId_args **********"
-		println json
-	}
-
-	@Test
-	void test_listEssenceRaw() {
-		List<TestObjectEssence> result = ObjectRepository.listEssenceRaw()
-		println "********** test_listEssenceRaw *********"
-		result.forEach { m ->
-			println m
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+						.fileName("test_getTestObjectEssenceList.txt").build()
+		StringBuilder sb = new StringBuilder()
+		list.forEach { toe ->
+			sb.append(toe.toString())
+			sb.append("\n")
 		}
+		sh.write(sb.toString())
 	}
 
 	@Test
-	void test_listEssenceRaw_args() {
-		List<TestObjectEssence> result = ObjectRepository.listEssenceRaw("button_")
-		println "********** test_listEssenceRaw_args *********"
-		result.forEach { m ->
-			println m
+	void test_getTestObjectEssenceList_filterByString() {
+		List<TestObjectEssence> list = ObjectRepository.getTestObjectEssenceList("button_", false)
+		assertTrue(list.size() > 0)
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+						.fileName("test_getTestObjectEssenceList_filterByString.txt").build()
+		StringBuilder sb = new StringBuilder()
+		list.forEach { toe ->
+			sb.append(toe.toString())
+			sb.append("\n")
 		}
+		sh.write(sb.toString())
+		
 	}
 
 	@Test
-	void test_listEssence() {
-		String json = ObjectRepository.listEssence()
-		println "********** test_listEssence *******"
-		println json
+	void test_jsonifyTestObjectEssenceList() {
+		String json = ObjectRepository.jsonifyTestObjectEssenceList()
+		assertNotNull(json)
+		assertTrue(json.contains("a_Make Appointment"))
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+						.fileName("test_jsonifyTestObjectEssenceList.json").build()
+		sh.write(json)
 	}
 
 	@Test
-	void test_listEssence_args() {
-		String json = ObjectRepository.listEssence("button_")
-		println "********** test_listEssence_args *******"
-		println json
+	void test_jsonifyTestObjectEssenceList_filterByString() {
+		String json = ObjectRepository.jsonifyTestObjectEssenceList("button_", false)
+		assertNotNull(json)
+		assertTrue(json.contains("a_Make Appointment"))
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+						.fileName("test_jsonifyTestObjectEssenceList_filterByString.json").build()
+		sh.write(json)
 	}
 
+	//-----------------------------------------------------------------
+	
 	@Test
 	void test_reverseLookupRaw() {
 		Map<Locator, Set<TestObjectEssence>> result = ObjectRepository.reverseLookupRaw()

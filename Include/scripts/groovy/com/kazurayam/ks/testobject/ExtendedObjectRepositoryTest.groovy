@@ -6,7 +6,6 @@ import java.nio.file.Path
 import java.nio.file.Paths
 
 import org.junit.Before
-import org.junit.BeforeClass
 import org.junit.FixMethodOrder;
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -14,6 +13,7 @@ import org.junit.runners.JUnit4
 import org.junit.runners.MethodSorters;
 
 import com.kazurayam.ks.reporting.Shorthand
+
 import internal.GlobalVariable
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -28,7 +28,7 @@ public class ExtendedObjectRepositoryTest {
 		Path objectRepositoryDir = Paths.get(".").resolve("Object Repository")
 		instance = new ExtendedObjectRepository(objectRepositoryDir)
 	}
-	
+
 	@Test
 	void test_getTestObjectIdList() {
 		List<TestObjectId> list = instance.getTestObjectIdList()
@@ -50,12 +50,12 @@ public class ExtendedObjectRepositoryTest {
 	}
 
 	//-----------------------------------------------------------------
-	
+
 	@Test
 	void test_jsonifyTestObjectIdList_default() {
 		String json = instance.jsonifyTestObjectIdList()
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_jsonifyTestObjectIdList_default.json").build()
+				.fileName("test_jsonifyTestObjectIdList_default.json").build()
 		sh.write(json)
 		assertTrue(json.contains("a_Make Appointment"))
 	}
@@ -65,7 +65,7 @@ public class ExtendedObjectRepositoryTest {
 		String pattern = "button_"
 		String json = instance.jsonifyTestObjectIdList(pattern, false)
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_jsonifyTestObjectIdList_filterByString.json").build()
+				.fileName("test_jsonifyTestObjectIdList_filterByString.json").build()
 		sh.write(json)
 		assertTrue(json.contains("button_Login"))
 	}
@@ -75,13 +75,13 @@ public class ExtendedObjectRepositoryTest {
 		String pattern = "button_(\\w+)"
 		String json = instance.jsonifyTestObjectIdList(pattern, true)
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_jsonifyTestObjectIdList_filterByRegex.json").build()
+				.fileName("test_jsonifyTestObjectIdList_filterByRegex.json").build()
 		sh.write(json)
 		assertTrue(json.contains("button_Login"))
 	}
-	
+
 	//-----------------------------------------------------------------
-	
+
 	@Test
 	void test_getTestObjectEssenceList() {
 		String pattern = ""
@@ -89,7 +89,7 @@ public class ExtendedObjectRepositoryTest {
 		List<Map<String, String>> result = instance.getTestObjectEssenceList(pattern, isRegex)
 		assertTrue( result.size() > 0 )
 	}
-	
+
 	@Test
 	void test_getTestObjectEssenceList_filterByRegex() {
 		String pattern = "button_(\\w+)"
@@ -97,14 +97,14 @@ public class ExtendedObjectRepositoryTest {
 		List<Map<String, String>> result = instance.getTestObjectEssenceList(pattern, isRegex)
 		assertTrue( result.size() > 0 )
 	}
-	
+
 	@Test
 	void test_jsonifyTestObjectEssenceList() {
 		String pattern = ""
 		Boolean isRegex = false
 		String json = instance.jsonifyTestObjectEssenceList(pattern, isRegex)
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_jsonifyTestObjectEssenceList.json").build()
+				.fileName("test_jsonifyTestObjectEssenceList.json").build()
 		sh.write(json)
 		assertTrue("json should contain 'a_Make Appointment'", json.contains("a_Make Appointment"))
 	}
@@ -115,13 +115,13 @@ public class ExtendedObjectRepositoryTest {
 		Boolean isRegex = true
 		String json = instance.jsonifyTestObjectEssenceList(pattern, isRegex)
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-							.fileName("test_jsonifyTestObjectEssenceList_filterByRegex.json").build()
+				.fileName("test_jsonifyTestObjectEssenceList_filterByRegex.json").build()
 		sh.write(json)
-		assertTrue(json.contains("button_Login"))		
+		assertTrue(json.contains("button_Login"))
 	}
 
 	//-----------------------------------------------------------------
-	
+
 	@Test
 	void test_getAllTestObjectIdSet() {
 		Set<TestObjectId> allTOI = instance.getAllTestObjectIdSet()
@@ -133,12 +133,12 @@ public class ExtendedObjectRepositoryTest {
 			assertNotEquals("", toi.value())
 		})
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_getAllTestObjectIdSet.txt").build()
+				.fileName("test_getAllTestObjectIdSet.txt").build()
 		sh.write(sb.toString())
 	}
 
 	//-----------------------------------------------------------------
-	
+
 	@Test
 	void test_getBackwardReferences() {
 		Map<Locator, Set<TestObjectEssence>> result = instance.getBackwardReferences()
@@ -150,7 +150,7 @@ public class ExtendedObjectRepositoryTest {
 	void test_jsonifyBackwardReferences() {
 		String json = instance.jsonifyBackwardReferences()
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_jsonifyBackwardReferences.json").build()
+				.fileName("test_jsonifyBackwardReferences.json").build()
 		sh.write(json)
 		// TODO assert
 	}
