@@ -31,88 +31,127 @@ public class ExtendedObjectRepositoryTest {
 	
 	@Test
 	void test_getTestObjectIdList() {
-		List list = instance.getTestObjectIdList()
+		List<TestObjectId> list = instance.getTestObjectIdList()
 		assertTrue( list.size() > 0 )
 	}
 
+	@Test
+	void test_getTestObjectIdList_filterByString() {
+		String pattern = "button_"
+		List<TestObjectId> list = instance.getTestObjectIdList(pattern, false)
+		assertTrue( list.size() > 0 )
+	}
+
+	@Test
+	void test_getTestObjectIdList_filterByRegex() {
+		String pattern = "button_(\\w+)"
+		List<TestObjectId> list = instance.getTestObjectIdList(pattern, true)
+		assertTrue( list.size() > 0 )
+	}
+
+	//-----------------------------------------------------------------
+	
 	@Test
 	void test_jsonifyTestObjectIdList_default() {
 		String json = instance.jsonifyTestObjectIdList()
-		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName("test_jsonifyTestObjectIdList_default").build()
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+						.fileName("test_jsonifyTestObjectIdList_default.json").build()
 		sh.write(json)
-		assertTrue( json.contains("a_Make Appointment"))
+		assertTrue(json.contains("a_Make Appointment"))
 	}
 
 	@Test
-	void test_listTestObjectId_byString() {
+	void test_jsonifyTestObjectIdList_filterByString() {
 		String pattern = "button_"
-		String json = instance.listTestObjectId(pattern, false)
-		println '********** test_listTestObjectId_byString **********'
-		println json
-		List list = instance.listTestObjectIdRaw(pattern, true)
-		assertTrue( list.size() > 0 )
+		String json = instance.jsonifyTestObjectIdList(pattern, false)
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+						.fileName("test_jsonifyTestObjectIdList_filterByString.json").build()
+		sh.write(json)
 		assertTrue(json.contains("button_Login"))
 	}
 
 	@Test
-	void test_listTestObjectId_byRegex() {
+	void test_jsonifyTestObjectIdList_filterByRegex() {
 		String pattern = "button_(\\w+)"
-		String json = instance.listTestObjectId(pattern, true)
-		println '********** test_listTestObjectId_byRegex **********'
-		println json
-		//
-		List list = instance.listTestObjectIdRaw(pattern, true)
-		assertTrue( list.size() > 0 )
+		String json = instance.jsonifyTestObjectIdList(pattern, true)
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+						.fileName("test_jsonifyTestObjectIdList_filterByRegex.json").build()
+		sh.write(json)
 		assertTrue(json.contains("button_Login"))
 	}
-
+	
+	//-----------------------------------------------------------------
+	
 	@Test
-	void test_listEssence_default() {
+	void test_getTestObjectEssenceList() {
 		String pattern = ""
 		Boolean isRegex = false
-		String json = instance.listEssence(pattern, isRegex)
-		println "********** test_listEssence_default *********"
-		println json
-		List<Map<String, String>> result =
-				instance.listEssenceRaw(pattern, isRegex)
+		List<Map<String, String>> result = instance.getTestObjectEssenceList(pattern, isRegex)
 		assertTrue( result.size() > 0 )
+	}
+	
+	@Test
+	void test_getTestObjectEssenceList_filterByRegex() {
+		String pattern = "button_(\\w+)"
+		Boolean isRegex = true
+		List<Map<String, String>> result = instance.getTestObjectEssenceList(pattern, isRegex)
+		assertTrue( result.size() > 0 )
+	}
+	
+	@Test
+	void test_jsonifyTestObjectEssenceList() {
+		String pattern = ""
+		Boolean isRegex = false
+		String json = instance.jsonifyTestObjectEssenceList(pattern, isRegex)
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+						.fileName("test_jsonifyTestObjectEssenceList.json").build()
+		sh.write(json)
 		assertTrue("json should contain 'a_Make Appointment'", json.contains("a_Make Appointment"))
 	}
 
 	@Test
-	void test_listEssencetRaw_arg_string() {
-		String pattern = "button_"
-		Boolean isRegex = false
-		String json = instance.listEssenceRaw(pattern, isRegex)
-		println "********** test_listEssenceRaw_arg_string *********"
-		println json
-		List<Map<String, String>> result =
-				instance.listEssenceRaw(pattern, isRegex)
-		assertTrue( result.size() > 0 )
-		assertTrue(json.contains("button_Login"))
+	void test_jsonifyTestObjectEssenceList_filterByRegex() {
+		String pattern = "button_(\\w+)"
+		Boolean isRegex = true
+		String json = instance.jsonifyTestObjectEssenceList(pattern, isRegex)
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+							.fileName("test_jsonifyTestObjectEssenceList_filterByRegex.json").build()
+		sh.write(json)
+		assertTrue(json.contains("button_Login"))		
 	}
 
+	//-----------------------------------------------------------------
+	
 	@Test
-	void test_getAllTestObjectIds() {
-		Set<TestObjectId> allTOI = instance.getAllTestObjectIds()
-		println "********** test_getAllTestObjectIds **********"
+	void test_getAllTestObjectIdSet() {
+		Set<TestObjectId> allTOI = instance.getAllTestObjectIdSet()
+		StringBuilder sb = new StringBuilder()
 		allTOI.forEach({ toi ->
-			println toi
+			sb.append(toi)
+			sb.append("\n")
 			assertNotNull(toi.value())
 			assertNotEquals("", toi.value())
 		})
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+						.fileName("test_getAllTestObjectIdSet.txt").build()
+		sh.write(sb.toString())
+	}
+
+	//-----------------------------------------------------------------
+	
+	@Test
+	void test_getBackwardReferences() {
+		Map<Locator, Set<TestObjectEssence>> result = instance.getBackwardReferences()
+		assertNotNull(result)
+		// TODO more
 	}
 
 	@Test
-	void test_reverseLookupRaw() {
-		Map<Locator, Set<TestObjectEssence>> result = instance.reverseLookupRaw()
-		// TODO
-	}
-
-	@Test
-	void test_reverseLookup() {
-		String json = instance.reverseLookup()
-		println "********** test_reverseLookup **********"
-		println json
+	void test_jsonifyBackwardReferences() {
+		String json = instance.jsonifyBackwardReferences()
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+						.fileName("test_jsonifyBackwardReferences.json").build()
+		sh.write(json)
+		// TODO assert
 	}
 }

@@ -18,18 +18,16 @@ public class TestObjectId implements Comparable<TestObjectId>{
 	String value() {
 		return value
 	}
-	
+
 	TestObjectEssence toTestObjectEssence() {
 		TestObject tObj = ObjectRepository.findTestObject(this.value())
 		assert tObj != null: "ObjectRepository.findTestObject('${this.value()}') returned null"
 		SelectorMethod selectorMethod = tObj.getSelectorMethod()
 		Locator locator = new Locator(tObj.getSelectorCollection().getAt(selectorMethod))
-		TestObjectEssence essence = new TestObjectEssence(this.value(),
-				selectorMethod.toString(),
-				locator)
+		TestObjectEssence essence = new TestObjectEssence(this, selectorMethod.toString(), locator)
 		return essence
 	}
-	
+
 	@Override
 	boolean equals(Object obj) {
 		if (!(obj instanceof TestObjectId)) {

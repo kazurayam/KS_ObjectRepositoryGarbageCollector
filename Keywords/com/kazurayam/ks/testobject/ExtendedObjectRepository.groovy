@@ -44,7 +44,7 @@ public class ExtendedObjectRepository {
 	Path getTargetDir() {
 		return (subpath != null) ? baseDir.resolve(subpath) : baseDir
 	}
-	
+
 	List<TestObjectId> getTestObjectIdList(String pattern = "", Boolean isRegex = false) throws IOException {
 		Path dir = getTargetDir()
 		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(baseDir)
@@ -59,6 +59,18 @@ public class ExtendedObjectRepository {
 			}
 		}
 		return result;
+	}
+	
+	public Set<TestObjectId> getAllTestObjectIdSet() {
+		Set<TestObjectId> result = new TreeSet<>()   // ordered set
+		List<TestObjectEssence> allEssence = getTestObjectEssenceList("", false)
+		allEssence.forEach { essence ->
+			TestObjectId toi = essence.testObjectId()
+			if (toi != null && toi.value() != "") {
+				result.add(toi)
+			}
+		}
+		return result
 	}
 
 	String jsonifyTestObjectIdList(String pattern = "", Boolean isRegex = false) throws IOException {
@@ -117,7 +129,7 @@ public class ExtendedObjectRepository {
 		return JsonOutput.prettyPrint(sb.toString())
 	}
 
-	
+
 	//-------------------------------------------------------------------------
 
 
@@ -134,7 +146,7 @@ public class ExtendedObjectRepository {
 				idSet = new TreeSet<>()
 			}
 			if (m.found(locator.value())) {
-				TestObjectEssence essence = getTestObjectEssenceList(id, isRegex)
+				TestObjectEssence essence = id.toTestObjectEssence()
 				idSet.add(essence)
 				result.put(locator, idSet)
 			}
@@ -180,17 +192,4 @@ public class ExtendedObjectRepository {
 		return essence.locator()
 	}
 
-	//-------------------------------------------------------------------------
-
-	public Set<TestObjectId> getAllTestObjectIds() {
-		Set<TestObjectId> result = new TreeSet<>()   // ordered set
-		List<TestObjectEssence> allEssence = getTestObjectEssenceList("", false)
-		allEssence.forEach { essence ->
-			TestObjectId toi = essence.testObjectId()
-			if (toi != null && toi.value() != "") {
-				result.add(toi)
-			}
-		}
-		return result
-	}
 }
