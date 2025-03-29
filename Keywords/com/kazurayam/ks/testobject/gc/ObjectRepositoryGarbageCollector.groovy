@@ -29,7 +29,7 @@ import groovy.json.JsonOutput
  */
 class ObjectRepositoryGarbageCollector {
 
-	private static final projectDir = Paths.get(".")
+	private static final projectDir = Paths.get(".").normalize().toAbsolutePath()
 
 	private Path   objrepoDir // non null
 	private Path   scriptsDir // non null
@@ -202,15 +202,19 @@ class ObjectRepositoryGarbageCollector {
 		List<TestObjectId> garbages = garbagesRaw()
 		StringBuilder sb = new StringBuilder()
 		sb.append("{")
+		sb.append(JsonOutput.toJson("Project name"))
+		sb.append(":")
+		sb.append(JsonOutput.toJson(projectDir.getFileName().toString()))
+		sb.append(",")
 		sb.append(JsonOutput.toJson("stats"))
 		sb.append(":")
 		sb.append(JsonOutput.toJson(stats()))
 		sb.append(",")
-		sb.append(JsonOutput.toJson("Number of garbages"))
+		sb.append(JsonOutput.toJson("Number of unused TestObjects"))
 		sb.append(":")
 		sb.append(JsonOutput.toJson(garbages.size()))
 		sb.append(",")
-		sb.append(JsonOutput.toJson("garbages"))
+		sb.append(JsonOutput.toJson("Unused TestObjects"))
 		sb.append(":")
 		sb.append("[")
 		String sep = ""

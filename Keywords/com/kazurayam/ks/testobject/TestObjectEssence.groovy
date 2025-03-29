@@ -10,14 +10,11 @@ public class TestObjectEssence implements Comparable<TestObjectEssence> {
 
 	TestObjectEssence(TestObjectId testObjectId, String method, Locator locator) {
 		Objects.requireNonNull(testObjectId)
+		Objects.requireNonNull(method)
+		Objects.requireNonNull(locator)
 		this.testObjectId = testObjectId
-		Objects.requireNonNull(method) {
-			this.method = method
-			// locator could be null
-			if (locator != null) {
-				this.locator = locator
-			}
-		}
+		this.method = method
+		this.locator = locator
 	}
 
 	TestObjectId testObjectId() {

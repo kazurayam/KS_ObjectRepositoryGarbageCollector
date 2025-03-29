@@ -4,13 +4,15 @@ import groovy.json.JsonOutput
 
 public class Locator implements Comparable<Locator> {
 
+	public static Locator NULL_OBJECT = new Locator("")
+	
 	private String value = ""
 
 	Locator(String value) {
-		if (value == null) {
-			this.value = ""
-		} else {
+		if (value != null) {
 			this.value = value
+		} else {
+			this.value = ""
 		}
 	}
 

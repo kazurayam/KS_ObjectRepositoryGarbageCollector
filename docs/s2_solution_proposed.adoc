@@ -1,6 +1,6 @@
 == Solution
 
-=== How to install the library
+=== Installation
 
 You can download the jar from the [Releases](https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector/releases) page. Download the `KS_ObjectRepositoryGarbageCollector-x.x.x.jar`; locate it into the `Driviers` folder of your local Katalon Studio project.
 
@@ -9,7 +9,7 @@ In order to confirm if you have the library, open your project in Katalon Studio
 image:https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/images/2_1_LibraryManagement.png[]
 
 
-=== A demonstration: run the ObjectRepositoryGarbageCollector
+=== How to find out unused TestObjects
 
 Here I made a script `Test Cases/ObjectRepositoryGarbageCollector/GC1`:
 
@@ -21,4 +21,15 @@ include::../Scripts/demo/ObjectRepositoryGarbageCollector/GC1/Script174299208129
 When I run the script in Katalon Studio, I got the following output in the console:
 
 include::../build/reports/demo/ObjectRepositoryGarbageCollector/GC1.adoc[]
+
+Let me dictate this report.
+
+1. The name of this project is `KS_ObjectRepositoryGarbageCollector``
+2. In this project, there are 30 Test Cases in the `Test Cases` folder
+3. there are I have 15 Test Objects in the `Object Repository` folder
+4. amongst all, there are 4 Test Objects that are not used by any of the Test Cases
+5. It to 1.6 seconds to look up the unused Test Objects.
+
+=== How to generate the cross-reference
+
 

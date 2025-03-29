@@ -1,18 +1,16 @@
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.Paths
-
-import com.kazurayam.ks.testobject.gc.ObjectRepositoryGarbageCollector
-import com.kms.katalon.core.configuration.RunConfiguration
-
-import demo.Reporter
+import java.nio.file.Files as Files
+import java.nio.file.Path as Path
+import java.nio.file.Paths as Paths
+import com.kazurayam.ks.testobject.gc.ObjectRepositoryGarbageCollector as ObjectRepositoryGarbageCollector
+import com.kms.katalon.core.configuration.RunConfiguration as RunConfiguration
+import com.kazurayam.ks.reporting.Shorthand as Shorthand
+import com.kazurayam.ks.reporting.TargetDocumentFormat
 
 /**
  * outputs a JSON file which contains a list of garbage Test Objects
  * in the Object Repository directory.
  * A garbage Test Object is a Test Object which is unused by any of Test Cases.
  */
-
 // the Garbage Collector instance will scan the Object Repository directory
 // and the Scripts directory
 ObjectRepositoryGarbageCollector gc = new ObjectRepositoryGarbageCollector.Builder().build()
@@ -22,9 +20,11 @@ ObjectRepositoryGarbageCollector gc = new ObjectRepositoryGarbageCollector.Build
 String json = gc.garbages()
 
 // write it into a file
-Reporter rp = new Reporter("ObjectRepositoryGarbageCollector/GC1.adoc")
-rp.report("=== Output of TestCases/demo/ObjectRepositoryGarbageCollector/GC1\n",
-	"gc.garbages() returned\n",
-	"```",
-	json,
-	"```")
+Shorthand sh = new Shorthand.Builder()
+				.subDir('domo/ObjectRepositoryGarbageCollector')
+				.fileName('GC1.adoc')
+				.docFormat(TargetDocumentFormat.ASCIIDOC)
+				.syntaxHighlighting("json")
+				.build()
+
+sh.codeWithHeader('\n=== Output of TestCases/demo/ObjectRepositoryGarbageCollector/GC1\n\n gc.garbages() returned\n', json)

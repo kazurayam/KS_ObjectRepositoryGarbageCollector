@@ -1,11 +1,9 @@
-import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
+import com.kazurayam.ks.reporting.Shorthand
 import com.kazurayam.ks.testobject.gc.ObjectRepositoryGarbageCollector
 import com.kms.katalon.core.configuration.RunConfiguration
-
-import demo.Reporter
 
 Path projectDir = Paths.get(RunConfiguration.getProjectDir())
 Path objrepoDir = projectDir.resolve("Object Repository")
@@ -19,7 +17,10 @@ ObjectRepositoryGarbageCollector gc = new ObjectRepositoryGarbageCollector.Build
 String json = gc.garbages()
 								
 // write it into a file
-Reporter rp = new Reporter("ObjectRepositoryGarbageCollector/GC2.adoc")
+Shorthand sh =
+	new Shorthand.Builder()
+		.subDir("demo/ObjectRepositoryGarbageCollector").fileName("GC2.adoc")
+		.build()
 rp.report("=== Output of Test Cases/demo/ObjectRepositoryGarbageCollector/GC2\n",
 	"gc.garbages() returned\n",
 	"```", 
