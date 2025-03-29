@@ -12,6 +12,9 @@ import org.junit.runners.JUnit4
 import com.kms.katalon.core.configuration.RunConfiguration
 
 import groovy.json.JsonOutput
+import com.kazurayam.ks.reporting.Shorthand
+
+import internal.GlobalVariable
 
 @RunWith(JUnit4.class)
 public class SearchableTextTest {
@@ -20,7 +23,6 @@ public class SearchableTextTest {
 
 	@Test
 	void test_searchText() {
-		println "********** test_searchText **********"
 		SearchableText searchableText = new SearchableText(TC1)
 		String pattern = "Page_CURA Healthcare Service/a_Make Appointment"
 		List<TextSearchResult> list = searchableText.searchText(pattern, false)
@@ -34,14 +36,20 @@ public class SearchableTextTest {
 			sep = ","
 		}
 		sb.append("]")
-		println JsonOutput.prettyPrint(sb.toString())
+		//
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+						.fileName("test_searchText.json").build()
+		String json = JsonOutput.prettyPrint(sb.toString())
+		sh.write(json)
 	}
 
 	@Test
 	void test_toJson() {
 		SearchableText searchableText = new SearchableText(TC1)
 		String json = searchableText.toJson()
-		println "********** test_toJson **********"
-		println json
+		//
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+						.fileName("test_toJson.json").build()
+		sh.write(json)
 	}
 }

@@ -10,6 +10,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import groovy.json.JsonOutput
+import com.kazurayam.ks.reporting.Shorthand
+
+import internal.GlobalVariable
 
 
 @RunWith(JUnit4.class)
@@ -24,11 +27,14 @@ public class TestCaseScriptsVisitorTest {
 		visitor = new TestCaseScriptsVisitor(scriptsDir)
 		Files.walkFileTree(scriptsDir.resolve(subpath), visitor)
 		List<Path> list = visitor.getGroovyFiles()
-		assertTrue(list.size() > 0)
-		println JsonOutput.prettyPrint(toJson(list))
+		assertTrue(list.size() > 0) 
 		list.forEach { p ->
 			assertTrue("`${p.toString()}` is expected to contain a string 'main'", p.toString().contains("main"))
 		}
+		//
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+						.fileName("test_getScripts.json").build()
+		sh.write(JsonOutput.prettyPrint(toJson(list)))
 	}
 
 	private String toJson(List<Path> it) {

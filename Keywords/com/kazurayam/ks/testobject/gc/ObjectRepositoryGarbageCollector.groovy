@@ -82,8 +82,8 @@ class ObjectRepositoryGarbageCollector {
 	private void scanSub(Database db, Path objrepoDir, String objectRepositorySubpath, Path scriptsDir, String testCasesSubpath) {
 		// scan the Object Repository directory to make a list of TestObjectEssences
 		ExtendedObjectRepository extOR = new ExtendedObjectRepository(objrepoDir, objectRepositorySubpath)
-		allTestObjectIds = extOR.getAllTestObjectIds()
-		List<TestObjectEssence> essenceList = extOR.listEssenceRaw("", false)
+		allTestObjectIds = extOR.getAllTestObjectIdSet()
+		List<TestObjectEssence> essenceList = extOR.getTestObjectEssenceList("", false)
 
 		//
 		numberOfTestObjects = essenceList.size()

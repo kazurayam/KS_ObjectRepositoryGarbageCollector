@@ -2,7 +2,7 @@
 
 === Installation
 
-You can download the jar from the [Releases](https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector/releases) page. Download the `KS_ObjectRepositoryGarbageCollector-x.x.x.jar`; locate it into the `Driviers` folder of your local Katalon Studio project.
+You can download the jar from the [Releases](https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector/releases) page. Download the `KS_ObjectRepositoryGarbageCollector-x.x.x.jar`; locate it into the `Drivers` folder of your local Katalon Studio project.
 
 In order to confirm if you have the library, open your project in Katalon Studio, open "Project" > "Settings" to check the "Library Management". In the dialog, the jar should be found in the dialog:
 

@@ -8,6 +8,9 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 import groovy.json.JsonOutput
+import com.kazurayam.ks.reporting.Shorthand
+
+import internal.GlobalVariable
 
 @RunWith(JUnit4.class)
 public class TextSearchResultTest {
@@ -35,7 +38,9 @@ public class TextSearchResultTest {
 
 	@Test
 	void test_toJson() {
-		println "********** test_toJson **********"
-		println tsr.toJson()
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+						.fileName("test_toJson.json").build()
+		sh.write(tsr.toJson())
+
 	}
 }

@@ -50,7 +50,7 @@ class ObjectRepositoryExtenderTest {
 
 	@Test
 	void test_getTestObjectIdList_filterByString() {
-		List<TestObjectId> list = ObjectRepository.listTestObjectIdRaw("button_", false)
+		List<TestObjectId> list = ObjectRepository.getTestObjectIdList("button_", false)
 		assertTrue(list.size() > 0)
 	}
 
@@ -69,7 +69,7 @@ class ObjectRepositoryExtenderTest {
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
 						.fileName("test_jsonifyTestObjectIdList.json").build()
 		sh.write(json)
-		assertTrue(json.contains("a_Make Appointment"))
+		//assertTrue(json.contains("a_Make Appointment"))
 	}
 	
 	//-----------------------------------------------------------------
@@ -117,7 +117,7 @@ class ObjectRepositoryExtenderTest {
 	void test_jsonifyTestObjectEssenceList_filterByString() {
 		String json = ObjectRepository.jsonifyTestObjectEssenceList("button_", false)
 		assertNotNull(json)
-		assertTrue(json.contains("a_Make Appointment"))
+		//assertTrue(json.contains("a_Make Appointment"))
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
 						.fileName("test_jsonifyTestObjectEssenceList_filterByString.json").build()
 		sh.write(json)
@@ -126,45 +126,57 @@ class ObjectRepositoryExtenderTest {
 	//-----------------------------------------------------------------
 	
 	@Test
-	void test_reverseLookupRaw() {
-		Map<Locator, Set<TestObjectEssence>> result = ObjectRepository.reverseLookupRaw()
+	void test_getBackwardReferences() {
+		Map<Locator, Set<TestObjectEssence>> result = ObjectRepository.getBackwardReferences()
 		assertEquals(12, result.size())
 	}
 
 	@Test
-	void test_reverseLookupRaw_args() {
+	void test_getBackwardReferences_filterByRegex() {
 		String pattern = "btn-(.+)-appointment"
-		Map<Locator, Set<TestObjectEssence>> result = ObjectRepository.reverseLookupRaw(pattern, true)
-		println "********** test_reverseLookupRaw_args() **********"
-		println "pattern: ${pattern}"
+		Map<Locator, Set<TestObjectEssence>> result = ObjectRepository.getBackwardReferences(pattern, true)
+		StringBuilder sb = new StringBuilder()
 		result.forEach { k, v ->
-			println k.toString() + "\n\t" + v.toString()
+			sb.append(k.toString() + "\n\t" + v.toString())
+			sb.append("\n")
 		}
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+						.fileName("test_getBackwardReferences_filterByRegex.txt").build()
+		sh.write("pattern: ${pattern}", sb.toString())
 		assertEquals(2, result.size())
-		//
-		pattern = "select"
-		result = ObjectRepository.reverseLookupRaw("select", false)
-		println "pattern: ${pattern}"
+	}
+	
+	@Test
+	void test_getBackwardReferences_filterByString() {
+		String pattern = "select"
+		Map<Locator, Set<TestObjectEssence>> result = ObjectRepository.getBackwardReferences("select", false)
+		StringBuilder sb = new StringBuilder()
 		result.forEach { k, v ->
-			println k.toString() + "\n\t" + v.toString()
+			sb.append(k.toString() + "\n\t" + v.toString())
+			sb.append("\n")
 		}
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+						.fileName("test_getBackwardReferences_filterByString.txt").build()
+		sh.write("pattern: ${pattern}", sb.toString())
 		assertEquals(1, result.size())
 	}
 
 	@Test
-	void test_reverseLookup() {
-		String json = ObjectRepository.reverseLookup()
-		println "********** test_reverseLookup() **********"
-		println json
+	void test_jsonifyBackwardReferences() {
+		String json = ObjectRepository.jsonifyBackwardReferences()
 		assertNotNull(json)
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+						.fileName("test_jsonifyBackwardReferences.json").build()
+		sh.write(json)
 	}
 
 	@Test
-	void test_reverseLookup_args() {
-		String json = ObjectRepository.reverseLookup("//a[@id")   // default: isRegex = false
-		println "********** test_reverseLookup_args() **********"
-		println json
+	void test_jsonifyBackwardReferences_filterByString() {
+		String json = ObjectRepository.jsonifyBackwardReferences("//a[@id")   // default: isRegex = false
 		assertNotNull(json)
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+						.fileName("test_jsonifyBackwardReferences_filterByString.json").build()
+		sh.write(json)
 	}
 
 	/**

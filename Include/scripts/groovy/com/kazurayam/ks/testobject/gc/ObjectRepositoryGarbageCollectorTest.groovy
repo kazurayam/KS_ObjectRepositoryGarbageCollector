@@ -81,14 +81,14 @@ public class ObjectRepositoryGarbageCollectorTest {
 	@Test
 	void test_Builder_objrepoSubpath() {
 		ObjectRepositoryGarbageCollector gc = new ObjectRepositoryGarbageCollector.Builder(objectRepositoryDir, scriptsDir)
-				.objrepoSubpath("Page_CURA Healthcare Service")
+				.objectRepositorySubpath("Page_CURA Healthcare Service")
 				.build()
 	}
 
 	@Test
 	void test_Builder_scriptsSubpath() {
 		ObjectRepositoryGarbageCollector gc = new ObjectRepositoryGarbageCollector.Builder(objectRepositoryDir, scriptsDir)
-				.scriptsSubpath("main")
+				.testCasesSubpath("main")
 				.build()
 	}
 }

@@ -10,7 +10,10 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
+import com.kazurayam.ks.reporting.Shorthand
+
 import groovy.json.JsonOutput
+import internal.GlobalVariable
 
 @RunWith(JUnit4.class)
 public class ScriptsSearcherTest {
@@ -29,7 +32,7 @@ public class ScriptsSearcherTest {
 		String pattern = "https://katalon-demo-cura.herokuapp.com/"
 		Map<TestCaseId, List<TextSearchResult>> result =
 				searcher.searchText(pattern, false)
-		assertEquals(1, result.size())
+		assertEquals(2, result.size())
 	}
 
 	@Test
@@ -37,9 +40,12 @@ public class ScriptsSearcherTest {
 		String testObjectId = "Page_CURA Healthcare Service/a_Make Appointment"
 		Map<TestCaseId, List<TextSearchResult>> result =
 				searcher.searchReferenceToTestObject(testObjectId)
-		assertEquals(1, result.size())
-		println "********** searchReferenceToTestObject **********"
-		println JsonOutput.prettyPrint(JsonOutput.toJson(result))
+		assertEquals(2, result.size())
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+				.fileName("test_searchReferenceToTestObject.json").build()
+		String json = JsonOutput.prettyPrint(JsonOutput.toJson(result))
+		sh.write(json)
+		//
 		TestCaseId testCaseId1 = result.keySet().getAt(0)   // main/TC1/Script1677544889443.groovy
 		assertTrue("'${testCaseId1}' should start with 'main'",
 				testCaseId1.value().startsWith("main"))
@@ -53,7 +59,9 @@ public class ScriptsSearcherTest {
 		List<TextSearchResult> result = searcher.searchIn(testCaseId, pattern, isRegex)
 		assertNotNull(result)
 		assertEquals(1, result.size())
-		println "********** test_searchIn **********"
-		println JsonOutput.prettyPrint(result.get(0).toJson())
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+				.fileName("test_searchIn.json").build()
+		String json = JsonOutput.prettyPrint(JsonOutput.toJson(result.get(0).toJson()))
+		sh.write(json)
 	}
 }

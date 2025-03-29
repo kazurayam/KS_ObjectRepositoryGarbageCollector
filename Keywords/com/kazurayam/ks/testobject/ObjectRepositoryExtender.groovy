@@ -36,6 +36,9 @@ public class ObjectRepositoryExtender {
 				case "getTestObjectIdList" :
 					return this.getTestObjectIdList(args)
 					break
+				case "getAllTestObjectIdSet" :
+					return this.getAllTestObjectIdSet(args)
+					break
 				case "jsonifyTestObjectIdList" :
 					return this.jsonifyTestObjectIdList(args)
 					break
@@ -45,17 +48,19 @@ public class ObjectRepositoryExtender {
 				case "jsonifyTestObjectEssenceList" :
 					return this.jsonifyTestObjectEssenceList(args)
 					break
-				case "reverseLookupRaw" :
-					return this.reverseLookupRaw(args)
+				case "getBackwardReferences" :
+					return this.getBackwardReferences(args)
 					break
-				case "reverseLookup" :
-					return this.reverseLookup(args)
+				case "jsonifyBackwardReferences" :
+					return this.jsonifyBackwardReferences(args)
 					break
 				default :
-				// just do what ObejctRepository is originally designed to do
+					// just do what ObejctRepository is originally designed to do
 					def result
 					try {
-						result = delegate.metaClass.getMetaMethod(name, args).invoke(delegate, args)
+						MetaMethod metaMethod = delegate.metaClass.getMetaMethod(name, args)
+						assert metaMethod != null, "method '${name}' is not implemented by ObjectRepository class"
+						result = metaMethod.invoke(delegate, args)
 					} catch (Exception e) {
 						System.err.println("call to method $name raised an Exception")
 						e.printStackTrace()
@@ -65,63 +70,71 @@ public class ObjectRepositoryExtender {
 		}
 	}
 
-	private List<String> listTestObjectIdRaw(Object ... args) throws Exception {
+	private List<TestObjectId> getTestObjectIdList(Object ... args) throws Exception {
 		if (args.length == 0) {
-			return extOR.listTestObjectIdRaw("", false)
+			return extOR.getTestObjectIdList("", false)
 		} else if (args.length == 1) {
-			return extOR.listTestObjectIdRaw((String)args[0], false)
+			return extOR.getTestObjectIdList((String)args[0], false)
 		} else {
-			return extOR.listTestObjectIdRaw((String)args[0], (Boolean)args[1])
+			return extOR.getTestObjectIdList((String)args[0], (Boolean)args[1])
 		}
 	}
 
-	private String listTestObjectId(Object ... args) throws Exception {
+	private Set<TestObject> getAllTestObjectIdSet(Object ... args) throws Exception {
+		return extOR.getAllTestObjectIdSet()
+	}
+
+	private String jsonifyTestObjectIdList(Object ... args) throws Exception {
 		if (args.length == 0) {
-			return extOR.listTestObjectId("", false)
+			return extOR.jsonifyTestObjectIdList("", false)
 		} else if (args.length == 1) {
-			return extOR.listTestObjectId((String)args[0], false)
+			return extOR.jsonifyTestObjectIdList((String)args[0], false)
 		} else {
-			return extOR.listTestObjectId((String)args[0], (Boolean)args[1])
+			return extOR.jsonifyTestObjectIdList((String)args[0], (Boolean)args[1])
 		}
 	}
 
-	private List<TestObjectEssence> listEssenceRaw(Object ... args) throws Exception {
+	//-----------------------------------------------------------------
+
+	private List<TestObjectEssence> getTestObjectEssenceList(Object ... args) throws Exception {
 		if (args.length == 0) {
-			return extOR.listEssenceRaw("", false)
+			return extOR.getTestObjectEssenceList("", false)
 		} else if (args.length == 1) {
-			return extOR.listEssenceRaw((String)args[0], false)
+			return extOR.getTestObjectEssenceList((String)args[0], false)
 		} else {
-			return extOR.listEssenceRaw((String)args[0], (Boolean)args[1])
+			return extOR.getTestObjectEssenceList((String)args[0], (Boolean)args[1])
 		}
 	}
 
-	private String listEssence(Object ... args) throws Exception {
+	private String jsonifyTestObjectEssenceList(Object ... args) throws Exception {
 		if (args.length == 0) {
-			return extOR.listEssence("", false)
+			return extOR.jsonifyTestObjectEssenceList("", false)
 		} else if (args.length == 1) {
-			return extOR.listEssence((String)args[0], false)
+			return extOR.jsonifyTestObjectEssenceList((String)args[0], false)
 		} else {
-			return extOR.listEssence((String)args[0], (Boolean)args[1])
+			return extOR.jsonifyTestObjectEssenceList((String)args[0], (Boolean)args[1])
 		}
 	}
 
-	private Map<Locator, Set<TestObjectEssence>> reverseLookupRaw(Object ... args) throws IOException {
+	//-----------------------------------------------------------------
+
+	private Map<Locator, Set<TestObjectEssence>> getBackwardReferences(Object ... args) throws IOException {
 		if (args.length == 0) {
-			return extOR.reverseLookupRaw("", false)
+			return extOR.getBackwardReferences("", false)
 		} else if (args.length == 1) {
-			return extOR.reverseLookupRaw((String)args[0], false)
+			return extOR.getBackwardReferences((String)args[0], false)
 		} else {
-			return extOR.reverseLookupRaw((String)args[0], (Boolean)args[1])
+			return extOR.getBackwardReferences((String)args[0], (Boolean)args[1])
 		}
 	}
 
-	private String reverseLookup(Object ... args) throws IOException {
+	private String jsonifyBackwardReferences(Object ... args) throws IOException {
 		if (args.length == 0) {
-			return extOR.reverseLookup("", false)
+			return extOR.jsonifyBackwardReferences("", false)
 		} else if (args.length == 1) {
-			return extOR.reverseLookup((String)args[0], false)
+			return extOR.jsonifyBackwardReferences((String)args[0], false)
 		} else {
-			return extOR.reverseLookup((String)args[0], (Boolean)args[1])
+			return extOR.jsonifyBackwardReferences((String)args[0], (Boolean)args[1])
 		}
 	}
 }
