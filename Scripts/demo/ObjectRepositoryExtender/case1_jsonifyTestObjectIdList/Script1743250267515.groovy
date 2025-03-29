@@ -8,7 +8,7 @@ import internal.GlobalVariable
 new ObjectRepositoryExtender().apply()
 
 // step1: get a list of IDs of all Test Objects in the Object Repository
-String listTestObjectId = ObjectRepository.listTestObjectId()
+String out = ObjectRepository.jsonifyTestObjectIdList()
 
-Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName('listTestObjectId.json').build()
-sh.write(listTestObjectId)
+Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName('out.json').build()
+sh.write(out)

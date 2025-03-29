@@ -15,28 +15,28 @@
       <guid>c385c5c2-4e24-44ad-abba-eee090df343f</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/demo/ObjectRepositoryExtender/case1_listTestObjectId</testCaseId>
+      <testCaseId>Test Cases/demo/ObjectRepositoryExtender/case1_jsonifyTestObjectIdList</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
       <guid>e8ffbd94-9432-4f54-9c0f-bf0d5c75f373</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/demo/ObjectRepositoryExtender/case2_listTestObjectIdRaw</testCaseId>
+      <testCaseId>Test Cases/demo/ObjectRepositoryExtender/case2_getTestObjectIdList</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
       <guid>c039ab73-6543-4531-8d28-3db895d3d496</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/demo/ObjectRepositoryExtender/case3_listTestObjectIdRaw_regex</testCaseId>
+      <testCaseId>Test Cases/demo/ObjectRepositoryExtender/case3_getTestObjectIdList_filteredByRegex</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
       <guid>d360da43-543f-498e-92c0-d716a6bf2a14</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/demo/ObjectRepositoryExtender/case4</testCaseId>
+      <testCaseId>Test Cases/demo/ObjectRepositoryExtender/case4_getBackwardReferences</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>

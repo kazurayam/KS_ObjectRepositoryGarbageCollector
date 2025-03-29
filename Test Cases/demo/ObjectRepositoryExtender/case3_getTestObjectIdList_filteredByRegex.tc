@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>case3_listTestObjectIdRaw_regex</name>
+   <name>case3_getTestObjectIdList_filteredByRegex</name>
    <tag></tag>
    <comment></comment>
    <recordOption>OTHER</recordOption>
