@@ -39,8 +39,7 @@ public class TextSearchResultTest {
 	@Test
 	void test_toJson() {
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_toJson.json").build()
-		sh.write(tsr.toJson())
-
+				.fileName("test_toJson.json").build()
+		sh.write(JsonOutput.prettyPrint(tsr.toJson()))
 	}
 }
