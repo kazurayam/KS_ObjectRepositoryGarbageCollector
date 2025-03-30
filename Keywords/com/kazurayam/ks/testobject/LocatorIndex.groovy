@@ -16,9 +16,9 @@ public class LocatorIndex {
 	}
 
 	Set<Locator> keySet() {
-		return locatorIndex.keySet()	
+		return locatorIndex.keySet()
 	}
-	
+
 	Set<TestObjectEssence> get(Locator locator) {
 		Objects.requireNonNull(locator)
 		return locatorIndex.get(locator)
@@ -47,7 +47,7 @@ public class LocatorIndex {
 	String toJson() {
 		ObjectMapper mapper = new ObjectMapper()
 		SimpleModule module = new SimpleModule("LocatorIndexSerializer",
-								new Version(1, 0, 0, null, null, null))
+				new Version(1, 0, 0, null, null, null))
 		module.addSerializer(LocatorIndex.class, new LocatorIndexSerializer())
 		module.addSerializer(Locator.class, new Locator.LocatorSerializer())
 		module.addSerializer(TestObjectEssence.class, new TestObjectEssence.TestObjectEssenceSerializer())
@@ -85,5 +85,4 @@ public class LocatorIndex {
 			gen.writeEndObject()
 		}
 	}
-
 }

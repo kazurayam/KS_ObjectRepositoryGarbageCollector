@@ -55,7 +55,7 @@ public class ObjectRepositoryExtender {
 					return this.jsonifyBackwardReferences(args)
 					break
 				default :
-					// just do what ObejctRepository is originally designed to do
+				// just do what ObejctRepository is originally designed to do
 					def result
 					try {
 						MetaMethod metaMethod = delegate.metaClass.getMetaMethod(name, args)

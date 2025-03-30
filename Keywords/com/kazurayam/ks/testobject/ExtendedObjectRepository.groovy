@@ -9,6 +9,10 @@ import java.nio.file.Paths
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.kazurayam.ks.testobject.TestObjectEssence.TestObjectEssenceSerializer
 import com.kms.katalon.core.testobject.ObjectRepository
 import com.kms.katalon.core.testobject.TestObject
 
@@ -16,7 +20,7 @@ import groovy.json.JsonOutput
 
 /**
  * ExtendedObjectRepository wraps the so-called "Object Repository" directory,
- * implements various accessors for the contents in the directory.
+ * implements various accessor methods for the Test Objects stored in the directory.
  *
  */
 public class ExtendedObjectRepository {
@@ -44,7 +48,31 @@ public class ExtendedObjectRepository {
 	Path getTargetDir() {
 		return (subpath != null) ? baseDir.resolve(subpath) : baseDir
 	}
+	
+	/**
+	 * @return a Set of all TestObjectIds contained in the "Object Repository"
+	 */
+	public Set<TestObjectId> getAllTestObjectIdSet() {
+		Set<TestObjectId> result = new TreeSet<>()   // ordered set
+		List<TestObjectEssence> allEssence = getTestObjectEssenceList("", false)
+		allEssence.forEach { essence ->
+			TestObjectId toi = essence.testObjectId()
+			if (toi != null && toi.value() != "") {
+				result.add(toi)
+			}
+		}
+		return result
+	}
 
+	/**
+	 * 
+	 * @param pattern e.g. "button_"
+	 * @param isRegex
+	 * @return a List of TestObjectIds of which id string matches the pattern. 
+	 * The "pattern" could either be a plain string or a Regular Expression. 
+	 * You can specify the interpretation by the "isRegex" parameter
+	 * @throws IOException
+	 */
 	List<TestObjectId> getTestObjectIdList(String pattern = "", Boolean isRegex = false) throws IOException {
 		Path dir = getTargetDir()
 		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(baseDir)
@@ -61,36 +89,28 @@ public class ExtendedObjectRepository {
 		return result;
 	}
 
-	public Set<TestObjectId> getAllTestObjectIdSet() {
-		Set<TestObjectId> result = new TreeSet<>()   // ordered set
-		List<TestObjectEssence> allEssence = getTestObjectEssenceList("", false)
-		allEssence.forEach { essence ->
-			TestObjectId toi = essence.testObjectId()
-			if (toi != null && toi.value() != "") {
-				result.add(toi)
-			}
-		}
-		return result
-	}
-
+	/**
+	 * returns a JSON string representation of the call to "getTestObjectIdList"
+	 */
 	String jsonifyTestObjectIdList(String pattern = "", Boolean isRegex = false) throws IOException {
 		List<TestObjectId> list = getTestObjectIdList(pattern, isRegex)
-		StringBuilder sb = new StringBuilder()
-		sb.append("{")
-		sb.append(JsonOutput.toJson("ExtendedObjectRepository#TestObjectIdList"))
-		sb.append(":")
-		sb.append("[")
-		String sep = ""
-		list.forEach { toi ->
-			sb.append(sep)
-			sb.append(toi.toJson())
-			sep = ","
-		}
-		sb.append("]")
-		sb.append("}")
-		return JsonOutput.prettyPrint(sb.toString())
+		//
+		ObjectMapper mapper = new ObjectMapper()
+		SimpleModule module = new SimpleModule("jsonifyTestObjectIdList",
+				new Version(1, 0, 0, null, null, null))
+		module.addSerializer(TestObjectId.class, new TestObjectId.TestObjectIdSerializer())
+		module.addSerializer(TestObjectEssence.class, new TestObjectEssenceSerializer())
+		module.addSerializer(Locator.class, new Locator.LocatorSerializer())
+		mapper.registerModule(module)
+		//
+		return mapper.writeValueAsString(list)
 	}
 
+	/**
+	 * 
+	 * returns a List of TestObjectEssense object, which comprises with "TestObjectId", "Method" and "Locator".
+	 * You can select the target TestObjects to choose by the "pattern" and "isRegex" parameters
+	 */
 	List<TestObjectEssence> getTestObjectEssenceList(String pattern, Boolean isRegex = false) throws IOException {
 		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(baseDir)
 		Path dir = getTargetDir()
@@ -101,7 +121,7 @@ public class ExtendedObjectRepository {
 		List<TestObjectEssence> result = new ArrayList<>()
 		ids.forEach { id ->
 			TestObject tObj = ObjectRepository.findTestObject(id.value())
-			Locator locator = findLocator(id)
+			Locator locator = id.toTestObjectEssence().locator()
 			if (m.found(id.value())) {
 				TestObjectEssence essence =
 						new TestObjectEssence(id, tObj.getSelectorMethod().toString(), locator)
@@ -112,84 +132,47 @@ public class ExtendedObjectRepository {
 	}
 
 	String jsonifyTestObjectEssenceList(String pattern, Boolean isRegex) throws IOException {
-		List<TestObjectEssence> result = getTestObjectEssenceList(pattern, isRegex)
-		StringBuilder sb = new StringBuilder()
-		sb.append("{")
-		sb.append(JsonOutput.toJson("ExtendedObjectRepository#TestObjectEssenceList"))
-		sb.append(":")
-		sb.append("[")
-		String sep = ""
-		result.forEach { tog ->
-			sb.append(sep)
-			sb.append(tog.toJson())
-			sep = ","
-		}
-		sb.append("]")
-		sb.append("}")
-		return JsonOutput.prettyPrint(sb.toString())
+		List<TestObjectEssence> list = getTestObjectEssenceList(pattern, isRegex)
+		//
+		ObjectMapper mapper = new ObjectMapper()
+		SimpleModule module = new SimpleModule("jsonifyTestObjectEssenceList",
+				new Version(1, 0, 0, null, null, null))
+		module.addSerializer(TestObjectId.class, new TestObjectId.TestObjectIdSerializer())
+		module.addSerializer(TestObjectEssence.class, new TestObjectEssenceSerializer())
+		module.addSerializer(Locator.class, new Locator.LocatorSerializer())
+		mapper.registerModule(module)
+		//
+		return mapper.writeValueAsString(list)
 	}
-
 
 	//-------------------------------------------------------------------------
 
-
-	Map<Locator, Set<TestObjectEssence>> getBackwardReferences(String pattern = "", Boolean isRegex = false) throws IOException {
-		Map<Locator, Set<TestObjectEssence>> result = new TreeMap<>()
-		RegexOptedTextMatcher m = new RegexOptedTextMatcher(pattern, isRegex)
-		List<TestObjectId> idList = getTestObjectIdList("", false)  // list of IDs of Test Object
+	/**
+	 * LocatorIndex is a list of "Locators", each of which associated with 
+	 * the list of TestObjectEssence objects which have the same "Locator" string.
+	 * 
+	 * You should pay attention to the locators that has 2 or more belonging TestObjectEssence objects;
+	 * as it means you have duplicating TestObjects with the same Locator.
+	 */
+	LocatorIndex getLocatorIndex(String pattern = "", Boolean isRegex = false) throws IOException {
+		LocatorIndex locatorIndex = new LocatorIndex()
+		RegexOptedTextMatcher textMatcher = new RegexOptedTextMatcher(pattern, isRegex)
+		List<TestObjectId> idList = this.getTestObjectIdList("", false)  // list of IDs of Test Object
 		idList.forEach { id ->
-			Locator locator = findLocator(id)
-			Set<TestObjectId> idSet
-			if (result.containsKey(locator)) {
-				idSet = result.get(locator)
-			} else {
-				idSet = new TreeSet<>()
-			}
-			if (m.found(locator.value())) {
+			Locator locator = id.toTestObjectEssence().locator()
+			if (textMatcher.found(locator.value())) {
 				TestObjectEssence essence = id.toTestObjectEssence()
-				idSet.add(essence)
-				result.put(locator, idSet)
+				locatorIndex.put(locator, essence)
 			}
 		}
-		return result
+		return locatorIndex
 	}
 
-	String jsonifyBackwardReferences(String pattern = "", Boolean isRegex = false) throws IOException {
-		Map<Locator, Set<TestObjectEssence>> result = getBackwardReferences(pattern, isRegex)
-		StringBuilder sb = new StringBuilder()
-		sb.append("{")
-		sb.append(JsonOutput.toJson("ExtendedObjectRepository#backwardReferences"))
-		sb.append(":")
-		sb.append("[")
-		String sep1 = ""
-		result.keySet().forEach { locator ->
-			sb.append(sep1)
-			sb.append("{")
-			sb.append(locator.toJson())
-			sb.append(",")
-			sb.append("[")
-			Set<TestObjectEssence> essences = result.get(locator)
-			String sep2 = ""
-			essences.forEach { essence ->
-				sb.append(sep2)
-				sb.append(essence.toJson())
-				sep2 = ","
-			}
-			sb.append("]")
-			sb.append("}")
-			sep1 = ","
-		}
-		sb.append("]")
-		sb.append("}")
-		return JsonOutput.prettyPrint(sb.toString())
+	/**
+	 * returns a JSON string representation of the LocatorIndex object that is returned by the "getLocatorIndex" call.
+	 */
+	String jsonifyLocatorIndex(String pattern = "", Boolean isRegex = false) throws IOException {
+		LocatorIndex locatorIndex = this.getLocatorIndex(pattern, isRegex)
+		return locatorIndex.toJson()
 	}
-
-	//-------------------------------------------------------------------------
-
-	private Locator findLocator(TestObjectId testObjectId) {
-		Objects.requireNonNull(testObjectId)
-		TestObjectEssence essence= testObjectId.toTestObjectEssence()
-		return essence.locator()
-	}
-	
 }

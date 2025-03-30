@@ -14,6 +14,7 @@ import org.junit.runners.MethodSorters;
 
 import com.kazurayam.ks.reporting.Shorthand
 
+import groovy.json.JsonOutput
 import internal.GlobalVariable
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -52,11 +53,11 @@ public class ExtendedObjectRepositoryTest {
 	//-----------------------------------------------------------------
 
 	@Test
-	void test_jsonifyTestObjectIdList_default() {
+	void test_jsonifyTestObjectIdList() {
 		String json = instance.jsonifyTestObjectIdList()
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-				.fileName("test_jsonifyTestObjectIdList_default.json").build()
-		sh.write(json)
+				.fileName("test_jsonifyTestObjectIdList.json").build()
+		sh.write(JsonOutput.prettyPrint(json))
 		assertTrue(json.contains("a_Make Appointment"))
 	}
 
@@ -66,7 +67,7 @@ public class ExtendedObjectRepositoryTest {
 		String json = instance.jsonifyTestObjectIdList(pattern, false)
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
 				.fileName("test_jsonifyTestObjectIdList_filterByString.json").build()
-		sh.write(json)
+		sh.write(JsonOutput.prettyPrint(json))
 		assertTrue(json.contains("button_Login"))
 	}
 
@@ -76,7 +77,7 @@ public class ExtendedObjectRepositoryTest {
 		String json = instance.jsonifyTestObjectIdList(pattern, true)
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
 				.fileName("test_jsonifyTestObjectIdList_filterByRegex.json").build()
-		sh.write(json)
+		sh.write(JsonOutput.prettyPrint(json))
 		assertTrue(json.contains("button_Login"))
 	}
 
@@ -105,7 +106,7 @@ public class ExtendedObjectRepositoryTest {
 		String json = instance.jsonifyTestObjectEssenceList(pattern, isRegex)
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
 				.fileName("test_jsonifyTestObjectEssenceList.json").build()
-		sh.write(json)
+		sh.write(JsonOutput.prettyPrint(json))
 		assertTrue("json should contain 'a_Make Appointment'", json.contains("a_Make Appointment"))
 	}
 
@@ -116,7 +117,7 @@ public class ExtendedObjectRepositoryTest {
 		String json = instance.jsonifyTestObjectEssenceList(pattern, isRegex)
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
 				.fileName("test_jsonifyTestObjectEssenceList_filterByRegex.json").build()
-		sh.write(json)
+		sh.write(JsonOutput.prettyPrint(json))
 		assertTrue(json.contains("button_Login"))
 	}
 
@@ -140,18 +141,18 @@ public class ExtendedObjectRepositoryTest {
 	//-----------------------------------------------------------------
 
 	@Test
-	void test_getBackwardReferences() {
-		Map<Locator, Set<TestObjectEssence>> result = instance.getBackwardReferences()
-		assertNotNull(result)
-		// TODO more
+	void test_getLocatorIndex() {
+		LocatorIndex locatorIndex = instance.getLocatorIndex()
+		assertNotNull(locatorIndex)
+		assertTrue(locatorIndex.size() > 0)
 	}
 
 	@Test
-	void test_jsonifyBackwardReferences() {
-		String json = instance.jsonifyBackwardReferences()
+	void test_jsonifyLocatorIndex() {
+		String json = instance.jsonifyLocatorIndex()
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-				.fileName("test_jsonifyBackwardReferences.json").build()
-		sh.write(json)
-		// TODO assert
+				.fileName("test_jsonifyLocatorIndex.json").build()
+		sh.write(JsonOutput.prettyPrint(json))
+		assertTrue(json.contains("a_Make Appointment"))
 	}
 }
