@@ -36,14 +36,14 @@
       <guid>d360da43-543f-498e-92c0-d716a6bf2a14</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/demo/ObjectRepositoryExtender/case4_getBackwardReferences</testCaseId>
+      <testCaseId>Test Cases/demo/ObjectRepositoryExtender/case4_jsonifyLocatorIndex</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
       <guid>cb83aa57-7dca-44c7-9940-9321f70d8174</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/demo/ObjectRepositoryExtender/case5</testCaseId>
+      <testCaseId>Test Cases/demo/ObjectRepositoryExtender/case5_getLocatorIndex_filterByString</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>

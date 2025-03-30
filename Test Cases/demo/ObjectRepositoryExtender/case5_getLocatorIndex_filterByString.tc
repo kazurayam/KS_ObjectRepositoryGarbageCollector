@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>case4_getBackwardReferences</name>
+   <name>case5_getLocatorIndex_filterByString</name>
    <tag></tag>
    <comment></comment>
    <recordOption>OTHER</recordOption>
-   <testCaseGuid>954d3e5b-1165-4315-96ce-01a27b553c00</testCaseGuid>
+   <testCaseGuid>97e0500a-db30-42e9-987c-ba9eaac1a334</testCaseGuid>
 </TestCaseEntity>
