@@ -54,10 +54,10 @@ public class TestObjectEssenceTest {
 	}
 
 	@Test
-	void test_valuAsJson2() {
-		String json = essence.valueAsJson2()
-		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName("test_valueAsJson2.json").build()
-		sh.write(json)
+	void test_toJson() {
+		String json = essence.toJson()
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName("test_toJson.json").build()
+		sh.write(JsonOutput.prettyPrint(json))
 		assertTrue(json.contains("testObjectX"))
 	}
 }

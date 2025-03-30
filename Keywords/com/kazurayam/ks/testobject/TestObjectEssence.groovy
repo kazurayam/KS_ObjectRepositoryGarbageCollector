@@ -57,12 +57,22 @@ public class TestObjectEssence implements Comparable<TestObjectEssence> {
 		}
 		return hash;
 	}
+	
+	@Override
+	int compareTo(TestObjectEssence other) {
+		if (this.testObjectId.value == other.testObjectId.value) {
+			return 0
+		} else {
+			return this.testObjectId.value.compareTo(other.testObjectId.value)
+		}
+	}
 
 	@Override
 	String toString() {
 		return this.toJson()
 	}
 
+	/*
 	String toJson() {
 		StringBuilder sb = new StringBuilder()
 		sb.append("{")
@@ -73,7 +83,7 @@ public class TestObjectEssence implements Comparable<TestObjectEssence> {
 		return JsonOutput.prettyPrint(sb.toString())
 	}
 
-	public valueAsJson() {
+	public String valueAsJson() {
 		StringBuilder sb = new StringBuilder()
 		sb.append("{")
 		sb.append(JsonOutput.toJson("TestObjectId"))
@@ -90,25 +100,22 @@ public class TestObjectEssence implements Comparable<TestObjectEssence> {
 		sb.append("}")
 		return JsonOutput.prettyPrint(sb.toString())
 	}
+	*/
 
-	public valueAsJsonByJackson() {
+	public String toJson() {
 		ObjectMapper mapper = new ObjectMapper()
 		SimpleModule module = new SimpleModule("TestObjectEssenceSerializer",
-				new Version(1,0.0, null, null, null))
+				new Version(1, 0, 0, null, null, null))
+		module.addSerializer(TestObjectId.class, new TestObjectId.TestObjectIdSerializer())
 		module.addSerializer(TestObjectEssence.class, new TestObjectEssenceSerializer())
+		module.addSerializer(Locator.class, new Locator.LocatorSerializer())
 		mapper.registerModule(module)
 		return mapper.writeValueAsString(this)
 	}
 
-	@Override
-	int compareTo(TestObjectEssence other) {
-		if (this.testObjectId.value == other.testObjectId.value) {
-			return 0
-		} else {
-			return this.testObjectId.value.compareTo(other.testObjectId.value)
-		}
-	}
-
+	/*
+	 * 
+	 */
 	static class TestObjectEssenceSerializer extends StdSerializer<TestObjectEssence> {
 		TestObjectEssenceSerializer() {
 			this(null)
@@ -118,10 +125,12 @@ public class TestObjectEssence implements Comparable<TestObjectEssence> {
 		}
 		@Override
 		void serialize(TestObjectEssence essence,
-				JsonGenerator jsonGenerator, SerializerProvider serializer) {
-			jsonGenerator.writeStartObject()
-			jsonGenerator.writeStringField("testObjectId", essence.testObjectId().toString())
-			jsonGenerator.writeEndObject()
+				JsonGenerator gen, SerializerProvider serializer) {
+			gen.writeStartObject()
+			gen.writeObjectField("TestObjectId", essence.testObjectId())
+			gen.writeStringField("method", essence.method())
+			gen.writeObjectField("Locator", essence.locator())
+			gen.writeEndObject()
 		}
 	}
 }

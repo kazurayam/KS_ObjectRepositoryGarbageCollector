@@ -79,10 +79,10 @@ public class TestObjectId implements Comparable<TestObjectId>{
 		}
 		@Override
 		void serialize(TestObjectId testObjectId,
-				JsonGenerator jsonGenerator, SerializerProvider serializer) {
-			jsonGenerator.writeStartObject()
-			jsonGenerator.writeStringField("TestObjectId", testObjectId.value())
-			jsonGenerator.writeEndObject()
+				JsonGenerator gen, SerializerProvider serializer) {
+			gen.writeStartObject()
+			gen.writeStringField("TestObjectId", testObjectId.value())
+			gen.writeEndObject()
 		}
 	}
 }

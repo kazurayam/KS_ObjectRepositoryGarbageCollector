@@ -7,6 +7,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
+import com.kazurayam.ks.reporting.Shorthand
+
+import groovy.json.JsonOutput
+import internal.GlobalVariable
+
 @RunWith(JUnit4.class)
 public class LocatorTest {
 
@@ -24,7 +29,10 @@ public class LocatorTest {
 
 	@Test
 	void test_toJson() {
-		println locator.toJson()
+		String json = JsonOutput.prettyPrint(locator.toJson())
+		Shorthand sh = new Shorthand .Builder().subDir(GlobalVariable.TESTCASE_ID)
+						.fileName("test_toJson.json").build()
+		sh.write(json)
 		assertEquals('{\"Locator\":\"//a\"}', locator.toJson())
 	}
 }
