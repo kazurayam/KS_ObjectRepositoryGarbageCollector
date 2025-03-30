@@ -57,7 +57,7 @@ public class TestObjectEssence implements Comparable<TestObjectEssence> {
 		}
 		return hash;
 	}
-	
+
 	@Override
 	int compareTo(TestObjectEssence other) {
 		if (this.testObjectId.value == other.testObjectId.value) {
@@ -73,42 +73,41 @@ public class TestObjectEssence implements Comparable<TestObjectEssence> {
 	}
 
 	/*
-	String toJson() {
-		StringBuilder sb = new StringBuilder()
-		sb.append("{")
-		sb.append(JsonOutput.toJson("TestObjectEssence"))
-		sb.append(":")
-		sb.append(valueAsJson())
-		sb.append("}")
-		return JsonOutput.prettyPrint(sb.toString())
-	}
-
-	public String valueAsJson() {
-		StringBuilder sb = new StringBuilder()
-		sb.append("{")
-		sb.append(JsonOutput.toJson("TestObjectId"))
-		sb.append(":")
-		sb.append(JsonOutput.toJson(testObjectId.value()))
-		sb.append(",")
-		sb.append(JsonOutput.toJson("Method"))
-		sb.append(":")
-		sb.append(JsonOutput.toJson(method))
-		sb.append(",")
-		sb.append(JsonOutput.toJson("Locator"))
-		sb.append(":")
-		sb.append(JsonOutput.toJson(locator.value()))
-		sb.append("}")
-		return JsonOutput.prettyPrint(sb.toString())
-	}
-	*/
+	 String toJson() {
+	 StringBuilder sb = new StringBuilder()
+	 sb.append("{")
+	 sb.append(JsonOutput.toJson("TestObjectEssence"))
+	 sb.append(":")
+	 sb.append(valueAsJson())
+	 sb.append("}")
+	 return JsonOutput.prettyPrint(sb.toString())
+	 }
+	 public String valueAsJson() {
+	 StringBuilder sb = new StringBuilder()
+	 sb.append("{")
+	 sb.append(JsonOutput.toJson("TestObjectId"))
+	 sb.append(":")
+	 sb.append(JsonOutput.toJson(testObjectId.value()))
+	 sb.append(",")
+	 sb.append(JsonOutput.toJson("Method"))
+	 sb.append(":")
+	 sb.append(JsonOutput.toJson(method))
+	 sb.append(",")
+	 sb.append(JsonOutput.toJson("Locator"))
+	 sb.append(":")
+	 sb.append(JsonOutput.toJson(locator.value()))
+	 sb.append("}")
+	 return JsonOutput.prettyPrint(sb.toString())
+	 }
+	 */
 
 	public String toJson() {
 		ObjectMapper mapper = new ObjectMapper()
 		SimpleModule module = new SimpleModule("TestObjectEssenceSerializer",
 				new Version(1, 0, 0, null, null, null))
-		module.addSerializer(TestObjectId.class, new TestObjectId.TestObjectIdSerializer())
+		//module.addSerializer(TestObjectId.class, new TestObjectId.TestObjectIdSerializer())
 		module.addSerializer(TestObjectEssence.class, new TestObjectEssenceSerializer())
-		module.addSerializer(Locator.class, new Locator.LocatorSerializer())
+		//module.addSerializer(Locator.class, new Locator.LocatorSerializer())
 		mapper.registerModule(module)
 		return mapper.writeValueAsString(this)
 	}
@@ -127,9 +126,9 @@ public class TestObjectEssence implements Comparable<TestObjectEssence> {
 		void serialize(TestObjectEssence essence,
 				JsonGenerator gen, SerializerProvider serializer) {
 			gen.writeStartObject()
-			gen.writeObjectField("TestObjectId", essence.testObjectId())
-			gen.writeStringField("method", essence.method())
-			gen.writeObjectField("Locator", essence.locator())
+			gen.writeStringField("TestObjectId", essence.testObjectId().value())
+			gen.writeStringField("Method", essence.method())
+			gen.writeStringField("Locator", essence.locator().value())
 			gen.writeEndObject()
 		}
 	}

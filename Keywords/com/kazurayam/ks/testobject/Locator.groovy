@@ -50,29 +50,22 @@ public class Locator implements Comparable<Locator> {
 		return this.value.compareTo(other.value)
 	}
 
-	/*
-	String toJson() {
-		StringBuilder sb = new StringBuilder()
-		sb.append("{")
-		sb.append(JsonOutput.toJson("Locator"))
-		sb.append(":")
-		sb.append(JsonOutput.toJson(value))
-		sb.append("}")
-		return sb.toString()
-	}
-	*/
 	String toJson() {
 		ObjectMapper mapper = new ObjectMapper()
 		SimpleModule module = new SimpleModule("LocatorSerializer",
-								new Version(1, 0, 0, null, null, null))
+				new Version(1, 0, 0, null, null, null))
 		module.addSerializer(Locator.class, new LocatorSerializer())
 		mapper.registerModules(module)
 		return mapper.writeValueAsString(this)
 	}
-	
+
 	static class LocatorSerializer extends StdSerializer<Locator> {
-		LocatorSerializer() { this(null) }
-		LocatorSerializer(Class<LocatorSerializer> t) { super(t) }
+		LocatorSerializer() {
+			this(null)
+		}
+		LocatorSerializer(Class<LocatorSerializer> t) {
+			super(t)
+		}
 		@Override
 		void serialize(Locator locator,
 				JsonGenerator gen, SerializerProvider serializer) {

@@ -6,9 +6,10 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import com.kazurayam.ks.testobject.ExtendedObjectRepository
+
 import com.kazurayam.ks.reporting.Shorthand
 
+import groovy.json.JsonOutput
 import internal.GlobalVariable
 
 @RunWith(JUnit4.class)
@@ -33,12 +34,14 @@ public class LocatorIndexTest {
 	public void test_size() {
 		assertTrue(locatorIndex.size() > 0)
 	}
-	
+
 	@Test
 	public void test_toJson() {
 		String json = locatorIndex.toJson()
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_toJson.json").build()
-		sh.write(json)
+				.fileName("test_toJson.json").build()
+		sh.write(JsonOutput.prettyPrint(json))
+		assertNotNull(json)
+		assertTrue(json.contains("a_Make Appointment"))
 	}
 }
