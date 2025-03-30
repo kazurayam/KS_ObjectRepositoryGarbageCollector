@@ -48,11 +48,11 @@ public class ObjectRepositoryExtender {
 				case "jsonifyTestObjectEssenceList" :
 					return this.jsonifyTestObjectEssenceList(args)
 					break
-				case "getBackwardReferences" :
-					return this.getBackwardReferences(args)
+				case "getLocatorIndex" :
+					return this.getLocatorIndex(args)
 					break
-				case "jsonifyBackwardReferences" :
-					return this.jsonifyBackwardReferences(args)
+				case "jsonifyLocatorIndex" :
+					return this.jsonifyLocatorIndex(args)
 					break
 				default :
 				// just do what ObejctRepository is originally designed to do
@@ -118,23 +118,23 @@ public class ObjectRepositoryExtender {
 
 	//-----------------------------------------------------------------
 
-	private Map<Locator, Set<TestObjectEssence>> getBackwardReferences(Object ... args) throws IOException {
+	private LocatorIndex getLocatorIndex(Object ... args) throws IOException {
 		if (args.length == 0) {
-			return extOR.getBackwardReferences("", false)
+			return extOR.getLocatorIndex("", false)
 		} else if (args.length == 1) {
-			return extOR.getBackwardReferences((String)args[0], false)
+			return extOR.getLocatorIndex((String)args[0], false)
 		} else {
-			return extOR.getBackwardReferences((String)args[0], (Boolean)args[1])
+			return extOR.getLocatorIndex((String)args[0], (Boolean)args[1])
 		}
 	}
 
-	private String jsonifyBackwardReferences(Object ... args) throws IOException {
+	private String jsonifyLocatorIndex(Object ... args) throws IOException {
 		if (args.length == 0) {
-			return extOR.jsonifyBackwardReferences("", false)
+			return extOR.jsonifyLocatorIndex("", false)
 		} else if (args.length == 1) {
-			return extOR.jsonifyBackwardReferences((String)args[0], false)
+			return extOR.jsonifyLocatorIndex((String)args[0], false)
 		} else {
-			return extOR.jsonifyBackwardReferences((String)args[0], (Boolean)args[1])
+			return extOR.jsonifyLocatorIndex((String)args[0], (Boolean)args[1])
 		}
 	}
 }

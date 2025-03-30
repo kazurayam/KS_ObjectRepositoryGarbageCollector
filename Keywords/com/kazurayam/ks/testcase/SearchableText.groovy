@@ -41,6 +41,10 @@ public class SearchableText {
 		return lines
 	}
 
+	// このメソッドを digestText(String text, String pattern = "", Boolean isRegex = false) と改名し
+	// かつ ScriptTraverserクラスに移植せよ。
+	// それができたらSeachableTextクラスは不要になる。削除せよ。
+
 	public List<DigestedLine> searchText(String pattern = "", Boolean isRegex = false) {
 		List<DigestedLine> result = new ArrayList<>()
 		if (pattern.length() == 0) {

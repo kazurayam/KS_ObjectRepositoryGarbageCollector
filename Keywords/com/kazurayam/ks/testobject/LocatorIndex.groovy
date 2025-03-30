@@ -19,6 +19,10 @@ public class LocatorIndex {
 		return locatorIndex.keySet()
 	}
 
+	Iterator<Map.Entry<Locator, Set<TestObjectEssence>>> iterator() {
+		return locatorIndex.entrySet().iterator()
+	}
+
 	Set<TestObjectEssence> get(Locator locator) {
 		Objects.requireNonNull(locator)
 		return locatorIndex.get(locator)

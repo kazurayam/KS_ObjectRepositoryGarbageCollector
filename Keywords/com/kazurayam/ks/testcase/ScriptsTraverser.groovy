@@ -60,34 +60,4 @@ public class ScriptsTraverser {
 			throw new IOException("${testCaseDir.toString()} is not a directory")
 		}
 	}
-
-	/**
-	 * 
-	 */
-	Map<TestCaseId, List<DigestedLine>> searchText(String pattern, Boolean isRegex) {
-		Objects.requireNonNull(pattern)
-		Objects.requireNonNull(isRegex)
-		Map<TestCaseId, List<DigestedLine>> result = new TreeMap<>()
-		List<Path> groovyFiles = visitor.getGroovyFiles()
-		groovyFiles.forEach { groovyFile ->
-			try {
-				SearchableText source = new SearchableText(groovyFile)
-				List<DigestedLine> searchResults = source.searchText(pattern, isRegex)
-				TestCaseId id = new TestCaseId(scriptsDir, groovyFile)
-				result.put(id, searchResults)
-			} catch (IOException e) {
-				throw new RuntimeException(e)
-			}
-		}
-		return result
-	}
-
-
-
-	/**
-	 *
-	 */
-	Map<TestCaseId, List<DigestedLine>> searchReferenceToTestObject(String testObjectId) {
-		return this.searchText(testObjectId, false)
-	}
 }

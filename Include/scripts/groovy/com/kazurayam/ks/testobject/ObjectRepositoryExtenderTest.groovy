@@ -19,6 +19,7 @@ import com.kazurayam.ks.configuration.RunConfigurationConfigurator
 import com.kms.katalon.core.testobject.ObjectRepository
 import com.kms.katalon.core.testobject.TestObject
 import internal.GlobalVariable
+import groovy.json.JsonOutput
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(JUnit4.class)
@@ -39,7 +40,7 @@ class ObjectRepositoryExtenderTest {
 		List<TestObjectId> list = ObjectRepository.getTestObjectIdList()
 		assertTrue(list.size() > 0)
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_getTestObjectIdList.txt").build()
+				.fileName("test_getTestObjectIdList.txt").build()
 		StringBuilder sb = new StringBuilder()
 		list.forEach { toi ->
 			sb.append(toi.value())
@@ -58,8 +59,8 @@ class ObjectRepositoryExtenderTest {
 	void test_jsonifyTestObjectIdList() {
 		String json = ObjectRepository.jsonifyTestObjectIdList()
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_jsonifyTestObjectIdList.json").build()
-		sh.write(json)
+				.fileName("test_jsonifyTestObjectIdList.json").build()
+		sh.write(JsonOutput.prettyPrint(json))
 		assertTrue(json.contains("a_Make Appointment"))
 	}
 
@@ -67,9 +68,9 @@ class ObjectRepositoryExtenderTest {
 	void test_jsonifyTestObjectIdList_filterByString() {
 		String json = ObjectRepository.jsonifyTestObjectIdList("button_")
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_jsonifyTestObjectIdList.json").build()
-		sh.write(json)
-		assertTrue(json.contains("a_Make Appointment"))
+				.fileName("test_jsonifyTestObjectIdList.json").build()
+		sh.write(JsonOutput.prettyPrint(json))
+		assertTrue(json.contains("button_Book Appointment"))
 	}
 
 	//-----------------------------------------------------------------
@@ -79,7 +80,7 @@ class ObjectRepositoryExtenderTest {
 		List<TestObjectEssence> list = ObjectRepository.getTestObjectEssenceList()
 		assertTrue(list.size() > 0)
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_getTestObjectEssenceList.txt").build()
+				.fileName("test_getTestObjectEssenceList.txt").build()
 		StringBuilder sb = new StringBuilder()
 		list.forEach { toe ->
 			sb.append(toe.toString())
@@ -93,14 +94,13 @@ class ObjectRepositoryExtenderTest {
 		List<TestObjectEssence> list = ObjectRepository.getTestObjectEssenceList("button_", false)
 		assertTrue(list.size() > 0)
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_getTestObjectEssenceList_filterByString.txt").build()
+				.fileName("test_getTestObjectEssenceList_filterByString.txt").build()
 		StringBuilder sb = new StringBuilder()
 		list.forEach { toe ->
 			sb.append(toe.toString())
 			sb.append("\n")
 		}
 		sh.write(sb.toString())
-
 	}
 
 	@Test
@@ -109,74 +109,74 @@ class ObjectRepositoryExtenderTest {
 		assertNotNull(json)
 		assertTrue(json.contains("a_Make Appointment"))
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_jsonifyTestObjectEssenceList.json").build()
-		sh.write(json)
+				.fileName("test_jsonifyTestObjectEssenceList.json").build()
+		sh.write(JsonOutput.prettyPrint(json))
 	}
 
 	@Test
 	void test_jsonifyTestObjectEssenceList_filterByString() {
 		String json = ObjectRepository.jsonifyTestObjectEssenceList("button_", false)
 		assertNotNull(json)
-		assertTrue(json.contains("a_Make Appointment"))
+		assertTrue(json.contains("button_Book Appointment"))
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_jsonifyTestObjectEssenceList_filterByString.json").build()
-		sh.write(json)
+				.fileName("test_jsonifyTestObjectEssenceList_filterByString.json").build()
+		sh.write(JsonOutput.prettyPrint(json))
 	}
 
 	//-----------------------------------------------------------------
 
 	@Test
-	void test_getBackwardReferences() {
-		Map<Locator, Set<TestObjectEssence>> result = ObjectRepository.getBackwardReferences()
+	void test_getLocatorIndex() {
+		LocatorIndex result = ObjectRepository.getLocatorIndex()
 		assertEquals(12, result.size())
 	}
 
 	@Test
-	void test_getBackwardReferences_filterByRegex() {
+	void test_getLocatorIndex_filterByRegex() {
 		String pattern = "btn-(.+)-appointment"
-		Map<Locator, Set<TestObjectEssence>> result = ObjectRepository.getBackwardReferences(pattern, true)
+		LocatorIndex result = ObjectRepository.getLocatorIndex(pattern, true)
 		StringBuilder sb = new StringBuilder()
-		result.forEach { k, v ->
-			sb.append(k.toString() + "\n\t" + v.toString())
+		result.iterator().each { entry ->
+			sb.append(entry.key.toString() + "\n\t" + entry.value.toString())
 			sb.append("\n")
 		}
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_getBackwardReferences_filterByRegex.txt").build()
+				.fileName("test_getLocatorIndex_filterByRegex.txt").build()
 		sh.write("pattern: ${pattern}", sb.toString())
 		assertEquals(2, result.size())
 	}
 
 	@Test
-	void test_getBackwardReferences_filterByString() {
+	void test_getLocatorIndex_filterByString() {
 		String pattern = "select"
-		Map<Locator, Set<TestObjectEssence>> result = ObjectRepository.getBackwardReferences("select", false)
+		LocatorIndex result = ObjectRepository.getLocatorIndex("select", false)
 		StringBuilder sb = new StringBuilder()
-		result.forEach { k, v ->
-			sb.append(k.toString() + "\n\t" + v.toString())
+		result.iterator().each { entry ->
+			sb.append(entry.key.toString() + "\n\t" + entry.value.toString())
 			sb.append("\n")
 		}
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_getBackwardReferences_filterByString.txt").build()
+				.fileName("test_getLocatorIndex_filterByString.txt").build()
 		sh.write("pattern: ${pattern}", sb.toString())
 		assertEquals(1, result.size())
 	}
 
 	@Test
-	void test_jsonifyBackwardReferences() {
-		String json = ObjectRepository.jsonifyBackwardReferences()
+	void test_jsonifyLocatorIndex() {
+		String json = ObjectRepository.jsonifyLocatorIndex()
 		assertNotNull(json)
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_jsonifyBackwardReferences.json").build()
-		sh.write(json)
+				.fileName("test_jsonifyLocatorIndex.json").build()
+		sh.write(JsonOutput.prettyPrint(json))
 	}
 
 	@Test
-	void test_jsonifyBackwardReferences_filterByString() {
-		String json = ObjectRepository.jsonifyBackwardReferences("//a[@id")   // default: isRegex = false
+	void test_jsonifyLocatorIndex_filterByString() {
+		String json = ObjectRepository.jsonifyLocatorIndex("//a[@id")   // default: isRegex = false
 		assertNotNull(json)
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_jsonifyBackwardReferences_filterByString.json").build()
-		sh.write(json)
+				.fileName("test_jsonifyLocatorIndex_filterByString.json").build()
+		sh.write(JsonOutput.prettyPrint(json))
 	}
 
 	/**

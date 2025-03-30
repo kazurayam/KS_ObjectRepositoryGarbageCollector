@@ -12,15 +12,15 @@ import groovy.json.JsonOutput
 public class TCTOReference implements Comparable<TCTOReference> {
 
 	private TestCaseId testCaseId
-	private DigestedLine textSearchResult
+	private DigestedLine digestedLine
 	private TestObjectEssence testObjectEssence
 
-	TCTOReference(TestCaseId testCaseId, DigestedLine textSearchResult, TestObjectEssence testObjectEssence) {
+	TCTOReference(TestCaseId testCaseId, DigestedLine digestedLine, TestObjectEssence testObjectEssence) {
 		Objects.requireNonNull(testCaseId)
-		Objects.requireNonNull(textSearchResult)
+		Objects.requireNonNull(digestedLine)
 		Objects.requireNonNull(testObjectEssence)
 		this.testCaseId = testCaseId
-		this.textSearchResult = textSearchResult
+		this.digestedLine = digestedLine
 		this.testObjectEssence = testObjectEssence
 	}
 
@@ -29,7 +29,7 @@ public class TCTOReference implements Comparable<TCTOReference> {
 	}
 
 	DigestedLine textSearchResult() {
-		return textSearchResult
+		return digestedLine
 	}
 
 	TestObjectEssence testObjectEssence() {
@@ -43,7 +43,7 @@ public class TCTOReference implements Comparable<TCTOReference> {
 		}
 		TCTOReference other = (TCTOReference)obj
 		return this.testCaseId == other.testCaseId &&
-				this.textSearchResult == other.textSearchResult &&
+				this.digestedLine == other.digestedLine &&
 				this.testObjectEssence == other.testObjectEssence
 	}
 
@@ -51,7 +51,7 @@ public class TCTOReference implements Comparable<TCTOReference> {
 	int hashCode() {
 		int hash = 7;
 		hash = 31 * hash + testCaseId.hashCode()
-		hash = 31 * hash + textSearchResult.hashCode()
+		hash = 31 * hash + digestedLine.hashCode()
 		hash = 31 * hash + testObjectEssence.hashCode()
 		return hash;
 	}
@@ -73,11 +73,11 @@ public class TCTOReference implements Comparable<TCTOReference> {
 		sb.append(",")
 		sb.append(JsonOutput.toJson("TextSearchResult"))
 		sb.append(":")
-		sb.append(textSearchResult.valueAsJson())
+		sb.append(digestedLine.toJson())
 		sb.append(",")
 		sb.append(JsonOutput.toJson("TestObjectEssence"))
 		sb.append(":")
-		sb.append(testObjectEssence.valueAsJson())
+		sb.append(testObjectEssence.toJson())
 		sb.append("}")
 		sb.append("}")
 		return JsonOutput.prettyPrint(sb.toString())
@@ -89,7 +89,7 @@ public class TCTOReference implements Comparable<TCTOReference> {
 		if (v != 0) {
 			return v
 		} else {
-			v = this.textSearchResult.compareTo(other.textSearchResult)
+			v = this.digestedLine.compareTo(other.digestedLine)
 			if (v != 0) {
 				return v
 			} else {
