@@ -3,12 +3,15 @@ import com.kazurayam.ks.testobject.ObjectRepositoryExtender
 import com.kms.katalon.core.testobject.ObjectRepository
 
 import internal.GlobalVariable
+import groovy.json.JsonOutput
 
-// modify com.kms.katalon.core.testobject.ObjectRepository class on the fly
+// modify com.kms.katalon.core.testobject.ObjectRepository object on the fly
 new ObjectRepositoryExtender().apply()
 
-// step1: get a list of IDs of all Test Objects in the Object Repository
-String out = ObjectRepository.jsonifyTestObjectIdList()
+// step1: 
+// get a list of all Test Object Ids found in the Object Repository,
+// output the result in JSON format
+String out = ObjectRepository.jsonifyTestObjectIdList('button_', false)
 
 Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName('out.json').build()
-sh.write(out)
+sh.write(JsonOutput.prettyPrint(out))

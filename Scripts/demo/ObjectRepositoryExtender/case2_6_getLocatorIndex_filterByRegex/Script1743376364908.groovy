@@ -4,17 +4,18 @@ import com.kazurayam.ks.testobject.ObjectRepositoryExtender
 import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kms.katalon.core.testobject.ObjectRepository
 
-import groovy.json.JsonOutput
 import internal.GlobalVariable
 
 /*
- * Test Caes/demo/ObjectRepsitoryExtender/case5
+ * Test Cases/demo/ObjectRepositoryExtender/case2_6
  */
 
-// modify com.kms.katalon.core.testobject.ObjectRepository class on the fly
+// modify com.kms.katalon.core.testobject.ObjectRepository object on the fly
 new ObjectRepositoryExtender().apply()
 
-LocatorIndex locatorIndex = ObjectRepository.getLocatorIndex("[@id='btn-", false)
+// step6: 
+// get the LocatorIndex selected by Regular Expression
+LocatorIndex locatorIndex = ObjectRepository.getLocatorIndex("'btn-\\w+'", true)
 
 StringBuilder sb = new StringBuilder()
 locatorIndex.iterator().each { entry ->
@@ -26,5 +27,3 @@ locatorIndex.iterator().each { entry ->
 
 Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName('out.txt').build()
 sh.write(sb.toString())
-
-

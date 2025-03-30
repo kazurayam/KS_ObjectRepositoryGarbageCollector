@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>case8</name>
+   <name>case1_6_getTestObjectIdList_filteredByRegex</name>
    <tag></tag>
    <comment></comment>
    <recordOption>OTHER</recordOption>
-   <testCaseGuid>622a75f1-a760-440a-98be-27644fb8c2e4</testCaseGuid>
+   <testCaseGuid>a5e844ea-58b5-4b64-9476-00a94a685722</testCaseGuid>
 </TestCaseEntity>

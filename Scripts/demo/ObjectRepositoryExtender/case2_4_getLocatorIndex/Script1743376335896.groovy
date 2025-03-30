@@ -1,24 +1,27 @@
 import com.kazurayam.ks.reporting.Shorthand
+import com.kazurayam.ks.testobject.LocatorIndex
 import com.kazurayam.ks.testobject.ObjectRepositoryExtender
-import com.kazurayam.ks.testobject.TestObjectId
+import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kms.katalon.core.testobject.ObjectRepository
 
+import groovy.json.JsonOutput
 import internal.GlobalVariable
 
 /*
- * Test Caes/demo/ObjectRepositoryExtender/case3
+ * Test Cases/demo/ObjectRepsitoryExtender/case2_4
  */
 
 // modify com.kms.katalon.core.testobject.ObjectRepository class on the fly
 new ObjectRepositoryExtender().apply()
 
-// step3: select Test Object with ID that match certain pattern by Regular Expression
-List<TestObjectId> list = ObjectRepository.getTestObjectIdList('button_\\w+\$', true)
+LocatorIndex locatorIndex = ObjectRepository.getLocatorIndex("")
 
 StringBuilder sb = new StringBuilder()
-list.each { s ->
-	sb.append(s)
-	sb.append("\n")
+locatorIndex.iterator().each { entry ->
+	sb.append(entry.key.toString() + " : \n")
+	Set<TestObjectEssence> essences = entry.value
+	essences.each { essence -> sb.append("\t${essence}") }
+	sb.append("\n\n")
 }
 
 Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName('out.txt').build()

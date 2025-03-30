@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>case2_getTestObjectIdList</name>
+   <name>case1_2_jsonifyTestObjectIdList_filterByString</name>
    <tag></tag>
    <comment></comment>
    <recordOption>OTHER</recordOption>
-   <testCaseGuid>7b27ad26-6bc3-47cd-8803-0c5f38313820</testCaseGuid>
+   <testCaseGuid>aacbe5f4-66fe-4433-a69a-a7586bacabee</testCaseGuid>
 </TestCaseEntity>

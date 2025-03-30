@@ -12,7 +12,9 @@ import internal.GlobalVariable
 // modify com.kms.katalon.core.testobject.ObjectRepository class on the fly
 new ObjectRepositoryExtender().apply()
 
-// step2: select Test Object with ID that match certain pattern by String.contains()
+// step2
+// select TestObjects with id that match certain pattern by String.contains()
+// the pattern is interpreted as a plain string
 List<TestObjectId> list = ObjectRepository.getTestObjectIdList("button_")
 
 StringBuilder sb = new StringBuilder()

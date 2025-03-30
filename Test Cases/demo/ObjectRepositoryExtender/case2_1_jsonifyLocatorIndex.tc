@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>case9</name>
+   <name>case2_1_jsonifyLocatorIndex</name>
    <tag></tag>
    <comment></comment>
    <recordOption>OTHER</recordOption>
-   <testCaseGuid>ffba59f9-0abd-4e67-b407-73138259ed31</testCaseGuid>
+   <testCaseGuid>954d3e5b-1165-4315-96ce-01a27b553c00</testCaseGuid>
 </TestCaseEntity>
