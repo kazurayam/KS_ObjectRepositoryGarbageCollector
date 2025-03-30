@@ -25,7 +25,7 @@ public class SearchableTextTest {
 	void test_searchText() {
 		SearchableText searchableText = new SearchableText(TC1)
 		String pattern = "Page_CURA Healthcare Service/a_Make Appointment"
-		List<TextSearchResult> list = searchableText.searchText(pattern, false)
+		List<DigestedLine> list = searchableText.searchText(pattern, false)
 		assertEquals(1, list.size())
 		StringBuilder sb = new StringBuilder()
 		sb.append("[")

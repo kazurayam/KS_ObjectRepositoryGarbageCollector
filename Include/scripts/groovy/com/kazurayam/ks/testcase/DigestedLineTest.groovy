@@ -13,13 +13,13 @@ import com.kazurayam.ks.reporting.Shorthand
 import internal.GlobalVariable
 
 @RunWith(JUnit4.class)
-public class TextSearchResultTest {
+public class DigestedLineTest {
 
-	private TextSearchResult tsr
+	private DigestedLine tsr
 
 	@Before
 	void setup() {
-		tsr = new TextSearchResult.Builder("Hello, new world!", 1)
+		tsr = new DigestedLine.Builder("Hello, new world!", 1)
 				.pattern("new", false)
 				.matchFound(8, 10)
 				.build()

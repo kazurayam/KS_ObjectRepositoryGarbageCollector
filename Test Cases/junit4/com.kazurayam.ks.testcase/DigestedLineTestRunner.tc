@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>TextSearchResultTestRunner</name>
+   <name>DigestedLineTestRunner</name>
    <tag></tag>
    <comment></comment>
+   <recordOption>OTHER</recordOption>
    <testCaseGuid>c1b2110f-315a-47ad-b7b9-6e648681a27a</testCaseGuid>
 </TestCaseEntity>

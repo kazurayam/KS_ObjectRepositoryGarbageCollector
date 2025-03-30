@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer
 
 import groovy.json.JsonOutput
 
-public class TextSearchResult implements Comparable<TextSearchResult> {
+public class DigestedLine implements Comparable<DigestedLine> {
 
 	private String line
 	private int lineNo
@@ -21,7 +21,7 @@ public class TextSearchResult implements Comparable<TextSearchResult> {
 	private int matchEnd
 	private Boolean hasMatch
 
-	private TextSearchResult(Builder builder) {
+	private DigestedLine(Builder builder) {
 		this.line = builder.line
 		this.lineNo = builder.lineNo
 		this.pattern = builder.pattern
@@ -66,10 +66,10 @@ public class TextSearchResult implements Comparable<TextSearchResult> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof TextSearchResult))	{
+		if (!(obj instanceof DigestedLine))	{
 			return false
 		}
-		TextSearchResult other = (TextSearchResult)obj
+		DigestedLine other = (DigestedLine)obj
 		return this.lineNo == other.lineNo &&
 				this.line == other.line &&
 				this.pattern == other.pattern &&
@@ -87,7 +87,7 @@ public class TextSearchResult implements Comparable<TextSearchResult> {
 	}
 
 	@Override
-	int compareTo(TextSearchResult other) {
+	int compareTo(DigestedLine other) {
 		int v
 		v = this.lineNo - other.lineNo
 		if (v != 0) {
@@ -109,62 +109,24 @@ public class TextSearchResult implements Comparable<TextSearchResult> {
 		}
 	}
 
-	/*
-	 public String toJson() {
-	 StringBuilder sb = new StringBuilder()
-	 sb.append("{")
-	 sb.append(JsonOutput.toJson("TextSearchResult"))
-	 sb.append(":")
-	 sb.append(valueAsJson())
-	 sb.append("}")
-	 return JsonOutput.prettyPrint(sb.toString())
-	 }
-	 public String valueAsJson() {
-	 StringBuilder sb = new StringBuilder()
-	 sb.append("{")
-	 sb.append('"lineNo":')
-	 sb.append(JsonOutput.toJson(lineNo))
-	 sb.append(',')
-	 sb.append('"line":')
-	 sb.append(JsonOutput.toJson(line))
-	 sb.append(',')
-	 sb.append('"pattern":')
-	 sb.append(JsonOutput.toJson(pattern))
-	 sb.append(',')
-	 sb.append('"isRegex":')
-	 sb.append(JsonOutput.toJson(isRegex))
-	 sb.append(',')
-	 sb.append('"matchAt":')
-	 sb.append(JsonOutput.toJson(matchAt))
-	 sb.append(',')
-	 sb.append('"matchEnd":')
-	 sb.append(JsonOutput.toJson(matchEnd))
-	 sb.append(',')
-	 sb.append('"hasMatch":')
-	 sb.append(JsonOutput.toJson(hasMatch))
-	 sb.append("}")
-	 return JsonOutput.prettyPrint(sb.toString())
-	 }
-	 */
-
 	String toJson() {
 		ObjectMapper mapper = new ObjectMapper()
 		SimpleModule module = new SimpleModule("TextSearchResultSerializer",
 				new Version(1, 0, 0, null, null, null))
-		module.addSerializer(TextSearchResult.class, new TextSearchResultSerializer())
+		module.addSerializer(DigestedLine.class, new DigestedLineSerializer())
 		mapper.registerModules(module)
 		return mapper.writeValueAsString(this)
 	}
 
-	static class TextSearchResultSerializer extends StdSerializer<TextSearchResult> {
-		TextSearchResultSerializer() {
+	static class DigestedLineSerializer extends StdSerializer<DigestedLine> {
+		DigestedLineSerializer() {
 			this(null)
 		}
-		TextSearchResultSerializer(Class<TextSearchResultSerializer> t) {
+		DigestedLineSerializer(Class<DigestedLineSerializer> t) {
 			super(t)
 		}
 		@Override
-		void serialize(TextSearchResult tsr,
+		void serialize(DigestedLine tsr,
 				JsonGenerator gen, SerializerProvider serializer) {
 			gen.writeStartObject()
 			gen.writeNumberField("lineNo", tsr.lineNo)
@@ -228,8 +190,8 @@ public class TextSearchResult implements Comparable<TextSearchResult> {
 			return this
 		}
 
-		TextSearchResult build() {
-			return new TextSearchResult(this)
+		DigestedLine build() {
+			return new DigestedLine(this)
 		}
 	}
 }

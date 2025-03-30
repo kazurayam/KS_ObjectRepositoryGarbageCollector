@@ -9,7 +9,7 @@ import java.time.Duration
 import com.kazurayam.ks.testcase.ScriptsSearcher
 import com.kazurayam.ks.testcase.TestCaseId
 import com.kazurayam.ks.testcase.TestCaseScriptsVisitor
-import com.kazurayam.ks.testcase.TextSearchResult
+import com.kazurayam.ks.testcase.DigestedLine
 import com.kazurayam.ks.testobject.ExtendedObjectRepository
 import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kazurayam.ks.testobject.TestObjectId
@@ -104,7 +104,7 @@ class ObjectRepositoryGarbageCollector {
 		testCaseIdList.forEach { testCaseId ->
 			essenceList.forEach { essence ->
 				TestObjectId testObjectId = essence.testObjectId()
-				List<TextSearchResult> textSearchResultList =
+				List<DigestedLine> textSearchResultList =
 						scriptSearcher.searchIn(testCaseId, testObjectId.value(), false)
 				textSearchResultList.forEach { textSearchResult ->
 					TCTOReference reference = new TCTOReference(testCaseId, textSearchResult, essence)

@@ -1,7 +1,7 @@
 package com.kazurayam.ks.testobject.gc
 
 import com.kazurayam.ks.testcase.TestCaseId
-import com.kazurayam.ks.testcase.TextSearchResult
+import com.kazurayam.ks.testcase.DigestedLine
 import com.kazurayam.ks.testobject.TestObjectEssence
 
 import groovy.json.JsonOutput
@@ -12,10 +12,10 @@ import groovy.json.JsonOutput
 public class TCTOReference implements Comparable<TCTOReference> {
 
 	private TestCaseId testCaseId
-	private TextSearchResult textSearchResult
+	private DigestedLine textSearchResult
 	private TestObjectEssence testObjectEssence
 
-	TCTOReference(TestCaseId testCaseId, TextSearchResult textSearchResult, TestObjectEssence testObjectEssence) {
+	TCTOReference(TestCaseId testCaseId, DigestedLine textSearchResult, TestObjectEssence testObjectEssence) {
 		Objects.requireNonNull(testCaseId)
 		Objects.requireNonNull(textSearchResult)
 		Objects.requireNonNull(testObjectEssence)
@@ -28,7 +28,7 @@ public class TCTOReference implements Comparable<TCTOReference> {
 		return testCaseId
 	}
 
-	TextSearchResult textSearchResult() {
+	DigestedLine textSearchResult() {
 		return textSearchResult
 	}
 

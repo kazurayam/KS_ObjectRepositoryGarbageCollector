@@ -41,8 +41,8 @@ public class SearchableText {
 		return lines
 	}
 
-	public List<TextSearchResult> searchText(String pattern = "", Boolean isRegex = false) {
-		List<TextSearchResult> result = new ArrayList<>()
+	public List<DigestedLine> searchText(String pattern = "", Boolean isRegex = false) {
+		List<DigestedLine> result = new ArrayList<>()
 		if (pattern.length() == 0) {
 			return result    // no search will be performed; return an empty list
 		}
@@ -63,7 +63,7 @@ public class SearchableText {
 					String matched = m.group(2)
 					int matchAt = head.length() + 1
 					int matchEnd = head.length() + matched.length()
-					TextSearchResult tsr = new TextSearchResult.Builder(line, lineNo)
+					DigestedLine tsr = new DigestedLine.Builder(line, lineNo)
 							.pattern(pattern, isRegex)
 							.matchFound(matchAt, matchEnd)
 							.build()
@@ -73,7 +73,7 @@ public class SearchableText {
 				if (line.indexOf(pattern) > 0) {
 					int matchAt = line.indexOf(pattern) + 1
 					int matchEnd = matchAt +  pattern.length()
-					TextSearchResult tsr = new TextSearchResult.Builder(line, lineNo)
+					DigestedLine tsr = new DigestedLine.Builder(line, lineNo)
 							.pattern(pattern, isRegex)
 							.matchFound(matchAt, matchEnd)
 							.build()

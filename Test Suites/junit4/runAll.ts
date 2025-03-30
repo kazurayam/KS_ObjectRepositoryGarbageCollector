@@ -43,7 +43,7 @@
       <guid>77d9d92b-e5ca-4b7f-8cba-e6930030969c</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testcase/TextSearchResultTestRunner</testCaseId>
+      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testcase/DigestedLineTestRunner</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>

@@ -32,14 +32,14 @@ public class ScriptsSearcher {
 		return visitor
 	}
 
-	List<TextSearchResult> searchIn(TestCaseId testCaseId, String pattern, Boolean isRegex) {
+	List<DigestedLine> searchIn(TestCaseId testCaseId, String pattern, Boolean isRegex) {
 		Objects.requireNonNull(testCaseId)
 		Objects.requireNonNull(pattern)
 		Objects.requireNonNull(isRegex)
 		Path testCaseDir = scriptsDir.resolve(testCaseId.value)
 		Path groovyFile = findChildGroovyFile(testCaseDir)
 		SearchableText source = new SearchableText(groovyFile)
-		List<TextSearchResult> searchResults = source.searchText(pattern, isRegex)
+		List<DigestedLine> searchResults = source.searchText(pattern, isRegex)
 		return searchResults
 	}
 
@@ -64,15 +64,15 @@ public class ScriptsSearcher {
 	/**
 	 * 
 	 */
-	Map<TestCaseId, List<TextSearchResult>> searchText(String pattern, Boolean isRegex) {
+	Map<TestCaseId, List<DigestedLine>> searchText(String pattern, Boolean isRegex) {
 		Objects.requireNonNull(pattern)
 		Objects.requireNonNull(isRegex)
-		Map<TestCaseId, List<TextSearchResult>> result = new TreeMap<>()
+		Map<TestCaseId, List<DigestedLine>> result = new TreeMap<>()
 		List<Path> groovyFiles = visitor.getGroovyFiles()
 		groovyFiles.forEach { groovyFile ->
 			try {
 				SearchableText source = new SearchableText(groovyFile)
-				List<TextSearchResult> searchResults = source.searchText(pattern, isRegex)
+				List<DigestedLine> searchResults = source.searchText(pattern, isRegex)
 				TestCaseId id = new TestCaseId(scriptsDir, groovyFile)
 				result.put(id, searchResults)
 			} catch (IOException e) {
@@ -87,7 +87,7 @@ public class ScriptsSearcher {
 	/**
 	 *
 	 */
-	Map<TestCaseId, List<TextSearchResult>> searchReferenceToTestObject(String testObjectId) {
+	Map<TestCaseId, List<DigestedLine>> searchReferenceToTestObject(String testObjectId) {
 		return this.searchText(testObjectId, false)
 	}
 }

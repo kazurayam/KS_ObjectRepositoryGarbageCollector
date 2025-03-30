@@ -12,7 +12,7 @@ import org.junit.runners.JUnit4
 import org.junit.runners.MethodSorters;
 
 import com.kazurayam.ks.testcase.TestCaseId
-import com.kazurayam.ks.testcase.TextSearchResult
+import com.kazurayam.ks.testcase.DigestedLine
 import com.kazurayam.ks.testobject.Locator
 import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kazurayam.ks.testobject.TestObjectId
@@ -23,7 +23,7 @@ public class TCTOReferenceTest {
 
 	private TCTOReference instance
 	private TestCaseId testCaseId
-	private TextSearchResult textSearchResult
+	private DigestedLine textSearchResult
 	private TestObjectEssence testObjectEssence
 
 	@BeforeClass
@@ -43,7 +43,7 @@ public class TCTOReferenceTest {
 		String togValue = "Page_CURA Healthcare Service/a_Make Appointment"
 		String locValue = """//a[@id='btn-make-appointment']"""
 		TestCaseId testCaseId = new TestCaseId(testCaseIdValue)
-		TextSearchResult textSearchResult = new TextSearchResult.Builder(line, 9)
+		DigestedLine textSearchResult = new DigestedLine.Builder(line, 9)
 				.pattern(locValue, false)
 				.build()
 		TestObjectEssence testObjectEssence = new TestObjectEssence(

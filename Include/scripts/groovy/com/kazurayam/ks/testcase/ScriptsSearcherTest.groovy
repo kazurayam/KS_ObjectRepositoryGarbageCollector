@@ -30,7 +30,7 @@ public class ScriptsSearcherTest {
 	@Test
 	void test_searchText() {
 		String pattern = "https://katalon-demo-cura.herokuapp.com/"
-		Map<TestCaseId, List<TextSearchResult>> result =
+		Map<TestCaseId, List<DigestedLine>> result =
 				searcher.searchText(pattern, false)
 		assertEquals(2, result.size())
 	}
@@ -38,7 +38,7 @@ public class ScriptsSearcherTest {
 	@Test
 	void test_searchReferenceToTestObject() {
 		String testObjectId = "Page_CURA Healthcare Service/a_Make Appointment"
-		Map<TestCaseId, List<TextSearchResult>> result =
+		Map<TestCaseId, List<DigestedLine>> result =
 				searcher.searchReferenceToTestObject(testObjectId)
 		assertEquals(2, result.size())
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
@@ -56,7 +56,7 @@ public class ScriptsSearcherTest {
 		TestCaseId testCaseId = new TestCaseId("main/TC1")
 		String pattern = "a_Make Appointment"
 		Boolean isRegex = false
-		List<TextSearchResult> result = searcher.searchIn(testCaseId, pattern, isRegex)
+		List<DigestedLine> result = searcher.searchIn(testCaseId, pattern, isRegex)
 		assertNotNull(result)
 		assertEquals(1, result.size())
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
