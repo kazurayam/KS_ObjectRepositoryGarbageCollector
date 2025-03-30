@@ -12,38 +12,10 @@
    <rerunImmediately>false</rerunImmediately>
    <testSuiteGuid>0843de68-73c4-4979-8184-d1d1fae15280</testSuiteGuid>
    <testCaseLink>
-      <guid>7f946af7-2eae-4190-95a0-5215e48c4ff6</guid>
-      <isReuseDriver>false</isReuseDriver>
-      <isRun>true</isRun>
-      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testobject.gc/TCTOReferenceTestRunner</testCaseId>
-      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
-   </testCaseLink>
-   <testCaseLink>
-      <guid>740e8f8b-6c8e-4de7-940f-3e73c07c91b3</guid>
-      <isReuseDriver>false</isReuseDriver>
-      <isRun>true</isRun>
-      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testobject.gc/DatabaseTestRunner</testCaseId>
-      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
-   </testCaseLink>
-   <testCaseLink>
-      <guid>27c45149-3641-4630-a18c-7b2a5d48ef37</guid>
-      <isReuseDriver>false</isReuseDriver>
-      <isRun>true</isRun>
-      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testobject.gc/ObjectRepositoryGarbageCollectorTestRunner</testCaseId>
-      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
-   </testCaseLink>
-   <testCaseLink>
       <guid>599f3db7-5856-4ef9-a29f-933d5f9a3672</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
       <testCaseId>Test Cases/junit4/com.kazurayam.ks.configuration/RunConfigurationConfiguratorTest</testCaseId>
-      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
-   </testCaseLink>
-   <testCaseLink>
-      <guid>e4c44459-2313-45cc-ba85-d78d0e4398c6</guid>
-      <isReuseDriver>false</isReuseDriver>
-      <isRun>true</isRun>
-      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testcase/TestCaseScriptsVisitorTestRunner</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
@@ -54,17 +26,24 @@
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
-      <guid>77d9d92b-e5ca-4b7f-8cba-e6930030969c</guid>
-      <isReuseDriver>false</isReuseDriver>
-      <isRun>true</isRun>
-      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testcase/TextSearchResultTestRunner</testCaseId>
-      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
-   </testCaseLink>
-   <testCaseLink>
       <guid>7ace2d96-78fe-4c13-86b5-ad3611c70a43</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
       <testCaseId>Test Cases/junit4/com.kazurayam.ks.testcase/SearchableTextTestRunner</testCaseId>
+      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
+   </testCaseLink>
+   <testCaseLink>
+      <guid>e4c44459-2313-45cc-ba85-d78d0e4398c6</guid>
+      <isReuseDriver>false</isReuseDriver>
+      <isRun>true</isRun>
+      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testcase/TestCaseScriptsVisitorTestRunner</testCaseId>
+      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
+   </testCaseLink>
+   <testCaseLink>
+      <guid>77d9d92b-e5ca-4b7f-8cba-e6930030969c</guid>
+      <isReuseDriver>false</isReuseDriver>
+      <isRun>true</isRun>
+      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testcase/TextSearchResultTestRunner</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
@@ -82,24 +61,10 @@
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
-      <guid>978e4838-ce16-4b87-9c85-7ef8fafab1e7</guid>
+      <guid>6be917c3-4800-4609-adcd-fc70c9503d8a</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testobject/ObjectRepositoryExtenderTestRunner</testCaseId>
-      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
-   </testCaseLink>
-   <testCaseLink>
-      <guid>3eaecc68-9ac9-42a2-98e6-014cce6982eb</guid>
-      <isReuseDriver>false</isReuseDriver>
-      <isRun>true</isRun>
-      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testobject/TestObjectIdTestRunner</testCaseId>
-      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
-   </testCaseLink>
-   <testCaseLink>
-      <guid>998124cc-7cae-43ed-8c31-0b5cb2b7a284</guid>
-      <isReuseDriver>false</isReuseDriver>
-      <isRun>true</isRun>
-      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testobject/ObjectRepositoryVisitorTestRunner</testCaseId>
+      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testobject/LocatorIndexTestRunner</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
@@ -110,10 +75,10 @@
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
-      <guid>4639fa61-4cf6-479b-9bc1-d5a382b22bbc</guid>
+      <guid>978e4838-ce16-4b87-9c85-7ef8fafab1e7</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testobject/TestObjectEssenceTestRunner</testCaseId>
+      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testobject/ObjectRepositoryExtenderTestRunner</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
@@ -124,10 +89,52 @@
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
+      <guid>998124cc-7cae-43ed-8c31-0b5cb2b7a284</guid>
+      <isReuseDriver>false</isReuseDriver>
+      <isRun>true</isRun>
+      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testobject/ObjectRepositoryVisitorTestRunner</testCaseId>
+      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
+   </testCaseLink>
+   <testCaseLink>
       <guid>255d97b4-3935-4706-87fc-84f6ecbd2d49</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
       <testCaseId>Test Cases/junit4/com.kazurayam.ks.testobject/RegexOptedTextMatcherTestRunner</testCaseId>
+      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
+   </testCaseLink>
+   <testCaseLink>
+      <guid>3eaecc68-9ac9-42a2-98e6-014cce6982eb</guid>
+      <isReuseDriver>false</isReuseDriver>
+      <isRun>true</isRun>
+      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testobject/TestObjectIdTestRunner</testCaseId>
+      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
+   </testCaseLink>
+   <testCaseLink>
+      <guid>4639fa61-4cf6-479b-9bc1-d5a382b22bbc</guid>
+      <isReuseDriver>false</isReuseDriver>
+      <isRun>true</isRun>
+      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testobject/TestObjectEssenceTestRunner</testCaseId>
+      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
+   </testCaseLink>
+   <testCaseLink>
+      <guid>740e8f8b-6c8e-4de7-940f-3e73c07c91b3</guid>
+      <isReuseDriver>false</isReuseDriver>
+      <isRun>true</isRun>
+      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testobject.gc/DatabaseTestRunner</testCaseId>
+      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
+   </testCaseLink>
+   <testCaseLink>
+      <guid>27c45149-3641-4630-a18c-7b2a5d48ef37</guid>
+      <isReuseDriver>false</isReuseDriver>
+      <isRun>true</isRun>
+      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testobject.gc/ObjectRepositoryGarbageCollectorTestRunner</testCaseId>
+      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
+   </testCaseLink>
+   <testCaseLink>
+      <guid>7f946af7-2eae-4190-95a0-5215e48c4ff6</guid>
+      <isReuseDriver>false</isReuseDriver>
+      <isRun>true</isRun>
+      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testobject.gc/TCTOReferenceTestRunner</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
 </TestSuiteEntity>

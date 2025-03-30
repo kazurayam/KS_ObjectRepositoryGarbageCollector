@@ -69,9 +69,9 @@ class ObjectRepositoryExtenderTest {
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
 						.fileName("test_jsonifyTestObjectIdList.json").build()
 		sh.write(json)
-		//assertTrue(json.contains("a_Make Appointment"))
+		assertTrue(json.contains("a_Make Appointment"))
 	}
-	
+
 	//-----------------------------------------------------------------
 
 	@Test
@@ -100,7 +100,7 @@ class ObjectRepositoryExtenderTest {
 			sb.append("\n")
 		}
 		sh.write(sb.toString())
-		
+
 	}
 
 	@Test
@@ -117,14 +117,14 @@ class ObjectRepositoryExtenderTest {
 	void test_jsonifyTestObjectEssenceList_filterByString() {
 		String json = ObjectRepository.jsonifyTestObjectEssenceList("button_", false)
 		assertNotNull(json)
-		//assertTrue(json.contains("a_Make Appointment"))
+		assertTrue(json.contains("a_Make Appointment"))
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
 						.fileName("test_jsonifyTestObjectEssenceList_filterByString.json").build()
 		sh.write(json)
 	}
 
 	//-----------------------------------------------------------------
-	
+
 	@Test
 	void test_getBackwardReferences() {
 		Map<Locator, Set<TestObjectEssence>> result = ObjectRepository.getBackwardReferences()
@@ -145,7 +145,7 @@ class ObjectRepositoryExtenderTest {
 		sh.write("pattern: ${pattern}", sb.toString())
 		assertEquals(2, result.size())
 	}
-	
+
 	@Test
 	void test_getBackwardReferences_filterByString() {
 		String pattern = "select"

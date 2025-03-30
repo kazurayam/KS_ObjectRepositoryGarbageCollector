@@ -1,5 +1,12 @@
 package com.kazurayam.ks.testobject
 
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer
+
 import groovy.json.JsonOutput
 
 public class TestObjectEssence implements Comparable<TestObjectEssence> {
@@ -84,12 +91,37 @@ public class TestObjectEssence implements Comparable<TestObjectEssence> {
 		return JsonOutput.prettyPrint(sb.toString())
 	}
 
+	public valueAsJsonByJackson() {
+		ObjectMapper mapper = new ObjectMapper()
+		SimpleModule module = new SimpleModule("TestObjectEssenceSerializer",
+				new Version(1,0.0, null, null, null))
+		module.addSerializer(TestObjectEssence.class, new TestObjectEssenceSerializer())
+		mapper.registerModule(module)
+		return mapper.writeValueAsString(this)
+	}
+
 	@Override
 	int compareTo(TestObjectEssence other) {
 		if (this.testObjectId.value == other.testObjectId.value) {
 			return 0
 		} else {
 			return this.testObjectId.value.compareTo(other.testObjectId.value)
+		}
+	}
+
+	static class TestObjectEssenceSerializer extends StdSerializer<TestObjectEssence> {
+		TestObjectEssenceSerializer() {
+			this(null)
+		}
+		TestObjectEssenceSerializer(Class<TestObjectEssence> t) {
+			super(t)
+		}
+		@Override
+		void serialize(TestObjectEssence essence,
+				JsonGenerator jsonGenerator, SerializerProvider serializer) {
+			jsonGenerator.writeStartObject()
+			jsonGenerator.writeStringField("testObjectId", essence.testObjectId().toString())
+			jsonGenerator.writeEndObject()
 		}
 	}
 }

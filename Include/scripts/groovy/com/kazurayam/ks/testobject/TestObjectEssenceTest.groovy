@@ -7,6 +7,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import groovy.json.JsonOutput
+import com.kazurayam.ks.reporting.Shorthand
+
+import internal.GlobalVariable
 
 @RunWith(JUnit4.class)
 public class TestObjectEssenceTest {
@@ -48,5 +51,13 @@ public class TestObjectEssenceTest {
 		assertTrue('toString() should contain //div[@id=\\"main\\"]',
 				s.contains('//div[@id=\\"main\\"]')
 				)
+	}
+
+	@Test
+	void test_valuAsJson2() {
+		String json = essence.valueAsJson2()
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName("test_valueAsJson2.json").build()
+		sh.write(json)
+		assertTrue(json.contains("testObjectX"))
 	}
 }

@@ -191,4 +191,5 @@ public class ExtendedObjectRepository {
 		TestObjectEssence essence= testObjectId.toTestObjectEssence()
 		return essence.locator()
 	}
+	
 }
