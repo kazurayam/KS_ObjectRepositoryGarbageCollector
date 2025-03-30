@@ -89,6 +89,7 @@ public class SearchableText {
 		return toJson()
 	}
 
+
 	public String toJson() {
 		StringBuilder sb = new StringBuilder()
 		sb.append("{")
@@ -105,4 +106,21 @@ public class SearchableText {
 		sb.append("}")
 		return JsonOutput.prettyPrint(sb.toString())
 	}
+
+	/*
+	 static class SearchableTextSerializer extends StdSerializer<SearchableText> {
+	 SearchableTextSerializer() {
+	 this(null)
+	 }
+	 SearchableTextSerializer(Class<LocatorSerializer> t) {
+	 super(t)
+	 }
+	 @Override
+	 void serialize(SearchableText,
+	 JsonGenerator gen, SerializerProvider serializer) {
+	 gen.writeStartArray()
+	 gen.writeEndArray()
+	 }
+	 }
+	 */
 }

@@ -108,46 +108,45 @@ public class TextSearchResult implements Comparable<TextSearchResult> {
 			}
 		}
 	}
-	
+
 	/*
-	public String toJson() {
-		StringBuilder sb = new StringBuilder()
-		sb.append("{")
-		sb.append(JsonOutput.toJson("TextSearchResult"))
-		sb.append(":")
-		sb.append(valueAsJson())
-		sb.append("}")
-		return JsonOutput.prettyPrint(sb.toString())
-	}
-	
-	public String valueAsJson() {
-		StringBuilder sb = new StringBuilder()
-		sb.append("{")
-		sb.append('"lineNo":')
-		sb.append(JsonOutput.toJson(lineNo))
-		sb.append(',')
-		sb.append('"line":')
-		sb.append(JsonOutput.toJson(line))
-		sb.append(',')
-		sb.append('"pattern":')
-		sb.append(JsonOutput.toJson(pattern))
-		sb.append(',')
-		sb.append('"isRegex":')
-		sb.append(JsonOutput.toJson(isRegex))
-		sb.append(',')
-		sb.append('"matchAt":')
-		sb.append(JsonOutput.toJson(matchAt))
-		sb.append(',')
-		sb.append('"matchEnd":')
-		sb.append(JsonOutput.toJson(matchEnd))
-		sb.append(',')
-		sb.append('"hasMatch":')
-		sb.append(JsonOutput.toJson(hasMatch))
-		sb.append("}")
-		return JsonOutput.prettyPrint(sb.toString())
-	}
-	*/
-	
+	 public String toJson() {
+	 StringBuilder sb = new StringBuilder()
+	 sb.append("{")
+	 sb.append(JsonOutput.toJson("TextSearchResult"))
+	 sb.append(":")
+	 sb.append(valueAsJson())
+	 sb.append("}")
+	 return JsonOutput.prettyPrint(sb.toString())
+	 }
+	 public String valueAsJson() {
+	 StringBuilder sb = new StringBuilder()
+	 sb.append("{")
+	 sb.append('"lineNo":')
+	 sb.append(JsonOutput.toJson(lineNo))
+	 sb.append(',')
+	 sb.append('"line":')
+	 sb.append(JsonOutput.toJson(line))
+	 sb.append(',')
+	 sb.append('"pattern":')
+	 sb.append(JsonOutput.toJson(pattern))
+	 sb.append(',')
+	 sb.append('"isRegex":')
+	 sb.append(JsonOutput.toJson(isRegex))
+	 sb.append(',')
+	 sb.append('"matchAt":')
+	 sb.append(JsonOutput.toJson(matchAt))
+	 sb.append(',')
+	 sb.append('"matchEnd":')
+	 sb.append(JsonOutput.toJson(matchEnd))
+	 sb.append(',')
+	 sb.append('"hasMatch":')
+	 sb.append(JsonOutput.toJson(hasMatch))
+	 sb.append("}")
+	 return JsonOutput.prettyPrint(sb.toString())
+	 }
+	 */
+
 	String toJson() {
 		ObjectMapper mapper = new ObjectMapper()
 		SimpleModule module = new SimpleModule("TextSearchResultSerializer",

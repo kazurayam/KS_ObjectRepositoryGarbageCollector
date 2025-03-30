@@ -48,7 +48,7 @@ public class ExtendedObjectRepository {
 	Path getTargetDir() {
 		return (subpath != null) ? baseDir.resolve(subpath) : baseDir
 	}
-	
+
 	/**
 	 * @return a Set of all TestObjectIds contained in the "Object Repository"
 	 */
