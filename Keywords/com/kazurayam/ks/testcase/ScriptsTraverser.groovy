@@ -4,16 +4,16 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.util.stream.Collectors
 
-public class ScriptsSearcher {
+public class ScriptsTraverser {
 
 	private Path scriptsDir
 	private TestCaseScriptsVisitor visitor
 
-	ScriptsSearcher(Path scriptsDir) {
+	ScriptsTraverser(Path scriptsDir) {
 		this(scriptsDir, null)
 	}
 
-	ScriptsSearcher(Path scriptsDir, String subPath) {
+	ScriptsTraverser(Path scriptsDir, String subPath) {
 		Objects.requireNonNull(scriptsDir)
 		assert Files.exists(scriptsDir)
 		this.scriptsDir = scriptsDir.toAbsolutePath().normalize()  // calling .normalize() is significant
@@ -32,7 +32,7 @@ public class ScriptsSearcher {
 		return visitor
 	}
 
-	List<DigestedLine> searchIn(TestCaseId testCaseId, String pattern, Boolean isRegex) {
+	List<DigestedLine> digestTestCase(TestCaseId testCaseId, String pattern, Boolean isRegex) {
 		Objects.requireNonNull(testCaseId)
 		Objects.requireNonNull(pattern)
 		Objects.requireNonNull(isRegex)

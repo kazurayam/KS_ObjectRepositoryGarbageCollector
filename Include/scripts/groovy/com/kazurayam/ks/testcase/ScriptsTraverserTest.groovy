@@ -16,22 +16,22 @@ import groovy.json.JsonOutput
 import internal.GlobalVariable
 
 @RunWith(JUnit4.class)
-public class ScriptsSearcherTest {
+public class ScriptsTraverserTest {
 
 	private Path scriptsDir
-	private ScriptsSearcher searcher
+	private ScriptsTraverser traverser
 
 	@Before
 	void setup() {
 		scriptsDir = Paths.get("./Scripts").toAbsolutePath()
-		searcher = new ScriptsSearcher(scriptsDir, "main")
+		traverser = new ScriptsTraverser(scriptsDir, "main")
 	}
 
 	@Test
 	void test_searchText() {
 		String pattern = "https://katalon-demo-cura.herokuapp.com/"
 		Map<TestCaseId, List<DigestedLine>> result =
-				searcher.searchText(pattern, false)
+				traverser.searchText(pattern, false)
 		assertEquals(2, result.size())
 	}
 
@@ -39,8 +39,9 @@ public class ScriptsSearcherTest {
 	void test_searchReferenceToTestObject() {
 		String testObjectId = "Page_CURA Healthcare Service/a_Make Appointment"
 		Map<TestCaseId, List<DigestedLine>> result =
-				searcher.searchReferenceToTestObject(testObjectId)
+				traverser.searchReferenceToTestObject(testObjectId)
 		assertEquals(2, result.size())
+		//
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
 				.fileName("test_searchReferenceToTestObject.json").build()
 		String json = JsonOutput.prettyPrint(JsonOutput.toJson(result))
@@ -52,13 +53,14 @@ public class ScriptsSearcherTest {
 	}
 
 	@Test
-	void test_searchIn() {
+	void test_digestTestCase() {
 		TestCaseId testCaseId = new TestCaseId("main/TC1")
 		String pattern = "a_Make Appointment"
 		Boolean isRegex = false
-		List<DigestedLine> result = searcher.searchIn(testCaseId, pattern, isRegex)
+		List<DigestedLine> result = traverser.digestTestCase(testCaseId, pattern, isRegex)
 		assertNotNull(result)
 		assertEquals(1, result.size())
+		//
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
 				.fileName("test_searchIn.json").build()
 		String json = JsonOutput.prettyPrint(JsonOutput.toJson(result.get(0).toJson()))

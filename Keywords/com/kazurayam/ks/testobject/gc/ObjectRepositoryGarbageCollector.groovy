@@ -6,7 +6,7 @@ import java.nio.file.Paths
 import java.time.LocalDateTime
 import java.time.Duration
 
-import com.kazurayam.ks.testcase.ScriptsSearcher
+import com.kazurayam.ks.testcase.ScriptsTraverser
 import com.kazurayam.ks.testcase.TestCaseId
 import com.kazurayam.ks.testcase.TestCaseScriptsVisitor
 import com.kazurayam.ks.testcase.DigestedLine
@@ -100,12 +100,12 @@ class ObjectRepositoryGarbageCollector {
 		// Iterate over the list of TestCaseIds.
 		// Read the TestCase script, check if it contains any references to the TestObjects.
 		// If true, record the reference into the database
-		ScriptsSearcher scriptSearcher = new ScriptsSearcher(scriptsDir, testCasesSubpath)
+		ScriptsTraverser scriptSearcher = new ScriptsTraverser(scriptsDir, testCasesSubpath)
 		testCaseIdList.forEach { testCaseId ->
 			essenceList.forEach { essence ->
 				TestObjectId testObjectId = essence.testObjectId()
 				List<DigestedLine> textSearchResultList =
-						scriptSearcher.searchIn(testCaseId, testObjectId.value(), false)
+						scriptSearcher.digestTestCase(testCaseId, testObjectId.value(), false)
 				textSearchResultList.forEach { textSearchResult ->
 					TCTOReference reference = new TCTOReference(testCaseId, textSearchResult, essence)
 					db.add(reference)
