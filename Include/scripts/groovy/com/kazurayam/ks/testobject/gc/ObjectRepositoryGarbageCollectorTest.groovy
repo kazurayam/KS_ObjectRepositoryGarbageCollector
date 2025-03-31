@@ -42,12 +42,12 @@ public class ObjectRepositoryGarbageCollectorTest {
 
 	@Test
 	void test_resolveRaw() {
-		Map<TestObjectId, Set<TCTOReference>> resolved = gc.resolveRaw()
+		Map<TestObjectId, Set<ForwardReference>> resolved = gc.resolveRaw()
 		assertNotNull(resolved)
 		TestObjectId toi = new TestObjectId("Page_CURA Healthcare Service/a_Go to Homepage")
 		assertTrue(resolved.keySet().contains(toi))
-		Set<TCTOReference> refs = resolved.get(toi)
-		List<TCTOReference> refList = refs as List
+		Set<ForwardReference> refs = resolved.get(toi)
+		List<ForwardReference> refList = refs as List
 		assertEquals(1, refList.size())
 		assertEquals(toi, refList.get(0).testObjectEssence().testObjectId())
 	}

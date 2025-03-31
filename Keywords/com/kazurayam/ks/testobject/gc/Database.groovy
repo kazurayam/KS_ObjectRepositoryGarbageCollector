@@ -8,20 +8,20 @@ import groovy.json.JsonOutput
 
 public class Database {
 
-	private Set<TCTOReference> db
+	private Set<ForwardReference> db
 
 	Database() {
 		db = new TreeSet<>()
 	}
 
-	void addAll(Set<TCTOReference> references) {
+	void addAll(Set<ForwardReference> references) {
 		Objects.requireNonNull(references)
-		references.forEach { ref ->
+		references.each { ref ->
 			this.add(ref)
 		}
 	}
 
-	void add(TCTOReference reference) {
+	void add(ForwardReference reference) {
 		Objects.requireNonNull(reference)
 		db.add(reference)
 	}
@@ -30,11 +30,11 @@ public class Database {
 		return db.size()
 	}
 
-	TCTOReference get(int x) {
+	ForwardReference get(int x) {
 		return (this.getAll() as List).get(x)
 	}
 
-	Set<TCTOReference> getAll() {
+	Set<ForwardReference> getAll() {
 		return new TreeSet<>(db)
 	}
 
@@ -51,7 +51,7 @@ public class Database {
 		sb.append('[')
 		String sep1 = ""
 		List list = db as List
-		list.forEach { TCTOReference ref ->
+		list.forEach { ForwardReference ref ->
 			sb.append(sep1)
 			sb.append(ref.toJson())
 			sep1 = ','
@@ -63,16 +63,16 @@ public class Database {
 
 	//-------------------------------------------------------------------------
 
-	Set<TCTOReference> findTCTOReferencesOf(TestCaseId testCaseId) {
+	Set<ForwardReference> findForwardReferencesFrom(TestCaseId testCaseId) {
 		return db.stream()
-				.filter({ tctoRef ->
-					tctoRef.testCaseId() == testCaseId
+				.filter({ forwardReference ->
+					forwardReference.testCaseId() == testCaseId
 				})
 				.collect(Collectors.toSet())
 	}
 
 	boolean containsTestCaseId(TestCaseId testCaseId) {
-		return this.findTCTOReferencesOf(testCaseId).size() > 0
+		return this.findForwardReferencesFrom(testCaseId).size() > 0
 	}
 
 	Set<TestCaseId> getAllTestCaseIdsContained() {
@@ -85,7 +85,7 @@ public class Database {
 
 	//-------------------------------------------------------------------------
 
-	Set<TCTOReference> findTCTOReferencesOf(TestObjectId testObjectId) {
+	Set<ForwardReference> findForwadReferenceTo(TestObjectId testObjectId) {
 		return db.stream()
 				.filter({ tctoRef ->
 					tctoRef.testObjectEssence().testObjectId() == testObjectId
@@ -94,7 +94,7 @@ public class Database {
 	}
 
 	boolean containsTestObjectId(TestObjectId testObjectId) {
-		return this.findTCTOReferencesOf(testObjectId).size() > 0
+		return this.findForwadReferenceTo(testObjectId).size() > 0
 	}
 
 	Set<TestObjectId> getAllTestObjectIdsContained() {

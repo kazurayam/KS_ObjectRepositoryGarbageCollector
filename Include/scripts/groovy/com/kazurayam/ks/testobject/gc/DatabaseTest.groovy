@@ -17,14 +17,14 @@ public class DatabaseTest {
 
 	private Database db
 	private TestCaseId testCaseId
-	private TCTOReference reference
+	private ForwardReference reference
 	private TestObjectId testObjectId
 
 	@Before
 	void setup() {
 		db = new Database()
 		testCaseId = new TestCaseId("main/TC1")
-		reference = TCTOReferenceTest.createSampleInstance()
+		reference = ForwardReferenceTest.createSampleInstance()
 		db.add(reference)
 		//
 		assertEquals("main/TC1", reference.testCaseId().value())
@@ -40,13 +40,13 @@ public class DatabaseTest {
 
 	@Test
 	void test_get() {
-		TCTOReference ref = db.get(0)
+		ForwardReference ref = db.get(0)
 		assertNotNull(ref)
 	}
 
 	@Test
 	void test_getAll() {
-		Set<TCTOReference> allRefs = db.getAll()
+		Set<ForwardReference> allRefs = db.getAll()
 		assertEquals(1, allRefs.size())
 	}
 
@@ -66,11 +66,11 @@ public class DatabaseTest {
 	}
 
 	@Test
-	void test_findTCTOReferencesOf_TestCaseId() {
-		Set<TCTOReference> filled = db.findTCTOReferencesOf(new TestCaseId("main/TC1"))
+	void test_findForwardReferencesFrom() {
+		Set<ForwardReference> filled = db.findForwardReferencesFrom(new TestCaseId("main/TC1"))
 		assertEquals(1, filled.size())
 		//
-		Set<TCTOReference> empty = db.findTCTOReferencesOf(new TestCaseId("foo"))
+		Set<ForwardReference> empty = db.findForwardReferencesFrom(new TestCaseId("foo"))
 		assertEquals(0, empty.size())
 	}
 
@@ -87,11 +87,11 @@ public class DatabaseTest {
 	}
 
 	@Test
-	void test_findTCTOReferencesOf_TestObjectId() {
-		Set<TCTOReference> filled = db.findTCTOReferencesOf(new TestObjectId("Page_CURA Healthcare Service/a_Make Appointment"))
+	void test_findForwardReferencesTo() {
+		Set<ForwardReference> filled = db.findForwadReferenceTo(new TestObjectId("Page_CURA Healthcare Service/a_Make Appointment"))
 		assertEquals(1, filled.size())
 		//
-		Set<TCTOReference> empty = db.findTCTOReferencesOf(new TestObjectId("bar"))
+		Set<ForwardReference> empty = db.findForwadReferenceTo(new TestObjectId("bar"))
 		assertEquals(0, empty.size())
 	}
 

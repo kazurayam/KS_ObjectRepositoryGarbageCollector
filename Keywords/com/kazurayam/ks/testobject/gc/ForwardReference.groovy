@@ -7,15 +7,15 @@ import com.kazurayam.ks.testobject.TestObjectEssence
 import groovy.json.JsonOutput
 
 /**
- * A TCTOReference object records a fact that a TestCase refers to a TestObject. 
+ * A ForwardReference object records a fact that a single TestCase refers to a single TestObject. 
  */
-public class TCTOReference implements Comparable<TCTOReference> {
+public class ForwardReference implements Comparable<ForwardReference> {
 
 	private TestCaseId testCaseId
 	private DigestedLine digestedLine
 	private TestObjectEssence testObjectEssence
 
-	TCTOReference(TestCaseId testCaseId, DigestedLine digestedLine, TestObjectEssence testObjectEssence) {
+	ForwardReference(TestCaseId testCaseId, DigestedLine digestedLine, TestObjectEssence testObjectEssence) {
 		Objects.requireNonNull(testCaseId)
 		Objects.requireNonNull(digestedLine)
 		Objects.requireNonNull(testObjectEssence)
@@ -38,10 +38,10 @@ public class TCTOReference implements Comparable<TCTOReference> {
 
 	@Override
 	boolean equals(Object obj) {
-		if (!(obj instanceof TCTOReference)) {
+		if (!(obj instanceof ForwardReference)) {
 			return false
 		}
-		TCTOReference other = (TCTOReference)obj
+		ForwardReference other = (ForwardReference)obj
 		return this.testCaseId == other.testCaseId &&
 				this.digestedLine == other.digestedLine &&
 				this.testObjectEssence == other.testObjectEssence
@@ -64,7 +64,7 @@ public class TCTOReference implements Comparable<TCTOReference> {
 	String toJson() {
 		StringBuilder sb = new StringBuilder()
 		sb.append("{")
-		sb.append(JsonOutput.toJson("TCTOReference"))
+		sb.append(JsonOutput.toJson("ForwardReference"))
 		sb.append(":")
 		sb.append("{")
 		sb.append(JsonOutput.toJson("TestCaseId"))
@@ -84,7 +84,7 @@ public class TCTOReference implements Comparable<TCTOReference> {
 	}
 
 	@Override
-	int compareTo(TCTOReference other) {
+	int compareTo(ForwardReference other) {
 		int v = this.testCaseId.compareTo(other.testCaseId)
 		if (v != 0) {
 			return v

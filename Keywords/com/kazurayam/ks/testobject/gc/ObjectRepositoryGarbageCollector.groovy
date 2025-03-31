@@ -107,7 +107,7 @@ class ObjectRepositoryGarbageCollector {
 				List<DigestedLine> textSearchResultList =
 						scriptSearcher.digestTestCase(testCaseId, testObjectId.value(), false)
 				textSearchResultList.forEach { textSearchResult ->
-					TCTOReference reference = new TCTOReference(testCaseId, textSearchResult, essence)
+					ForwardReference reference = new ForwardReference(testCaseId, textSearchResult, essence)
 					db.add(reference)
 				}
 			}
@@ -124,11 +124,11 @@ class ObjectRepositoryGarbageCollector {
 	/**
 	 *
 	 */
-	Map<TestObjectId, Set<TCTOReference>> resolveRaw() {
+	Map<TestObjectId, Set<ForwardReference>> resolveRaw() {
 		Set<TestObjectId> allTestObjectIds = db.getAllTestObjectIdsContained()
-		Map<TestObjectId, Set<TCTOReference>> result = new TreeMap<>()
+		Map<TestObjectId, Set<ForwardReference>> result = new TreeMap<>()
 		allTestObjectIds.forEach { testObjectId ->
-			result.put(testObjectId, db.findTCTOReferencesOf(testObjectId))
+			result.put(testObjectId, db.findForwadReferenceTo(testObjectId))
 		}
 		return result
 	}
@@ -137,7 +137,7 @@ class ObjectRepositoryGarbageCollector {
 	 *
 	 */
 	String resolve() {
-		Map<TestObjectId, Set<TCTOReference>> resolved = this.resolveRaw()
+		Map<TestObjectId, Set<ForwardReference>> resolved = this.resolveRaw()
 		StringBuilder sb = new StringBuilder()
 		sb.append("{")
 		sb.append(JsonOutput.toJson("ObjectRepositoryGarbageCollector#resolve"))
@@ -154,7 +154,7 @@ class ObjectRepositoryGarbageCollector {
 			sb.append(JsonOutput.toJson("TCTOReferences"))
 			sb.append(":")
 			sb.append("[")
-			Set<TCTOReference> refs = resolved.get(testObjectId)
+			Set<ForwardReference> refs = resolved.get(testObjectId)
 			String sep2 = ""
 			refs.forEach { ref ->
 				sb.append(sep2)
@@ -175,10 +175,10 @@ class ObjectRepositoryGarbageCollector {
 	 */
 	List<TestObjectId> garbagesRaw() {
 		Set<TestObjectId> tmp = new TreeSet<>()
-		Map<TestObjectId, Set<TCTOReference>> resolved = this.resolveRaw()
+		Map<TestObjectId, Set<ForwardReference>> resolved = this.resolveRaw()
 		// allTestObjectIds are set in the init() method
 		allTestObjectIds.forEach { testObjectId ->
-			Set<TCTOReference> value = resolved.get(testObjectId)
+			Set<ForwardReference> value = resolved.get(testObjectId)
 			if (value == null) {
 				// Oh, this TestObject must be a garbage
 				// as no Test Case uses this

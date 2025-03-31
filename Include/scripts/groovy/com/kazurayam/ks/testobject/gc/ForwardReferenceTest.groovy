@@ -19,9 +19,9 @@ import com.kazurayam.ks.testobject.TestObjectId
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(JUnit4.class)
-public class TCTOReferenceTest {
+public class ForwardReferenceTest {
 
-	private TCTOReference instance
+	private ForwardReference instance
 	private TestCaseId testCaseId
 	private DigestedLine textSearchResult
 	private TestObjectEssence testObjectEssence
@@ -30,14 +30,14 @@ public class TCTOReferenceTest {
 	static void beforeClass() {}
 
 	/*
-	 * convenient method to create an instance of TCTOReference as text fixture
+	 * prepare an instance of ForwardReference as text fixture
 	 */
 	@Before
 	void setup() {
 		instance = createSampleInstance()
 	}
 
-	public static final TCTOReference createSampleInstance() {
+	public static final ForwardReference createSampleInstance() {
 		String testCaseIdValue = "main/TC1"
 		String line = '''WebUI.click(findTestObject('Object Repository/Page_CURA Healthcare Service/a_Make Appointment')'''
 		String togValue = "Page_CURA Healthcare Service/a_Make Appointment"
@@ -50,7 +50,7 @@ public class TCTOReferenceTest {
 				new TestObjectId(togValue),
 				"BASIC",
 				new Locator(locValue))
-		return new TCTOReference(testCaseId, textSearchResult, testObjectEssence)
+		return new ForwardReference(testCaseId, textSearchResult, testObjectEssence)
 	}
 
 	@Test
@@ -77,15 +77,6 @@ public class TCTOReferenceTest {
 		println "********** test_toJson **********"
 		println json
 		assertTrue(json.contains("Page_CURA Healthcare Service/a_Make Appointment"))
-		//
-		//JsonNode input = objectMapper.readTree(instance.toJson())
-		//Expression<JsonNode> expression = jmespath.compile("TCTOReference.TestObjectEssence.TestObjectId")
-		//JsonNode result = expression.search(input)
-		//assertEquals("\"Page_CURA Healthcare Service/a_Make Appointment\"", result.toString())
-		//
-		//expression = jmespath.compile("TCTOReference.TestObjectEssence.Locator")
-		//result = expression.search(input)
-		//assertEquals("\"//a[@id='btn-make-appointment']\"", result.toString())
 	}
 
 	@Test
