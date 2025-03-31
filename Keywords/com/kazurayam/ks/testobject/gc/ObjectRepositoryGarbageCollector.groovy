@@ -14,6 +14,9 @@ import com.kazurayam.ks.testobject.ExtendedObjectRepository
 import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kazurayam.ks.testobject.TestObjectId
 import com.kms.katalon.core.configuration.RunConfiguration
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import groovy.json.JsonOutput
 
@@ -22,7 +25,7 @@ import groovy.json.JsonOutput
  * A sort of "Garbage Collector" for the "Object Repository" of a Katalon Studio project.
  * This class can lookup a list of unused Test Objects = "garbages".
  *
- * This class just compiles a report. It does not actually remove or change Test Objects at all.
+ * This class just compiles a report for you. It does not actually remove the unused TestObjects.
  *
  * @author kazurayam
  */
@@ -30,10 +33,10 @@ class ObjectRepositoryGarbageCollector {
 
 	private static final projectDir = Paths.get(".").normalize().toAbsolutePath()
 
-	private Path   objectRepositoryDir // non null
-	private Path   testCasesDir // non null
-	private List<String> objectRepositorySubpaths // could be empty
-	private List<String> testCasesSubpaths // could be empty
+	private Path objectRepositoryDir // must not be null
+	private Path testCasesDir // must not be null
+	private List<String> objectRepositorySubpaths // must not be null but could be empty
+	private List<String> testCasesSubpaths // must not be null but could be empty
 
 	private Database db
 	private Set<TestObjectId> allTestObjectIds
@@ -71,29 +74,35 @@ class ObjectRepositoryGarbageCollector {
 	public void scan() {
 		this.db = new Database()
 		startedAt = LocalDateTime.now()
-		objectRepositorySubpaths.forEach { objectRepositorySubpath ->
-			testCasesSubpaths.forEach { testCasesSubpath ->
-				scanSub(this.db, this.objectRepositoryDir, objectRepositorySubpath, this.testCasesDir, testCasesSubpath)
+		objectRepositorySubpaths.each { objectRepositorySubpath ->
+			testCasesSubpaths.each { testCasesSubpath ->
+				scanSub(this.db, 
+					this.objectRepositoryDir, 
+					objectRepositorySubpath, 
+					this.testCasesDir, 
+					testCasesSubpath)
 			}
 		}
 		finishedAt = LocalDateTime.now()
 	}
 
-	private void scanSub(Database db, Path objrepoDir, String objectRepositorySubpath, Path scriptsDir, String testCasesSubpath) {
+	private void scanSub(Database db,
+							Path objrepoDir,
+							String objectRepositorySubpath,
+							Path scriptsDir,
+							String testCasesSubpath) {
 		// scan the Object Repository directory to make a list of TestObjectEssences
 		ExtendedObjectRepository extOR = new ExtendedObjectRepository(objrepoDir, objectRepositorySubpath)
 		allTestObjectIds = extOR.getAllTestObjectIdSet()
 		List<TestObjectEssence> essenceList = extOR.getTestObjectEssenceList("", false)
-
 		//
 		numberOfTestObjects = essenceList.size()
-
+		
 		// scan the Scripts directory to make a list of TestCaseIds
 		TestCaseScriptsVisitor testCaseScriptsVisitor = new TestCaseScriptsVisitor(scriptsDir)
 		Path targetDir = (testCasesSubpath != null) ? scriptsDir.resolve(testCasesSubpath) : scriptsDir
 		Files.walkFileTree(targetDir, testCaseScriptsVisitor)
 		List<TestCaseId> testCaseIdList = testCaseScriptsVisitor.getTestCaseIdList()
-
 		//
 		numberOfTestCases = testCaseIdList.size()
 
@@ -101,12 +110,12 @@ class ObjectRepositoryGarbageCollector {
 		// Read the TestCase script, check if it contains any references to the TestObjects.
 		// If true, record the reference into the database
 		ScriptsTraverser scriptSearcher = new ScriptsTraverser(scriptsDir, testCasesSubpath)
-		testCaseIdList.forEach { testCaseId ->
-			essenceList.forEach { essence ->
+		testCaseIdList.each { testCaseId ->
+			essenceList.each { essence ->
 				TestObjectId testObjectId = essence.testObjectId()
 				List<DigestedLine> textSearchResultList =
 						scriptSearcher.digestTestCase(testCaseId, testObjectId.value(), false)
-				textSearchResultList.forEach { textSearchResult ->
+				textSearchResultList.each { textSearchResult ->
 					ForwardReference reference = new ForwardReference(testCaseId, textSearchResult, essence)
 					db.add(reference)
 				}
@@ -124,50 +133,24 @@ class ObjectRepositoryGarbageCollector {
 	/**
 	 *
 	 */
-	Map<TestObjectId, Set<ForwardReference>> resolveRaw() {
+	BackwardReferences getBackwardReferences() {
+		BackwardReferences backwardReferences = new BackwardReferences()
 		Set<TestObjectId> allTestObjectIds = db.getAllTestObjectIdsContained()
-		Map<TestObjectId, Set<ForwardReference>> result = new TreeMap<>()
-		allTestObjectIds.forEach { testObjectId ->
-			result.put(testObjectId, db.findForwadReferenceTo(testObjectId))
+		allTestObjectIds.each { testObjectId ->
+			Set<ForwardReference> forwardReferences = db.findForwardReferencesTo(testObjectId)
+			forwardReferences.each { ForwardReference fr ->
+				backwardReferences.put(testObjectId, fr)
+			}
 		}
-		return result
+		return backwardReferences
 	}
 
 	/**
 	 *
 	 */
-	String resolve() {
-		Map<TestObjectId, Set<ForwardReference>> resolved = this.resolveRaw()
-		StringBuilder sb = new StringBuilder()
-		sb.append("{")
-		sb.append(JsonOutput.toJson("ObjectRepositoryGarbageCollector#resolve"))
-		sb.append(":")
-		sb.append("[")
-		String sep1 = ""
-		resolved.keySet().forEach { testObjectId ->
-			sb.append(sep1)
-			sb.append("{")
-			sb.append(JsonOutput.toJson("TestObjectId"))
-			sb.append(":")
-			sb.append(JsonOutput.toJson(testObjectId.value()))
-			sb.append(",")
-			sb.append(JsonOutput.toJson("TCTOReferences"))
-			sb.append(":")
-			sb.append("[")
-			Set<ForwardReference> refs = resolved.get(testObjectId)
-			String sep2 = ""
-			refs.forEach { ref ->
-				sb.append(sep2)
-				sb.append(ref.toJson())
-				sep2 = ","
-			}
-			sb.append("]")
-			sb.append("}")
-			sep1 = ","
-		}
-		sb.append("]")
-		sb.append("}")
-		return JsonOutput.prettyPrint(sb.toString())
+	String jsonifyBackwardReferences() {
+		BackwardReferences backwardReferences = this.getBackwardReferences()
+		return backwardReferences.toJson()
 	}
 
 	/**

@@ -31,7 +31,7 @@ public class LocatorTest {
 	void test_toJson() {
 		String json = JsonOutput.prettyPrint(locator.toJson())
 		Shorthand sh = new Shorthand .Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_toJson.json").build()
+				.fileName("test_toJson.json").build()
 		sh.write(json)
 		assertEquals('{\"Locator\":\"//a\"}', locator.toJson())
 	}

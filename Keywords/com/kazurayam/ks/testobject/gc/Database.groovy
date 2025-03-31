@@ -1,5 +1,12 @@
 package com.kazurayam.ks.testobject.gc
 
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer
+
 import java.util.stream.Collectors
 
 import com.kazurayam.ks.testcase.TestCaseId
@@ -38,28 +45,6 @@ public class Database {
 		return new TreeSet<>(db)
 	}
 
-	@Override
-	String toString() {
-		return toJson()
-	}
-
-	String toJson() {
-		StringBuilder sb = new StringBuilder()
-		sb.append("{")
-		sb.append(JsonOutput.toJson("Database"))
-		sb.append(":")
-		sb.append('[')
-		String sep1 = ""
-		List list = db as List
-		list.forEach { ForwardReference ref ->
-			sb.append(sep1)
-			sb.append(ref.toJson())
-			sep1 = ','
-		}
-		sb.append(']')
-		sb.append("}")
-		return JsonOutput.prettyPrint(sb.toString())
-	}
 
 	//-------------------------------------------------------------------------
 
@@ -85,7 +70,7 @@ public class Database {
 
 	//-------------------------------------------------------------------------
 
-	Set<ForwardReference> findForwadReferenceTo(TestObjectId testObjectId) {
+	Set<ForwardReference> findForwardReferencesTo(TestObjectId testObjectId) {
 		return db.stream()
 				.filter({ tctoRef ->
 					tctoRef.testObjectEssence().testObjectId() == testObjectId
@@ -94,7 +79,7 @@ public class Database {
 	}
 
 	boolean containsTestObjectId(TestObjectId testObjectId) {
-		return this.findForwadReferenceTo(testObjectId).size() > 0
+		return this.findForwardReferencesTo(testObjectId).size() > 0
 	}
 
 	Set<TestObjectId> getAllTestObjectIdsContained() {
@@ -103,5 +88,62 @@ public class Database {
 					tctoRef.testObjectEssence().testObjectId()
 				})
 				.collect(Collectors.toSet())
+	}
+
+	//-----------------------------------------------------------------
+
+	@Override
+	String toString() {
+		return toJson()
+	}
+
+	/*
+	 String toJson() {
+	 StringBuilder sb = new StringBuilder()
+	 sb.append("{")
+	 sb.append(JsonOutput.toJson("Database"))
+	 sb.append(":")
+	 sb.append('[')
+	 String sep1 = ""
+	 List list = db as List
+	 list.forEach { ForwardReference ref ->
+	 sb.append(sep1)
+	 sb.append(ref.toJson())
+	 sep1 = ','
+	 }
+	 sb.append(']')
+	 sb.append("}")
+	 return JsonOutput.prettyPrint(sb.toString())
+	 }
+	 */
+	String toJson() {
+		ObjectMapper mapper = new ObjectMapper()
+		SimpleModule module = new SimpleModule("DatabaseSerializer",
+				new Version(1, 0, 0, null, null, null))
+		module.addSerializer(Database.class, new Database.DatabaseSerializer())
+		module.addSerializer(ForwardReference.class, new ForwardReference.ForwardReferenceSerializer())
+		mapper.registerModule(module)
+		return mapper.writeValueAsString(this)
+	}
+
+	static class DatabaseSerializer extends StdSerializer<Database> {
+		DatabaseSerializer() {
+			this(null)
+		}
+		DatabaseSerializer(Class<Database> t) {
+			super(t)
+		}
+		@Override
+		void serialize(Database db,
+				JsonGenerator gen, SerializerProvider serializer) {
+			gen.writeStartObject()
+			gen.writeFieldName("Database")
+			gen.writeStartArray()
+			db.getAll().each { forwardReference ->
+				gen.writeObject(forwardReference)
+			}
+			gen.writeEndArray()
+			gen.writeEndObject()
+		}
 	}
 }

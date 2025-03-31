@@ -1,5 +1,12 @@
 package com.kazurayam.ks.testobject.gc
 
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer
+
 import com.kazurayam.ks.testcase.TestCaseId
 import com.kazurayam.ks.testcase.DigestedLine
 import com.kazurayam.ks.testobject.TestObjectEssence
@@ -57,33 +64,6 @@ public class ForwardReference implements Comparable<ForwardReference> {
 	}
 
 	@Override
-	String toString() {
-		return toJson()
-	}
-
-	String toJson() {
-		StringBuilder sb = new StringBuilder()
-		sb.append("{")
-		sb.append(JsonOutput.toJson("ForwardReference"))
-		sb.append(":")
-		sb.append("{")
-		sb.append(JsonOutput.toJson("TestCaseId"))
-		sb.append(":")
-		sb.append(JsonOutput.toJson(testCaseId.value()))
-		sb.append(",")
-		sb.append(JsonOutput.toJson("TextSearchResult"))
-		sb.append(":")
-		sb.append(digestedLine.toJson())
-		sb.append(",")
-		sb.append(JsonOutput.toJson("TestObjectEssence"))
-		sb.append(":")
-		sb.append(testObjectEssence.toJson())
-		sb.append("}")
-		sb.append("}")
-		return JsonOutput.prettyPrint(sb.toString())
-	}
-
-	@Override
 	int compareTo(ForwardReference other) {
 		int v = this.testCaseId.compareTo(other.testCaseId)
 		if (v != 0) {
@@ -95,6 +75,41 @@ public class ForwardReference implements Comparable<ForwardReference> {
 			} else {
 				return this.testObjectEssence.compareTo(other.testObjectEssence)
 			}
+		}
+	}
+
+	@Override
+	String toString() {
+		return toJson()
+	}
+
+	String toJson() {
+		ObjectMapper mapper = new ObjectMapper()
+		SimpleModule module = new SimpleModule("ForwardReferenceSerializer",
+				new Version(1, 0, 0, null, null, null))
+		module.addSerializer(ForwardReference.class, new ForwardReferenceSerializer())
+		module.addSerializer(TestCaseId.class, new TestCaseId.TestCaseIdSerializer())
+		module.addSerializer(DigestedLine.class, new DigestedLine.DigestedLineSerializer())
+		module.addSerializer(TestObjectEssence.class, new TestObjectEssence.TestObjectEssenceSerializer())
+		mapper.registerModule(module)
+		return mapper.writeValueAsString(this)
+	}
+
+	static class ForwardReferenceSerializer extends StdSerializer<ForwardReference> {
+		ForwardReferenceSerializer() {
+			this(null)
+		}
+		ForwardReferenceSerializer(Class<ForwardReferenceSerializer> t) {
+			super(t)
+		}
+		@Override
+		void serialize(ForwardReference forwardReference,
+				JsonGenerator gen, SerializerProvider serializer) {
+			gen.writeStartObject()
+			gen.writeObjectField("TestCaseId", forwardReference.testCaseId)
+			gen.writeObjectField("DigestedLine", forwardReference.digestedLine)
+			gen.writeObjectField("TestObjectEssence", forwardReference.testObjectEssence)
+			gen.writeEndObject()
 		}
 	}
 }

@@ -13,8 +13,10 @@ import org.junit.runners.JUnit4
 import org.junit.runners.MethodSorters;
 
 import com.kazurayam.ks.testobject.TestObjectId
+import com.kazurayam.ks.reporting.Shorthand
 
 import groovy.json.JsonOutput
+import internal.GlobalVariable
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(JUnit4.class)
@@ -35,8 +37,6 @@ public class ObjectRepositoryGarbageCollectorTest {
 	void test_db() {
 		Database db = gc.db()
 		assertNotNull(db)
-		println "********** test_db **********"
-		println JsonOutput.prettyPrint(db.toJson())
 		assertNotEquals(0, db.size())
 	}
 
@@ -55,17 +55,20 @@ public class ObjectRepositoryGarbageCollectorTest {
 	@Test
 	void test_resolve() {
 		String json = gc.resolve()
-		println "********** test_resolve **********"
-		println json
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName("test_resolve.json").build()
+		sh.write(JsonOutput.prettyPrint(json))
 	}
 
 	@Test
 	void test_garbagesRaw() {
 		List<TestObjectId> garbages = gc.garbagesRaw()
-		println "********** test_garbagesRaw **********"
-		garbages.forEach { toi ->
-			println toi.toString()
+		StringBuilder sb = new StringBuilder()
+		garbages.each { toi ->
+			sb.append(toi.toString())
+			sb.append("\n")
 		}
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName("test_garbagesRaw.txt").build()
+		sh.write(sb.toString())
 		assertNotNull(garbages)
 		assertTrue(garbages.contains(new TestObjectId("Page_CURA Healthcare Service/a_Foo")))
 	}
@@ -73,8 +76,8 @@ public class ObjectRepositoryGarbageCollectorTest {
 	@Test
 	void test_garbages() {
 		String json = gc.garbages()
-		println "********** test_garbages **********"
-		println json
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName("test_garbages.json").build()
+		sh.write(JsonOutput.prettyPrint(json))
 		assertTrue("json should contain 'a_Foo'", json.contains("a_Foo"))
 	}
 
@@ -83,6 +86,7 @@ public class ObjectRepositoryGarbageCollectorTest {
 		ObjectRepositoryGarbageCollector gc = new ObjectRepositoryGarbageCollector.Builder(objectRepositoryDir, scriptsDir)
 				.objectRepositorySubpath("Page_CURA Healthcare Service")
 				.build()
+		assertNotNull(gc)
 	}
 
 	@Test
@@ -90,5 +94,6 @@ public class ObjectRepositoryGarbageCollectorTest {
 		ObjectRepositoryGarbageCollector gc = new ObjectRepositoryGarbageCollector.Builder(objectRepositoryDir, scriptsDir)
 				.testCasesSubpath("main")
 				.build()
+		assertNotNull(gc)
 	}
 }

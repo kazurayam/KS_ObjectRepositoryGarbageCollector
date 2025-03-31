@@ -1,5 +1,12 @@
 package com.kazurayam.ks.testcase
 
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer
+
 import java.nio.file.Path
 import groovy.json.JsonOutput
 
@@ -35,24 +42,39 @@ public class TestCaseId implements Comparable<TestCaseId> {
 	int hashCode() {
 		return value.hashCode()
 	}
-
+	
+	@Override
+	int compareTo(TestCaseId other) {
+		return this.value.compareTo(other.value)
+	}
+	
 	@Override
 	String toString() {
 		return value
 	}
 
-	String toJson() {
-		StringBuilder sb = new StringBuilder()
-		sb.append("{")
-		sb.append(JsonOutput.toJson("TestCaseId"))
-		sb.append(":")
-		sb.append(JsonOutput.toJson(value))
-		sb.append("}")
-		return sb.toString()
+	public toJson() {
+		ObjectMapper mapper = new ObjectMapper()
+		SimpleModule module = new SimpleModule("TestCaseIdSerializer",
+			new Version(1, 0, 0, null, null, null))
+		module.addSerializer(TestCaseId.class, new TestCaseId.TestCaseIdSerializer())
+		mapper.registerModule(module)
+		return mapper.writeValueAsString(this)
 	}
 
-	@Override
-	int compareTo(TestCaseId other) {
-		return this.value.compareTo(other.value)
+	static class TestCaseIdSerializer extends StdSerializer<TestCaseId> {
+		TestCaseIdSerializer() {
+			this(null)
+		}
+		TestCaseIdSerializer(Class<TestCaseIdSerializer> t) {
+			super(t)
+		}
+		@Override
+		void serialize(TestCaseId testCaseId,
+				JsonGenerator gen, SerializerProvider serializer) {
+			gen.writeStartObject()
+			gen.writeStringField("TestCaseId", testCaseId.value())
+			gen.writeEndObject()
+		}
 	}
 }

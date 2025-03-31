@@ -16,6 +16,14 @@ import com.kazurayam.ks.testcase.DigestedLine
 import com.kazurayam.ks.testobject.Locator
 import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kazurayam.ks.testobject.TestObjectId
+import com.kazurayam.ks.reporting.Shorthand
+
+import groovy.json.JsonOutput
+import internal.GlobalVariable
+import com.kazurayam.ks.testobject.TestObjectId
+
+import groovy.json.JsonOutput
+import internal.GlobalVariable
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(JUnit4.class)
@@ -74,15 +82,16 @@ public class ForwardReferenceTest {
 	@Test
 	void test_toJson() {
 		String json = instance.toJson()
-		println "********** test_toJson **********"
-		println json
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName("test_toJson.json").build()
+		sh.write(JsonOutput.prettyPrint(json))
 		assertTrue(json.contains("Page_CURA Healthcare Service/a_Make Appointment"))
 	}
 
 	@Test
 	void test_toString() {
-		println "********** test_toString **********"
-		println instance.toString()
+		String s = instance.toString()
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName("test_toString.json").build()
+		sh.write(JsonOutput.prettyPrint(s))
 		assertTrue(instance.toJson().contains("Page_CURA Healthcare Service/a_Make Appointment"))
 	}
 }

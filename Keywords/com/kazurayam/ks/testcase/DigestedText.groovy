@@ -10,24 +10,24 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer
 public class DigestedText {
 
 	private List<DigestedLine> digestedLines
-	
+
 	DigestedText() {
 		digestedLines = new ArrayList<>()
 	}
-	
+
 	void add(DigestedLine line) {
 		Objects.requireNonNull(line)
 		digestedLines.add(line)
 	}
-	
+
 	int size() {
 		return digestedLines.size()
 	}
-	
+
 	List<DigestedLine> digestedLines() {
 		return this.digestedLines
 	}
-	
+
 	String toJson() {
 		ObjectMapper mapper = new ObjectMapper()
 		SimpleModule module = new SimpleModule("DigestedTextSerializer",
@@ -37,7 +37,7 @@ public class DigestedText {
 		mapper.registerModules(module)
 		return mapper.writeValueAsString(this)
 	}
-	
+
 	static class DigestedTextSerializer extends StdSerializer<DigestedText> {
 		DigestedTextSerializer() {
 			this(null)

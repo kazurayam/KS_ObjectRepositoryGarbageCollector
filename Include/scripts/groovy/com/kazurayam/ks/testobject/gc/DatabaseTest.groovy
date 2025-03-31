@@ -7,10 +7,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
+import com.kazurayam.ks.reporting.Shorthand
 import com.kazurayam.ks.testcase.TestCaseId
 import com.kazurayam.ks.testobject.TestObjectId
 
 import groovy.json.JsonOutput
+import internal.GlobalVariable
 
 @RunWith(JUnit4.class)
 public class DatabaseTest {
@@ -53,16 +55,19 @@ public class DatabaseTest {
 	@Test
 	void test_toString() {
 		String s = db.toString()
-		println "********** test_toString **********"
-		println db.toString()
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName("test_toString.json").build()
+		sh.write(JsonOutput.prettyPrint(s))
 		assertTrue(s.contains("main/TC1"))
 		assertTrue(s.contains("Page_CURA Healthcare Service/a_Make Appointment"))
 	}
 
 	@Test
 	void test_toJson() {
-		println "*********** test_toJson **********"
-		println JsonOutput.prettyPrint(db.toJson())
+		String json = db.toJson()
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName("test_toJson.json").build()
+		sh.write(JsonOutput.prettyPrint(json))
+		assertTrue(json.contains("main/TC1"))
+		assertTrue(json.contains("Page_CURA Healthcare Service/a_Make Appointment"))
 	}
 
 	@Test
