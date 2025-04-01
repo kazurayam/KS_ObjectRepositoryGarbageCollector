@@ -27,26 +27,22 @@ public class ExtendedObjectRepository {
 
 	private static Logger logger = LoggerFactory.getLogger(ExtendedObjectRepository.class)
 
-	private Path baseDir
-	private String subpath = null
+	private Path objectRepositoryDir
 
 	ExtendedObjectRepository() {
-		this(Paths.get(".").resolve("Object Repository"), null)
+		this(Paths.get(".").resolve("Object Repository"))
 	}
 
-	ExtendedObjectRepository(Path baseDir) {
-		this(baseDir, null)
+	/**
+	 * 
+	 * @param dir expected to be "&lt;projectDir"&lt;/Object Repository"
+	 */
+	ExtendedObjectRepository(Path dir) {
+		this.objectRepositoryDir = dir
 	}
 
-	ExtendedObjectRepository(Path baseDir, String subpath) {
-		Objects.requireNonNull(baseDir)
-		assert Files.exists(baseDir)
-		this.baseDir = baseDir
-		this.subpath = subpath
-	}
-
-	Path getTargetDir() {
-		return (subpath != null) ? baseDir.resolve(subpath) : baseDir
+	Path getObjectRepositoryDir() {
+		return objectRepositoryDir
 	}
 
 	/**
@@ -74,9 +70,8 @@ public class ExtendedObjectRepository {
 	 * @throws IOException
 	 */
 	List<TestObjectId> getTestObjectIdList(String pattern = "", Boolean isRegex = false) throws IOException {
-		Path dir = getTargetDir()
-		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(baseDir)
-		Files.walkFileTree(dir, visitor)
+		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(objectRepositoryDir)
+		Files.walkFileTree(objectRepositoryDir, visitor)
 		List<TestObjectId> ids = visitor.getTestObjectIdList()
 		//
 		List<TestObjectId> result = new ArrayList<>()
@@ -112,9 +107,8 @@ public class ExtendedObjectRepository {
 	 * You can select the target TestObjects to choose by the "pattern" and "isRegex" parameters
 	 */
 	List<TestObjectEssence> getTestObjectEssenceList(String pattern, Boolean isRegex = false) throws IOException {
-		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(baseDir)
-		Path dir = getTargetDir()
-		Files.walkFileTree(dir, visitor)
+		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(objectRepositoryDir)
+		Files.walkFileTree(objectRepositoryDir, visitor)
 		List<TestObjectId> ids = visitor.getTestObjectIdList()
 		RegexOptedTextMatcher m = new RegexOptedTextMatcher(pattern, isRegex)
 		//
