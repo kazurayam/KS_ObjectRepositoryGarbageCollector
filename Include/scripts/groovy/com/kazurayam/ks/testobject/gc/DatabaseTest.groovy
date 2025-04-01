@@ -93,10 +93,10 @@ public class DatabaseTest {
 
 	@Test
 	void test_findForwardReferencesTo() {
-		Set<ForwardReference> filled = db.findForwadReferenceTo(new TestObjectId("Page_CURA Healthcare Service/a_Make Appointment"))
+		Set<ForwardReference> filled = db.findForwardReferencesTo(new TestObjectId("Page_CURA Healthcare Service/a_Make Appointment"))
 		assertEquals(1, filled.size())
 		//
-		Set<ForwardReference> empty = db.findForwadReferenceTo(new TestObjectId("bar"))
+		Set<ForwardReference> empty = db.findForwardReferencesTo(new TestObjectId("bar"))
 		assertEquals(0, empty.size())
 	}
 

@@ -38,6 +38,7 @@ class ObjectRepositoryGarbageCollector {
 	private List<String> objectRepositorySubpaths // must not be null but could be empty
 	private List<String> testCasesSubpaths // must not be null but could be empty
 
+	private ExtendedObjectRepository extOR
 	private Database db
 	private Set<TestObjectId> allTestObjectIds
 
@@ -46,6 +47,7 @@ class ObjectRepositoryGarbageCollector {
 		this.testCasesDir = builder.testCasesDir.toAbsolutePath().normalize()
 		this.objectRepositorySubpaths = builder.objectRepositorySubpaths
 		this.testCasesSubpaths = builder.testCasesSubpaths
+		extOR = new ExtendedObjectRepository(objectRepositoryDir, objectRepositorySubpaths)
 		this.scan()
 	}
 
@@ -53,15 +55,6 @@ class ObjectRepositoryGarbageCollector {
 	private LocalDateTime finishedAt
 	private int numberOfTestCases = 0
 	private int numberOfTestObjects = 0
-
-	/**
-	 * will scan the './Test Cases/' folder and the './Object Repository' folder,
-	 * lookup the unused Test Objects, print the result into the stdout.
-	 */
-	public static void main(String[] args) {
-		ObjectRepositoryGarbageCollector gc = new ObjectRepositoryGarbageCollector.Builder().build()
-		println gc.garbages()
-	}
 
 	/*
 	 * This method will scan the "Object Repository" folder and the "Scripts" folder.
@@ -71,14 +64,13 @@ class ObjectRepositoryGarbageCollector {
 	 * You can retrieve an Garbage Collection plan by calling "xref()" method, in which you can
 	 * find a list of "garbage" Test Objects which are not used by any of the Test Cases.
 	 */
-	public void scan() {
+	public void scan(ExtendedObjectRepository extOR) {
 		this.db = new Database()
 		startedAt = LocalDateTime.now()
 		objectRepositorySubpaths.each { objectRepositorySubpath ->
 			testCasesSubpaths.each { testCasesSubpath ->
 				scanSub(this.db, 
-					this.objectRepositoryDir, 
-					objectRepositorySubpath, 
+					extOR,
 					this.testCasesDir, 
 					testCasesSubpath)
 			}
@@ -87,12 +79,10 @@ class ObjectRepositoryGarbageCollector {
 	}
 
 	private void scanSub(Database db,
-							Path objrepoDir,
-							String objectRepositorySubpath,
+							ExtendedObjectRepository extOR,
 							Path scriptsDir,
 							String testCasesSubpath) {
 		// scan the Object Repository directory to make a list of TestObjectEssences
-		ExtendedObjectRepository extOR = new ExtendedObjectRepository(objrepoDir, objectRepositorySubpath)
 		allTestObjectIds = extOR.getAllTestObjectIdSet()
 		List<TestObjectEssence> essenceList = extOR.getTestObjectEssenceList("", false)
 		//
@@ -156,12 +146,12 @@ class ObjectRepositoryGarbageCollector {
 	/**
 	 *
 	 */
-	List<TestObjectId> garbagesRaw() {
-		Set<TestObjectId> tmp = new TreeSet<>()
-		Map<TestObjectId, Set<ForwardReference>> resolved = this.resolveRaw()
-		// allTestObjectIds are set in the init() method
+	Garbages getGarbages() {
+		Garbages garbages = new Garbages()
+		// the allTestObjectIds variable is initialized by the scanSub() method
 		allTestObjectIds.forEach { testObjectId ->
-			Set<ForwardReference> value = resolved.get(testObjectId)
+			
+			Set<ForwardReference> value = db.getAll(testObjectId)
 			if (value == null) {
 				// Oh, this TestObject must be a garbage
 				// as no Test Case uses this
@@ -174,8 +164,8 @@ class ObjectRepositoryGarbageCollector {
 		return result
 	}
 
-	String garbages() {
-		List<TestObjectId> garbages = garbagesRaw()
+	String jsonifyGarbages() {
+		List<TestObjectId> garbages = getGarbages()
 		StringBuilder sb = new StringBuilder()
 		sb.append("{")
 		sb.append(JsonOutput.toJson("Project name"))
@@ -237,7 +227,6 @@ class ObjectRepositoryGarbageCollector {
 		private Path   objectRepositoryDir // non null
 		private Path   testCasesDir // non null
 
-		private List<String> objectRepositorySubpaths // could be empty
 		private List<String> testCasesSubpaths // could be empty
 
 		Builder() {
@@ -246,15 +235,7 @@ class ObjectRepositoryGarbageCollector {
 			Path scriptsDir = projectDir.resolve("Scripts")
 			init(objrepoDir, scriptsDir)
 		}
-
-		Builder(Path objrepoDir, Path scriptsDir) {
-			init(objrepoDir, scriptsDir)
-		}
-
-		Builder(File objrepoDir, File scriptsDir) {
-			init(objrepoDir.toPath(), scriptsDir.toPath())
-		}
-
+		
 		private void init(Path objrepoDir, Path scriptsDir) {
 			Objects.requireNonNull(objrepoDir)
 			Objects.requireNonNull(scriptsDir)
@@ -262,23 +243,16 @@ class ObjectRepositoryGarbageCollector {
 			assert Files.exists(scriptsDir)
 			this.objectRepositoryDir = objrepoDir
 			this.testCasesDir = scriptsDir
-			this.objectRepositorySubpaths = new ArrayList<>()
-			this.objectRepositorySubpaths.add("")
 			this.testCasesSubpaths = new ArrayList<>()
 			this.testCasesSubpaths.add("")
 		}
+		
+		Builder(Path objrepoDir, Path scriptsDir) {
+			init(objrepoDir, scriptsDir)
+		}
 
-		Builder objectRepositorySubpath(String... subpaths) {
-			Objects.requireNonNull(subpaths)
-			if (this.objectRepositorySubpaths.contains("")) {
-				this.objectRepositorySubpaths.remove("")
-			}
-			(subpaths as List).forEach { subpath ->
-				Path p = objectRepositoryDir.resolve(subpath)
-				assert Files.exists(p): "${p} does not exist"
-				this.objectRepositorySubpaths.add(subpath)
-			}
-			return this
+		Builder(File objrepoDir, File scriptsDir) {
+			init(objrepoDir.toPath(), scriptsDir.toPath())
 		}
 
 		Builder testCasesSubpath(String... subpaths) {

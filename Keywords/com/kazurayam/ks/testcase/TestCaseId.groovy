@@ -42,12 +42,12 @@ public class TestCaseId implements Comparable<TestCaseId> {
 	int hashCode() {
 		return value.hashCode()
 	}
-	
+
 	@Override
 	int compareTo(TestCaseId other) {
 		return this.value.compareTo(other.value)
 	}
-	
+
 	@Override
 	String toString() {
 		return value
@@ -56,7 +56,7 @@ public class TestCaseId implements Comparable<TestCaseId> {
 	public toJson() {
 		ObjectMapper mapper = new ObjectMapper()
 		SimpleModule module = new SimpleModule("TestCaseIdSerializer",
-			new Version(1, 0, 0, null, null, null))
+				new Version(1, 0, 0, null, null, null))
 		module.addSerializer(TestCaseId.class, new TestCaseId.TestCaseIdSerializer())
 		mapper.registerModule(module)
 		return mapper.writeValueAsString(this)
@@ -72,9 +72,7 @@ public class TestCaseId implements Comparable<TestCaseId> {
 		@Override
 		void serialize(TestCaseId testCaseId,
 				JsonGenerator gen, SerializerProvider serializer) {
-			gen.writeStartObject()
-			gen.writeStringField("TestCaseId", testCaseId.value())
-			gen.writeEndObject()
+			gen.writeString(testCaseId.value())
 		}
 	}
 }

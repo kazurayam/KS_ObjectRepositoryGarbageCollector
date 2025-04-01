@@ -35,7 +35,7 @@ public class ForwardReference implements Comparable<ForwardReference> {
 		return testCaseId
 	}
 
-	DigestedLine textSearchResult() {
+	DigestedLine digestedLine() {
 		return digestedLine
 	}
 
@@ -103,12 +103,12 @@ public class ForwardReference implements Comparable<ForwardReference> {
 			super(t)
 		}
 		@Override
-		void serialize(ForwardReference forwardReference,
+		void serialize(ForwardReference fref,
 				JsonGenerator gen, SerializerProvider serializer) {
 			gen.writeStartObject()
-			gen.writeObjectField("TestCaseId", forwardReference.testCaseId)
-			gen.writeObjectField("DigestedLine", forwardReference.digestedLine)
-			gen.writeObjectField("TestObjectEssence", forwardReference.testObjectEssence)
+			gen.writeObjectField("TestCaseId", fref.testCaseId())
+			gen.writeObjectField("DigestedLine", fref.digestedLine())
+			gen.writeObjectField("TestObjectEssence", fref.testObjectEssence())
 			gen.writeEndObject()
 		}
 	}

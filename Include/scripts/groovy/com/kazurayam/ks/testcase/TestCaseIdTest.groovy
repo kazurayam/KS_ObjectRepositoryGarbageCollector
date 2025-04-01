@@ -32,6 +32,6 @@ public class TestCaseIdTest {
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
 						.fileName("test_toJson.json").build()
 		sh.write(testCaseId.toJson())
-		assertEquals("{\"TestCaseId\":\"main/TC1\"}", testCaseId.toJson())
+		assertEquals("\"main/TC1\"", testCaseId.toJson())
 	}
 }

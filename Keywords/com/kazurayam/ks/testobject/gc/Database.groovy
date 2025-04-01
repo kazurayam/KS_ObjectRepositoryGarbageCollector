@@ -9,7 +9,9 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer
 
 import java.util.stream.Collectors
 
+import com.kazurayam.ks.testcase.DigestedLine
 import com.kazurayam.ks.testcase.TestCaseId
+import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kazurayam.ks.testobject.TestObjectId
 import groovy.json.JsonOutput
 
@@ -21,20 +23,25 @@ public class Database {
 		db = new TreeSet<>()
 	}
 
-	void addAll(Set<ForwardReference> references) {
-		Objects.requireNonNull(references)
-		references.each { ref ->
-			this.add(ref)
+	void addAll(Set<ForwardReference> forwardReferences) {
+		Objects.requireNonNull(forwardReferences)
+		forwardReferences.each { fref ->
+			Objects.requireNonNull(fref)
+			this.add(fref)
 		}
 	}
 
-	void add(ForwardReference reference) {
-		Objects.requireNonNull(reference)
-		db.add(reference)
+	void add(ForwardReference fref) {
+		Objects.requireNonNull(fref)
+		db.add(fref)
 	}
 
 	int size() {
 		return db.size()
+	}
+	
+	Set<TestObjectId> getAllReferedTestObjectIds() {
+		
 	}
 
 	ForwardReference get(int x) {
@@ -42,7 +49,7 @@ public class Database {
 	}
 
 	Set<ForwardReference> getAll() {
-		return new TreeSet<>(db)
+		return db
 	}
 
 
@@ -97,31 +104,15 @@ public class Database {
 		return toJson()
 	}
 
-	/*
-	 String toJson() {
-	 StringBuilder sb = new StringBuilder()
-	 sb.append("{")
-	 sb.append(JsonOutput.toJson("Database"))
-	 sb.append(":")
-	 sb.append('[')
-	 String sep1 = ""
-	 List list = db as List
-	 list.forEach { ForwardReference ref ->
-	 sb.append(sep1)
-	 sb.append(ref.toJson())
-	 sep1 = ','
-	 }
-	 sb.append(']')
-	 sb.append("}")
-	 return JsonOutput.prettyPrint(sb.toString())
-	 }
-	 */
 	String toJson() {
 		ObjectMapper mapper = new ObjectMapper()
 		SimpleModule module = new SimpleModule("DatabaseSerializer",
 				new Version(1, 0, 0, null, null, null))
 		module.addSerializer(Database.class, new Database.DatabaseSerializer())
 		module.addSerializer(ForwardReference.class, new ForwardReference.ForwardReferenceSerializer())
+		module.addSerializer(TestCaseId.class, new TestCaseId.TestCaseIdSerializer())
+		module.addSerializer(DigestedLine.class, new DigestedLine.DigestedLineSerializer())
+		module.addSerializer(TestObjectEssence.class, new TestObjectEssence.TestObjectEssenceSerializer())
 		mapper.registerModule(module)
 		return mapper.writeValueAsString(this)
 	}

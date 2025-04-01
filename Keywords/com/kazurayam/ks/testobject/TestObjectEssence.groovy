@@ -72,35 +72,6 @@ public class TestObjectEssence implements Comparable<TestObjectEssence> {
 		return this.toJson()
 	}
 
-	/*
-	 String toJson() {
-	 StringBuilder sb = new StringBuilder()
-	 sb.append("{")
-	 sb.append(JsonOutput.toJson("TestObjectEssence"))
-	 sb.append(":")
-	 sb.append(valueAsJson())
-	 sb.append("}")
-	 return JsonOutput.prettyPrint(sb.toString())
-	 }
-	 public String valueAsJson() {
-	 StringBuilder sb = new StringBuilder()
-	 sb.append("{")
-	 sb.append(JsonOutput.toJson("TestObjectId"))
-	 sb.append(":")
-	 sb.append(JsonOutput.toJson(testObjectId.value()))
-	 sb.append(",")
-	 sb.append(JsonOutput.toJson("Method"))
-	 sb.append(":")
-	 sb.append(JsonOutput.toJson(method))
-	 sb.append(",")
-	 sb.append(JsonOutput.toJson("Locator"))
-	 sb.append(":")
-	 sb.append(JsonOutput.toJson(locator.value()))
-	 sb.append("}")
-	 return JsonOutput.prettyPrint(sb.toString())
-	 }
-	 */
-
 	public String toJson() {
 		ObjectMapper mapper = new ObjectMapper()
 		SimpleModule module = new SimpleModule("TestObjectEssenceSerializer",

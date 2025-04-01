@@ -29,9 +29,9 @@ import internal.GlobalVariable
 @RunWith(JUnit4.class)
 public class ForwardReferenceTest {
 
-	private ForwardReference instance
+	private ForwardReference fref
 	private TestCaseId testCaseId
-	private DigestedLine textSearchResult
+	private DigestedLine digestedLine
 	private TestObjectEssence testObjectEssence
 
 	@BeforeClass
@@ -42,7 +42,7 @@ public class ForwardReferenceTest {
 	 */
 	@Before
 	void setup() {
-		instance = createSampleInstance()
+		fref = createSampleInstance()
 	}
 
 	public static final ForwardReference createSampleInstance() {
@@ -63,25 +63,25 @@ public class ForwardReferenceTest {
 
 	@Test
 	void test_testCaseId() {
-		assertEquals("main/TC1", instance.testCaseId().value())
+		assertEquals("main/TC1", fref.testCaseId().value())
 	}
 
 	@Test
-	void test_textSearchResult() {
+	void test_digestedLine() {
 		assertEquals('''WebUI.click(findTestObject('Object Repository/Page_CURA Healthcare Service/a_Make Appointment')''',
-				instance.textSearchResult().line())
+				fref.digestedLine().line())
 	}
 
 	@Test
 	void test_testObjectEssence() {
-		TestObjectEssence essence = instance.testObjectEssence()
+		TestObjectEssence essence = fref.testObjectEssence()
 		assertEquals("Page_CURA Healthcare Service/a_Make Appointment", essence.testObjectId().value())
 		assertEquals("""//a[@id='btn-make-appointment']""", essence.locator().value())
 	}
 
 	@Test
 	void test_toJson() {
-		String json = instance.toJson()
+		String json = fref.toJson()
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName("test_toJson.json").build()
 		sh.write(JsonOutput.prettyPrint(json))
 		assertTrue(json.contains("Page_CURA Healthcare Service/a_Make Appointment"))
@@ -89,9 +89,9 @@ public class ForwardReferenceTest {
 
 	@Test
 	void test_toString() {
-		String s = instance.toString()
+		String s = fref.toString()
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName("test_toString.json").build()
 		sh.write(JsonOutput.prettyPrint(s))
-		assertTrue(instance.toJson().contains("Page_CURA Healthcare Service/a_Make Appointment"))
+		assertTrue(fref.toJson().contains("Page_CURA Healthcare Service/a_Make Appointment"))
 	}
 }
