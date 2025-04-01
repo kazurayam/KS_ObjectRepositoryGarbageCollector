@@ -18,7 +18,7 @@ public class DigestedLine implements Comparable<DigestedLine> {
 	//
 	private int matchAt
 	private int matchEnd
-	private Boolean hasMatch
+	private Boolean matched
 
 	private DigestedLine(Builder builder) {
 		this.line = builder.line
@@ -27,18 +27,18 @@ public class DigestedLine implements Comparable<DigestedLine> {
 		this.isRegex = builder.isRegex
 		this.matchAt = builder.matchAt
 		this.matchEnd = builder.matchEnd
-		this.hasMatch = builder.hasMatch
+		this.matched = builder.matched
 	}
 
-	public String line() {
+	public String getLine() {
 		return this.line
 	}
 
-	public int lineNo() {
+	public int getLineNo() {
 		return this.lineNo
 	}
 
-	public String pattern() {
+	public String getPattern() {
 		return this.pattern
 	}
 
@@ -46,16 +46,16 @@ public class DigestedLine implements Comparable<DigestedLine> {
 		return this.isRegex
 	}
 
-	public int matchAt() {
+	public int getMatchAt() {
 		return this.matchAt
 	}
 
-	public int matchEnd() {
+	public int getMatchEnd() {
 		return this.matchEnd
 	}
 
-	public Boolean hasMatch() {
-		return this.hasMatch
+	public Boolean isMatched() {
+		return this.matched
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public class DigestedLine implements Comparable<DigestedLine> {
 
 	String toJson() {
 		ObjectMapper mapper = new ObjectMapper()
-		SimpleModule module = new SimpleModule("TextSearchResultSerializer",
+		SimpleModule module = new SimpleModule("DigestedLineSerializer",
 				new Version(1, 0, 0, null, null, null))
 		module.addSerializer(DigestedLine.class, new DigestedLineSerializer())
 		mapper.registerModules(module)
@@ -132,7 +132,7 @@ public class DigestedLine implements Comparable<DigestedLine> {
 			gen.writeStringField("line", tsr.line)
 			gen.writeStringField("pattern", tsr.pattern)
 			gen.writeBooleanField("isRegex", tsr.isRegex)
-			gen.writeBooleanField("hasMatch", tsr.hasMatch)
+			gen.writeBooleanField("isMatched", tsr.matched)
 			gen.writeNumberField("matchAt", tsr.matchAt)
 			gen.writeNumberField("matchEnd", tsr.matchEnd)
 			gen.writeEndObject()
@@ -152,7 +152,7 @@ public class DigestedLine implements Comparable<DigestedLine> {
 		//
 		int matchAt
 		int matchEnd
-		Boolean hasMatch
+		Boolean matched
 
 		/**
 		 * @param line
@@ -165,7 +165,7 @@ public class DigestedLine implements Comparable<DigestedLine> {
 			this.isRegex = false
 			this.matchAt = 0
 			this.matchEnd = 0
-			this.hasMatch = false
+			this.matched = false
 		}
 
 		Builder pattern(String pattern, Boolean isRegex) {
@@ -185,7 +185,7 @@ public class DigestedLine implements Comparable<DigestedLine> {
 			assert matchAt < matchEnd
 			this.matchAt = matchAt
 			this.matchEnd = matchEnd
-			this.hasMatch = true
+			this.matched = true
 			return this
 		}
 

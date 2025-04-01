@@ -24,15 +24,15 @@ public class TestObjectEssence implements Comparable<TestObjectEssence> {
 		this.locator = locator
 	}
 
-	TestObjectId testObjectId() {
+	TestObjectId getTestObjectId() {
 		return testObjectId
 	}
 
-	String method() {
+	String getMethod() {
 		return method
 	}
 
-	Locator locator() {
+	Locator getLocator() {
 		return locator
 	}
 
@@ -97,9 +97,9 @@ public class TestObjectEssence implements Comparable<TestObjectEssence> {
 		void serialize(TestObjectEssence essence,
 				JsonGenerator gen, SerializerProvider serializer) {
 			gen.writeStartObject()
-			gen.writeStringField("TestObjectId", essence.testObjectId().value())
-			gen.writeStringField("Method", essence.method())
-			gen.writeStringField("Locator", essence.locator().value())
+			gen.writeStringField("TestObjectId", essence.getTestObjectId().getValue())
+			gen.writeStringField("Method", essence.getMethod())
+			gen.writeStringField("Locator", essence.getLocator().getValue())
 			gen.writeEndObject()
 		}
 	}

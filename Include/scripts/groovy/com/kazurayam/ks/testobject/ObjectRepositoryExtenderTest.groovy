@@ -43,7 +43,7 @@ class ObjectRepositoryExtenderTest {
 				.fileName("test_getTestObjectIdList.txt").build()
 		StringBuilder sb = new StringBuilder()
 		list.forEach { toi ->
-			sb.append(toi.value())
+			sb.append(toi.getValue())
 			sb.append("\n")
 		}
 		sh.write(sb.toString())

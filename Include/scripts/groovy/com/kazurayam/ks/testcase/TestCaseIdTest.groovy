@@ -24,7 +24,7 @@ public class TestCaseIdTest {
 
 	@Test
 	void test_value() {
-		assertEquals("main/TC1", testCaseId.value())
+		assertEquals("main/TC1", testCaseId.getValue())
 	}
 
 	@Test

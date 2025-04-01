@@ -21,13 +21,13 @@ public class TestObjectId implements Comparable<TestObjectId>{
 		this.value = value
 	}
 
-	String value() {
+	String getValue() {
 		return value
 	}
 
 	TestObjectEssence toTestObjectEssence() {
-		TestObject tObj = ObjectRepository.findTestObject(this.value())
-		assert tObj != null: "ObjectRepository.findTestObject('${this.value()}') returned null"
+		TestObject tObj = ObjectRepository.findTestObject(this.getValue())
+		assert tObj != null: "ObjectRepository.findTestObject('${this.getValue()}') returned null"
 		SelectorMethod selectorMethod = tObj.getSelectorMethod()
 		Locator locator = new Locator(tObj.getSelectorCollection().getAt(selectorMethod))
 		TestObjectEssence essence = new TestObjectEssence(this, selectorMethod.toString(), locator)
@@ -81,7 +81,7 @@ public class TestObjectId implements Comparable<TestObjectId>{
 		void serialize(TestObjectId testObjectId,
 				JsonGenerator gen, SerializerProvider serializer) {
 			gen.writeStartObject()
-			gen.writeStringField("TestObjectId", testObjectId.value())
+			gen.writeStringField("TestObjectId", testObjectId.getValue())
 			gen.writeEndObject()
 		}
 	}

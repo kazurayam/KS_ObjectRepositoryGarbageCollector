@@ -27,13 +27,13 @@ public class DigestedLineTest {
 
 	@Test
 	void test_smoke() {
-		assertEquals("Hello, new world!", dLine.line())
-		assertEquals(1, dLine.lineNo())
-		assertEquals("new", dLine.pattern())
+		assertEquals("Hello, new world!", dLine.getLine())
+		assertEquals(1, dLine.getLineNo())
+		assertEquals("new", dLine.getPattern())
 		assertEquals(false, dLine.isRegex())
-		assertEquals(8, dLine.matchAt())
-		assertEquals(10, dLine.matchEnd())
-		assertEquals(true, dLine.hasMatch())
+		assertEquals(8, dLine.getMatchAt())
+		assertEquals(10, dLine.getMatchEnd())
+		assertEquals(true, dLine.isMatched())
 	}
 
 	@Test

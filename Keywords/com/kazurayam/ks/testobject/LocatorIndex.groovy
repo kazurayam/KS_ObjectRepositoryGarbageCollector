@@ -75,7 +75,7 @@ public class LocatorIndex {
 			Set<Locator> keys = locatorIndex.keySet()
 			keys.each { locator ->
 				gen.writeStartObject()
-				gen.writeStringField("Locator", locator.value())
+				gen.writeStringField("Locator", locator.getValue())
 				gen.writeFieldName("TestObjectEssences")
 				gen.writeStartArray()
 				Set<TestObjectEssence> essences = locatorIndex.get(locator)

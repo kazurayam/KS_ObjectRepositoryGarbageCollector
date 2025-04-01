@@ -22,7 +22,7 @@ public class Locator implements Comparable<Locator> {
 		}
 	}
 
-	String value() {
+	String getValue() {
 		return value
 	}
 
@@ -70,7 +70,7 @@ public class Locator implements Comparable<Locator> {
 		void serialize(Locator locator,
 				JsonGenerator gen, SerializerProvider serializer) {
 			gen.writeStartObject()
-			gen.writeStringField("Locator", locator.value())
+			gen.writeStringField("Locator", locator.getValue())
 			gen.writeEndObject()
 		}
 	}

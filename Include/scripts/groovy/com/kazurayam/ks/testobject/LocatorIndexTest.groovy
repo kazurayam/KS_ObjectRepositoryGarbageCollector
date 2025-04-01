@@ -25,7 +25,7 @@ public class LocatorIndexTest {
 		List<TestObjectId> toiList = eor.getTestObjectIdList()
 		toiList.each { toi ->
 			TestObjectEssence essence = toi.toTestObjectEssence()
-			Locator locator = essence.locator()
+			Locator locator = essence.getLocator()
 			locatorIndex.put(locator, essence)
 		}
 	}

@@ -134,7 +134,7 @@ tasks.withType(Sign) {
     onlyIf { isReleaseVersion }
 }
 
-task cleanks(type: Delete) {
+task katalonClean(type: Delete) {
     delete '.cache'
     delete 'bin'
     delete 'Libs'

@@ -29,6 +29,10 @@ class Garbages {
 		return garbages.size()
 	}
 
+	Iterator<TestObjectId> iterator() {
+		return garbages.iterator()
+	}
+
 	TestObjectId get(int x) {
 		return (this.getAllTestObjectIds() as List).get(x)
 	}

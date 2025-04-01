@@ -130,8 +130,8 @@ public class ExtendedObjectRepositoryTest {
 		allTOI.forEach({ toi ->
 			sb.append(toi)
 			sb.append("\n")
-			assertNotNull(toi.value())
-			assertNotEquals("", toi.value())
+			assertNotNull(toi.getValue())
+			assertNotEquals("", toi.getValue())
 		})
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
 				.fileName("test_getAllTestObjectIdSet.txt").build()

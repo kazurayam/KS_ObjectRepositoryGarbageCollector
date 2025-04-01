@@ -58,20 +58,20 @@ public class ForwardReferenceTest {
 
 	@Test
 	void test_testCaseId() {
-		assertEquals("main/TC1", fref.getTestCaseId().value())
+		assertEquals("main/TC1", fref.getTestCaseId().getValue())
 	}
 
 	@Test
 	void test_digestedLine() {
 		assertEquals('''WebUI.click(findTestObject('Object Repository/Page_CURA Healthcare Service/a_Make Appointment')''',
-				fref.getDigestedLine().line())
+				fref.getDigestedLine().getLine())
 	}
 
 	@Test
 	void test_testObjectEssence() {
 		TestObjectEssence essence = fref.getTestObjectEssence()
-		assertEquals("Page_CURA Healthcare Service/a_Make Appointment", essence.testObjectId().value())
-		assertEquals("""//a[@id='btn-make-appointment']""", essence.locator().value())
+		assertEquals("Page_CURA Healthcare Service/a_Make Appointment", essence.getTestObjectId().getValue())
+		assertEquals("""//a[@id='btn-make-appointment']""", essence.getLocator().getValue())
 	}
 
 	@Test

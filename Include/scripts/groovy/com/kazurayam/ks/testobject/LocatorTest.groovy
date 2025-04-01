@@ -24,7 +24,7 @@ public class LocatorTest {
 
 	@Test
 	void test_value() {
-		assertEquals("//a", locator.value())
+		assertEquals("//a", locator.getValue())
 	}
 
 	@Test

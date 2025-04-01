@@ -82,9 +82,9 @@ class ObjectRepositoryGarbageCollector {
 		ScriptsTraverser scriptSearcher = new ScriptsTraverser(scriptsDir)
 		testCaseIdList.each { testCaseId ->
 			essenceList.each { essence ->
-				TestObjectId testObjectId = essence.testObjectId()
+				TestObjectId testObjectId = essence.getTestObjectId()
 				List<DigestedLine> textSearchResultList =
-						scriptSearcher.digestTestCase(testCaseId, testObjectId.value(), false)
+						scriptSearcher.digestTestCase(testCaseId, testObjectId.getValue(), false)
 				textSearchResultList.each { textSearchResult ->
 					ForwardReference reference = new ForwardReference(testCaseId, textSearchResult, essence)
 					db.add(reference)
@@ -97,11 +97,15 @@ class ObjectRepositoryGarbageCollector {
 		return db
 	}
 
-	int numberOfTestCases() {
+	Path getProjectDir() {
+		return this.objectRepositoryDir.getParent().normalize().toAbsolutePath()
+	}
+
+	int getNumberOfTestCases() {
 		return numberOfTestCases
 	}
 
-	int numberOfTestObjects() {
+	int getNumberOfTestObjects() {
 		return numberOfTestObjects
 	}
 
@@ -129,16 +133,16 @@ class ObjectRepositoryGarbageCollector {
 	}
 
 	/**
-	 *
+	 * generate a Garbage object, which contains a list of the unused TestObject Id.
 	 */
 	Garbages getGarbages() {
 		Garbages garbages = new Garbages()
-		// the allTestObjectIds variable is initialized by the scanSub() method
-		extOR.allTestObjectIdSet.each { testObjectId ->
-			Set<ForwardReference> value = db.findForwardReferencesTo(testObjectId)
-			if (value == null) {
-				// Oh, this TestObject must be a garbage
-				// as no Test Case uses this
+		//println "extOR.getAllTestObjectIdSet().size()=" + extOR.getAllTestObjectIdSet().size()
+		extOR.getAllTestObjectIdSet().each { testObjectId ->
+			Set<ForwardReference> forwardReferences = db.findForwardReferencesTo(testObjectId)
+			//println "testObjectId=" + testObjectId.getValue() + " forwardReferences.size()=" + forwardReferences.size()
+			if (forwardReferences.size() == 0) {
+				// Oh, no TestCase uses this TestObject, this TestObject is unused
 				garbages.add(testObjectId)
 			}
 		}
@@ -146,21 +150,30 @@ class ObjectRepositoryGarbageCollector {
 	}
 
 	String jsonifyGarbages( ) {
-		ObjectMapper mapper = new ObjectMapper()
 		SimpleModule module = new SimpleModule("ObjectRepositoryGarbageCollectorSerializer",
 				new Version(1, 0, 0, null, null, null))
+
 		module.addSerializer(ObjectRepositoryGarbageCollector.class,
 				new ObjectRepositoryGarbageCollector.ObjectRepositoryGarbageCollectorSerializer())
+
+		module.addSerializer(Garbages.class,
+				new Garbages.GarbagesSerializer())
+
 		module.addSerializer(ForwardReference.class,
 				new ForwardReference.ForwardReferenceSerializer())
+
 		module.addSerializer(TestCaseId.class,
 				new TestCaseId.TestCaseIdSerializer())
+
 		module.addSerializer(TestObjectEssence.class,
 				new TestObjectEssence.TestObjectEssenceSerializer())
+
 		module.addSerializer(TestObjectId.class,
 				new TestObjectId.TestObjectIdSerializer())
+
+		ObjectMapper mapper = new ObjectMapper()
 		mapper.registerModule(module)
-		return mapper.writeValueAsString(this)
+		return mapper.writeValueAsString( this )
 	}
 
 	static class ObjectRepositoryGarbageCollectorSerializer extends StdSerializer<ObjectRepositoryGarbageCollector> {
@@ -174,18 +187,18 @@ class ObjectRepositoryGarbageCollector {
 		void serialize(ObjectRepositoryGarbageCollector gc,
 				JsonGenerator gen, SerializerProvider serializer) {
 			gen.writeStartObject()
-			Path projectDir = gc.objectRepositoryDir.parent().normalize().toAbsolutePath()
-			gen.writeStringField("Project name", projectDir.getFileName().toString())
-			gen.writeNumberField("Number of TestCases", gc.numberOfTestCases())
-			gen.writeNumberField("Number of TestObjects", gc.numberOfTestObjects())
-			gen.writeNumberField("Duration seconds", gc.timeTaken())
+			gen.writeStringField("Project name", gc.getProjectDir().getFileName().toString())
+			gen.writeNumberField("Number of TestCases", gc.getNumberOfTestCases())
+			gen.writeNumberField("Number of TestObjects", gc.getNumberOfTestObjects())
+			gen.writeNumberField("Number of unused TestObjects", gc.getGarbages().size())
 			gen.writeFieldName("Unused TestObjects")
 			gen.writeStartArray()
 			Set<TestObjectId> toiSet = gc.getGarbages().getAllTestObjectIds()
 			toiSet.each { TestObjectId toi ->
-				gen.writeObject(toi)
+				gen.writeString(toi.getValue())
 			}
 			gen.writeEndArray()
+			gen.writeNumberField("Duration seconds", gc.timeTaken())
 			gen.writeEndObject()
 		}
 	}

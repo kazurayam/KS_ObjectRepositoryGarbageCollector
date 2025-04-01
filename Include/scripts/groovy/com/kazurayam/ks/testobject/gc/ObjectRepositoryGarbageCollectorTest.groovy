@@ -39,6 +39,8 @@ public class ObjectRepositoryGarbageCollectorTest {
 		Database db = garbageCollector.db()
 		assertNotNull(db)
 		assertNotEquals(0, db.size())
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName("test_db.json").build()
+		sh.write(JsonOutput.prettyPrint(db.toJson()))
 	}
 
 	@Test
@@ -50,7 +52,7 @@ public class ObjectRepositoryGarbageCollectorTest {
 		Set<ForwardReference> refs = bRefs.get(toi)
 		List<ForwardReference> refList = refs as List
 		assertEquals(1, refList.size())
-		assertEquals(toi, refList.get(0).getTestObjectEssence().testObjectId())
+		assertEquals(toi, refList.get(0).getTestObjectEssence().getTestObjectId())
 	}
 
 	@Test
@@ -63,18 +65,13 @@ public class ObjectRepositoryGarbageCollectorTest {
 	@Test
 	void test_getGarbages() {
 		Garbages garbages = garbageCollector.getGarbages()
-		StringBuilder sb = new StringBuilder()
-		garbages.each { toi ->
-			sb.append(toi.toString())
-			sb.append("\n")
-		}
-		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName("test_getGarbages.txt").build()
-		sh.write(sb.toString())
-		assertNotNull(garbages)
+		assertNotNull("the garbages variable is null", garbages)
+		assertTrue("the Garbages object is empty", garbages.size() > 0)
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName("test_getGarbages.json").build()
+		sh.write(JsonOutput.prettyPrint(garbages.toJson()))
 		//assertTrue(garbages.contains(new TestObjectId("Page_CURA Healthcare Service/a_Foo")))
 	}
 
-	@Ignore
 	@Test
 	void test_jsonifyGarbages() {
 		String json = garbageCollector.jsonifyGarbages()

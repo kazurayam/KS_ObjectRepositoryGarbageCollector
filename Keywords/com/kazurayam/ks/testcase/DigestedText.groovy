@@ -24,7 +24,7 @@ public class DigestedText {
 		return digestedLines.size()
 	}
 
-	List<DigestedLine> digestedLines() {
+	List<DigestedLine> getDigestedLines() {
 		return this.digestedLines
 	}
 
@@ -49,7 +49,7 @@ public class DigestedText {
 		void serialize(DigestedText dt,
 				JsonGenerator gen, SerializerProvider serializer) {
 			gen.writeStartArray()
-			List<DigestedLine> lines = dt.digestedLines()
+			List<DigestedLine> lines = dt.getDigestedLines()
 			lines.each { line ->
 				gen.writeObject(line)
 			}

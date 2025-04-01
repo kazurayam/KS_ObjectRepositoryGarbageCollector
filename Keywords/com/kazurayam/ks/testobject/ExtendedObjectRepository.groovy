@@ -52,8 +52,8 @@ public class ExtendedObjectRepository {
 		Set<TestObjectId> result = new TreeSet<>()   // ordered set
 		List<TestObjectEssence> allEssence = getTestObjectEssenceList("", false)
 		allEssence.forEach { essence ->
-			TestObjectId toi = essence.testObjectId()
-			if (toi != null && toi.value() != "") {
+			TestObjectId toi = essence.getTestObjectId()
+			if (toi != null && toi.getValue() != "") {
 				result.add(toi)
 			}
 		}
@@ -77,7 +77,7 @@ public class ExtendedObjectRepository {
 		List<TestObjectId> result = new ArrayList<>()
 		RegexOptedTextMatcher m = new RegexOptedTextMatcher(pattern, isRegex)
 		ids.forEach { testObjectId ->
-			if (m.found(testObjectId.value().toString())) {
+			if (m.found(testObjectId.getValue().toString())) {
 				result.add(testObjectId)
 			}
 		}
@@ -114,9 +114,9 @@ public class ExtendedObjectRepository {
 		//
 		List<TestObjectEssence> result = new ArrayList<>()
 		ids.forEach { id ->
-			TestObject tObj = ObjectRepository.findTestObject(id.value())
-			Locator locator = id.toTestObjectEssence().locator()
-			if (m.found(id.value())) {
+			TestObject tObj = ObjectRepository.findTestObject(id.getValue())
+			Locator locator = id.toTestObjectEssence().getLocator()
+			if (m.found(id.getValue())) {
 				TestObjectEssence essence =
 						new TestObjectEssence(id, tObj.getSelectorMethod().toString(), locator)
 				result.add(essence)
@@ -126,7 +126,6 @@ public class ExtendedObjectRepository {
 	}
 
 	String jsonifyTestObjectEssenceList(String pattern, Boolean isRegex) throws IOException {
-		List<TestObjectEssence> list = getTestObjectEssenceList(pattern, isRegex)
 		//
 		ObjectMapper mapper = new ObjectMapper()
 		SimpleModule module = new SimpleModule("jsonifyTestObjectEssenceList",
@@ -136,6 +135,7 @@ public class ExtendedObjectRepository {
 		module.addSerializer(Locator.class, new Locator.LocatorSerializer())
 		mapper.registerModule(module)
 		//
+		List<TestObjectEssence> list = getTestObjectEssenceList(pattern, isRegex)
 		return mapper.writeValueAsString(list)
 	}
 
@@ -153,8 +153,8 @@ public class ExtendedObjectRepository {
 		RegexOptedTextMatcher textMatcher = new RegexOptedTextMatcher(pattern, isRegex)
 		List<TestObjectId> idList = this.getTestObjectIdList("", false)  // list of IDs of Test Object
 		idList.forEach { id ->
-			Locator locator = id.toTestObjectEssence().locator()
-			if (textMatcher.found(locator.value())) {
+			Locator locator = id.toTestObjectEssence().getLocator()
+			if (textMatcher.found(locator.getValue())) {
 				TestObjectEssence essence = id.toTestObjectEssence()
 				locatorIndex.put(locator, essence)
 			}

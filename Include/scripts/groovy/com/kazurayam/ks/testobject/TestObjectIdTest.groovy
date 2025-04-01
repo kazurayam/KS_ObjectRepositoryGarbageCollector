@@ -24,7 +24,7 @@ public class TestObjectIdTest {
 
 	@Test
 	void test_value() {
-		assertEquals("Page/foo", testObjectId.value())
+		assertEquals("Page/foo", testObjectId.getValue())
 	}
 
 	@Test

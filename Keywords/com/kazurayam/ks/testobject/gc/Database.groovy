@@ -79,7 +79,7 @@ public class Database {
 	Set<ForwardReference> findForwardReferencesTo(TestObjectId testObjectId) {
 		return db.stream()
 				.filter({ tctoRef ->
-					tctoRef.getTestObjectEssence().testObjectId() == testObjectId
+					tctoRef.getTestObjectEssence().getTestObjectId() == testObjectId
 				})
 				.collect(Collectors.toSet())
 	}
@@ -91,7 +91,7 @@ public class Database {
 	Set<TestObjectId> getAllTestObjectIdsContained() {
 		return db.stream()
 				.map({ tctoRef ->
-					tctoRef.getTestObjectEssence().testObjectId()
+					tctoRef.getTestObjectEssence().getTestObjectId()
 				})
 				.collect(Collectors.toSet())
 	}

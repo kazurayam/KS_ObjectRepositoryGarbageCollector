@@ -25,7 +25,7 @@ public class TestCaseId implements Comparable<TestCaseId> {
 		this.value = relative.getParent().toString()
 	}
 
-	String value() {
+	String getValue() {
 		return value
 	}
 
@@ -72,7 +72,7 @@ public class TestCaseId implements Comparable<TestCaseId> {
 		@Override
 		void serialize(TestCaseId testCaseId,
 				JsonGenerator gen, SerializerProvider serializer) {
-			gen.writeString(testCaseId.value())
+			gen.writeString(testCaseId.getValue())
 		}
 	}
 }

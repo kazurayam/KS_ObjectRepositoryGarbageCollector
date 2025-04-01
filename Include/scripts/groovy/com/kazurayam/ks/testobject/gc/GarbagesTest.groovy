@@ -24,7 +24,7 @@ public class GarbagesTest {
 	void setup() {
 		garbages = new Garbages()
 		ForwardReference reference = ForwardReferenceTest.createSampleInstance()
-		TestObjectId testObjectId = reference.getTestObjectEssence().testObjectId()
+		TestObjectId testObjectId = reference.getTestObjectEssence().getTestObjectId()
 		garbages.add(testObjectId)
 	}
 	

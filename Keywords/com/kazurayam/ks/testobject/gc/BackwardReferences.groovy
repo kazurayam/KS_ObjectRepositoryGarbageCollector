@@ -63,7 +63,7 @@ public class BackwardReferences {
 		mapper.registerModule(module)
 		return mapper.writeValueAsString(this)
 	}
-	
+
 	static class BackwardReferencesSerializer extends StdSerializer<BackwardReferences> {
 		BackwardReferencesSerializer() {
 			this(null)
@@ -81,7 +81,7 @@ public class BackwardReferences {
 				gen.writeStartObject()
 				//
 				TestObjectId testObjectId = entry.key
-				gen.writeStringField("TestObjectId", testObjectId.value())
+				gen.writeStringField("TestObjectId", testObjectId.getValue())
 				//
 				Set<ForwardReference> forwardReferences = entry.value
 				gen.writeFieldName("ForwardReferences")

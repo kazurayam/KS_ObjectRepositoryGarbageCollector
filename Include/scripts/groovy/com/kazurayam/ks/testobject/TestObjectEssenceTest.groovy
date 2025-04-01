@@ -27,17 +27,17 @@ public class TestObjectEssenceTest {
 
 	@Test
 	void test_testObjectId() {
-		assertEquals(testObjectId, essence.testObjectId())
+		assertEquals(testObjectId, essence.getTestObjectId())
 	}
 
 	@Test
 	void test_method() {
-		assertEquals(method, essence.method())
+		assertEquals(method, essence.getMethod())
 	}
 
 	@Test
 	void test_locator() {
-		assertEquals(locator, essence.locator())
+		assertEquals(locator, essence.getLocator())
 	}
 
 	@Test
