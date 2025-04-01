@@ -5,13 +5,13 @@ import internal.GlobalVariable
 
 /**
  * Similar to the GC script but 
- * this scans the specified sub-directory in the "Object Repository". 
- * this scans the specified sub-directory of the "Test Cases".
+ * this scans only the specified sub-directory in the "Object Repository". 
+ * this scans only the specified sub-directory of the "Test Cases".
  */
 ObjectRepositoryGarbageCollector gc = 
 		new ObjectRepositoryGarbageCollector.Builder()
 			.objectRepositorySubpath("Page_CURA Healthcare Service")
-			.testCasesSubpath("main")
+			.scriptsSubpath("main")
 			.build()
 String json = gc.garbages()
 								
