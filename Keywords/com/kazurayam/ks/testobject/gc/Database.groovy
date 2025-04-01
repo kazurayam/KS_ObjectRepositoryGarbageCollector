@@ -39,9 +39,8 @@ public class Database {
 	int size() {
 		return db.size()
 	}
-	
+
 	Set<TestObjectId> getAllReferedTestObjectIds() {
-		
 	}
 
 	ForwardReference get(int x) {
@@ -58,7 +57,7 @@ public class Database {
 	Set<ForwardReference> findForwardReferencesFrom(TestCaseId testCaseId) {
 		return db.stream()
 				.filter({ forwardReference ->
-					forwardReference.testCaseId() == testCaseId
+					forwardReference.getTestCaseId() == testCaseId
 				})
 				.collect(Collectors.toSet())
 	}
@@ -70,7 +69,7 @@ public class Database {
 	Set<TestCaseId> getAllTestCaseIdsContained() {
 		return db.stream()
 				.map({ tctoRef ->
-					tctoRef.testCaseId()
+					tctoRef.getTestCaseId()
 				})
 				.collect(Collectors.toSet())
 	}
@@ -80,7 +79,7 @@ public class Database {
 	Set<ForwardReference> findForwardReferencesTo(TestObjectId testObjectId) {
 		return db.stream()
 				.filter({ tctoRef ->
-					tctoRef.testObjectEssence().testObjectId() == testObjectId
+					tctoRef.getTestObjectEssence().testObjectId() == testObjectId
 				})
 				.collect(Collectors.toSet())
 	}
@@ -92,7 +91,7 @@ public class Database {
 	Set<TestObjectId> getAllTestObjectIdsContained() {
 		return db.stream()
 				.map({ tctoRef ->
-					tctoRef.testObjectEssence().testObjectId()
+					tctoRef.getTestObjectEssence().testObjectId()
 				})
 				.collect(Collectors.toSet())
 	}

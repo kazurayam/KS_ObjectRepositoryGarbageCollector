@@ -133,3 +133,9 @@ signing {
 tasks.withType(Sign) {
     onlyIf { isReleaseVersion }
 }
+
+task cleanks(type: Delete) {
+    delete '.cache'
+    delete 'bin'
+    delete 'Libs'
+}

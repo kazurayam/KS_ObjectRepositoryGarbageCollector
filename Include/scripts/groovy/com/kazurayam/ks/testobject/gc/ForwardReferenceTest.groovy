@@ -1,6 +1,5 @@
 package com.kazurayam.ks.testobject.gc
 
-import static com.kms.katalon.core.testobject.ObjectRepository.findTestObject
 import static org.junit.Assert.*
 
 import org.junit.Before
@@ -11,15 +10,11 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.junit.runners.MethodSorters;
 
-import com.kazurayam.ks.testcase.TestCaseId
+import com.kazurayam.ks.reporting.Shorthand
 import com.kazurayam.ks.testcase.DigestedLine
+import com.kazurayam.ks.testcase.TestCaseId
 import com.kazurayam.ks.testobject.Locator
 import com.kazurayam.ks.testobject.TestObjectEssence
-import com.kazurayam.ks.testobject.TestObjectId
-import com.kazurayam.ks.reporting.Shorthand
-
-import groovy.json.JsonOutput
-import internal.GlobalVariable
 import com.kazurayam.ks.testobject.TestObjectId
 
 import groovy.json.JsonOutput
@@ -63,18 +58,18 @@ public class ForwardReferenceTest {
 
 	@Test
 	void test_testCaseId() {
-		assertEquals("main/TC1", fref.testCaseId().value())
+		assertEquals("main/TC1", fref.getTestCaseId().value())
 	}
 
 	@Test
 	void test_digestedLine() {
 		assertEquals('''WebUI.click(findTestObject('Object Repository/Page_CURA Healthcare Service/a_Make Appointment')''',
-				fref.digestedLine().line())
+				fref.getDigestedLine().line())
 	}
 
 	@Test
 	void test_testObjectEssence() {
-		TestObjectEssence essence = fref.testObjectEssence()
+		TestObjectEssence essence = fref.getTestObjectEssence()
 		assertEquals("Page_CURA Healthcare Service/a_Make Appointment", essence.testObjectId().value())
 		assertEquals("""//a[@id='btn-make-appointment']""", essence.locator().value())
 	}

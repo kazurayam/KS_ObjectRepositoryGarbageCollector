@@ -31,15 +31,15 @@ public class ForwardReference implements Comparable<ForwardReference> {
 		this.testObjectEssence = testObjectEssence
 	}
 
-	TestCaseId testCaseId() {
+	TestCaseId getTestCaseId() {
 		return testCaseId
 	}
 
-	DigestedLine digestedLine() {
+	DigestedLine getDigestedLine() {
 		return digestedLine
 	}
 
-	TestObjectEssence testObjectEssence() {
+	TestObjectEssence getTestObjectEssence() {
 		return testObjectEssence
 	}
 
@@ -106,9 +106,9 @@ public class ForwardReference implements Comparable<ForwardReference> {
 		void serialize(ForwardReference fref,
 				JsonGenerator gen, SerializerProvider serializer) {
 			gen.writeStartObject()
-			gen.writeObjectField("TestCaseId", fref.testCaseId())
-			gen.writeObjectField("DigestedLine", fref.digestedLine())
-			gen.writeObjectField("TestObjectEssence", fref.testObjectEssence())
+			gen.writeObjectField("TestCaseId", fref.getTestCaseId())
+			gen.writeObjectField("DigestedLine", fref.getDigestedLine())
+			gen.writeObjectField("TestObjectEssence", fref.getTestObjectEssence())
 			gen.writeEndObject()
 		}
 	}

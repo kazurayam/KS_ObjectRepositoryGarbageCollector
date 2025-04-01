@@ -24,7 +24,7 @@ public class GarbagesTest {
 	void setup() {
 		garbages = new Garbages()
 		ForwardReference reference = ForwardReferenceTest.createSampleInstance()
-		TestObjectId testObjectId = reference.testObjectEssence().testObjectId()
+		TestObjectId testObjectId = reference.getTestObjectEssence().testObjectId()
 		garbages.add(testObjectId)
 	}
 	
@@ -35,8 +35,8 @@ public class GarbagesTest {
 	
 	@Test
 	void test_getAll() {
-		assertNotNull(garbages.getAll())
-		assertEquals(1, garbages.getAll().size())
+		assertNotNull(garbages.getAllTestObjectIds())
+		assertEquals(1, garbages.getAllTestObjectIds().size())
 	}
 	
 	@Test

@@ -24,26 +24,26 @@ class Garbages {
 		Objects.requireNonNull(garbage)
 		garbages.add(garbage)
 	}
-	
+
 	int size() {
 		return garbages.size()
 	}
-	
+
 	TestObjectId get(int x) {
-		return (this.getAll() as List).get(x)
+		return (this.getAllTestObjectIds() as List).get(x)
 	}
-	
-	Set<TestObjectId> getAll() {
+
+	Set<TestObjectId> getAllTestObjectIds() {
 		return new TreeSet<>(garbages)
 	}
-	
+
 	//-----------------------------------------------------------------
-	
+
 	@Override
 	String toString() {
 		return toJson()
 	}
-	
+
 	String toJson() {
 		ObjectMapper mapper = new ObjectMapper()
 		SimpleModule module = new SimpleModule("GarbagesSerializer",
@@ -53,7 +53,7 @@ class Garbages {
 		mapper.registerModule(module)
 		return mapper.writeValueAsString(this)
 	}
-	
+
 	static class GarbagesSerializer extends StdSerializer<Garbages> {
 		GarbagesSerializer() {
 			this(null)
@@ -67,7 +67,7 @@ class Garbages {
 			gen.writeStartObject()
 			gen.writeFieldName("Garbages")
 			gen.writeStartArray()
-			garbages.getAll().each { testObjectId ->
+			garbages.getAllTestObjectIds().each { testObjectId ->
 				gen.writeObject(testObjectId)
 			}
 			gen.writeEndArray()

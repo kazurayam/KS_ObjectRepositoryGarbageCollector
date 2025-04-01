@@ -29,8 +29,8 @@ public class DatabaseTest {
 		reference = ForwardReferenceTest.createSampleInstance()
 		db.add(reference)
 		//
-		assertEquals("main/TC1", reference.testCaseId().value())
-		testObjectId = reference.testObjectEssence().testObjectId()
+		assertEquals("main/TC1", reference.getTestCaseId().value())
+		testObjectId = reference.getTestObjectEssence().testObjectId()
 		assertEquals("Page_CURA Healthcare Service/a_Make Appointment",
 				testObjectId.value())
 	}
