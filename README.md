@@ -62,7 +62,7 @@ I found that this project contains
 
 It took me approximately 3 seconds to get the result.
 
-I hope that it would take just a few minutes to scan through 3000 TestObjects and report over the half are unused.
+I hope that it would take just a few minutes to scan through 3000 TestObjects. I expect, it will tell you over the half TestObjects are unused.
 
 ## How to install the library.
 
@@ -75,7 +75,7 @@ I hope that it would take just a few minutes to scan through 3000 TestObjects an
 
 ## Dependencies, versions, etc
 
-This library uses the libraries bundled in Katalon Studio. You don't have to add any more external libraries other than the aforementioned jar.
+This library uses only the libraries bundled in Katalon Studio. You don't have to add any more external libraries other than the aforementioned jar.
 
 This library should run on any version of Katalon Studio (and Katalon Runtime Engine).
 
@@ -85,7 +85,7 @@ This library supports more:
 
 1. It can report all *Forward Reference*s from TestCase scripts to TestObjects.
 2. It can report all *Backward Reference*s, which is a list of TestObjects associated with list of ForwardReferences to each TestObject.
-3. It can report all *Locator*s (XPath, CSS Selector) associated with list of TestObjects that use the locator
+3. It can report all *Locator*s (XPath, CSS Selector) associated with list of TestObjects that implement the locator
 
 I will write a more details documentation with sample codes later.
 
