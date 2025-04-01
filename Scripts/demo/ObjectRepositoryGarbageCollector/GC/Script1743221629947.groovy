@@ -1,23 +1,24 @@
-import com.kazurayam.ks.reporting.Shorthand
 import com.kazurayam.ks.testobject.gc.ObjectRepositoryGarbageCollector
 
-import internal.GlobalVariable
+import groovy.json.JsonOutput
 
 /**
- * outputs a JSON file which contains a list of garbage Test Objects
- * in the Object Repository directory.
- * A garbage Test Object is a Test Object which is unused by any of Test Cases.
+ * A demonstration of ObjectRepositoryGarbageCollector.
+ *
+ * This TestCase outputs a JSON file which contains a list of garbage Test Objects
+ * in the "Object Repository" folder.
+ *
+ * A "garbage" means a Test Object which is not used by any scripts
+ * in the "Test Cases" folder.
  */
-// the Garbage Collector instance will scan the Object Repository directory
-// and the Scripts directory
-ObjectRepositoryGarbageCollector gc = 
-		new ObjectRepositoryGarbageCollector.Builder().build()
 
-// the gc.garbages() method call generates a list of unused TestObjects,
-// output is in JSON format
-String json = gc.garbages()
+// the Garbage Collector instance will scan 2 folders: "Object Repository" and "Test Cases"
+ObjectRepositoryGarbageCollector gc = new ObjectRepositoryGarbageCollector.Builder().build()
 
-// write it into a file
-Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-				.fileName('garbage.json').build()
-sh.write(json)
+// gc.jsonifyGarbages() triggers scanning through the 2 folders and analyze the files.
+// All forward references from TestCase scripts to TestObject entities are identified.
+// Consequently, it can result a list of unused TestObjects.
+// Will output the result in a JSON string
+String json = gc.jsonifyGarbages()
+
+println JsonOutput.prettyPrint(json)
