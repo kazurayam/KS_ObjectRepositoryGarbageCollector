@@ -1,20 +1,35 @@
-== Solution proposed
+== Solution
 
-=== How to install the library
+=== Installation
+
+You can download the jar from the [Releases](https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector/releases) page. Download the `KS_ObjectRepositoryGarbageCollector-x.x.x.jar`; locate it into the `Drivers` folder of your local Katalon Studio project.
+
+In order to confirm if you have the library, open your project in Katalon Studio, open "Project" > "Settings" to check the "Library Management". In the dialog, the jar should be found in the dialog:
+
+image:https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/images/2_1_LibraryManagement.png[]
 
 
-You can download a Katalon Studio project at https://github.com/kazurayam/ObjectRepositoryGarbageCollection/releases which presents the sample code.
+=== How to find out unused TestObjects
 
-=== Test Cases/sampleUse/step2
+Here I made a script `Test Cases/ObjectRepositoryGarbageCollector/GC1`:
+
 [source]
 ----
-include::../Scripts/sampleUse/step2/Script1677677321383.groovy[]
+include::../Scripts/demo/ObjectRepositoryGarbageCollector/GC1/Script1742992081296.groovy[]
 ----
 
-=== Output
+When I run the script in Katalon Studio, I got the following output in the console:
 
-[source]
-----
-include::stdout.txt[lines=28..32]
-----
+include::../build/reports/demo/ObjectRepositoryGarbageCollector/GC1.adoc[]
+
+Let me dictate this report.
+
+1. The name of this project is `KS_ObjectRepositoryGarbageCollector``
+2. In this project, there are 30 Test Cases in the `Test Cases` folder
+3. there are I have 15 Test Objects in the `Object Repository` folder
+4. amongst all, there are 4 Test Objects that are not used by any of the Test Cases
+5. It to 1.6 seconds to look up the unused Test Objects.
+
+=== How to generate the reverse-reference of TestObjects -> TestCases
+
 

@@ -12,18 +12,20 @@ import org.junit.runners.JUnit4
 import com.kms.katalon.core.configuration.RunConfiguration
 
 import groovy.json.JsonOutput
+import com.kazurayam.ks.reporting.Shorthand
+
+import internal.GlobalVariable
 
 @RunWith(JUnit4.class)
 public class SearchableTextTest {
 
-	private Path TC1 = Paths.get(RunConfiguration.getProjectDir()).resolve("Scripts/main/TC1/Script1677544889443.groovy")
+	private Path TC1 = Paths.get(".").resolve("Scripts/main/TC1/Script1677544889443.groovy")
 
 	@Test
 	void test_searchText() {
-		println "********** test_searchText **********"
 		SearchableText searchableText = new SearchableText(TC1)
 		String pattern = "Page_CURA Healthcare Service/a_Make Appointment"
-		List<TextSearchResult> list = searchableText.searchText(pattern, false)
+		List<DigestedLine> list = searchableText.searchText(pattern, false)
 		assertEquals(1, list.size())
 		StringBuilder sb = new StringBuilder()
 		sb.append("[")
@@ -34,14 +36,20 @@ public class SearchableTextTest {
 			sep = ","
 		}
 		sb.append("]")
-		println JsonOutput.prettyPrint(sb.toString())
+		//
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+						.fileName("test_searchText.json").build()
+		String json = JsonOutput.prettyPrint(sb.toString())
+		sh.write(json)
 	}
-	
+
 	@Test
 	void test_toJson() {
 		SearchableText searchableText = new SearchableText(TC1)
 		String json = searchableText.toJson()
-		println "********** test_toJson **********"
-		println json
+		//
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+						.fileName("test_toJson.json").build()
+		sh.write(json)
 	}
 }

@@ -1,5 +1,12 @@
 package com.kazurayam.ks.testcase
 
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer
+
 import java.nio.file.Path
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -34,8 +41,12 @@ public class SearchableText {
 		return lines
 	}
 
-	public List<TextSearchResult> searchText(String pattern = "", Boolean isRegex = false) {
-		List<TextSearchResult> result = new ArrayList<>()
+	// このメソッドを digestText(String text, String pattern = "", Boolean isRegex = false) と改名し
+	// かつ ScriptTraverserクラスに移植せよ。
+	// それができたらSeachableTextクラスは不要になる。削除せよ。
+
+	public List<DigestedLine> searchText(String pattern = "", Boolean isRegex = false) {
+		List<DigestedLine> result = new ArrayList<>()
 		if (pattern.length() == 0) {
 			return result    // no search will be performed; return an empty list
 		}
@@ -56,7 +67,7 @@ public class SearchableText {
 					String matched = m.group(2)
 					int matchAt = head.length() + 1
 					int matchEnd = head.length() + matched.length()
-					TextSearchResult tsr = new TextSearchResult.Builder(line, lineNo)
+					DigestedLine tsr = new DigestedLine.Builder(line, lineNo)
 							.pattern(pattern, isRegex)
 							.matchFound(matchAt, matchEnd)
 							.build()
@@ -66,7 +77,7 @@ public class SearchableText {
 				if (line.indexOf(pattern) > 0) {
 					int matchAt = line.indexOf(pattern) + 1
 					int matchEnd = matchAt +  pattern.length()
-					TextSearchResult tsr = new TextSearchResult.Builder(line, lineNo)
+					DigestedLine tsr = new DigestedLine.Builder(line, lineNo)
 							.pattern(pattern, isRegex)
 							.matchFound(matchAt, matchEnd)
 							.build()
@@ -76,12 +87,13 @@ public class SearchableText {
 		}
 		return result
 	}
-	
+
 	@Override
 	public String toString() {
 		return toJson()
 	}
-	
+
+
 	public String toJson() {
 		StringBuilder sb = new StringBuilder()
 		sb.append("{")
@@ -98,4 +110,21 @@ public class SearchableText {
 		sb.append("}")
 		return JsonOutput.prettyPrint(sb.toString())
 	}
+
+	/*
+	 static class SearchableTextSerializer extends StdSerializer<SearchableText> {
+	 SearchableTextSerializer() {
+	 this(null)
+	 }
+	 SearchableTextSerializer(Class<LocatorSerializer> t) {
+	 super(t)
+	 }
+	 @Override
+	 void serialize(SearchableText,
+	 JsonGenerator gen, SerializerProvider serializer) {
+	 gen.writeStartArray()
+	 gen.writeEndArray()
+	 }
+	 }
+	 */
 }
