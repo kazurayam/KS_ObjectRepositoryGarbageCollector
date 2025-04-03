@@ -32,17 +32,6 @@ public class ScriptsVisitor extends SimpleFileVisitor<Path> {
 		return FileVisitResult.CONTINUE;
 	}
 
-
-	List<TestCaseId> getTestCaseIdList() {
-		List<TestCaseId> list = new ArrayList<>()
-		List<Path> groovyFiles = this.getGroovyFiles()
-		groovyFiles.forEach ({ groovyFile ->
-			TestCaseId id = TestCaseId.resolveTestCaseId(scriptsDir, groovyFile)
-			list.add(id)
-		})
-		return list
-	}
-
 	List<Path> getGroovyFiles() {
 		List<Path> result = new ArrayList()
 		groovyFiles.forEach { p ->

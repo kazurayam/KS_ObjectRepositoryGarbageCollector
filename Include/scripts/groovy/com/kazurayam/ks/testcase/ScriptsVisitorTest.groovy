@@ -27,13 +27,13 @@ public class ScriptsVisitorTest {
 		visitor = new ScriptsVisitor(scriptsDir)
 		Files.walkFileTree(scriptsDir.resolve(subpath), visitor)
 		List<Path> list = visitor.getGroovyFiles()
-		assertTrue(list.size() > 0) 
+		assertTrue(list.size() > 0)
 		list.forEach { p ->
 			assertTrue("`${p.toString()}` is expected to contain a string 'main'", p.toString().contains("main"))
 		}
 		//
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_getGroovyFiles.json").build()
+				.fileName("test_getGroovyFiles.json").build()
 		sh.write(JsonOutput.prettyPrint(toJson(list)))
 	}
 

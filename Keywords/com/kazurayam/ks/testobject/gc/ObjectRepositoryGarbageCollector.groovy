@@ -80,7 +80,7 @@ class ObjectRepositoryGarbageCollector {
 		// scan the Scripts directory to make a list of TestCaseIds
 		ScriptsVisitor scriptsVisitor = new ScriptsVisitor(scriptsDir)
 		Files.walkFileTree(scriptsDir, scriptsVisitor)
-		List<TestCaseId> testCaseIdList = scriptsVisitor.getTestCaseIdList()
+		List<TestCaseId> testCaseIdList = getTestCaseIdList(scriptsDir, scriptsVisitor.getGroovyFiles())
 		//
 		numberOfTestCases = testCaseIdList.size()
 
@@ -100,6 +100,17 @@ class ObjectRepositoryGarbageCollector {
 		}
 		return [db, extOR]
 	}
+
+	
+	private List<TestCaseId> getTestCaseIdList(Path scriptsDir, List<Path> groovyFiles) {
+		List<TestCaseId> list = new ArrayList<>()
+		groovyFiles.forEach ({ groovyFile ->
+			TestCaseId id = TestCaseId.resolveTestCaseId(scriptsDir, groovyFile)
+			list.add(id)
+		})
+		return list
+	}
+
 
 	Database db() {
 		return db
