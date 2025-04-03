@@ -48,7 +48,7 @@ public class TestCaseScriptsVisitor extends SimpleFileVisitor<Path> {
 	List<TestCaseId> getTestCaseIdList() {
 		List<TestCaseId> list = new ArrayList<>()
 		getGroovyFiles().forEach ({ groovyFile ->
-			TestCaseId id = new TestCaseId(scriptsDir, groovyFile)
+			TestCaseId id = TestCaseId.resolveTestCaseId(scriptsDir, groovyFile)
 			list.add(id)
 		})
 		return list

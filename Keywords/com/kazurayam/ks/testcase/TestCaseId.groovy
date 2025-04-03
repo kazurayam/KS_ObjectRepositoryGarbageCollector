@@ -20,9 +20,10 @@ public class TestCaseId implements Comparable<TestCaseId> {
 		this.value = value
 	}
 
-	TestCaseId(Path scriptsDir, Path groovyFile) {
-		Path relative = scriptsDir.relativize(groovyFile)
-		this.value = relative.getParent().toString()
+	static TestCaseId resolveTestCaseId(Path scriptsDir, Path groovyFile) {
+		Path relative = scriptsDir.relativize(groovyFile).normalize()
+		TestCaseId testCaseId = new TestCaseId(relative.getParent().toString())
+		return testCaseId
 	}
 
 	String getValue() {
