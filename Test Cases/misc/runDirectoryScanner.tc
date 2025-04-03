@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>runDirectoryScanner</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>cb9e8fcf-8608-4815-b406-e832ac52c0f2</testCaseGuid>
+</TestCaseEntity>
