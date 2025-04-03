@@ -13,9 +13,9 @@ import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import com.kazurayam.ks.testcase.DigestedLine
-import com.kazurayam.ks.testcase.ScriptsTraverser
+import com.kazurayam.ks.testcase.ScriptDigester
 import com.kazurayam.ks.testcase.TestCaseId
-import com.kazurayam.ks.testcase.TestCaseScriptsVisitor
+import com.kazurayam.ks.testcase.ScriptsVisitor
 import com.kazurayam.ks.testobject.ExtendedObjectRepository
 import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kazurayam.ks.testobject.TestObjectId
@@ -78,23 +78,22 @@ class ObjectRepositoryGarbageCollector {
 		numberOfTestObjects = essenceList.size()
 
 		// scan the Scripts directory to make a list of TestCaseIds
-		TestCaseScriptsVisitor testCaseScriptsVisitor = new TestCaseScriptsVisitor(scriptsDir)
-		Files.walkFileTree(scriptsDir, testCaseScriptsVisitor)
-		List<TestCaseId> testCaseIdList = testCaseScriptsVisitor.getTestCaseIdList()
+		ScriptsVisitor scriptsVisitor = new ScriptsVisitor(scriptsDir)
+		Files.walkFileTree(scriptsDir, scriptsVisitor)
+		List<TestCaseId> testCaseIdList = scriptsVisitor.getTestCaseIdList()
 		//
 		numberOfTestCases = testCaseIdList.size()
 
 		// Iterate over the list of TestCaseIds.
 		// Read the TestCase script, check if it contains any references to the TestObjects.
 		// If true, record the reference into the database
-		ScriptsTraverser scriptSearcher = new ScriptsTraverser(scriptsDir)
+		ScriptDigester scriptTraverser = new ScriptDigester(scriptsDir)
 		testCaseIdList.each { testCaseId ->
 			essenceList.each { essence ->
 				TestObjectId testObjectId = essence.getTestObjectId()
-				List<DigestedLine> textSearchResultList =
-				scriptSearcher.digestTestCase(testCaseId, testObjectId.getValue(), false)
-				textSearchResultList.each { textSearchResult ->
-					ForwardReference reference = new ForwardReference(testCaseId, textSearchResult, essence)
+				List<DigestedLine> digestedLines = scriptTraverser.digestTestCase(testCaseId, testObjectId.getValue(), false)
+				digestedLines.each { digestedLine ->
+					ForwardReference reference = new ForwardReference(testCaseId, digestedLine, essence)
 					db.add(reference)
 				}
 			}
@@ -160,25 +159,25 @@ class ObjectRepositoryGarbageCollector {
 
 	String jsonifyGarbages( ) {
 		SimpleModule module = new SimpleModule("ObjectRepositoryGarbageCollectorSerializer",
-		new Version(1, 0, 0, null, null, null))
+				new Version(1, 0, 0, null, null, null))
 
 		module.addSerializer(ObjectRepositoryGarbageCollector.class,
-		new ObjectRepositoryGarbageCollector.ObjectRepositoryGarbageCollectorSerializer())
+				new ObjectRepositoryGarbageCollector.ObjectRepositoryGarbageCollectorSerializer())
 
 		module.addSerializer(Garbages.class,
-		new Garbages.GarbagesSerializer())
+				new Garbages.GarbagesSerializer())
 
 		module.addSerializer(ForwardReference.class,
-		new ForwardReference.ForwardReferenceSerializer())
+				new ForwardReference.ForwardReferenceSerializer())
 
 		module.addSerializer(TestCaseId.class,
-		new TestCaseId.TestCaseIdSerializer())
+				new TestCaseId.TestCaseIdSerializer())
 
 		module.addSerializer(TestObjectEssence.class,
-		new TestObjectEssence.TestObjectEssenceSerializer())
+				new TestObjectEssence.TestObjectEssenceSerializer())
 
 		module.addSerializer(TestObjectId.class,
-		new TestObjectId.TestObjectIdSerializer())
+				new TestObjectId.TestObjectIdSerializer())
 
 		ObjectMapper mapper = new ObjectMapper()
 		mapper.registerModule(module)
@@ -194,7 +193,7 @@ class ObjectRepositoryGarbageCollector {
 		}
 		@Override
 		void serialize(ObjectRepositoryGarbageCollector gc,
-		JsonGenerator gen, SerializerProvider serializer) {
+				JsonGenerator gen, SerializerProvider serializer) {
 			gen.writeStartObject()
 			gen.writeStringField("Project name", gc.getProjectDir().getFileName().toString())
 			gen.writeNumberField("Number of TestCases", gc.getNumberOfTestCases())

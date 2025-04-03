@@ -16,18 +16,18 @@ import groovy.json.JsonOutput
 import internal.GlobalVariable
 
 @RunWith(JUnit4.class)
-public class ScriptsTraverserTest {
+public class ScriptDigesterTest {
 
 	private Path scriptsDir
-	private ScriptsTraverser traverser
+	private ScriptDigester traverser
 
 	@Before
 	void setup() {
 		scriptsDir = Paths.get("./Scripts").toAbsolutePath()
-		traverser = new ScriptsTraverser(scriptsDir, "main")
+		traverser = new ScriptDigester(scriptsDir, "main")
 	}
 
-	
+
 	@Test
 	void test_digestTestCase() {
 		TestCaseId testCaseId = new TestCaseId("main/TC1")

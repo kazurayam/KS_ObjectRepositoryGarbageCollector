@@ -16,15 +16,15 @@ import internal.GlobalVariable
 
 
 @RunWith(JUnit4.class)
-public class TestCaseScriptsVisitorTest {
+public class ScriptsVisitorTest {
 
 	private static final Path scriptsDir = Paths.get("./Scripts")
 	private static final String subpath = "main"
-	private TestCaseScriptsVisitor visitor
+	private ScriptsVisitor visitor
 
 	@Test
-	void test_getScripts() throws IOException {
-		visitor = new TestCaseScriptsVisitor(scriptsDir)
+	void test_getGroovyFiles() throws IOException {
+		visitor = new ScriptsVisitor(scriptsDir)
 		Files.walkFileTree(scriptsDir.resolve(subpath), visitor)
 		List<Path> list = visitor.getGroovyFiles()
 		assertTrue(list.size() > 0) 
@@ -33,7 +33,7 @@ public class TestCaseScriptsVisitorTest {
 		}
 		//
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_getScripts.json").build()
+						.fileName("test_getGroovyFiles.json").build()
 		sh.write(JsonOutput.prettyPrint(toJson(list)))
 	}
 
@@ -52,24 +52,3 @@ public class TestCaseScriptsVisitorTest {
 		return sb.toString()
 	}
 }
-
-
-/*
- [
- junit4/com.kazurayam.ks.testcase/TestCaseScriptsVisitorTestRunner/Script1677756819625.groovy,
- junit4/com.kazurayam.ks.testobject/BiMatcherTestRunner/Script1677660209410.groovy,
- junit4/com.kazurayam.ks.testobject/ObjectRepositoryExtensionTestRunner/Script1677660209413.groovy,
- junit4/com.kazurayam.ks.testobject/ObjectRepositoryVisitorTestRunner/Script1677660209416.groovy,
- junit4/junittutorial/CalculatorTestRunner/Script1677546841672.groovy, 
- main/TC1/Script1677544889443.groovy, 
- sampleUse/step1/Script1677677313086.groovy, 
- sampleUse/step2/Script1677677321383.groovy, 
- sampleUse/step3/Script1677677327691.groovy, 
- sampleUse/step4/Script1677677335380.groovy, 
- sampleUse/step5/Script1677677343760.groovy, 
- sampleUse/step6/Script1677677351677.groovy, 
- sampleUse/step7/Script1677677358728.groovy, 
- sampleUse/step8/Script1677677364766.groovy, 
- sampleUse/step9/Script1677677373080.groovy
- ]
- */

@@ -4,24 +4,24 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.util.stream.Collectors
 
-public class ScriptsTraverser {
+public class ScriptDigester {
 
 	private Path scriptsDir
-	private TestCaseScriptsVisitor visitor
+	private ScriptsVisitor visitor
 
-	ScriptsTraverser(Path scriptsDir) {
+	ScriptDigester(Path scriptsDir) {
 		this(scriptsDir, null)
 	}
 
-	ScriptsTraverser(Path scriptsDir, String subPath) {
+	ScriptDigester(Path scriptsDir, String subPath) {
 		Objects.requireNonNull(scriptsDir)
 		assert Files.exists(scriptsDir)
 		this.scriptsDir = scriptsDir.toAbsolutePath().normalize()  // calling .normalize() is significant
 		this.visitor = init(scriptsDir, subPath)
 	}
 
-	private TestCaseScriptsVisitor init(Path scriptsDir, subPath) throws IOException {
-		TestCaseScriptsVisitor visitor = new TestCaseScriptsVisitor(scriptsDir)
+	private ScriptsVisitor init(Path scriptsDir, subPath) throws IOException {
+		ScriptsVisitor visitor = new ScriptsVisitor(scriptsDir)
 		Path targetDir
 		if (subPath == null) {
 			targetDir = scriptsDir
