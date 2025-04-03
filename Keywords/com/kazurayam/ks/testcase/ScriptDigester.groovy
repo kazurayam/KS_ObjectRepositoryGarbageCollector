@@ -10,25 +10,15 @@ public class ScriptDigester {
 	private ScriptsVisitor visitor
 
 	ScriptDigester(Path scriptsDir) {
-		this(scriptsDir, null)
-	}
-
-	ScriptDigester(Path scriptsDir, String subPath) {
 		Objects.requireNonNull(scriptsDir)
 		assert Files.exists(scriptsDir)
 		this.scriptsDir = scriptsDir.toAbsolutePath().normalize()  // calling .normalize() is significant
-		this.visitor = init(scriptsDir, subPath)
+		this.visitor = init(scriptsDir)
 	}
 
-	private ScriptsVisitor init(Path scriptsDir, subPath) throws IOException {
+	private ScriptsVisitor init(Path scriptsDir) throws IOException {
 		ScriptsVisitor visitor = new ScriptsVisitor(scriptsDir)
-		Path targetDir
-		if (subPath == null) {
-			targetDir = scriptsDir
-		} else {
-			targetDir = scriptsDir.resolve(subPath)
-		}
-		Files.walkFileTree(targetDir, visitor)
+		Files.walkFileTree(scriptsDir, visitor)
 		return visitor
 	}
 

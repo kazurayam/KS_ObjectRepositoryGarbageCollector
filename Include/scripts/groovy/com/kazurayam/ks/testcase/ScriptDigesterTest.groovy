@@ -19,12 +19,12 @@ import internal.GlobalVariable
 public class ScriptDigesterTest {
 
 	private Path scriptsDir
-	private ScriptDigester traverser
+	private ScriptDigester digester
 
 	@Before
 	void setup() {
 		scriptsDir = Paths.get("./Scripts").toAbsolutePath()
-		traverser = new ScriptDigester(scriptsDir, "main")
+		digester = new ScriptDigester(scriptsDir)
 	}
 
 
@@ -33,7 +33,7 @@ public class ScriptDigesterTest {
 		TestCaseId testCaseId = new TestCaseId("main/TC1")
 		String pattern = "a_Make Appointment"
 		Boolean isRegex = false
-		List<DigestedLine> result = traverser.digestTestCase(testCaseId, pattern, isRegex)
+		List<DigestedLine> result = digester.digestTestCase(testCaseId, pattern, isRegex)
 		assertNotNull(result)
 		assertEquals(1, result.size())
 		//
