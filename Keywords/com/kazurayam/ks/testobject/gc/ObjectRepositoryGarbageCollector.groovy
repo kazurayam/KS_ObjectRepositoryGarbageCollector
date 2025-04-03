@@ -32,10 +32,12 @@ import com.kms.katalon.core.configuration.RunConfiguration
 class ObjectRepositoryGarbageCollector {
 
 	private Path objectRepositoryDir // must not be null
+	private List<String> objectRepositorySubpaths  // could be empty
 	private Path scriptsDir // must not be null
+	private List<String> scriptsSubpaths // could be empty
 
-	private ExtendedObjectRepository extOR
 	private Database db
+	private ExtendedObjectRepository extOR
 
 	private LocalDateTime startedAt
 	private LocalDateTime finishedAt
@@ -47,11 +49,14 @@ class ObjectRepositoryGarbageCollector {
 	 */
 	private ObjectRepositoryGarbageCollector(Builder builder) {
 		this.objectRepositoryDir = builder.objectRepositoryDir.toAbsolutePath().normalize()
+		this.objectRepositorySubpaths = builder.objectRepositorySubpaths
 		this.scriptsDir = builder.scriptsDir.toAbsolutePath().normalize()
-		this.db = new Database()
-		this.extOR = builder.extendedObjectRepository
+		this.scriptsSubpaths = builder.scriptsSubpaths
+		//
 		startedAt = LocalDateTime.now()
-		this.scan(this.db, extOR, this.scriptsDir)
+		def recv = this.scan(this.objectRepositoryDir, this.scriptsDir)
+		this.db = recv[0]
+		this.extOR = recv[1]
 		finishedAt = LocalDateTime.now()
 	}
 
@@ -63,7 +68,10 @@ class ObjectRepositoryGarbageCollector {
 	 * You can retrieve an Garbage Collection plan by calling "xref()" method, in which you can
 	 * find a list of "garbage" Test Objects which are not used by any of the Test Cases.
 	 */
-	private void scan(Database db, ExtendedObjectRepository extOR, Path scriptsDir) {
+	private def scan(Path objectRepositoryDir, Path scriptsDir) {
+		Database db = new Database()
+		ExtendedObjectRepository extOR = new ExtendedObjectRepository(objectRepositoryDir)
+
 		// scan the Object Repository directory to make a list of TestObjectEssences
 		List<TestObjectEssence> essenceList = extOR.getTestObjectEssenceList("", false)
 		//
@@ -84,13 +92,14 @@ class ObjectRepositoryGarbageCollector {
 			essenceList.each { essence ->
 				TestObjectId testObjectId = essence.getTestObjectId()
 				List<DigestedLine> textSearchResultList =
-						scriptSearcher.digestTestCase(testCaseId, testObjectId.getValue(), false)
+				scriptSearcher.digestTestCase(testCaseId, testObjectId.getValue(), false)
 				textSearchResultList.each { textSearchResult ->
 					ForwardReference reference = new ForwardReference(testCaseId, textSearchResult, essence)
 					db.add(reference)
 				}
 			}
 		}
+		return [db, extOR]
 	}
 
 	Database db() {
@@ -138,7 +147,7 @@ class ObjectRepositoryGarbageCollector {
 	Garbages getGarbages() {
 		Garbages garbages = new Garbages()
 		//println "extOR.getAllTestObjectIdSet().size()=" + extOR.getAllTestObjectIdSet().size()
-		extOR.getAllTestObjectIdSet().each { testObjectId ->
+		this.extOR.getAllTestObjectIdSet().each { testObjectId ->
 			Set<ForwardReference> forwardReferences = db.findForwardReferencesTo(testObjectId)
 			//println "testObjectId=" + testObjectId.getValue() + " forwardReferences.size()=" + forwardReferences.size()
 			if (forwardReferences.size() == 0) {
@@ -151,25 +160,25 @@ class ObjectRepositoryGarbageCollector {
 
 	String jsonifyGarbages( ) {
 		SimpleModule module = new SimpleModule("ObjectRepositoryGarbageCollectorSerializer",
-				new Version(1, 0, 0, null, null, null))
+		new Version(1, 0, 0, null, null, null))
 
 		module.addSerializer(ObjectRepositoryGarbageCollector.class,
-				new ObjectRepositoryGarbageCollector.ObjectRepositoryGarbageCollectorSerializer())
+		new ObjectRepositoryGarbageCollector.ObjectRepositoryGarbageCollectorSerializer())
 
 		module.addSerializer(Garbages.class,
-				new Garbages.GarbagesSerializer())
+		new Garbages.GarbagesSerializer())
 
 		module.addSerializer(ForwardReference.class,
-				new ForwardReference.ForwardReferenceSerializer())
+		new ForwardReference.ForwardReferenceSerializer())
 
 		module.addSerializer(TestCaseId.class,
-				new TestCaseId.TestCaseIdSerializer())
+		new TestCaseId.TestCaseIdSerializer())
 
 		module.addSerializer(TestObjectEssence.class,
-				new TestObjectEssence.TestObjectEssenceSerializer())
+		new TestObjectEssence.TestObjectEssenceSerializer())
 
 		module.addSerializer(TestObjectId.class,
-				new TestObjectId.TestObjectIdSerializer())
+		new TestObjectId.TestObjectIdSerializer())
 
 		ObjectMapper mapper = new ObjectMapper()
 		mapper.registerModule(module)
@@ -185,7 +194,7 @@ class ObjectRepositoryGarbageCollector {
 		}
 		@Override
 		void serialize(ObjectRepositoryGarbageCollector gc,
-				JsonGenerator gen, SerializerProvider serializer) {
+		JsonGenerator gen, SerializerProvider serializer) {
 			gen.writeStartObject()
 			gen.writeStringField("Project name", gc.getProjectDir().getFileName().toString())
 			gen.writeNumberField("Number of TestCases", gc.getNumberOfTestCases())
@@ -222,9 +231,9 @@ class ObjectRepositoryGarbageCollector {
 	public static class Builder {
 
 		private Path objectRepositoryDir // non null
+		private List<String> objectRepositorySubpaths  // could be empty
 		private Path scriptsDir // non null
-
-		private ExtendedObjectRepository extendedObjectRepository
+		private List<String> scriptsSubpaths  // could be empty
 
 		Builder() {
 			Path projectDir = Paths.get(RunConfiguration.getProjectDir()).toAbsolutePath().normalize()
@@ -247,11 +256,39 @@ class ObjectRepositoryGarbageCollector {
 			assert Files.exists(objectRepositoryDir)
 			assert Files.exists(scriptsDir)
 			this.objectRepositoryDir = objectRepositoryDir
+			this.objectRepositorySubpaths = new ArrayList<>()
 			this.scriptsDir = scriptsDir
+			this.scriptsSubpaths = new ArrayList<>()
 		}
 
-		ObjectRepositoryGarbageCollector build() {
-			extendedObjectRepository = new ExtendedObjectRepository(objectRepositoryDir)
+		/**
+		 * 
+		 * @param subpaths expressions like Ant FileSet pattern, e.g. 
+		 * - <code>.objectRepository("Page_CURA Healthcare Service")</code>
+		 * - <code>.objectRepository("Page_CURA Healthcare Service*")</code>
+		 * - <code>.objectRepository('** /input_*')</code>
+		 * - <code>.objectRepository('** /a_*', '** /button_*')</code>
+		 * - <code>.objectRepository(['** /a_*', '** /button_*'])</code>
+		 */
+		Builder objectRepositorySubpaths(String... subpaths) {
+			Objects.requireNonNull(subpaths)
+			(subpaths as List).each { subpath ->
+				Path p = objectRepositoryDir.resolve(subpath)
+				this.objectRepositorySubpaths.add(subpath)
+			}
+			return this
+		}
+
+		Builder scriptsSubpaths(String... subpaths) {
+			Objects.requireNonNull(subpaths)
+			(subpaths as List).each { subpath ->
+				Path p = scriptsDir.resolve(subpath)
+				this.scriptsSubpaths.add(subpath)
+			}
+			return this
+		}
+
+		public ObjectRepositoryGarbageCollector build() {
 			return new ObjectRepositoryGarbageCollector(this)
 		}
 	}

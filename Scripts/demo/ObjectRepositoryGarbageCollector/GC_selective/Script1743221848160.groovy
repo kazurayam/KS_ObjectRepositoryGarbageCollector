@@ -1,21 +1,26 @@
-import com.kazurayam.ks.reporting.Shorthand
-import com.kazurayam.ks.testobject.gc.ObjectRepositoryGarbageCollector
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
 
-import internal.GlobalVariable
+import com.kazurayam.ks.testobject.gc.ObjectRepositoryGarbageCollector
+import com.kms.katalon.core.configuration.RunConfiguration
 
 /**
  * Similar to the GC script but 
- * this scans only the specified sub-directory in the "Object Repository". 
- * this scans only the specified sub-directory of the "Test Cases".
+ * This scans the selected sub-path(s) under the "Object Repository". 
+ * This scans the selected sub-path(s) under the "Test Cases".
+ * This writes the result into a file rather than the console.
  */
 ObjectRepositoryGarbageCollector gc = 
 		new ObjectRepositoryGarbageCollector.Builder()
-			.objectRepositorySubpath("Page_CURA Healthcare Service")
-			.scriptsSubpath("main")
+			.objectRepositorySubpaths("Page_CURA Healthcare Service")
+			.scriptsSubpaths(["demo", "main"])
 			.build()
 String json = gc.garbages()
-								
-Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-				.fileName("garbages.json").build()
-sh.write(json)
-								
+
+Path projectDir = Paths.get(RunConfiguration.getProjectDir())
+Path outDir = projectDir.resolve("build/tmp/testOutput/demo/ObjectRepositoryGarbageCollector/GC_selective")
+Files.createDirectories(outDir)
+File outFile = outDir.resolve("garbages.json").toFile()
+
+outFile.text = json
