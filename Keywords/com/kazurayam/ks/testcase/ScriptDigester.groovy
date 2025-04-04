@@ -7,19 +7,11 @@ import java.util.stream.Collectors
 public class ScriptDigester {
 
 	private Path scriptsDir
-	private ScriptsVisitor visitor
 
 	ScriptDigester(Path scriptsDir) {
 		Objects.requireNonNull(scriptsDir)
 		assert Files.exists(scriptsDir)
 		this.scriptsDir = scriptsDir.toAbsolutePath().normalize()  // calling .normalize() is significant
-		this.visitor = init(scriptsDir)
-	}
-
-	private ScriptsVisitor init(Path scriptsDir) throws IOException {
-		ScriptsVisitor visitor = new ScriptsVisitor(scriptsDir)
-		Files.walkFileTree(scriptsDir, visitor)
-		return visitor
 	}
 
 	List<DigestedLine> digestTestCase(TestCaseId testCaseId, String pattern, Boolean isRegex) {

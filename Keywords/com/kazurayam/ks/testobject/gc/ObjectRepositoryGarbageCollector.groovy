@@ -101,7 +101,7 @@ class ObjectRepositoryGarbageCollector {
 		return [db, extOR]
 	}
 
-	
+
 	private List<TestCaseId> getTestCaseIdList(Path scriptsDir, List<Path> groovyFiles) {
 		List<TestCaseId> list = new ArrayList<>()
 		groovyFiles.forEach ({ groovyFile ->
