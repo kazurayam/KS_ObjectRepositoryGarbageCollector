@@ -8,6 +8,7 @@ import com.kazurayam.ant.DirectoryScanner
 public class ScriptsAccessor {
 
 	private Path scriptsDir
+	private DirectoryScanner ds
 	private List<Path> groovyFiles
 
 	public ScriptsAccessor(Path scriptsDir) {
@@ -18,7 +19,11 @@ public class ScriptsAccessor {
 	}
 
 	private void init() {
-		DirectoryScanner ds = new DirectoryScanner()
+		ds = new DirectoryScanner()
+		ds.setBasedir(scriptsDir.toFile())
+	}
+
+	public List<Path> getGroovyFiles() {
 		ds.setBasedir(scriptsDir.toFile())
 		String[] includes = ['**/*.groovy']
 		ds.setIncludes(includes)
@@ -26,12 +31,9 @@ public class ScriptsAccessor {
 		String[] includedFiles = ds.getIncludedFiles()
 		groovyFiles = new ArrayList<>()
 		for (int i = 0; i < includedFiles.length; i++) {
-			groovyFiles.add(scriptsDir.resolve(includedFiles[i]).toAbsolutePath().normalize())
+			groovyFiles.add(scriptsDir.resolve(includedFiles[i])
+					.toAbsolutePath().normalize())
 		}
-	}
-
-	public List<Path> getGroovyFiles() {
 		return this.groovyFiles
 	}
-
 }

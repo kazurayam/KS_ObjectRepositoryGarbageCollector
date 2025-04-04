@@ -1,4 +1,4 @@
-package com.kazurayam.ks.testcase
+package com.kazurayam.ks.testobject
 
 import static org.junit.Assert.*
 
@@ -18,35 +18,34 @@ import internal.GlobalVariable
 import com.kms.katalon.core.configuration.RunConfiguration
 
 @RunWith(JUnit4.class)
-public class ScriptsAccessorTest {
+public class ObjectRepositoryAccessorTest {
 
-	private static Path scriptsDir
-	private ScriptsAccessor accessor
+	private static Path objectRepositoryDir
+	private ObjectRepositoryAccessor accessor
 
 	@BeforeClass
 	public static void beforeClass() {
-		scriptsDir = Paths.get(RunConfiguration.getProjectDir()).resolve("Scripts")
-		assert Files.exists(scriptsDir)
+		objectRepositoryDir = Paths.get(RunConfiguration.getProjectDir()).resolve("Object Repository")
+		assert Files.exists(objectRepositoryDir)
 	}
 
 	@Before
 	public void setup() {
-		accessor = new ScriptsAccessor(scriptsDir)
+		accessor = new ObjectRepositoryAccessor(objectRepositoryDir)
 	}
 
 	@Test
-	public void test_getGroovyFiles() {
-		List<Path> groovyFiles = accessor.getGroovyFiles()
-		assertTrue("groovyFiles is empty", groovyFiles.size() > 0)
+	public void test_getRsFiles() {
+		List<Path> rsFiles = accessor.getRsFiles()
+		assertTrue("rsFiles is empty", rsFiles.size() > 0)
 		StringBuilder sb = new StringBuilder()
-		groovyFiles.each { file ->
-			assertTrue(file.toString().endsWith(".groovy"))
+		rsFiles.each { file ->
+			assertTrue(file.toString().endsWith(".rs"))
 			sb.append(file.toString() + "\n")
 		}
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_getGroovyFiles.txt").build()
+				.fileName("test_getRsFiles.txt").build()
 		sh.write(sb.toString())
-		//
-		assertEquals(40, groovyFiles.size())
+		assertEquals(15, rsFiles.size())
 	}
 }
