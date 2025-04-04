@@ -80,7 +80,7 @@ class ObjectRepositoryGarbageCollector {
 		// scan the Scripts directory to make a list of TestCaseIds
 		ScriptsAccessor scriptsAccessor = new ScriptsAccessor(scriptsDir)
 		List<TestCaseId> testCaseIdList = getTestCaseIdList(scriptsDir, scriptsAccessor.getGroovyFiles())
-		
+
 		//
 		numberOfTestCases = testCaseIdList.size()
 

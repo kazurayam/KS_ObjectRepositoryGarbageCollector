@@ -54,6 +54,13 @@
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
+      <guid>fa118264-6cd9-4fc2-8efa-2ed5a8a00013</guid>
+      <isReuseDriver>false</isReuseDriver>
+      <isRun>true</isRun>
+      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testcase/ScriptsAccessorTestRunner</testCaseId>
+      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
+   </testCaseLink>
+   <testCaseLink>
       <guid>e4c44459-2313-45cc-ba85-d78d0e4398c6</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
