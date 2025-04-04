@@ -9,7 +9,6 @@ public class ObjectRepositoryAccessor {
 
 	private Path objectRepositoryDir
 	private DirectoryScanner ds
-	private List<Path> rsFiles
 	
 	public ObjectRepositoryAccessor(Path orDir) {
 		Objects.requireNonNull(orDir)
@@ -17,22 +16,36 @@ public class ObjectRepositoryAccessor {
 		this.objectRepositoryDir = orDir.toAbsolutePath().normalize()
 		init()
 	}
-	
+
 	private void init() {
 		ds = new DirectoryScanner()
 		ds.setBasedir(objectRepositoryDir.toFile())
 	}
 	
-	public List<Path> getRsFiles() {
+	public String[] getIncludedFiles() {
 		String[] includes = ['**/*.rs']
 		ds.setIncludes(includes)
 		ds.scan()
-		String[] includedFiles = ds.getIncludedFiles()
-		rsFiles = new ArrayList<>()
+		return ds.getIncludedFiles()
+	}
+	
+	public List<TestObjectId> getTestObjectIdList() {
+		String[] includedFiles = getIncludedFiles()
+		List<TestObjectId> result = new ArrayList<>()
 		for (int i = 0; i < includedFiles.length; i++) {
-			rsFiles.add(objectRepositoryDir.resolve(includedFiles[i])
-				.toAbsolutePath().normalize())
+			TestObjectId toi = new TestObjectId(includedFiles[i].replaceAll('\\.rs$', ''))
+			result.add(toi)
 		}
-		return this.rsFiles
+		return result
+	} 
+
+	public List<Path> getRsFiles() {
+		List<String> includedFiles = getIncludedFiles()
+		List<Path> result = new ArrayList<>()
+		includedFiles.each { f ->
+			result.add(objectRepositoryDir.resolve(f)
+					.toAbsolutePath().normalize())
+		}
+		return result
 	}
 }

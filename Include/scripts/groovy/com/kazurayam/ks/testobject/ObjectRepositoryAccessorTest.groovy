@@ -35,6 +35,34 @@ public class ObjectRepositoryAccessorTest {
 	}
 
 	@Test
+	public void test_getIncludedFiles() {
+		String[] includedFiles = accessor.getIncludedFiles()
+		StringBuilder sb = new StringBuilder()
+		for (int i = 0; i < includedFiles.length; i++) {
+			sb.append(includedFiles[i])
+			sb.append("\n")
+		}
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+						.fileName("test_getIncludedFiles.txt").build()
+		sh.write(sb.toString())
+		assertTrue(includedFiles.size() > 0)
+	}
+	
+	@Test
+	public void test_getTestObjectIdList() {
+		List<TestObjectId> list = accessor.getTestObjectIdList()
+		StringBuilder sb = new StringBuilder()
+		list.each { id ->
+			sb.append(id.getValue())
+			sb.append("\n")
+		}
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+						.fileName("test_getTestObjectIdList.txt").build()
+		sh.write(sb.toString())
+		assertTrue(list.size() > 0)
+	}
+	
+	@Test
 	public void test_getRsFiles() {
 		List<Path> rsFiles = accessor.getRsFiles()
 		assertTrue("rsFiles is empty", rsFiles.size() > 0)
