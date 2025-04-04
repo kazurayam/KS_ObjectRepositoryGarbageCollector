@@ -12,6 +12,13 @@
    <rerunImmediately>false</rerunImmediately>
    <testSuiteGuid>0843de68-73c4-4979-8184-d1d1fae15280</testSuiteGuid>
    <testCaseLink>
+      <guid>58871828-a3c9-42fa-ae98-491a0e123494</guid>
+      <isReuseDriver>false</isReuseDriver>
+      <isRun>true</isRun>
+      <testCaseId>Test Cases/junit4/cleanTestOutput</testCaseId>
+      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
+   </testCaseLink>
+   <testCaseLink>
       <guid>599f3db7-5856-4ef9-a29f-933d5f9a3672</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>

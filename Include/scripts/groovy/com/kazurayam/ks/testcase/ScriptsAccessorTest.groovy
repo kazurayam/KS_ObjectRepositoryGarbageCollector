@@ -47,7 +47,7 @@ public class ScriptsAccessorTest {
 				.fileName("test_getGroovyFiles.txt").build()
 		sh.write(sb.toString())
 		//
-		assertEquals(39, groovyFiles.size())
+		assertEquals(40, groovyFiles.size())
 		
 	}
 }
