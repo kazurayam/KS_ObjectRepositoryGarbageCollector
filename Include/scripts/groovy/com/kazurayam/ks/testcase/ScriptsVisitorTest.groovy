@@ -20,11 +20,11 @@ public class ScriptsVisitorTest {
 
 	private static final Path scriptsDir = Paths.get("./Scripts")
 	private static final String subpath = "main"
-	private ScriptsVisitor visitor
+	private ScriptsAccessor.ScriptsVisitor visitor
 
 	@Test
 	void test_getGroovyFiles() throws IOException {
-		visitor = new ScriptsVisitor(scriptsDir)
+		visitor = new ScriptsAccessor.ScriptsVisitor(scriptsDir)
 		Files.walkFileTree(scriptsDir.resolve(subpath), visitor)
 		List<Path> list = visitor.getGroovyFiles()
 		assertTrue(list.size() > 0)
