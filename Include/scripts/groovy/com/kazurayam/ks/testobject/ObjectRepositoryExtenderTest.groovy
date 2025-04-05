@@ -128,7 +128,7 @@ class ObjectRepositoryExtenderTest {
 	@Test
 	void test_getLocatorIndex() {
 		LocatorIndex result = ObjectRepository.getLocatorIndex()
-		assertEquals(12, result.size())
+		assertEquals(13, result.size())
 	}
 
 	@Test
@@ -184,7 +184,7 @@ class ObjectRepositoryExtenderTest {
 	 */
 	@Test
 	void test_findTestObject() {
-		TestObject tObj = ObjectRepository.findTestObject("Page_CURA Healthcare Service/button_Login")
-		assertNotNull('ObjectRepository.findTestObject("Page_CURA Healthcare Service/button_Login") returned null', tObj)
+		TestObject tObj = ObjectRepository.findTestObject("main/Page_CURA Healthcare Service/button_Login")
+		assertNotNull('ObjectRepository.findTestObject("main/Page_CURA Healthcare Service/button_Login") returned null', tObj)
 	}
 }

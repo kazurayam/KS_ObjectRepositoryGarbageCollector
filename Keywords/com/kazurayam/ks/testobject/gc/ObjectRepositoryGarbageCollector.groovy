@@ -32,9 +32,8 @@ import com.kms.katalon.core.configuration.RunConfiguration
 class ObjectRepositoryGarbageCollector {
 
 	private Path objectRepositoryDir // must not be null
-	private List<String> objectRepositorySubpaths  // could be empty
+	private List<String> includeFolders  // could be empty
 	private Path scriptsDir // must not be null
-	private List<String> scriptsSubpaths // could be empty
 
 	private Database db
 	private ExtendedObjectRepository extOR
@@ -49,9 +48,8 @@ class ObjectRepositoryGarbageCollector {
 	 */
 	private ObjectRepositoryGarbageCollector(Builder builder) {
 		this.objectRepositoryDir = builder.objectRepositoryDir.toAbsolutePath().normalize()
-		this.objectRepositorySubpaths = builder.objectRepositorySubpaths
+		this.includeFolders = builder.includeFolders
 		this.scriptsDir = builder.scriptsDir.toAbsolutePath().normalize()
-		this.scriptsSubpaths = builder.scriptsSubpaths
 		//
 		startedAt = LocalDateTime.now()
 		def recv = this.scan(this.objectRepositoryDir, this.scriptsDir)
@@ -241,9 +239,10 @@ class ObjectRepositoryGarbageCollector {
 	public static class Builder {
 
 		private Path objectRepositoryDir // non null
-		private List<String> objectRepositorySubpaths  // could be empty
+		private List<String> includeFolders  // sub-folders in the "Object Repository"
+
 		private Path scriptsDir // non null
-		private List<String> scriptsSubpaths  // could be empty
+
 
 		Builder() {
 			Path projectDir = Paths.get(RunConfiguration.getProjectDir()).toAbsolutePath().normalize()
@@ -266,35 +265,22 @@ class ObjectRepositoryGarbageCollector {
 			assert Files.exists(objectRepositoryDir)
 			assert Files.exists(scriptsDir)
 			this.objectRepositoryDir = objectRepositoryDir
-			this.objectRepositorySubpaths = new ArrayList<>()
+			this.includeFolders = new ArrayList<>()
 			this.scriptsDir = scriptsDir
-			this.scriptsSubpaths = new ArrayList<>()
 		}
 
 		/**
 		 * 
 		 * @param subpaths expressions like Ant FileSet pattern, e.g. 
-		 * - <code>.objectRepository("Page_CURA Healthcare Service")</code>
-		 * - <code>.objectRepository("Page_CURA Healthcare Service*")</code>
-		 * - <code>.objectRepository('** /input_*')</code>
-		 * - <code>.objectRepository('** /a_*', '** /button_*')</code>
-		 * - <code>.objectRepository(['** /a_*', '** /button_*'])</code>
+		 * - <code>.includeFolder("main/Page_CURA Healthcare Service")</code>
+		 * - <code>.includeFolder("main/Page_CURA Healthcare Service2")</code>
+		 * - <code>.includeFolder("main/Page_CURA Healthcare Service?")</code>
+		 * - <code>.includeFolder("main/Page_CURA*")</code>
+		 * - <code>.includeFolder("**\\/Page_CURA*")</code>
 		 */
-		Builder objectRepositorySubpaths(String... subpaths) {
-			Objects.requireNonNull(subpaths)
-			(subpaths as List).each { subpath ->
-				Path p = objectRepositoryDir.resolve(subpath)
-				this.objectRepositorySubpaths.add(subpath)
-			}
-			return this
-		}
-
-		Builder scriptsSubpaths(String... subpaths) {
-			Objects.requireNonNull(subpaths)
-			(subpaths as List).each { subpath ->
-				Path p = scriptsDir.resolve(subpath)
-				this.scriptsSubpaths.add(subpath)
-			}
+		Builder includeFolder(String pattern) {
+			Objects.requireNonNull(pattern)
+			includeFolders.add(pattern)
 			return this
 		}
 

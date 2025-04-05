@@ -11,7 +11,7 @@ RunConfiguration.setExecutionSettingFile(executionSettingsFile.toString())
 
 println(RunConfiguration.getProjectDir())
 
-TestObject tObj = findTestObject('Page_CURA Healthcare Service/button_Book Appointment')
+TestObject tObj = findTestObject('main/Page_CURA Healthcare Service/button_Book Appointment')
 
 assert tObj != null
 

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>XOR_jsonifyLocatorIndex_filterByString</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>622a75f1-a760-440a-98be-27644fb8c2e4</testCaseGuid>
+</TestCaseEntity>

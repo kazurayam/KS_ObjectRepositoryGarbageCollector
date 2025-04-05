@@ -47,7 +47,7 @@ public class ObjectRepositoryGarbageCollectorTest {
 	void test_getBackwardReferences() {
 		BackwardReferences bRefs = garbageCollector.getBackwardReferences()
 		assertNotNull(bRefs)
-		TestObjectId toi = new TestObjectId("Page_CURA Healthcare Service/a_Go to Homepage")
+		TestObjectId toi = new TestObjectId("main/Page_CURA Healthcare Service/a_Go to Homepage")
 		assertTrue(bRefs.keySet().contains(toi))
 		Set<ForwardReference> refs = bRefs.get(toi)
 		List<ForwardReference> refList = refs as List

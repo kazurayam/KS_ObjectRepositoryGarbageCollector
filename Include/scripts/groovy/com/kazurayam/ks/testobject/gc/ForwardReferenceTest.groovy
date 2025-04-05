@@ -42,7 +42,7 @@ public class ForwardReferenceTest {
 
 	public static final ForwardReference createSampleInstance() {
 		String testCaseIdValue = "main/TC1"
-		String line = '''WebUI.click(findTestObject('Object Repository/Page_CURA Healthcare Service/a_Make Appointment')'''
+		String line = '''WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/a_Make Appointment')'''
 		String togValue = "Page_CURA Healthcare Service/a_Make Appointment"
 		String locValue = """//a[@id='btn-make-appointment']"""
 		TestCaseId testCaseId = new TestCaseId(testCaseIdValue)
@@ -63,7 +63,7 @@ public class ForwardReferenceTest {
 
 	@Test
 	void test_digestedLine() {
-		assertEquals('''WebUI.click(findTestObject('Object Repository/Page_CURA Healthcare Service/a_Make Appointment')''',
+		assertEquals('''WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/a_Make Appointment')''',
 				fref.getDigestedLine().getLine())
 	}
 

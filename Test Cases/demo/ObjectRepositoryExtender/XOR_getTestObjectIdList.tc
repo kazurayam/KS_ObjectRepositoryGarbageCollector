@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>XOR_getTestObjectIdList</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>7b27ad26-6bc3-47cd-8803-0c5f38313820</testCaseGuid>
+</TestCaseEntity>
