@@ -1,16 +1,13 @@
 import com.kazurayam.ks.reporting.Shorthand
-import com.kazurayam.ks.testobject.ObjectRepositoryExtender
+import com.kazurayam.ks.testobject.ExtendedObjectRepository
 import com.kazurayam.ks.testobject.TestObjectId
 import com.kms.katalon.core.testobject.ObjectRepository
 
 import internal.GlobalVariable
 
-// modify com.kms.katalon.core.testobject.ObjectRepository object on the fly
-new ObjectRepositoryExtender().apply()
+ExtendedObjectRepository xor = new ExtendedObjectRepository()
 
-// select TestObjects with id that match certain pattern.
-// the pattern is written in Regular Expression
-List<TestObjectId> list = ObjectRepository.getTestObjectIdList('button_\\w+\$', true)
+List<TestObjectId> list = xor.getTestObjectIdList('button_\\w+\$', true)
 
 StringBuilder sb = new StringBuilder()
 list.each { s ->

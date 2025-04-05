@@ -1,17 +1,13 @@
 import com.kazurayam.ks.reporting.Shorthand
-import com.kazurayam.ks.testobject.ObjectRepositoryExtender
+import com.kazurayam.ks.testobject.ExtendedObjectRepository
 import com.kazurayam.ks.testobject.TestObjectId
 import com.kms.katalon.core.testobject.ObjectRepository
 
 import internal.GlobalVariable
 
-// modify com.kms.katalon.core.testobject.ObjectRepository object on the fly
-new ObjectRepositoryExtender().apply()
+ExtendedObjectRepository xor = new ExtendedObjectRepository()
 
-// step2
-// select TestObjects with id that match certain pattern by String.contains()
-// the pattern is interpreted as a plain string
-List<TestObjectId> list = ObjectRepository.getTestObjectIdList("button_")
+List<TestObjectId> list = xor.getTestObjectIdList("button_")
 
 StringBuilder sb = new StringBuilder()
 list.each { s ->

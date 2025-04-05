@@ -1,16 +1,15 @@
 import com.kazurayam.ks.reporting.Shorthand
 import com.kazurayam.ks.testobject.LocatorIndex
-import com.kazurayam.ks.testobject.ObjectRepositoryExtender
+import com.kazurayam.ks.testobject.ExtendedObjectRepository
 import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kms.katalon.core.testobject.ObjectRepository
 
 import groovy.json.JsonOutput
 import internal.GlobalVariable
 
-// modify com.kms.katalon.core.testobject.ObjectRepository class on the fly
-new ObjectRepositoryExtender().apply()
+ExtendedObjectRepository xor = new ExtendedObjectRepository()
 
-LocatorIndex locatorIndex = ObjectRepository.getLocatorIndex()
+LocatorIndex locatorIndex = xor.getLocatorIndex()
 
 StringBuilder sb = new StringBuilder()
 locatorIndex.iterator().each { entry ->

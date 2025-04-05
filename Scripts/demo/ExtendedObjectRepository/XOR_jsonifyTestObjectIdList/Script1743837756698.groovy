@@ -1,14 +1,14 @@
 import com.kazurayam.ks.reporting.Shorthand
-import com.kazurayam.ks.testobject.ObjectRepositoryExtender
+import com.kazurayam.ks.testobject.ExtendedObjectRepository
 import com.kms.katalon.core.testobject.ObjectRepository
 
 import internal.GlobalVariable
 import groovy.json.JsonOutput
 
 // modify com.kms.katalon.core.testobject.ObjectRepository object on the fly
-new ObjectRepositoryExtender().apply()
+ExtendedObjectRepository xor = new ExtendedObjectRepository()
 
-String json  = ObjectRepository.jsonifyLocatorIndex("btn-", false)
+String out = xor.jsonifyTestObjectIdList()
 
 Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName('out.json').build()
-sh.write(JsonOutput.prettyPrint(json))
+sh.write(JsonOutput.prettyPrint(out))
