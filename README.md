@@ -24,7 +24,10 @@ import groovy.json.JsonOutput
 
 // the Garbage Collector instance will scan 2 folders: "Object Repository" and "Test Cases"
 
-ObjectRepositoryGarbageCollector gc = new ObjectRepositoryGarbageCollector.Builder().build()
+ObjectRepositoryGarbageCollector gc =
+        new ObjectRepositoryGarbageCollector.Builder()
+            .includeFolder("**/Page_CURA*")
+            .build()
 
 // gc.jsonifyGarbages() triggers scanning through the 2 folders and analyze the files.
 // All forward references from TestCase scripts to TestObject entities are identified.
