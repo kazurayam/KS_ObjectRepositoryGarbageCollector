@@ -3,7 +3,7 @@ import com.kazurayam.ks.testobject.gc.ObjectRepositoryGarbageCollector
 import groovy.json.JsonOutput
 
 /**
- * A demonstration of ObjectRepositoryGarbageCollector.
+ * A demonstration of ObjectRepositoryGarbageCollector, the simplest case
  *
  * This TestCase outputs a JSON file which contains a list of garbage Test Objects
  * in the "Object Repository" folder.
@@ -12,9 +12,14 @@ import groovy.json.JsonOutput
  * in the "Test Cases" folder.
  */
 
-// the Garbage Collector instance will scan 2 folders: "Object Repository" and "Test Cases"
+// the Garbage Collector instance will scan 2 folders: "Object Repository" and "Test Cases".
+
+// Amongst the folders in the "Object Repository" folder, the TestObjectsCase scripts contained 
+// in the subfolder that match "**/Page_CURA*" will be selected, and others are ignored
 ObjectRepositoryGarbageCollector gc = 
-	new ObjectRepositoryGarbageCollector.Builder().build()
+		new ObjectRepositoryGarbageCollector.Builder()
+			.includeFolder("**/Page_CURA*")
+			.build()
 
 // gc.jsonifyGarbages() triggers scanning through the entire "Object Repository".
 // All references from TestCase scripts to TestObjects will be identified.

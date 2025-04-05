@@ -8,24 +8,27 @@ import com.kazurayam.ant.DirectoryScanner
 public class ObjectRepositoryAccessor {
 
 	private Path objectRepositoryDir
+	private List<String> includeFilesSpecification
 	private DirectoryScanner ds
 
-	public ObjectRepositoryAccessor(Path orDir) {
-		Objects.requireNonNull(orDir)
-		assert Files.exists(orDir)
-		this.objectRepositoryDir = orDir.toAbsolutePath().normalize()
+	private ObjectRepositoryAccessor(Builder builder) {
+		this.objectRepositoryDir = builder.objectRepositoryDir
+		this.includeFilesSpecification = builder.includeFiles
 		init()
 	}
 
 	private void init() {
 		ds = new DirectoryScanner()
 		ds.setBasedir(objectRepositoryDir.toFile())
+		includeFilesSpecification.each { pattern ->
+			if (pattern.length() > 0) {
+				ds.setIncludes(pattern)
+			}
+		}
+		ds.scan()
 	}
 
 	public String[] getIncludedFiles() {
-		String[] includes = ['**/*.rs']
-		ds.setIncludes(includes)
-		ds.scan()
 		return ds.getIncludedFiles()
 	}
 
@@ -47,5 +50,27 @@ public class ObjectRepositoryAccessor {
 					.toAbsolutePath().normalize())
 		}
 		return result
+	}
+
+
+	/**
+	 * 
+	 * @author kazurayam
+	 */
+	public static class Builder {
+		private Path objectRepositoryDir
+		private List<String> includeFiles
+		public Builder(Path orDir) {
+			this.objectRepositoryDir = orDir.toAbsolutePath().normalize()
+			this.includeFiles = new ArrayList<>()
+		}
+		public Builder includeFiles(List<String> patterns) {
+			Objects.requireNonNull(patterns)
+			this.includeFiles = patterns
+			return this
+		}
+		public ObjectRepositoryAccessor build() {
+			return new ObjectRepositoryAccessor(this)
+		}
 	}
 }

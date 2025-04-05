@@ -13,8 +13,8 @@ import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import com.kazurayam.ks.testcase.DigestedLine
-import com.kazurayam.ks.testcase.TestCaseScriptDigester
 import com.kazurayam.ks.testcase.TestCaseId
+import com.kazurayam.ks.testcase.TestCaseScriptDigester
 import com.kazurayam.ks.testcase.TestCaseScriptsAccessor
 import com.kazurayam.ks.testobject.ExtendedObjectRepository
 import com.kazurayam.ks.testobject.TestObjectEssence
@@ -67,11 +67,16 @@ class ObjectRepositoryGarbageCollector {
 	 * find a list of "garbage" Test Objects which are not used by any of the Test Cases.
 	 */
 	private def scan(Path objectRepositoryDir, Path scriptsDir) {
+		
 		Database db = new Database()
-		ExtendedObjectRepository extOR = new ExtendedObjectRepository.Builder(objectRepositoryDir).build()
+		
+		ExtendedObjectRepository xor = 
+			new ExtendedObjectRepository.Builder(objectRepositoryDir)
+				.includeFolders(this.includeFolders)
+				.build()
 
 		// scan the Object Repository directory to make a list of TestObjectEssences
-		List<TestObjectEssence> essenceList = extOR.getTestObjectEssenceList("", false)
+		List<TestObjectEssence> essenceList = xor.getTestObjectEssenceList("", false)
 		//
 		numberOfTestObjects = essenceList.size()
 
@@ -96,7 +101,7 @@ class ObjectRepositoryGarbageCollector {
 				}
 			}
 		}
-		return [db, extOR]
+		return [db, xor]
 	}
 
 

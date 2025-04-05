@@ -5,7 +5,9 @@ import com.kms.katalon.core.testobject.ObjectRepository
 
 import internal.GlobalVariable
 
-ExtendedObjectRepository xor = new ExtendedObjectRepository()
+ExtendedObjectRepository xor = new ExtendedObjectRepository.Builder()
+								.includeFolder("**/Page_CURA*")
+								.build()
 
 List<TestObjectId> list = xor.getTestObjectIdList('button_\\w+\$', true)
 

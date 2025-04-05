@@ -7,7 +7,9 @@ import com.kms.katalon.core.testobject.ObjectRepository
 import groovy.json.JsonOutput
 import internal.GlobalVariable
 
-ExtendedObjectRepository xor = new ExtendedObjectRepository()
+ExtendedObjectRepository xor = new ExtendedObjectRepository.Builder()
+								.includeFolder("**/Page_CURA*")
+								.build()
 
 LocatorIndex locatorIndex = xor.getLocatorIndex()
 

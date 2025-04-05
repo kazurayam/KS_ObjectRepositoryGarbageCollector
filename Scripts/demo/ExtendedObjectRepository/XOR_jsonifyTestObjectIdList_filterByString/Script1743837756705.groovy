@@ -6,7 +6,9 @@ import internal.GlobalVariable
 import groovy.json.JsonOutput
 
 // modify com.kms.katalon.core.testobject.ObjectRepository object on the fly
-ExtendedObjectRepository xor = new ExtendedObjectRepository()
+ExtendedObjectRepository xor = new ExtendedObjectRepository.Builder()
+								.includeFolder("**/Page_CURA*")
+								.build()
 
 // get a list of all Test Object Ids found in the Object Repository,
 // output the result in JSON format

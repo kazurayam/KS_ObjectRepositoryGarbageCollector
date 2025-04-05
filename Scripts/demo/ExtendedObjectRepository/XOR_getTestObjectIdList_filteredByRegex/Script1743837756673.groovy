@@ -6,7 +6,9 @@ import com.kms.katalon.core.testobject.ObjectRepository
 import internal.GlobalVariable
 
 // modify com.kms.katalon.core.testobject.ObjectRepository object on the fly
-ExtendedObjectRepository xor = new ExtendedObjectRepository()
+ExtendedObjectRepository xor = new ExtendedObjectRepository.Builder()
+								.includeFolder("**/Page_CURA*")
+								.build()
 
 // select TestObjects with id that match certain pattern.
 // the pattern is written in Regular Expression

@@ -5,7 +5,9 @@ import com.kms.katalon.core.testobject.ObjectRepository
 import internal.GlobalVariable
 import groovy.json.JsonOutput
 
-ExtendedObjectRepository xor = new ExtendedObjectRepository()
+ExtendedObjectRepository xor = new ExtendedObjectRepository.Builder()
+								.includeFolder("**/Page_CURA*")
+								.build()
 
 String json = xor.jsonifyLocatorIndex("btn-", false)
 

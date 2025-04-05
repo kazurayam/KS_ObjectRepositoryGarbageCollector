@@ -2,12 +2,15 @@ import com.kazurayam.ks.reporting.Shorthand
 import com.kazurayam.ks.testobject.LocatorIndex
 import com.kazurayam.ks.testobject.ExtendedObjectRepository
 import com.kazurayam.ks.testobject.TestObjectEssence
+import com.kms.katalon.core.cucumber.keyword.CucumberBuiltinKeywords as CucumberKW
 import com.kms.katalon.core.testobject.ObjectRepository
 
 import groovy.json.JsonOutput
 import internal.GlobalVariable
 
-ExtendedObjectRepository xor = new ExtendedObjectRepository()
+ExtendedObjectRepository xor = new ExtendedObjectRepository.Builder()
+								.includeFolder("**/Page_CURA*")
+								.build()
 
 LocatorIndex locatorIndex = xor.getLocatorIndex()
 

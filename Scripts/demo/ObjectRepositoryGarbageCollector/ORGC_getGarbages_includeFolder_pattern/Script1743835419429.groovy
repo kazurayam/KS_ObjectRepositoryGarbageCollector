@@ -21,4 +21,4 @@ for (TestObjectId toi : testObjectIds) {
 	println toi
 }
 
-assert testObjectIds.size() == 5
+assert testObjectIds.size() == 4
