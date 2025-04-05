@@ -79,6 +79,7 @@ I hope that it would take just a few minutes to scan through 3000 TestObjects. I
 
 You need to add the aforementioned jars developed by kazurayam.
 This library depends on a few external libraries which is bundled in Katalon Studio, e.g, FastXML Jackson Databind.
+
 This library should run on any version of Katalon Studio and Katalon Runtime Engine.
 
 ## More features?
@@ -90,7 +91,7 @@ This library supports more:
 3. It can report all *Backward Reference*s, which is a list of TestObjects associated with list of ForwardReferences to each TestObject.
 4. It can report all *Locator*s (XPath, CSS Selector) associated with list of duplicating TestObjects that implement the same locator.
 
-I will write a more details documentation with sample codes later.
+I will write a more detailed documentation with sample codes later.
 
 ## Disclaimer
 
