@@ -77,9 +77,8 @@ I hope that it would take just a few minutes to scan through 3000 TestObjects. I
 
 ## Dependencies, versions, etc
 
-This library uses only the libraries bundled in Katalon Studio.
 You need to add the aforementioned jars developed by kazurayam.
-
+This library depends on a few external libraries which is bundled in Katalon Studio, e.g, FastXML Jackson Databind.
 This library should run on any version of Katalon Studio and Katalon Runtime Engine.
 
 ## More features?
