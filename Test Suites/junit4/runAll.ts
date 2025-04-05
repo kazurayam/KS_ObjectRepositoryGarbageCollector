@@ -103,13 +103,6 @@
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
-      <guid>998124cc-7cae-43ed-8c31-0b5cb2b7a284</guid>
-      <isReuseDriver>false</isReuseDriver>
-      <isRun>true</isRun>
-      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testobject/ObjectRepositoryVisitorTestRunner</testCaseId>
-      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
-   </testCaseLink>
-   <testCaseLink>
       <guid>255d97b4-3935-4706-87fc-84f6ecbd2d49</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>

@@ -44,9 +44,9 @@ public class ScriptsAccessorTest {
 			sb.append(file.toString() + "\n")
 		}
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_getGroovyFiles.txt").build()
+				.fileName("test_getGroovyFiles.txt").build()
 		sh.write(sb.toString())
 		//
-		assertEquals(40, groovyFiles.size())
+		assertEquals(39, groovyFiles.size())
 	}
 }

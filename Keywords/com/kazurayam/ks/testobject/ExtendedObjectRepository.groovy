@@ -70,9 +70,8 @@ public class ExtendedObjectRepository {
 	 * @throws IOException
 	 */
 	List<TestObjectId> getTestObjectIdList(String pattern = "", Boolean isRegex = false) throws IOException {
-		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(objectRepositoryDir)
-		Files.walkFileTree(objectRepositoryDir, visitor)
-		List<TestObjectId> ids = visitor.getTestObjectIdList()
+		ObjectRepositoryAccessor accessor = new ObjectRepositoryAccessor(objectRepositoryDir)
+		List<TestObjectId> ids = accessor.getTestObjectIdList()
 		//
 		List<TestObjectId> result = new ArrayList<>()
 		RegexOptedTextMatcher m = new RegexOptedTextMatcher(pattern, isRegex)
@@ -107,9 +106,8 @@ public class ExtendedObjectRepository {
 	 * You can select the target TestObjects to choose by the "pattern" and "isRegex" parameters
 	 */
 	List<TestObjectEssence> getTestObjectEssenceList(String pattern, Boolean isRegex = false) throws IOException {
-		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(objectRepositoryDir)
-		Files.walkFileTree(objectRepositoryDir, visitor)
-		List<TestObjectId> ids = visitor.getTestObjectIdList()
+		ObjectRepositoryAccessor accessor = new ObjectRepositoryAccessor(objectRepositoryDir)
+		List<TestObjectId> ids = accessor.getTestObjectIdList()
 		RegexOptedTextMatcher m = new RegexOptedTextMatcher(pattern, isRegex)
 		//
 		List<TestObjectEssence> result = new ArrayList<>()
