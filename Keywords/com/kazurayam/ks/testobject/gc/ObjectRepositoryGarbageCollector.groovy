@@ -13,9 +13,9 @@ import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import com.kazurayam.ks.testcase.DigestedLine
-import com.kazurayam.ks.testcase.ScriptDigester
+import com.kazurayam.ks.testcase.TestCaseScriptDigester
 import com.kazurayam.ks.testcase.TestCaseId
-import com.kazurayam.ks.testcase.ScriptsAccessor
+import com.kazurayam.ks.testcase.TestCaseScriptsAccessor
 import com.kazurayam.ks.testobject.ExtendedObjectRepository
 import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kazurayam.ks.testobject.TestObjectId
@@ -76,7 +76,7 @@ class ObjectRepositoryGarbageCollector {
 		numberOfTestObjects = essenceList.size()
 
 		// scan the Scripts directory to make a list of TestCaseIds
-		ScriptsAccessor scriptsAccessor = new ScriptsAccessor(scriptsDir)
+		TestCaseScriptsAccessor scriptsAccessor = new TestCaseScriptsAccessor(scriptsDir)
 		List<TestCaseId> testCaseIdList = getTestCaseIdList(scriptsDir, scriptsAccessor.getGroovyFiles())
 
 		//
@@ -85,7 +85,7 @@ class ObjectRepositoryGarbageCollector {
 		// Iterate over the list of TestCaseIds.
 		// Read the TestCase script, check if it contains any references to the TestObjects.
 		// If true, record the reference into the database
-		ScriptDigester scriptTraverser = new ScriptDigester(scriptsDir)
+		TestCaseScriptDigester scriptTraverser = new TestCaseScriptDigester(scriptsDir)
 		testCaseIdList.each { testCaseId ->
 			essenceList.each { essence ->
 				TestObjectId testObjectId = essence.getTestObjectId()

@@ -12,21 +12,21 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 import groovy.json.JsonOutput
 
-public class SearchableText {
+public class TextDigester {
 
 	private List<String> lines = new ArrayList<>()
 
-	public SearchableText(String code) {
+	public TextDigester(String code) {
 		Objects.requireNonNull(code)
 		this.lines = toLines(code)
 	}
 
-	public SearchableText(Path file) throws IOException {
+	public TextDigester(Path file) throws IOException {
 		Objects.requireNonNull(file)
 		this.lines = toLines(file.toFile().text)
 	}
 
-	public SearchableText(File file) throws IOException {
+	public TextDigester(File file) throws IOException {
 		Objects.requireNonNull(file)
 		this.lines = toLines(file.text)
 	}
@@ -41,11 +41,7 @@ public class SearchableText {
 		return lines
 	}
 
-	// このメソッドを digestText(String text, String pattern = "", Boolean isRegex = false) と改名し
-	// かつ ScriptTraverserクラスに移植せよ。
-	// それができたらSeachableTextクラスは不要になる。削除せよ。
-
-	public List<DigestedLine> searchText(String pattern = "", Boolean isRegex = false) {
+	public List<DigestedLine> digestText(String pattern = "", Boolean isRegex = false) {
 		List<DigestedLine> result = new ArrayList<>()
 		if (pattern.length() == 0) {
 			return result    // no search will be performed; return an empty list
@@ -87,44 +83,4 @@ public class SearchableText {
 		}
 		return result
 	}
-
-	@Override
-	public String toString() {
-		return toJson()
-	}
-
-
-	public String toJson() {
-		StringBuilder sb = new StringBuilder()
-		sb.append("{")
-		sb.append(JsonOutput.toJson("SearchableText"))
-		sb.append(":")
-		sb.append("[")
-		String sep = ""
-		lines.forEach { line ->
-			sb.append(sep)
-			sb.append(JsonOutput.toJson(line))
-			sep = ","
-		}
-		sb.append("]")
-		sb.append("}")
-		return JsonOutput.prettyPrint(sb.toString())
-	}
-
-	/*
-	 static class SearchableTextSerializer extends StdSerializer<SearchableText> {
-	 SearchableTextSerializer() {
-	 this(null)
-	 }
-	 SearchableTextSerializer(Class<LocatorSerializer> t) {
-	 super(t)
-	 }
-	 @Override
-	 void serialize(SearchableText,
-	 JsonGenerator gen, SerializerProvider serializer) {
-	 gen.writeStartArray()
-	 gen.writeEndArray()
-	 }
-	 }
-	 */
 }

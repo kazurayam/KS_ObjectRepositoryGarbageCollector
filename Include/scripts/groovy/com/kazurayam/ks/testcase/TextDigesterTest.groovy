@@ -17,15 +17,15 @@ import com.kazurayam.ks.reporting.Shorthand
 import internal.GlobalVariable
 
 @RunWith(JUnit4.class)
-public class SearchableTextTest {
+public class TextDigesterTest {
 
 	private Path TC1 = Paths.get(".").resolve("Scripts/main/TC1/Script1677544889443.groovy")
 
 	@Test
-	void test_searchText() {
-		SearchableText searchableText = new SearchableText(TC1)
+	void test_digestText() {
+		TextDigester digester = new TextDigester(TC1)
 		String pattern = "Page_CURA Healthcare Service/a_Make Appointment"
-		List<DigestedLine> list = searchableText.searchText(pattern, false)
+		List<DigestedLine> list = digester.digestText(pattern, false)
 		assertEquals(1, list.size())
 		StringBuilder sb = new StringBuilder()
 		sb.append("[")
@@ -38,18 +38,8 @@ public class SearchableTextTest {
 		sb.append("]")
 		//
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_searchText.json").build()
+				.fileName("test_digestText.json").build()
 		String json = JsonOutput.prettyPrint(sb.toString())
-		sh.write(json)
-	}
-
-	@Test
-	void test_toJson() {
-		SearchableText searchableText = new SearchableText(TC1)
-		String json = searchableText.toJson()
-		//
-		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_toJson.json").build()
 		sh.write(json)
 	}
 }

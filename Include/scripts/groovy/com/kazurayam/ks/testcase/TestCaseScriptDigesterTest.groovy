@@ -16,15 +16,15 @@ import groovy.json.JsonOutput
 import internal.GlobalVariable
 
 @RunWith(JUnit4.class)
-public class ScriptDigesterTest {
+public class TestCaseScriptDigesterTest {
 
 	private Path scriptsDir
-	private ScriptDigester digester
+	private TestCaseScriptDigester digester
 
 	@Before
 	void setup() {
 		scriptsDir = Paths.get("./Scripts").toAbsolutePath()
-		digester = new ScriptDigester(scriptsDir)
+		digester = new TestCaseScriptDigester(scriptsDir)
 	}
 
 

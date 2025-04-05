@@ -43,14 +43,14 @@
       <guid>460c0cde-fd7b-43b1-a39d-361c8cdf35fe</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testcase/ScriptDigesterTestRunner</testCaseId>
+      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testcase/TestCaseScriptDigesterTestRunner</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
       <guid>7ace2d96-78fe-4c13-86b5-ad3611c70a43</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testcase/SearchableTextTestRunner</testCaseId>
+      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testcase/TextDigesterTestRunner</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
@@ -64,7 +64,7 @@
       <guid>fa118264-6cd9-4fc2-8efa-2ed5a8a00013</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testcase/ScriptsAccessorTestRunner</testCaseId>
+      <testCaseId>Test Cases/junit4/com.kazurayam.ks.testcase/TestCaseScriptsAccessorTestRunner</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>

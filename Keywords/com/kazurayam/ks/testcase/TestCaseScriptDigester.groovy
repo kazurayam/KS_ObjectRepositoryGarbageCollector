@@ -4,11 +4,11 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.util.stream.Collectors
 
-public class ScriptDigester {
+public class TestCaseScriptDigester {
 
 	private Path scriptsDir
 
-	ScriptDigester(Path scriptsDir) {
+	TestCaseScriptDigester(Path scriptsDir) {
 		Objects.requireNonNull(scriptsDir)
 		assert Files.exists(scriptsDir)
 		this.scriptsDir = scriptsDir.toAbsolutePath().normalize()  // calling .normalize() is significant
@@ -20,8 +20,8 @@ public class ScriptDigester {
 		Objects.requireNonNull(isRegex)
 		Path testCaseDir = scriptsDir.resolve(testCaseId.value)
 		Path groovyFile = findChildGroovyFile(testCaseDir)
-		SearchableText source = new SearchableText(groovyFile)
-		List<DigestedLine> searchResults = source.searchText(pattern, isRegex)
+		TextDigester source = new TextDigester(groovyFile)
+		List<DigestedLine> searchResults = source.digestText(pattern, isRegex)
 		return searchResults
 	}
 

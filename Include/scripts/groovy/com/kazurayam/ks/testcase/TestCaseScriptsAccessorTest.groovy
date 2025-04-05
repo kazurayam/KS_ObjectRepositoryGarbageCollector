@@ -18,10 +18,10 @@ import internal.GlobalVariable
 import com.kms.katalon.core.configuration.RunConfiguration
 
 @RunWith(JUnit4.class)
-public class ScriptsAccessorTest {
+public class TestCaseScriptsAccessorTest {
 
 	private static Path scriptsDir
-	private ScriptsAccessor accessor
+	private TestCaseScriptsAccessor accessor
 
 	@BeforeClass
 	public static void beforeClass() {
@@ -31,7 +31,7 @@ public class ScriptsAccessorTest {
 
 	@Before
 	public void setup() {
-		accessor = new ScriptsAccessor(scriptsDir)
+		accessor = new TestCaseScriptsAccessor(scriptsDir)
 	}
 
 	@Test
@@ -47,6 +47,6 @@ public class ScriptsAccessorTest {
 				.fileName("test_getGroovyFiles.txt").build()
 		sh.write(sb.toString())
 		//
-		assertEquals(39, groovyFiles.size())
+		assertEquals(43, groovyFiles.size())
 	}
 }

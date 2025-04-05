@@ -9,7 +9,7 @@ public class ObjectRepositoryAccessor {
 
 	private Path objectRepositoryDir
 	private DirectoryScanner ds
-	
+
 	public ObjectRepositoryAccessor(Path orDir) {
 		Objects.requireNonNull(orDir)
 		assert Files.exists(orDir)
@@ -21,14 +21,14 @@ public class ObjectRepositoryAccessor {
 		ds = new DirectoryScanner()
 		ds.setBasedir(objectRepositoryDir.toFile())
 	}
-	
+
 	public String[] getIncludedFiles() {
 		String[] includes = ['**/*.rs']
 		ds.setIncludes(includes)
 		ds.scan()
 		return ds.getIncludedFiles()
 	}
-	
+
 	public List<TestObjectId> getTestObjectIdList() {
 		String[] includedFiles = getIncludedFiles()
 		List<TestObjectId> result = new ArrayList<>()
@@ -37,7 +37,7 @@ public class ObjectRepositoryAccessor {
 			result.add(toi)
 		}
 		return result
-	} 
+	}
 
 	public List<Path> getRsFiles() {
 		List<String> includedFiles = getIncludedFiles()
