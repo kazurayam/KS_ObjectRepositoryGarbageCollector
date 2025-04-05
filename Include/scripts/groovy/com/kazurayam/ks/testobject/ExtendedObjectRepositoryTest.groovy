@@ -27,7 +27,7 @@ public class ExtendedObjectRepositoryTest {
 	@Before
 	void setup() {
 		Path objectRepositoryDir = Paths.get(".").resolve("Object Repository")
-		instance = new ExtendedObjectRepository(objectRepositoryDir)
+		instance = new ExtendedObjectRepository.Builder(objectRepositoryDir).build()
 	}
 
 	@Test

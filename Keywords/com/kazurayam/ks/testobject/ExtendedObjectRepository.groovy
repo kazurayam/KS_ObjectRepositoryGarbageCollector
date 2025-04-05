@@ -29,16 +29,8 @@ public class ExtendedObjectRepository {
 
 	private Path objectRepositoryDir
 
-	ExtendedObjectRepository() {
-		this(Paths.get(".").resolve("Object Repository"))
-	}
-
-	/**
-	 * 
-	 * @param dir expected to be "&lt;projectDir"&lt;/Object Repository"
-	 */
-	ExtendedObjectRepository(Path dir) {
-		this.objectRepositoryDir = dir
+	private ExtendedObjectRepository(Builder builder) {
+		this.objectRepositoryDir = builder.objectRepositoryDir
 	}
 
 	Path getObjectRepositoryDir() {
@@ -166,5 +158,22 @@ public class ExtendedObjectRepository {
 	String jsonifyLocatorIndex(String pattern = "", Boolean isRegex = false) throws IOException {
 		LocatorIndex locatorIndex = this.getLocatorIndex(pattern, isRegex)
 		return locatorIndex.toJson()
+	}
+
+
+
+	public static class Builder {
+		private Path objectRepositoryDir
+		public Builder() {
+			this(Paths.get(".").resolve("Object Repository"))
+		}
+		public Builder(Path dir) {
+			Objects.requireNonNull(dir)
+			assert Files.exists(dir)
+			objectRepositoryDir = dir
+		}
+		public ExtendedObjectRepository build() {
+			return new ExtendedObjectRepository(this)
+		}
 	}
 }

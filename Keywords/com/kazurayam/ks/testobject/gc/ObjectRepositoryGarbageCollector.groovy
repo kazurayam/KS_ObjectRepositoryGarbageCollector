@@ -68,7 +68,7 @@ class ObjectRepositoryGarbageCollector {
 	 */
 	private def scan(Path objectRepositoryDir, Path scriptsDir) {
 		Database db = new Database()
-		ExtendedObjectRepository extOR = new ExtendedObjectRepository(objectRepositoryDir)
+		ExtendedObjectRepository extOR = new ExtendedObjectRepository.Builder(objectRepositoryDir).build()
 
 		// scan the Object Repository directory to make a list of TestObjectEssences
 		List<TestObjectEssence> essenceList = extOR.getTestObjectEssenceList("", false)
