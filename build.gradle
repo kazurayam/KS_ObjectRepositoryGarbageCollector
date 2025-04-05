@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.kazurayam'
-version = "0.2.0"
+version = "0.2.2"
 
 def defaultEncoding = 'UTF-8'
 tasks.withType(AbstractCompile).each {it.options.encoding = defaultEncoding }
@@ -23,6 +23,14 @@ configurations {
 repositories {
   mavenCentral()
   mavenLocal()
+}
+
+def homePath = System.properties['user.home']
+tasks.register('importDirectoryScanner', Copy) {
+     into layout.projectDirectory.dir("Drivers")
+     from("$homePath/.m2/repository/com/kazurayam/MonkDirectoryScanner/0.1.0") {
+     include '**/*.jar'
+  }
 }
 
 dependencies {
@@ -70,69 +78,6 @@ task publishGroovydoc(type: Copy) {
     into 'docs/api'
 }
 groovydoc.finalizedBy publishGroovydoc
-
-task groovydocJar(type: Jar) {
-    archiveClassifier = 'javadoc'
-    from groovydoc
-}
-
-task sourcesJar(type: Jar) {
-    archiveClassifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-publishing {
-    publications {
-        junit4ks(MavenPublication) {
-            artifact sourcesJar
-            artifact groovydocJar
-            pom {
-                groupId = project.group
-                name = project.rootProject.name
-                description = 'Scans the Test Case scripts and the ObjectRepository to look up unused Test Objects'
-                url = 'https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollection/'
-                from components.java
-                licenses {
-                    license {
-                        name = 'The Apache License, Version 2.0'
-                        url = 'https://www.apache.org.licenses/LICENSE-2.0.txt'
-                    }
-                }
-                developers {
-                    developer {
-                        id = 'kazurayam'
-                        name = 'URAYAMA,kazuaki'
-                        email = 'kazuaki.urayama@gmail.com'
-                    }
-                }
-                scm {
-                    connection = "scm:git:https://github.com/kazurayam/${project.rootProject.name}.git"
-                    developerConnection = "scm:git:git@github.com:kazurayam/${project.rootProject.name}.git"
-                    url = "https://github.com/kazurayam/${project.rootProject.name}"
-                }
-            }
-        }
-    }
-    repositories {
-        maven {
-            def releaseRepo = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-            def snapshotRepo = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-            url = isReleaseVersion ? releaseRepo: snapshotRepo
-            credentials {
-                username = project.hasProperty('ossrhUsername') ? ossrhUsername : "Unknown user"
-                password = project.hasProperty('ossrhPassword') ? ossrhPassword : "Unknown password"
-            }
-        }
-    }
-}
-
-signing {
-    sign publishing.publications.junit4ks
-}
-// I do not want to sign the SNAPSHOT
-tasks.withType(Sign) {
-    onlyIf { isReleaseVersion }
-}
 
 task katalonClean(type: Delete) {
     delete '.cache'

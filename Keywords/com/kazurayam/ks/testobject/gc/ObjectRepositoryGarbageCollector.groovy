@@ -13,9 +13,9 @@ import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import com.kazurayam.ks.testcase.DigestedLine
-import com.kazurayam.ks.testcase.ScriptsTraverser
 import com.kazurayam.ks.testcase.TestCaseId
-import com.kazurayam.ks.testcase.TestCaseScriptsVisitor
+import com.kazurayam.ks.testcase.TestCaseScriptDigester
+import com.kazurayam.ks.testcase.TestCaseScriptsAccessor
 import com.kazurayam.ks.testobject.ExtendedObjectRepository
 import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kazurayam.ks.testobject.TestObjectId
@@ -32,10 +32,11 @@ import com.kms.katalon.core.configuration.RunConfiguration
 class ObjectRepositoryGarbageCollector {
 
 	private Path objectRepositoryDir // must not be null
+	private List<String> includeFolders  // could be empty
 	private Path scriptsDir // must not be null
 
-	private ExtendedObjectRepository extOR
 	private Database db
+	private ExtendedObjectRepository extOR
 
 	private LocalDateTime startedAt
 	private LocalDateTime finishedAt
@@ -47,11 +48,13 @@ class ObjectRepositoryGarbageCollector {
 	 */
 	private ObjectRepositoryGarbageCollector(Builder builder) {
 		this.objectRepositoryDir = builder.objectRepositoryDir.toAbsolutePath().normalize()
+		this.includeFolders = builder.includeFolders
 		this.scriptsDir = builder.scriptsDir.toAbsolutePath().normalize()
-		this.db = new Database()
-		this.extOR = builder.extendedObjectRepository
+		//
 		startedAt = LocalDateTime.now()
-		this.scan(this.db, extOR, this.scriptsDir)
+		def recv = this.scan(this.objectRepositoryDir, this.scriptsDir)
+		this.db = recv[0]
+		this.extOR = recv[1]
 		finishedAt = LocalDateTime.now()
 	}
 
@@ -63,35 +66,54 @@ class ObjectRepositoryGarbageCollector {
 	 * You can retrieve an Garbage Collection plan by calling "xref()" method, in which you can
 	 * find a list of "garbage" Test Objects which are not used by any of the Test Cases.
 	 */
-	private void scan(Database db, ExtendedObjectRepository extOR, Path scriptsDir) {
+	private def scan(Path objectRepositoryDir, Path scriptsDir) {
+		
+		Database db = new Database()
+		
+		ExtendedObjectRepository xor = 
+			new ExtendedObjectRepository.Builder(objectRepositoryDir)
+				.includeFolders(this.includeFolders)
+				.build()
+
 		// scan the Object Repository directory to make a list of TestObjectEssences
-		List<TestObjectEssence> essenceList = extOR.getTestObjectEssenceList("", false)
+		List<TestObjectEssence> essenceList = xor.getTestObjectEssenceList("", false)
 		//
 		numberOfTestObjects = essenceList.size()
 
 		// scan the Scripts directory to make a list of TestCaseIds
-		TestCaseScriptsVisitor testCaseScriptsVisitor = new TestCaseScriptsVisitor(scriptsDir)
-		Files.walkFileTree(scriptsDir, testCaseScriptsVisitor)
-		List<TestCaseId> testCaseIdList = testCaseScriptsVisitor.getTestCaseIdList()
+		TestCaseScriptsAccessor scriptsAccessor = new TestCaseScriptsAccessor(scriptsDir)
+		List<TestCaseId> testCaseIdList = getTestCaseIdList(scriptsDir, scriptsAccessor.getGroovyFiles())
+
 		//
 		numberOfTestCases = testCaseIdList.size()
 
 		// Iterate over the list of TestCaseIds.
 		// Read the TestCase script, check if it contains any references to the TestObjects.
 		// If true, record the reference into the database
-		ScriptsTraverser scriptSearcher = new ScriptsTraverser(scriptsDir)
+		TestCaseScriptDigester scriptTraverser = new TestCaseScriptDigester(scriptsDir)
 		testCaseIdList.each { testCaseId ->
 			essenceList.each { essence ->
 				TestObjectId testObjectId = essence.getTestObjectId()
-				List<DigestedLine> textSearchResultList =
-						scriptSearcher.digestTestCase(testCaseId, testObjectId.getValue(), false)
-				textSearchResultList.each { textSearchResult ->
-					ForwardReference reference = new ForwardReference(testCaseId, textSearchResult, essence)
+				List<DigestedLine> digestedLines = scriptTraverser.digestTestCase(testCaseId, testObjectId.getValue(), false)
+				digestedLines.each { digestedLine ->
+					ForwardReference reference = new ForwardReference(testCaseId, digestedLine, essence)
 					db.add(reference)
 				}
 			}
 		}
+		return [db, xor]
 	}
+
+
+	private List<TestCaseId> getTestCaseIdList(Path scriptsDir, List<Path> groovyFiles) {
+		List<TestCaseId> list = new ArrayList<>()
+		groovyFiles.forEach ({ groovyFile ->
+			TestCaseId id = TestCaseId.resolveTestCaseId(scriptsDir, groovyFile)
+			list.add(id)
+		})
+		return list
+	}
+
 
 	Database db() {
 		return db
@@ -138,7 +160,7 @@ class ObjectRepositoryGarbageCollector {
 	Garbages getGarbages() {
 		Garbages garbages = new Garbages()
 		//println "extOR.getAllTestObjectIdSet().size()=" + extOR.getAllTestObjectIdSet().size()
-		extOR.getAllTestObjectIdSet().each { testObjectId ->
+		this.extOR.getAllTestObjectIdSet().each { testObjectId ->
 			Set<ForwardReference> forwardReferences = db.findForwardReferencesTo(testObjectId)
 			//println "testObjectId=" + testObjectId.getValue() + " forwardReferences.size()=" + forwardReferences.size()
 			if (forwardReferences.size() == 0) {
@@ -222,9 +244,10 @@ class ObjectRepositoryGarbageCollector {
 	public static class Builder {
 
 		private Path objectRepositoryDir // non null
+		private List<String> includeFolders  // sub-folders in the "Object Repository"
+
 		private Path scriptsDir // non null
 
-		private ExtendedObjectRepository extendedObjectRepository
 
 		Builder() {
 			Path projectDir = Paths.get(RunConfiguration.getProjectDir()).toAbsolutePath().normalize()
@@ -247,11 +270,26 @@ class ObjectRepositoryGarbageCollector {
 			assert Files.exists(objectRepositoryDir)
 			assert Files.exists(scriptsDir)
 			this.objectRepositoryDir = objectRepositoryDir
+			this.includeFolders = new ArrayList<>()
 			this.scriptsDir = scriptsDir
 		}
 
-		ObjectRepositoryGarbageCollector build() {
-			extendedObjectRepository = new ExtendedObjectRepository(objectRepositoryDir)
+		/**
+		 * 
+		 * @param subpaths expressions like Ant FileSet pattern, e.g. 
+		 * - <code>.includeFolder("main/Page_CURA Healthcare Service")</code>
+		 * - <code>.includeFolder("main/Page_CURA Healthcare Service2")</code>
+		 * - <code>.includeFolder("main/Page_CURA Healthcare Service?")</code>
+		 * - <code>.includeFolder("main/Page_CURA*")</code>
+		 * - <code>.includeFolder("**\\/Page_CURA*")</code>
+		 */
+		Builder includeFolder(String pattern) {
+			Objects.requireNonNull(pattern)
+			includeFolders.add(pattern)
+			return this
+		}
+
+		public ObjectRepositoryGarbageCollector build() {
 			return new ObjectRepositoryGarbageCollector(this)
 		}
 	}

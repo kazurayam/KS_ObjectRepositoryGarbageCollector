@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<TestCaseEntity>
-   <description></description>
-   <name>case2_3_jsonifyLocatorIndex_filterByRegex</name>
-   <tag></tag>
-   <comment></comment>
-   <recordOption>OTHER</recordOption>
-   <testCaseGuid>ffba59f9-0abd-4e67-b407-73138259ed31</testCaseGuid>
-</TestCaseEntity>

@@ -25,7 +25,7 @@ public class ObjectRepositoryTest {
 	 */
 	@Test
 	void test_findTestObject() {
-		TestObject tObj = ObjectRepository.findTestObject("Page_CURA Healthcare Service/button_Login")
+		TestObject tObj = ObjectRepository.findTestObject("main/Page_CURA Healthcare Service/button_Login")
 		assertNotNull(tObj)
 	}
 

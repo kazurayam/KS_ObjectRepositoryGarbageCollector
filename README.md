@@ -54,7 +54,7 @@ When I ran this, I got the following output in the console:
 }
 ```
 
-I found that this project contains 
+I found that this project contains
 
 - 37 TestCase scripts
 - 15 TestObjects
@@ -62,7 +62,11 @@ I found that this project contains
 
 It took me approximately 3 seconds to get the result.
 
-I hope that it would take just a few minutes to scan through 3000 TestObjects and report over the half are unused.
+I hope that it would take just a few minutes to scan through 3000 TestObjects. I expect, it will tell you over the half TestObjects are unused garbages.
+
+## Disclaimer
+
+I hope the library reports the fact. But I would not be responsible for the damage when you clear away the garbages. I would recommend you to bring your project backed by Git and store the snapshots.
 
 ## How to install the library.
 
@@ -71,13 +75,13 @@ I hope that it would take just a few minutes to scan through 3000 TestObjects an
 3. Download the jar file, save it into the `Drivers` folder of your Katalon project.
 4. Close and reopen the project. Confirm that the jar is recognized by Katalon Studio.
 5. Create a Test Case script, which should be similar to the above "GC" script.
-6. You are done. Ran it and see how quickly you can get the result.
+6. You are done. Run it and see how quickly you can get the result.
 
 ## Dependencies, versions, etc
 
-This library uses the libraries bundled in Katalon Studio. You don't have to add any more external libraries other than the aforementioned jar.
+This library uses only the libraries bundled in Katalon Studio. You don't have to add any more external libraries other than the aforementioned jar.
 
-This library should run on any version of Katalon Studio (and Katalon Runtime Engine).
+This library should run on any version of Katalon Studio and Katalon Runtime Engine.
 
 ## More features?
 
@@ -85,7 +89,8 @@ This library supports more:
 
 1. It can report all *Forward Reference*s from TestCase scripts to TestObjects.
 2. It can report all *Backward Reference*s, which is a list of TestObjects associated with list of ForwardReferences to each TestObject.
-3. It can report all *Locator*s (XPath, CSS Selector) associated with list of TestObjects that use the locator
+3. It can report all *Locator*s (XPath, CSS Selector) associated with list of duplicating TestObjects that implement the same locator.
+4. You can narrow-down the "Test Cases" sub-folder and the "Object Repository" sub-folder to choose the entrie from. By this, you can get the report smaller and forcused.
 
 I will write a more details documentation with sample codes later.
 

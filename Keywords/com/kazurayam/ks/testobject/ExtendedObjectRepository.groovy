@@ -28,37 +28,24 @@ public class ExtendedObjectRepository {
 	private static Logger logger = LoggerFactory.getLogger(ExtendedObjectRepository.class)
 
 	private Path objectRepositoryDir
+	private List<String> includeFoldersSpecification
 
-	ExtendedObjectRepository() {
-		this(Paths.get(".").resolve("Object Repository"))
-	}
-
-	/**
-	 * 
-	 * @param dir expected to be "&lt;projectDir"&lt;/Object Repository"
-	 */
-	ExtendedObjectRepository(Path dir) {
-		this.objectRepositoryDir = dir
+	private ExtendedObjectRepository(Builder builder) {
+		Objects.requireNonNull(builder, "the param 'builder' is null")
+		this.objectRepositoryDir = builder.objectRepositoryDir
+		this.includeFoldersSpecification = builder.includeFolders
+		Objects.requireNonNull(this.objectRepositoryDir)
+		Objects.requireNonNull(this.includeFoldersSpecification)
 	}
 
 	Path getObjectRepositoryDir() {
 		return objectRepositoryDir
 	}
 
-	/**
-	 * @return a Set of all TestObjectIds contained in the "Object Repository"
-	 */
-	public Set<TestObjectId> getAllTestObjectIdSet() {
-		Set<TestObjectId> result = new TreeSet<>()   // ordered set
-		List<TestObjectEssence> allEssence = getTestObjectEssenceList("", false)
-		allEssence.forEach { essence ->
-			TestObjectId toi = essence.getTestObjectId()
-			if (toi != null && toi.getValue() != "") {
-				result.add(toi)
-			}
-		}
-		return result
+	List<String> getIncludeFoldersSpecification() {
+		return includeFoldersSpecification
 	}
+
 
 	/**
 	 * 
@@ -70,9 +57,11 @@ public class ExtendedObjectRepository {
 	 * @throws IOException
 	 */
 	List<TestObjectId> getTestObjectIdList(String pattern = "", Boolean isRegex = false) throws IOException {
-		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(objectRepositoryDir)
-		Files.walkFileTree(objectRepositoryDir, visitor)
-		List<TestObjectId> ids = visitor.getTestObjectIdList()
+		ObjectRepositoryAccessor accessor =
+				new ObjectRepositoryAccessor.Builder(objectRepositoryDir)
+				.includeFiles(translatePatterns(includeFoldersSpecification))
+				.build()
+		List<TestObjectId> ids = accessor.getTestObjectIdList()
 		//
 		List<TestObjectId> result = new ArrayList<>()
 		RegexOptedTextMatcher m = new RegexOptedTextMatcher(pattern, isRegex)
@@ -83,6 +72,54 @@ public class ExtendedObjectRepository {
 		}
 		return result;
 	}
+
+	/**
+	 *
+	 * returns a List of TestObjectEssense object, which comprises with "TestObjectId", "Method" and "Locator".
+	 * You can select the target TestObjects to choose by the "pattern" and "isRegex" parameters
+	 */
+	List<TestObjectEssence> getTestObjectEssenceList(String pattern, Boolean isRegex = false) throws IOException {
+		ObjectRepositoryAccessor accessor =
+				new ObjectRepositoryAccessor.Builder(objectRepositoryDir)
+				.includeFiles(translatePatterns(includeFoldersSpecification))
+				.build()
+		List<TestObjectId> ids = accessor.getTestObjectIdList()
+		RegexOptedTextMatcher m = new RegexOptedTextMatcher(pattern, isRegex)
+		//
+		List<TestObjectEssence> result = new ArrayList<>()
+		ids.forEach { id ->
+			TestObject tObj = ObjectRepository.findTestObject(id.getValue())
+			Locator locator = id.toTestObjectEssence().getLocator()
+			if (m.found(id.getValue())) {
+				TestObjectEssence essence =
+						new TestObjectEssence(id, tObj.getSelectorMethod().toString(), locator)
+				result.add(essence)
+			}
+		}
+		return result
+	}
+
+	/**
+	 * convert a pattern for Object Repository folders to a pattern for TestObject files 
+	 *　E.g, "** /Page_CURA*" -> "** /Page_CURA* /** /*.rs"
+	 * @param includeFoldersSpecification
+	 * @return
+	 */
+	protected List<String> translatePatterns(List<String> patternsForFolder) {
+		List<String> patternsForFile = new ArrayList<>()
+		patternsForFolder.each { ptrn ->
+			StringBuilder sb = new StringBuilder()
+			sb.append(ptrn)
+			if (!ptrn.endsWith("/")) {
+				sb.append("/")
+			}
+			sb.append("**/*.rs")
+			patternsForFile.add(sb.toString())
+		}
+		return patternsForFile
+	}
+
+
 
 	/**
 	 * returns a JSON string representation of the call to "getTestObjectIdList"
@@ -101,29 +138,22 @@ public class ExtendedObjectRepository {
 		return mapper.writeValueAsString(list)
 	}
 
+
 	/**
-	 * 
-	 * returns a List of TestObjectEssense object, which comprises with "TestObjectId", "Method" and "Locator".
-	 * You can select the target TestObjects to choose by the "pattern" and "isRegex" parameters
+	 * @return a Set of all TestObjectIds contained in the "Object Repository"
 	 */
-	List<TestObjectEssence> getTestObjectEssenceList(String pattern, Boolean isRegex = false) throws IOException {
-		ObjectRepositoryVisitor visitor = new ObjectRepositoryVisitor(objectRepositoryDir)
-		Files.walkFileTree(objectRepositoryDir, visitor)
-		List<TestObjectId> ids = visitor.getTestObjectIdList()
-		RegexOptedTextMatcher m = new RegexOptedTextMatcher(pattern, isRegex)
-		//
-		List<TestObjectEssence> result = new ArrayList<>()
-		ids.forEach { id ->
-			TestObject tObj = ObjectRepository.findTestObject(id.getValue())
-			Locator locator = id.toTestObjectEssence().getLocator()
-			if (m.found(id.getValue())) {
-				TestObjectEssence essence =
-						new TestObjectEssence(id, tObj.getSelectorMethod().toString(), locator)
-				result.add(essence)
+	public Set<TestObjectId> getAllTestObjectIdSet() {
+		Set<TestObjectId> result = new TreeSet<>()   // ordered set
+		List<TestObjectEssence> allEssence = getTestObjectEssenceList("", false)
+		allEssence.forEach { essence ->
+			TestObjectId toi = essence.getTestObjectId()
+			if (toi != null && toi.getValue() != "") {
+				result.add(toi)
 			}
 		}
 		return result
 	}
+
 
 	String jsonifyTestObjectEssenceList(String pattern, Boolean isRegex) throws IOException {
 		//
@@ -168,5 +198,37 @@ public class ExtendedObjectRepository {
 	String jsonifyLocatorIndex(String pattern = "", Boolean isRegex = false) throws IOException {
 		LocatorIndex locatorIndex = this.getLocatorIndex(pattern, isRegex)
 		return locatorIndex.toJson()
+	}
+
+
+
+	/**
+	 * 
+	 * @author kazurayam
+	 */
+	public static class Builder {
+		private Path objectRepositoryDir
+		private List<String> includeFolders
+		public Builder() {
+			this(Paths.get(".").resolve("Object Repository"))
+		}
+		public Builder(Path dir) {
+			Objects.requireNonNull(dir)
+			assert Files.exists(dir)
+			objectRepositoryDir = dir
+			includeFolders = new ArrayList<>()
+		}
+		public Builder includeFolder(String pattern) {
+			this.includeFolders.add(pattern)
+			return this
+		}
+		public Builder includeFolders(List<String> includeFolders) {
+			this.includeFolders = includeFolders
+			return this
+		}
+		public ExtendedObjectRepository build() {
+			assert objectRepositoryDir != null : "objectRepositoryDir is null"
+			return new ExtendedObjectRepository(this)
+		}
 	}
 }

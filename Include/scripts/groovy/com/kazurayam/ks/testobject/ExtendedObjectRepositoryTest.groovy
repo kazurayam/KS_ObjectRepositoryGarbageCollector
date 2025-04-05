@@ -27,7 +27,7 @@ public class ExtendedObjectRepositoryTest {
 	@Before
 	void setup() {
 		Path objectRepositoryDir = Paths.get(".").resolve("Object Repository")
-		instance = new ExtendedObjectRepository(objectRepositoryDir)
+		instance = new ExtendedObjectRepository.Builder(objectRepositoryDir).build()
 	}
 
 	@Test
@@ -155,4 +155,18 @@ public class ExtendedObjectRepositoryTest {
 		sh.write(JsonOutput.prettyPrint(json))
 		assertTrue(json.contains("a_Make Appointment"))
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Test
+	void test_translatePatterns() {
+		List<String> patternsForFolder = [ "main/", "misc", "**/Page_CURA*" ]
+		List<String> patternsForFiles = instance.translatePatterns(patternsForFolder)
+		assertEquals(3, patternsForFiles.size())
+		assertEquals("main/**/*.rs", patternsForFiles.get(0))
+		assertEquals("misc/**/*.rs", patternsForFiles.get(1))
+		assertEquals("**/Page_CURA*/**/*.rs", patternsForFiles.get(2))
+	}
+	
+	
 }
