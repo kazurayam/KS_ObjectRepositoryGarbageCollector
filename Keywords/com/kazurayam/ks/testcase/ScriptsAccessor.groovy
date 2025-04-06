@@ -11,20 +11,12 @@ public class ScriptsAccessor {
 	private DirectoryScanner ds
 	private List<Path> groovyFiles
 
-	public ScriptsAccessor(Path scriptsDir) {
-		Objects.requireNonNull(scriptsDir)
-		assert Files.exists(scriptsDir)
-		this.scriptsDir = scriptsDir.toAbsolutePath().normalize()
-		init()
-	}
-
-	private void init() {
-		ds = new DirectoryScanner()
-		ds.setBasedir(scriptsDir.toFile())
+	private ScriptsAccessor(Builder builder) {
+		scriptsDir = builder.scriptsDir
+		ds = builder.ds
 	}
 
 	public List<Path> getGroovyFiles() {
-		ds.setBasedir(scriptsDir.toFile())
 		String[] includes = ['**/*.groovy']
 		ds.setIncludes(includes)
 		ds.scan()
@@ -35,5 +27,29 @@ public class ScriptsAccessor {
 					.toAbsolutePath().normalize())
 		}
 		return this.groovyFiles
+	}
+	
+	
+	
+	/**
+	 * 
+	 * @author kazurayam
+	 */
+	public static class Builder {
+		
+		private Path scriptsDir
+		private DirectoryScanner ds
+		
+		Builder(Path scriptsDir) {
+			Objects.requireNonNull(scriptsDir)
+			assert Files.exists(scriptsDir)
+			this.scriptsDir = scriptsDir.toAbsolutePath().normalize()
+			ds = new DirectoryScanner()
+			ds.setBasedir(scriptsDir.toFile())
+		}
+		
+		ScriptsAccessor build() {
+			return new ScriptsAccessor(this)
+		}
 	}
 }

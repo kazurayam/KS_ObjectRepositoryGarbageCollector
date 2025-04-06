@@ -31,7 +31,7 @@ public class ScriptsAccessorTest {
 
 	@Before
 	public void setup() {
-		accessor = new ScriptsAccessor(scriptsDir)
+		accessor = new ScriptsAccessor.Builder(scriptsDir).build()
 	}
 
 	@Test

@@ -81,7 +81,7 @@ class ObjectRepositoryGarbageCollector {
 		numberOfTestObjects = essenceList.size()
 
 		// scan the Scripts directory to make a list of TestCaseIds
-		ScriptsAccessor scriptsAccessor = new ScriptsAccessor(scriptsDir)
+		ScriptsAccessor scriptsAccessor = new ScriptsAccessor.Builder(scriptsDir).build()
 		List<TestCaseId> testCaseIdList = getTestCaseIdList(scriptsDir, scriptsAccessor.getGroovyFiles())
 
 		//
