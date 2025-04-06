@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<TestCaseEntity>
-   <description></description>
-   <name>ORA_getTestObjectIdList_filteredByRegex</name>
-   <tag></tag>
-   <comment></comment>
-   <recordOption>OTHER</recordOption>
-   <testCaseGuid>a5e844ea-58b5-4b64-9476-00a94a685722</testCaseGuid>
-</TestCaseEntity>

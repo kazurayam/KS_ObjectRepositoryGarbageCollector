@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<TestCaseEntity>
-   <description></description>
-   <name>ORA_jsonifyTestObjectIdList_filterByString</name>
-   <tag></tag>
-   <comment></comment>
-   <recordOption>OTHER</recordOption>
-   <testCaseGuid>aacbe5f4-66fe-4433-a69a-a7586bacabee</testCaseGuid>
-</TestCaseEntity>

@@ -16,7 +16,7 @@ import com.kazurayam.ks.testcase.DigestedLine
 import com.kazurayam.ks.testcase.TestCaseId
 import com.kazurayam.ks.testcase.TestCaseScriptDigester
 import com.kazurayam.ks.testcase.ScriptsAccessor
-import com.kazurayam.ks.testobject.ObjectRepositoryAdapter
+import com.kazurayam.ks.testobject.ObjectRepositoryDecorator
 import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kazurayam.ks.testobject.TestObjectId
 import com.kms.katalon.core.configuration.RunConfiguration
@@ -36,7 +36,7 @@ class ObjectRepositoryGarbageCollector {
 	private Path scriptsDir // must not be null
 
 	private Database db
-	private ObjectRepositoryAdapter extOR
+	private ObjectRepositoryDecorator extOR
 
 	private LocalDateTime startedAt
 	private LocalDateTime finishedAt
@@ -70,8 +70,8 @@ class ObjectRepositoryGarbageCollector {
 		
 		Database db = new Database()
 		
-		ObjectRepositoryAdapter xor = 
-			new ObjectRepositoryAdapter.Builder(objectRepositoryDir)
+		ObjectRepositoryDecorator xor = 
+			new ObjectRepositoryDecorator.Builder(objectRepositoryDir)
 				.includeFolders(this.includeFolders)
 				.build()
 

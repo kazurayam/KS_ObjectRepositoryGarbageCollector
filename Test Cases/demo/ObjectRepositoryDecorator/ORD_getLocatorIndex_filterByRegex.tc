@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>ORD_getLocatorIndex_filterByRegex</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>866b2f9b-17d1-46e7-a78e-c502c4ba1991</testCaseGuid>
+</TestCaseEntity>

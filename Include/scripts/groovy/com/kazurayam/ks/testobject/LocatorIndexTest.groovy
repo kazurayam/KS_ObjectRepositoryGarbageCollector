@@ -15,12 +15,12 @@ import internal.GlobalVariable
 @RunWith(JUnit4.class)
 public class LocatorIndexTest {
 
-	private ObjectRepositoryAdapter xor
+	private ObjectRepositoryDecorator xor
 	private LocatorIndex locatorIndex
 
 	@Before
 	public void setup() {
-		xor = new ObjectRepositoryAdapter.Builder().build()
+		xor = new ObjectRepositoryDecorator.Builder().build()
 		locatorIndex = new LocatorIndex()
 		List<TestObjectId> toiList = xor.getTestObjectIdList()
 		toiList.each { toi ->
