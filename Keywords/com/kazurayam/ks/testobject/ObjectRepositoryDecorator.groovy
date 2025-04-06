@@ -25,20 +25,20 @@ public class ObjectRepositoryDecorator {
 	private static Logger logger = LoggerFactory.getLogger(ObjectRepositoryDecorator.class)
 
 	private Path objectRepositoryDir
-	private List<String> includeFoldersSpecification
+	private List<String> includeFolderSpecification
 	private ObjectRepositoryAccessor accessor
 
 	private ObjectRepositoryDecorator(Builder builder) {
 		objectRepositoryDir = builder.objectRepositoryDir
-		includeFoldersSpecification = builder.includeFolders
+		includeFolderSpecification = builder.includeFolder
 		Objects.requireNonNull(this.objectRepositoryDir)
-		Objects.requireNonNull(this.includeFoldersSpecification)
+		Objects.requireNonNull(this.includeFolderSpecification)
 		init()
 	}
 
 	private init() {
 		// the following line is the whole reason why we need this class
-		List<String> patternsForFile = translatePatterns(includeFoldersSpecification)
+		List<String> patternsForFile = translatePatterns(includeFolderSpecification)
 		accessor =
 				new ObjectRepositoryAccessor.Builder(objectRepositoryDir)
 				.includeFiles(patternsForFile)
@@ -49,8 +49,8 @@ public class ObjectRepositoryDecorator {
 		return objectRepositoryDir
 	}
 
-	List<String> getIncludeFoldersSpecification() {
-		return includeFoldersSpecification
+	List<String> getIncludeFolderSpecification() {
+		return includeFolderSpecification
 	}
 
 
@@ -101,12 +101,12 @@ public class ObjectRepositoryDecorator {
 	/**
 	 * convert a pattern for Object Repository sub-folders to a pattern for TestObject files 
 	 *　E.g, "** /Page_CURA*" -> "** /Page_CURA* /** /*.rs"
-	 * @param includeFoldersSpecification
+	 * @param includeFolderSpecification
 	 * @return
 	 */
-	protected List<String> translatePatterns(List<String> patternsForFolder) {
+	protected List<String> translatePatterns(List<String> patterns) {
 		List<String> patternsForFile = new ArrayList<>()
-		patternsForFolder.each { ptrn ->
+		patterns.each { ptrn ->
 			StringBuilder sb = new StringBuilder()
 			sb.append(ptrn)
 			if (!ptrn.endsWith("/")) {
@@ -200,14 +200,13 @@ public class ObjectRepositoryDecorator {
 	}
 
 
-
 	/**
 	 * 
 	 * @author kazurayam
 	 */
 	public static class Builder {
 		private Path objectRepositoryDir
-		private List<String> includeFolders
+		private List<String> includeFolder
 		public Builder() {
 			this(Paths.get(".").resolve("Object Repository"))
 		}
@@ -215,14 +214,16 @@ public class ObjectRepositoryDecorator {
 			Objects.requireNonNull(dir)
 			assert Files.exists(dir)
 			objectRepositoryDir = dir
-			includeFolders = new ArrayList<>()
+			includeFolder = new ArrayList<>()
 		}
 		public Builder includeFolder(String pattern) {
-			this.includeFolders.add(pattern)
+			Objects.requireNonNull(pattern)
+			this.includeFolder.add(pattern)
 			return this
 		}
-		public Builder includeFolders(List<String> includeFolders) {
-			this.includeFolders.addAll(includeFolders)
+		public Builder includeFolder(List<String> pattern) {
+			Objects.requireNonNull(pattern)
+			this.includeFolder.addAll(pattern)
 			return this
 		}
 		public ObjectRepositoryDecorator build() {

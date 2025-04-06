@@ -12,20 +12,20 @@ public class ScriptsDecorator {
 	private static Logger logger = LoggerFactory.getLogger(ScriptsDecorator.class)
 
 	private Path scriptsDir
-	private List<String> includeFoldersSpecification
+	private List<String> includeFolderSpecification
 	private ScriptsAccessor accessor
 
 	private ScriptsDecorator(Builder builder) {
 		scriptsDir = builder.scriptsDir
-		includeFoldersSpecification = builder.includeFolders
+		includeFolderSpecification = builder.includeFolder
 		Objects.requireNonNull(scriptsDir)
-		Objects.requireNonNull(includeFoldersSpecification)
+		Objects.requireNonNull(includeFolderSpecification)
 		init()
 	}
 
 	private init() {
 		// the following line is the whole reason why we need this class "ScriptsAdapter"
-		List<String> patterns = translatePatterns(includeFoldersSpecification)
+		List<String> patterns = translatePatterns(includeFolderSpecification)
 		accessor = new ScriptsAccessor.Builder(scriptsDir)
 				.includeFiles(patterns).build()
 	}
@@ -53,8 +53,8 @@ public class ScriptsDecorator {
 		return scriptsDir
 	}
 
-	List<String> getIncludeFoldersSpecification() {
-		return includeFoldersSpecification
+	List<String> getIncludeFolderSpecification() {
+		return includeFolderSpecification
 	}
 
 	public List<Path> getGroovyFiles() {
@@ -64,7 +64,7 @@ public class ScriptsDecorator {
 
 	public static class Builder {
 		private Path scriptsDir
-		private List<String> includeFolders
+		private List<String> includeFolder
 		public Builder() {
 			this(Paths.get(".").resolve("Scripts"))
 		}
@@ -72,14 +72,14 @@ public class ScriptsDecorator {
 			Objects.requireNonNull(dir)
 			assert Files.exists(dir)
 			scriptsDir = dir
-			includeFolders = new ArrayList<>()
+			includeFolder = new ArrayList<>()
 		}
 		public Builder includeFolder(String pattern) {
-			includeFolders.add(pattern)
+			includeFolder.add(pattern)
 			return this
 		}
-		public Builder includeFolders(List<String> includeFolders) {
-			includeFolders.addAll(includeFolders)
+		public Builder includeFolders(List<String> pattern) {
+			includeFolder.addAll(pattern)
 			return this
 		}
 		public ScriptsDecorator build() {

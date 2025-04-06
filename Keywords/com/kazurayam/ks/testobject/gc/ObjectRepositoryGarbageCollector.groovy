@@ -32,11 +32,11 @@ import com.kms.katalon.core.configuration.RunConfiguration
 class ObjectRepositoryGarbageCollector {
 
 	private Path objectRepositoryDir // must not be null
-	private List<String> includeFolders  // could be empty
+	private List<String> includeFolder  // could be empty
 	private Path scriptsDir // must not be null
 
 	private Database db
-	private ObjectRepositoryDecorator extOR
+	private ObjectRepositoryDecorator ord
 
 	private LocalDateTime startedAt
 	private LocalDateTime finishedAt
@@ -48,13 +48,13 @@ class ObjectRepositoryGarbageCollector {
 	 */
 	private ObjectRepositoryGarbageCollector(Builder builder) {
 		this.objectRepositoryDir = builder.objectRepositoryDir.toAbsolutePath().normalize()
-		this.includeFolders = builder.includeFolders
+		this.includeFolder = builder.includeFolder
 		this.scriptsDir = builder.scriptsDir.toAbsolutePath().normalize()
 		//
 		startedAt = LocalDateTime.now()
 		def recv = this.scan(this.objectRepositoryDir, this.scriptsDir)
 		this.db = recv[0]
-		this.extOR = recv[1]
+		this.ord = recv[1]
 		finishedAt = LocalDateTime.now()
 	}
 
@@ -67,12 +67,12 @@ class ObjectRepositoryGarbageCollector {
 	 * find a list of "garbage" Test Objects which are not used by any of the Test Cases.
 	 */
 	private def scan(Path objectRepositoryDir, Path scriptsDir) {
-		
+
 		Database db = new Database()
-		
-		ObjectRepositoryDecorator xor = 
-			new ObjectRepositoryDecorator.Builder(objectRepositoryDir)
-				.includeFolders(this.includeFolders)
+
+		ObjectRepositoryDecorator xor =
+				new ObjectRepositoryDecorator.Builder(objectRepositoryDir)
+				.includeFolder(this.includeFolder)
 				.build()
 
 		// scan the Object Repository directory to make a list of TestObjectEssences
@@ -159,8 +159,8 @@ class ObjectRepositoryGarbageCollector {
 	 */
 	Garbages getGarbages() {
 		Garbages garbages = new Garbages()
-		//println "extOR.getAllTestObjectIdSet().size()=" + extOR.getAllTestObjectIdSet().size()
-		this.extOR.getAllTestObjectIdSet().each { testObjectId ->
+		//println "ord.getAllTestObjectIdSet().size()=" + ord.getAllTestObjectIdSet().size()
+		this.ord.getAllTestObjectIdSet().each { testObjectId ->
 			Set<ForwardReference> forwardReferences = db.findForwardReferencesTo(testObjectId)
 			//println "testObjectId=" + testObjectId.getValue() + " forwardReferences.size()=" + forwardReferences.size()
 			if (forwardReferences.size() == 0) {
@@ -244,7 +244,7 @@ class ObjectRepositoryGarbageCollector {
 	public static class Builder {
 
 		private Path objectRepositoryDir // non null
-		private List<String> includeFolders  // sub-folders in the "Object Repository"
+		private List<String> includeFolder  // sub-folders in the "Object Repository"
 
 		private Path scriptsDir // non null
 
@@ -270,7 +270,7 @@ class ObjectRepositoryGarbageCollector {
 			assert Files.exists(objectRepositoryDir)
 			assert Files.exists(scriptsDir)
 			this.objectRepositoryDir = objectRepositoryDir
-			this.includeFolders = new ArrayList<>()
+			this.includeFolder = new ArrayList<>()
 			this.scriptsDir = scriptsDir
 		}
 
@@ -285,7 +285,13 @@ class ObjectRepositoryGarbageCollector {
 		 */
 		Builder includeFolder(String pattern) {
 			Objects.requireNonNull(pattern)
-			includeFolders.add(pattern)
+			includeFolder.add(pattern)
+			return this
+		}
+		
+		Builder includeFolder(List<String> pattern) {
+			Objects.requireNonNull(pattern)
+			includeFolder.addAll(pattern)
 			return this
 		}
 
