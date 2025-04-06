@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>ORA_getTestObjectIdList_filteredByString</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>e2dad66b-5e8e-4cc2-8767-f25a98e86fbc</testCaseGuid>
+</TestCaseEntity>

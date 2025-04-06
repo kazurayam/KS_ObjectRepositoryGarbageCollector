@@ -1,0 +1,21 @@
+import com.kazurayam.ks.reporting.Shorthand
+import com.kazurayam.ks.testobject.ObjectRepositoryAdapter
+import com.kazurayam.ks.testobject.TestObjectId
+import com.kms.katalon.core.testobject.ObjectRepository
+
+import internal.GlobalVariable
+
+ObjectRepositoryAdapter ora = new ObjectRepositoryAdapter.Builder()
+								.includeFolder("**/Page_CURA*")
+								.build()
+
+List<TestObjectId> list = ora.getTestObjectIdList('button_\\w+\$', true)
+
+StringBuilder sb = new StringBuilder()
+list.each { s ->
+	sb.append(s)
+	sb.append("\n")
+}
+
+Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName('out.txt').build()
+sh.write(sb.toString())

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<TestCaseEntity>
-   <description></description>
-   <name>XOR_getLocatorIndex_filterByString</name>
-   <tag></tag>
-   <comment></comment>
-   <recordOption>OTHER</recordOption>
-   <testCaseGuid>97e0500a-db30-42e9-987c-ba9eaac1a334</testCaseGuid>
-</TestCaseEntity>
