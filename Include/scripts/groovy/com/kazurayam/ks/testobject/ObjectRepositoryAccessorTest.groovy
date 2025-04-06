@@ -31,7 +31,7 @@ public class ObjectRepositoryAccessorTest {
 
 	@Before
 	public void setup() {
-		accessor = new ObjectRepositoryAccessor(objectRepositoryDir)
+		accessor = new ObjectRepositoryAccessor.Builder(objectRepositoryDir).build()
 	}
 
 	@Test
@@ -74,6 +74,6 @@ public class ObjectRepositoryAccessorTest {
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
 				.fileName("test_getRsFiles.txt").build()
 		sh.write(sb.toString())
-		assertEquals(15, rsFiles.size())
+		assertEquals(16, rsFiles.size())
 	}
 }

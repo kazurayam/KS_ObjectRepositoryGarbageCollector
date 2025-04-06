@@ -2,11 +2,14 @@ package com.kazurayam.ks.testobject
 
 import java.nio.file.Files
 import java.nio.file.Path
-
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import com.kazurayam.ant.DirectoryScanner
 
 public class ObjectRepositoryAccessor {
 
+	private static Logger logger = LoggerFactory.getLogger(ObjectRepositoryAccessor.class)
+	
 	private Path objectRepositoryDir
 	private List<String> includeFilesSpecification
 	private DirectoryScanner ds
@@ -36,18 +39,27 @@ public class ObjectRepositoryAccessor {
 		String[] includedFiles = getIncludedFiles()
 		List<TestObjectId> result = new ArrayList<>()
 		for (int i = 0; i < includedFiles.length; i++) {
-			TestObjectId toi = new TestObjectId(includedFiles[i].replaceAll('\\.rs$', ''))
-			result.add(toi)
+			if (includedFiles[i].endsWith(".rs")) {
+				TestObjectId toi = new TestObjectId(includedFiles[i].replaceAll('\\.rs$', ''))
+				result.add(toi)
+			} else {
+				logger.warn("found a file that does not end with '.rs'; ${includedFiles[i]}")
+			}
 		}
 		return result
 	}
 
 	public List<Path> getRsFiles() {
-		List<String> includedFiles = getIncludedFiles()
+		String[] includedFiles = getIncludedFiles()
 		List<Path> result = new ArrayList<>()
-		includedFiles.each { f ->
-			result.add(objectRepositoryDir.resolve(f)
-					.toAbsolutePath().normalize())
+		for (int i = 0; i < includedFiles.length; i++) {
+			if (includedFiles[i].endsWith(".rs")) {
+				Path rs = objectRepositoryDir.resolve(includedFiles[i])
+							.toAbsolutePath().normalize()
+				result.add(rs)
+			} else {
+				logger.warn("found a file that does not end with '.rs'; ${includedFiles[i]}")
+			}
 		}
 		return result
 	}
