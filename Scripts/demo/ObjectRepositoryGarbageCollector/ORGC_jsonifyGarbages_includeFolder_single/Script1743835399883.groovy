@@ -28,5 +28,5 @@ File outFile = outDir.resolve("garbages.json").toFile()
 outFile.text = JsonOutput.prettyPrint(json)
 
 Garbages garbages = gc.getGarbages()
-assert 2 == garbages.size() : "expected garbages.size()==2 but was ${garbages.size()}"
+assert 4 == garbages.size() : "expected garbages.size()==4 but was ${garbages.size()}"
 
