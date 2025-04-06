@@ -84,3 +84,21 @@ task katalonClean(type: Delete) {
     delete 'bin'
     delete 'Libs'
 }
+
+task deleteDocsDemo(type: Delete) {
+    delete 'docs/demo'
+}
+
+task copyDemoToDocs(type: Copy, dependsOn: deleteDocsDemo) {
+    from 'build/tmp/testOutput/demo'
+    into 'docs'
+}
+
+task generateDocs {
+    doLast {
+        exec {
+            workingDir 'docs'
+            commandLine './adoc2md.sh'
+        }
+    }
+}

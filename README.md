@@ -91,7 +91,7 @@ This library supports more:
 3. It can report all *Backward Reference*s, which is a list of TestObjects associated with list of ForwardReferences to each TestObject.
 4. It can report all *Locator*s (XPath, CSS Selector) associated with list of duplicating TestObjects that implement the same locator.
 
-I will write a more detailed documentation with sample codes later.
+See [the doc](https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/) for more detail.
 
 ## Disclaimer
 
