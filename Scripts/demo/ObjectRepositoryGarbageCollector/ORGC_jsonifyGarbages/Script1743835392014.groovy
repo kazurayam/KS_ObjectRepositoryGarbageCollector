@@ -18,7 +18,7 @@ import groovy.json.JsonOutput
 // in the subfolder that match "**/Page_CURA*" will be selected, and others are ignored
 ObjectRepositoryGarbageCollector gc = 
 		new ObjectRepositoryGarbageCollector.Builder()
-			.includeFolder("**/Page_CURA*")
+			.includeFolder("**/*")
 			.build()
 
 // gc.jsonifyGarbages() triggers scanning through the entire "Object Repository".

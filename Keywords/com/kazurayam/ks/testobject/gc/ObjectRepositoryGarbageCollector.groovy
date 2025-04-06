@@ -15,8 +15,8 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import com.kazurayam.ks.testcase.DigestedLine
 import com.kazurayam.ks.testcase.TestCaseId
 import com.kazurayam.ks.testcase.TestCaseScriptDigester
-import com.kazurayam.ks.testcase.TestCaseScriptsAccessor
-import com.kazurayam.ks.testobject.ExtendedObjectRepository
+import com.kazurayam.ks.testcase.ScriptsAccessor
+import com.kazurayam.ks.testobject.ObjectRepositoryDecorator
 import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kazurayam.ks.testobject.TestObjectId
 import com.kms.katalon.core.configuration.RunConfiguration
@@ -36,7 +36,7 @@ class ObjectRepositoryGarbageCollector {
 	private Path scriptsDir // must not be null
 
 	private Database db
-	private ExtendedObjectRepository extOR
+	private ObjectRepositoryDecorator extOR
 
 	private LocalDateTime startedAt
 	private LocalDateTime finishedAt
@@ -70,8 +70,8 @@ class ObjectRepositoryGarbageCollector {
 		
 		Database db = new Database()
 		
-		ExtendedObjectRepository xor = 
-			new ExtendedObjectRepository.Builder(objectRepositoryDir)
+		ObjectRepositoryDecorator xor = 
+			new ObjectRepositoryDecorator.Builder(objectRepositoryDir)
 				.includeFolders(this.includeFolders)
 				.build()
 
@@ -81,7 +81,7 @@ class ObjectRepositoryGarbageCollector {
 		numberOfTestObjects = essenceList.size()
 
 		// scan the Scripts directory to make a list of TestCaseIds
-		TestCaseScriptsAccessor scriptsAccessor = new TestCaseScriptsAccessor(scriptsDir)
+		ScriptsAccessor scriptsAccessor = new ScriptsAccessor.Builder(scriptsDir).build()
 		List<TestCaseId> testCaseIdList = getTestCaseIdList(scriptsDir, scriptsAccessor.getGroovyFiles())
 
 		//

@@ -24,7 +24,10 @@ import groovy.json.JsonOutput
 
 // the Garbage Collector instance will scan 2 folders: "Object Repository" and "Test Cases"
 
-ObjectRepositoryGarbageCollector gc = new ObjectRepositoryGarbageCollector.Builder().build()
+ObjectRepositoryGarbageCollector gc =
+        new ObjectRepositoryGarbageCollector.Builder()
+            .includeFolder("**/Page_CURA*")
+            .build()
 
 // gc.jsonifyGarbages() triggers scanning through the 2 folders and analyze the files.
 // All forward references from TestCase scripts to TestObject entities are identified.
@@ -64,22 +67,18 @@ It took me approximately 3 seconds to get the result.
 
 I hope that it would take just a few minutes to scan through 3000 TestObjects. I expect, it will tell you over the half TestObjects are unused garbages.
 
-## Disclaimer
-
-I hope the library reports the fact. But I would not be responsible for the damage when you clear away the garbages. I would recommend you to bring your project backed by Git and store the snapshots.
-
 ## How to install the library.
 
-1. Visit the [Releases](https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector/releases) page. Identify the latest release version.
-2. Find a `KS_ObjectRepositoryGarbageCollector-x.x.x.jar` file attached
-3. Download the jar file, save it into the `Drivers` folder of your Katalon project.
-4. Close and reopen the project. Confirm that the jar is recognized by Katalon Studio.
-5. Create a Test Case script, which should be similar to the above "GC" script.
-6. You are done. Run it and see how quickly you can get the result.
+1. Visit the [KS_ObjectRepositoryGargabeCollector, Releases](https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector/releases) page. Identify the latest version. Find a `KS_ObjectRepositoryGarbageCollector-x.x.x.jar` file attached. Download the jar file, save it into the `Drivers` folder of your Katalon project.
+2. Visit the [MonkDirectoryScanner, Releases](https://github.com/kazurayam/MonkDirectoryScanner/releases/tag/0.1.0). Identify the latest version. Find a `MondDirectoryScanner-x.x.x.jar` file attached. Download the jar file, save into the `Drivers` folder of your katalon project.
+3. Close and reopen the project. Confirm that the jars are recognized by Katalon Studio.
+4. Create a Test Case script, which should be similar to the above "GC" script.
+5. You are done. Run it and see how quickly you can get the result.
 
 ## Dependencies, versions, etc
 
-This library uses only the libraries bundled in Katalon Studio. You don't have to add any more external libraries other than the aforementioned jar.
+You need to add the aforementioned jars developed by kazurayam.
+This library depends on a few external libraries which is bundled in Katalon Studio, e.g, FastXML Jackson Databind.
 
 This library should run on any version of Katalon Studio and Katalon Runtime Engine.
 
@@ -87,10 +86,13 @@ This library should run on any version of Katalon Studio and Katalon Runtime Eng
 
 This library supports more:
 
-1. It can report all *Forward Reference*s from TestCase scripts to TestObjects.
-2. It can report all *Backward Reference*s, which is a list of TestObjects associated with list of ForwardReferences to each TestObject.
-3. It can report all *Locator*s (XPath, CSS Selector) associated with list of duplicating TestObjects that implement the same locator.
-4. You can narrow-down the "Test Cases" sub-folder and the "Object Repository" sub-folder to choose the entrie from. By this, you can get the report smaller and forcused.
+1. You can drill-down to the sub-folders of "Object Repository" to select targets from a smaller set of Test Objects. By this, you can get more concise/focused report.
+2. It can report all *Forward Reference*s from TestCase scripts to TestObjects.
+3. It can report all *Backward Reference*s, which is a list of TestObjects associated with list of ForwardReferences to each TestObject.
+4. It can report all *Locator*s (XPath, CSS Selector) associated with list of duplicating TestObjects that implement the same locator.
 
-I will write a more details documentation with sample codes later.
+See [the doc](https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/) for more detail.
 
+## Disclaimer
+
+I hope the library reports correctly. But I would not be responsible for the damages when you manually clear away what it found as “garbages”. I would recommend you to set your project backed by Git, and to store the snapshots before cleaning.

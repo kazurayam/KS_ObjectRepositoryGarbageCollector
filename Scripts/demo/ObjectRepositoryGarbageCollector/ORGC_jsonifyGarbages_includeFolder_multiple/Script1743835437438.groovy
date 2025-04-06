@@ -15,7 +15,7 @@ import groovy.json.JsonOutput
 ObjectRepositoryGarbageCollector gc =
 		new ObjectRepositoryGarbageCollector.Builder()
 			.includeFolder("main/Page_CURA Healthcare Service")
-			.includeFolder("main/Page_CURA Healthcare Service2")
+			.includeFolder("main/Page_CURA Healthcare Service/xtra")
 			.build()
 
 String json = gc.jsonifyGarbages()
@@ -29,5 +29,5 @@ File outFile = outDir.resolve("garbages.json").toFile()
 outFile.text = JsonOutput.prettyPrint(json)
 
 Garbages garbages = gc.getGarbages()
-assert 2 == garbages.size() : "expected garbages.size()==2 but was ${garbages.size()}"
+assert 4 == garbages.size() : "expected garbages.size()==4 but was ${garbages.size()}"
 

@@ -4,3 +4,5 @@ back to the link:https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollecto
 
 include::s1_problem_to_solve.adoc[]
 include::s2_solution_proposed.adoc[]
+include::s3_demo_ORGC.adoc[]
+include::s4_demo_XOR.adoc[]

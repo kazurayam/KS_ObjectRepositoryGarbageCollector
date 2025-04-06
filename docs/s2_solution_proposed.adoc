@@ -1,35 +1,27 @@
 == Solution
 
+=== Environment
+
+I developed this project using the following environment:
+
+- macOS Sonoma 14.7.4
+- Katalon Studio Free v10.1.0 which bundles JDK17
+
+The KS_ObjectRepositoryGargageCollecor-x.x.x.jar requires Katalon Studio v10 and newer.
+
+It wouldn't run on v9 and older due to JDK version.
+
+The jar would run in Katalon Runtime Engine not only in Katalon Studio.
+
 === Installation
 
-You can download the jar from the [Releases](https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector/releases) page. Download the `KS_ObjectRepositoryGarbageCollector-x.x.x.jar`; locate it into the `Drivers` folder of your local Katalon Studio project.
+How to get started with the *Object Repository Garbage Collector* in your own Katalon Studio project?
 
-In order to confirm if you have the library, open your project in Katalon Studio, open "Project" > "Settings" to check the "Library Management". In the dialog, the jar should be found in the dialog:
-
-image:https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/images/2_1_LibraryManagement.png[]
-
-
-=== How to find out unused TestObjects
-
-Here I made a script `Test Cases/ObjectRepositoryGarbageCollector/GC1`:
-
-[source]
-----
-include::../Scripts/demo/ObjectRepositoryGarbageCollector/GC1/Script1742992081296.groovy[]
-----
-
-When I run the script in Katalon Studio, I got the following output in the console:
-
-include::../build/reports/demo/ObjectRepositoryGarbageCollector/GC1.adoc[]
-
-Let me dictate this report.
-
-1. The name of this project is `KS_ObjectRepositoryGarbageCollector``
-2. In this project, there are 30 Test Cases in the `Test Cases` folder
-3. there are I have 15 Test Objects in the `Object Repository` folder
-4. amongst all, there are 4 Test Objects that are not used by any of the Test Cases
-5. It to 1.6 seconds to look up the unused Test Objects.
-
-=== How to generate the reverse-reference of TestObjects -> TestCases
+1. Visit the link:https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector/releases[KS_ObjectRepositoryGarbageCollector, Releases] page. Identify the latest release. Find the `KS_ObjectRepositoryGarbageCollector-x.x.x.jar` attached to each release. Download the jar, save it into the `Drivers` folder of your local Katalon Studio project.
+2. Visit the link:https://github.com/kazurayam/MonkDirectoryScanner/releases[MonkDirectoryScanner, Releases] page. Identify the latest release. Find the `MonkDirectoryScanner-x.x.x.jar` attached to each release. Download the jar, save it into the `Drivers` folder of your local Katalon Studio project.
+3. Close your project and reopen it so that your Katalon Studio recognize the new jar files.
+4. Open the "Project" > "Settings", "Library Management" dialog. Check if 2 jars are there: image:https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/images/2_1_LibraryManagement.png[]
+5. You want to create a Test Case to run the *garbage collector* class. You can copy & reuse the code link:https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector/blob/develop/Scripts/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbages/Script1743835392014.groovy[Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbages]. Thes Test Case should run in any project.
+6. You are done! Run the test case and see the output in the console.
 
 
