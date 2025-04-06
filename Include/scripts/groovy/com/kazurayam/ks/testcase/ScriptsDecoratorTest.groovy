@@ -19,10 +19,9 @@ import internal.GlobalVariable
 import com.kms.katalon.core.configuration.RunConfiguration
 
 @RunWith(JUnit4.class)
-public class ScriptsAdapterTest {
+public class ScriptsDecoratorTest {
 
 	private static Path scriptsDir
-	private ScriptsAdapter adapter
 
 	@BeforeClass
 	public static void beforeClass() {
@@ -32,8 +31,8 @@ public class ScriptsAdapterTest {
 
 	@Test
 	public void test_getGroovyFile_include_all() {
-		ScriptsAdapter adapter = new ScriptsAdapter.Builder(scriptsDir).build()
-		List<Path> groovyFiles = adapter.getGroovyFiles()
+		ScriptsDecorator decorator = new ScriptsDecorator.Builder(scriptsDir).build()
+		List<Path> groovyFiles = decorator.getGroovyFiles()
 		assertTrue("groovyFiles is empty", groovyFiles.size() > 0)
 		//
 		StringBuilder sb = new StringBuilder()
@@ -47,12 +46,12 @@ public class ScriptsAdapterTest {
 		//
 		assertEquals(47, groovyFiles.size())
 	}
-	
+
 	@Test
 	public void test_getGroovyFile_include_main_only() {
-		ScriptsAdapter adapter = new ScriptsAdapter.Builder(scriptsDir)
-									.includeFolder("**/main/*").build()
-		List<Path> groovyFiles = adapter.getGroovyFiles()
-		assertEquals(2, groovyFiles.size())	
+		ScriptsDecorator decorator = new ScriptsDecorator.Builder(scriptsDir)
+				.includeFolder("**/main/*").build()
+		List<Path> groovyFiles = decorator.getGroovyFiles()
+		assertEquals(2, groovyFiles.size())
 	}
 }

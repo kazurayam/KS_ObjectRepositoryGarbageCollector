@@ -7,15 +7,15 @@ import java.nio.file.Paths
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-public class ScriptsAdapter {
+public class ScriptsDecorator {
 
-	private static Logger logger = LoggerFactory.getLogger(ScriptsAdapter.class)
+	private static Logger logger = LoggerFactory.getLogger(ScriptsDecorator.class)
 
 	private Path scriptsDir
 	private List<String> includeFoldersSpecification
 	private ScriptsAccessor accessor
 
-	private ScriptsAdapter(Builder builder) {
+	private ScriptsDecorator(Builder builder) {
 		scriptsDir = builder.scriptsDir
 		includeFoldersSpecification = builder.includeFolders
 		Objects.requireNonNull(scriptsDir)
@@ -82,9 +82,9 @@ public class ScriptsAdapter {
 			includeFolders.addAll(includeFolders)
 			return this
 		}
-		public ScriptsAdapter build() {
+		public ScriptsDecorator build() {
 			assert scriptsDir != null : "scriptsDir is left null"
-			return new ScriptsAdapter(this)
+			return new ScriptsDecorator(this)
 		}
 	}
 }

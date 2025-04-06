@@ -1,13 +1,13 @@
-import com.kazurayam.ks.testcase.ScriptsAdapter
+import com.kazurayam.ks.testcase.ScriptsDecorator
 
 import java.nio.file.Path
 import java.nio.file.Paths
 
-ScriptsAdapter adapter = new ScriptsAdapter.Builder()
+ScriptsDecorator decorator = new ScriptsDecorator.Builder()
 							.includeFolder("main")
 							.build()
 
-List<Path> groovyFiles = adapter.getGroovyFiles()
+List<Path> groovyFiles = decorator.getGroovyFiles()
 
 groovyFiles.each { p ->
 	println p.toString()
