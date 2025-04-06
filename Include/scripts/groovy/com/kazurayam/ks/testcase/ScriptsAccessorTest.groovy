@@ -18,10 +18,10 @@ import internal.GlobalVariable
 import com.kms.katalon.core.configuration.RunConfiguration
 
 @RunWith(JUnit4.class)
-public class TestCaseScriptsAccessorTest {
+public class ScriptsAccessorTest {
 
 	private static Path scriptsDir
-	private TestCaseScriptsAccessor accessor
+	private ScriptsAccessor accessor
 
 	@BeforeClass
 	public static void beforeClass() {
@@ -31,7 +31,7 @@ public class TestCaseScriptsAccessorTest {
 
 	@Before
 	public void setup() {
-		accessor = new TestCaseScriptsAccessor(scriptsDir)
+		accessor = new ScriptsAccessor(scriptsDir)
 	}
 
 	@Test

@@ -5,13 +5,13 @@ import java.nio.file.Path
 
 import com.kazurayam.ant.DirectoryScanner
 
-public class TestCaseScriptsAccessor {
+public class ScriptsAccessor {
 
 	private Path scriptsDir
 	private DirectoryScanner ds
 	private List<Path> groovyFiles
 
-	public TestCaseScriptsAccessor(Path scriptsDir) {
+	public ScriptsAccessor(Path scriptsDir) {
 		Objects.requireNonNull(scriptsDir)
 		assert Files.exists(scriptsDir)
 		this.scriptsDir = scriptsDir.toAbsolutePath().normalize()

@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import com.kazurayam.ks.testcase.DigestedLine
 import com.kazurayam.ks.testcase.TestCaseId
 import com.kazurayam.ks.testcase.TestCaseScriptDigester
-import com.kazurayam.ks.testcase.TestCaseScriptsAccessor
+import com.kazurayam.ks.testcase.ScriptsAccessor
 import com.kazurayam.ks.testobject.ExtendedObjectRepository
 import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kazurayam.ks.testobject.TestObjectId
@@ -81,7 +81,7 @@ class ObjectRepositoryGarbageCollector {
 		numberOfTestObjects = essenceList.size()
 
 		// scan the Scripts directory to make a list of TestCaseIds
-		TestCaseScriptsAccessor scriptsAccessor = new TestCaseScriptsAccessor(scriptsDir)
+		ScriptsAccessor scriptsAccessor = new ScriptsAccessor(scriptsDir)
 		List<TestCaseId> testCaseIdList = getTestCaseIdList(scriptsDir, scriptsAccessor.getGroovyFiles())
 
 		//
