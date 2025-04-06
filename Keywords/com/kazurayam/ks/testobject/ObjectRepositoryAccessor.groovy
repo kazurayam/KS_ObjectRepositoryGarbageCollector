@@ -9,7 +9,7 @@ import com.kazurayam.ant.DirectoryScanner
 public class ObjectRepositoryAccessor {
 
 	private static Logger logger = LoggerFactory.getLogger(ObjectRepositoryAccessor.class)
-	
+
 	private Path objectRepositoryDir
 	private List<String> includeFilesSpecification
 	private DirectoryScanner ds
@@ -23,10 +23,9 @@ public class ObjectRepositoryAccessor {
 	private void init() {
 		ds = new DirectoryScanner()
 		ds.setBasedir(objectRepositoryDir.toFile())
-		includeFilesSpecification.each { pattern ->
-			if (pattern.length() > 0) {
-				ds.setIncludes(pattern)
-			}
+		if (includeFilesSpecification.size() > 0) {
+			String[] includes = includeFilesSpecification.toArray(new String[0])
+			ds.setIncludes(includes)
 		}
 		ds.scan()
 	}
@@ -55,7 +54,7 @@ public class ObjectRepositoryAccessor {
 		for (int i = 0; i < includedFiles.length; i++) {
 			if (includedFiles[i].endsWith(".rs")) {
 				Path rs = objectRepositoryDir.resolve(includedFiles[i])
-							.toAbsolutePath().normalize()
+						.toAbsolutePath().normalize()
 				result.add(rs)
 			} else {
 				logger.warn("found a file that does not end with '.rs'; ${includedFiles[i]}")
@@ -73,12 +72,17 @@ public class ObjectRepositoryAccessor {
 		private Path objectRepositoryDir
 		private List<String> includeFiles
 		public Builder(Path orDir) {
-			this.objectRepositoryDir = orDir.toAbsolutePath().normalize()
-			this.includeFiles = new ArrayList<>()
+			objectRepositoryDir = orDir.toAbsolutePath().normalize()
+			includeFiles = new ArrayList<>()
+		}
+		public Builder includeFile(String pattern) {
+			Objects.requireNonNull(pattern)
+			includeFiles.add(pattern)
+			return this
 		}
 		public Builder includeFiles(List<String> patterns) {
 			Objects.requireNonNull(patterns)
-			this.includeFiles = patterns
+			includeFiles.addAll(patterns)
 			return this
 		}
 		public ObjectRepositoryAccessor build() {

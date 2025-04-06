@@ -1,7 +1,5 @@
 package com.kazurayam.ks.testobject
 
-import static com.kms.katalon.core.testobject.ObjectRepository.findTestObject
-
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -16,7 +14,6 @@ import com.kazurayam.ks.testobject.TestObjectEssence.TestObjectEssenceSerializer
 import com.kms.katalon.core.testobject.ObjectRepository
 import com.kms.katalon.core.testobject.TestObject
 
-import groovy.json.JsonOutput
 
 /**
  * ExtendedObjectRepository wraps the so-called "Object Repository" directory,
@@ -29,13 +26,23 @@ public class ExtendedObjectRepository {
 
 	private Path objectRepositoryDir
 	private List<String> includeFoldersSpecification
+	private ObjectRepositoryAccessor accessor
 
 	private ExtendedObjectRepository(Builder builder) {
-		Objects.requireNonNull(builder, "the param 'builder' is null")
-		this.objectRepositoryDir = builder.objectRepositoryDir
-		this.includeFoldersSpecification = builder.includeFolders
+		objectRepositoryDir = builder.objectRepositoryDir
+		includeFoldersSpecification = builder.includeFolders
 		Objects.requireNonNull(this.objectRepositoryDir)
 		Objects.requireNonNull(this.includeFoldersSpecification)
+		init()
+	}
+
+	private init() {
+		// the following line is the whole reason why we need this class
+		List<String> patternsForFile = translatePatterns(includeFoldersSpecification)
+		accessor =
+				new ObjectRepositoryAccessor.Builder(objectRepositoryDir)
+				.includeFiles(patternsForFile)
+				.build()
 	}
 
 	Path getObjectRepositoryDir() {
@@ -57,10 +64,6 @@ public class ExtendedObjectRepository {
 	 * @throws IOException
 	 */
 	List<TestObjectId> getTestObjectIdList(String pattern = "", Boolean isRegex = false) throws IOException {
-		ObjectRepositoryAccessor accessor =
-				new ObjectRepositoryAccessor.Builder(objectRepositoryDir)
-				.includeFiles(translatePatterns(includeFoldersSpecification))
-				.build()
 		List<TestObjectId> ids = accessor.getTestObjectIdList()
 		//
 		List<TestObjectId> result = new ArrayList<>()
@@ -79,10 +82,6 @@ public class ExtendedObjectRepository {
 	 * You can select the target TestObjects to choose by the "pattern" and "isRegex" parameters
 	 */
 	List<TestObjectEssence> getTestObjectEssenceList(String pattern, Boolean isRegex = false) throws IOException {
-		ObjectRepositoryAccessor accessor =
-				new ObjectRepositoryAccessor.Builder(objectRepositoryDir)
-				.includeFiles(translatePatterns(includeFoldersSpecification))
-				.build()
 		List<TestObjectId> ids = accessor.getTestObjectIdList()
 		RegexOptedTextMatcher m = new RegexOptedTextMatcher(pattern, isRegex)
 		//
@@ -100,7 +99,7 @@ public class ExtendedObjectRepository {
 	}
 
 	/**
-	 * convert a pattern for Object Repository folders to a pattern for TestObject files 
+	 * convert a pattern for Object Repository sub-folders to a pattern for TestObject files 
 	 *　E.g, "** /Page_CURA*" -> "** /Page_CURA* /** /*.rs"
 	 * @param includeFoldersSpecification
 	 * @return
@@ -223,11 +222,11 @@ public class ExtendedObjectRepository {
 			return this
 		}
 		public Builder includeFolders(List<String> includeFolders) {
-			this.includeFolders = includeFolders
+			this.includeFolders.addAll(includeFolders)
 			return this
 		}
 		public ExtendedObjectRepository build() {
-			assert objectRepositoryDir != null : "objectRepositoryDir is null"
+			assert objectRepositoryDir != null : "objectRepositoryDir is left null"
 			return new ExtendedObjectRepository(this)
 		}
 	}

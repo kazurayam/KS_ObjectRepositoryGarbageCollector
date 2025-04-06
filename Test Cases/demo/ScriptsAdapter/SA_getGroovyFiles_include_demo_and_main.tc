@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>SA_getGroovyFiles_include_demo_and_main</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>6e092847-a956-4236-97b5-3248929e9b8d</testCaseGuid>
+</TestCaseEntity>

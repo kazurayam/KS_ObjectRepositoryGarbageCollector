@@ -1,5 +1,6 @@
 package com.kazurayam.ks.testcase
 
+
 import static org.junit.Assert.*
 
 import java.nio.file.Files
@@ -18,10 +19,10 @@ import internal.GlobalVariable
 import com.kms.katalon.core.configuration.RunConfiguration
 
 @RunWith(JUnit4.class)
-public class ScriptsAccessorTest {
+public class ScriptsAdapterTest {
 
 	private static Path scriptsDir
-	private ScriptsAccessor accessor
+	private ScriptsAdapter adapter
 
 	@BeforeClass
 	public static void beforeClass() {
@@ -29,11 +30,10 @@ public class ScriptsAccessorTest {
 		assert Files.exists(scriptsDir)
 	}
 
-
 	@Test
-	public void test_getGroovyFiles_include_all() {
-		accessor = new ScriptsAccessor.Builder(scriptsDir).build()
-		List<Path> groovyFiles = accessor.getGroovyFiles()
+	public void test_getGroovyFile_include_all() {
+		ScriptsAdapter adapter = new ScriptsAdapter.Builder(scriptsDir).build()
+		List<Path> groovyFiles = adapter.getGroovyFiles()
 		assertTrue("groovyFiles is empty", groovyFiles.size() > 0)
 		//
 		StringBuilder sb = new StringBuilder()
@@ -49,12 +49,10 @@ public class ScriptsAccessorTest {
 	}
 	
 	@Test
-	public void test_getGroovyFiles_include_demo_and_main() {
-		accessor = new ScriptsAccessor.Builder(scriptsDir)
-					.includeFile("demo/**/*.groovy")
-					.includeFile("main/**/*.groovy")
-					.build()
-		List<Path> groovyFiles = accessor.getGroovyFiles()
-		assertEquals(24, groovyFiles.size())
+	public void test_getGroovyFile_include_main_only() {
+		ScriptsAdapter adapter = new ScriptsAdapter.Builder(scriptsDir)
+									.includeFolder("**/main/*").build()
+		List<Path> groovyFiles = adapter.getGroovyFiles()
+		assertEquals(2, groovyFiles.size())	
 	}
 }
