@@ -10,7 +10,7 @@ import groovy.json.JsonOutput
 
 ObjectRepositoryGarbageCollector gc =
 	new ObjectRepositoryGarbageCollector.Builder()
-		.includeFolder("**/Page_CURA*")
+		.includeObjectRepositoryFolder("**/Page_CURA*")
 		.build()
 
 Garbages garbages = gc.getGarbages()

@@ -13,9 +13,9 @@ import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import com.kazurayam.ks.testcase.DigestedLine
+import com.kazurayam.ks.testcase.ScriptsDecorator
 import com.kazurayam.ks.testcase.TestCaseId
 import com.kazurayam.ks.testcase.TestCaseScriptDigester
-import com.kazurayam.ks.testcase.ScriptsAccessor
 import com.kazurayam.ks.testobject.ObjectRepositoryDecorator
 import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kazurayam.ks.testobject.TestObjectId
@@ -32,8 +32,10 @@ import com.kms.katalon.core.configuration.RunConfiguration
 class ObjectRepositoryGarbageCollector {
 
 	private Path objectRepositoryDir // must not be null
-	private List<String> includeFolder  // could be empty
+	private List<String> includeObjectRepositoryFolder  // could be empty
+
 	private Path scriptsDir // must not be null
+	private List<String> includeScriptsFolder // could be empty
 
 	private Database db
 	private ObjectRepositoryDecorator ord
@@ -47,9 +49,11 @@ class ObjectRepositoryGarbageCollector {
 	 * 
 	 */
 	private ObjectRepositoryGarbageCollector(Builder builder) {
-		this.objectRepositoryDir = builder.objectRepositoryDir.toAbsolutePath().normalize()
-		this.includeFolder = builder.includeFolder
-		this.scriptsDir = builder.scriptsDir.toAbsolutePath().normalize()
+		objectRepositoryDir = builder.objectRepositoryDir.toAbsolutePath().normalize()
+		includeObjectRepositoryFolder = builder.includeObjectRepositoryFolder
+		//
+		scriptsDir = builder.scriptsDir.toAbsolutePath().normalize()
+		includeScriptsFolder = builder.includeScriptsFolder
 		//
 		startedAt = LocalDateTime.now()
 		def recv = this.scan(this.objectRepositoryDir, this.scriptsDir)
@@ -72,7 +76,7 @@ class ObjectRepositoryGarbageCollector {
 
 		ObjectRepositoryDecorator xor =
 				new ObjectRepositoryDecorator.Builder(objectRepositoryDir)
-				.includeFolder(this.includeFolder)
+				.includeFolder(this.includeObjectRepositoryFolder)
 				.build()
 
 		// scan the Object Repository directory to make a list of TestObjectEssences
@@ -81,8 +85,11 @@ class ObjectRepositoryGarbageCollector {
 		numberOfTestObjects = essenceList.size()
 
 		// scan the Scripts directory to make a list of TestCaseIds
-		ScriptsAccessor scriptsAccessor = new ScriptsAccessor.Builder(scriptsDir).build()
-		List<TestCaseId> testCaseIdList = getTestCaseIdList(scriptsDir, scriptsAccessor.getGroovyFiles())
+		ScriptsDecorator scriptsDecorator =
+				new ScriptsDecorator.Builder(scriptsDir)
+				.includeFolder(includeScriptsFolder)
+				.build()
+		List<TestCaseId> testCaseIdList = getTestCaseIdList(scriptsDir, scriptsDecorator.getGroovyFiles())
 
 		//
 		numberOfTestCases = testCaseIdList.size()
@@ -123,6 +130,14 @@ class ObjectRepositoryGarbageCollector {
 		return this.objectRepositoryDir.getParent().normalize().toAbsolutePath()
 	}
 
+	List<String> getIncludeObjectRepositoryFolder() {
+		return includeObjectRepositoryFolder	
+	}
+	
+	List<String> getIncludeScriptsFolder() {
+		return includeScriptsFolder
+	}
+	
 	int getNumberOfTestCases() {
 		return numberOfTestCases
 	}
@@ -210,6 +225,24 @@ class ObjectRepositoryGarbageCollector {
 				JsonGenerator gen, SerializerProvider serializer) {
 			gen.writeStartObject()
 			gen.writeStringField("Project name", gc.getProjectDir().getFileName().toString())
+			if (!gc.getIncludeScriptsFolder().isEmpty()) {
+				gen.writeFieldName("includeScriptsFolder")
+				gen.writeStartArray()
+				List<String> patterns = gc.getIncludeScriptsFolder()
+				patterns.each { ptrn ->
+					gen.writeString(ptrn)
+				}
+				gen.writeEndArray()
+			}
+			if (!gc.getIncludeObjectRepositoryFolder().isEmpty()) {
+				gen.writeFieldName("includeObjectRepositoryFolder")
+				gen.writeStartArray()
+				List<String> patterns = gc.getIncludeObjectRepositoryFolder()
+				patterns.each { ptrn ->
+					gen.writeString(ptrn)
+				}
+				gen.writeEndArray()
+			}
 			gen.writeNumberField("Number of TestCases", gc.getNumberOfTestCases())
 			gen.writeNumberField("Number of TestObjects", gc.getNumberOfTestObjects())
 			gen.writeNumberField("Number of unused TestObjects", gc.getGarbages().size())
@@ -244,9 +277,10 @@ class ObjectRepositoryGarbageCollector {
 	public static class Builder {
 
 		private Path objectRepositoryDir // non null
-		private List<String> includeFolder  // sub-folders in the "Object Repository"
+		private List<String> includeObjectRepositoryFolder  // sub-folders in the "Object Repository" directory, may be empty
 
 		private Path scriptsDir // non null
+		private List<String> includeScriptsFolder // sub-folders in the "Scripts" directory, may be empty
 
 
 		Builder() {
@@ -270,30 +304,44 @@ class ObjectRepositoryGarbageCollector {
 			assert Files.exists(objectRepositoryDir)
 			assert Files.exists(scriptsDir)
 			this.objectRepositoryDir = objectRepositoryDir
-			this.includeFolder = new ArrayList<>()
+			this.includeObjectRepositoryFolder = new ArrayList<>()
 			this.scriptsDir = scriptsDir
+			this.includeScriptsFolder = new ArrayList()
 		}
 
 		/**
 		 * 
 		 * @param subpaths expressions like Ant FileSet pattern, e.g. 
-		 * - <code>.includeFolder("main/Page_CURA Healthcare Service")</code>
-		 * - <code>.includeFolder("main/Page_CURA Healthcare Service2")</code>
-		 * - <code>.includeFolder("main/Page_CURA Healthcare Service?")</code>
-		 * - <code>.includeFolder("main/Page_CURA*")</code>
-		 * - <code>.includeFolder("**\\/Page_CURA*")</code>
+		 * - <code>.includeObjectRepsitoryFolder("main/Page_CURA Healthcare Service")</code>
+		 * - <code>.includeObjectRepositoryFolder("main/Page_CURA Healthcare Service2")</code>
+		 * - <code>.includeObjectRepositoryFolder("main/Page_CURA Healthcare Service?")</code>
+		 * - <code>.includeObjectRepositoryFolder("main/Page_CURA*")</code>
+		 * - <code>.includeObjectRepositoryFolder("**\\/Page_CURA*")</code>
 		 */
-		Builder includeFolder(String pattern) {
+		Builder includeObjectRepositoryFolder(String pattern) {
 			Objects.requireNonNull(pattern)
-			includeFolder.add(pattern)
+			includeObjectRepositoryFolder.add(pattern)
 			return this
 		}
-		
-		Builder includeFolder(List<String> pattern) {
+
+		Builder includeObjectRepositoryFolder(List<String> pattern) {
 			Objects.requireNonNull(pattern)
-			includeFolder.addAll(pattern)
+			includeObjectRepositoryFolder.addAll(pattern)
 			return this
 		}
+
+		Builder includeScriptsFolder(String pattern) {
+			Objects.requireNonNull(pattern)
+			includeScriptsFolder.add(pattern)
+			return this
+		}
+
+		Builder includeScriptsFolder(List<String> pattern) {
+			Objects.requireNonNull(pattern)
+			includeScriptsFolder.addAll(pattern)
+			return this
+		}
+
 
 		public ObjectRepositoryGarbageCollector build() {
 			return new ObjectRepositoryGarbageCollector(this)

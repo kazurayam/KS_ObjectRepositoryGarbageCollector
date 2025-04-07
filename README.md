@@ -80,7 +80,7 @@ I hope that it would take just a few minutes to scan through 3000 TestObjects. I
 You need to add the aforementioned jars developed by kazurayam.
 This library depends on a few external libraries which is bundled in Katalon Studio, e.g, FastXML Jackson Databind.
 
-This library should run on v10.0 or newer Katalon Studio and Katalon Runtime Engine.
+This library should run on Katalon Studio Free, Katalon Studio Enterprise, and Katalon Runtime Engine. The jar is compiled by Katalon Studio Free v10.1.0 with JDK17, so the jar requires KS v10.x or above.
 
 ## More features?
 

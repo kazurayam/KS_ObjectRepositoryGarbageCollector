@@ -15,7 +15,7 @@ import com.kazurayam.ks.reporting.Shorthand
 
 ObjectRepositoryGarbageCollector gc =
 	new ObjectRepositoryGarbageCollector.Builder()
-		.includeFolder("**/Page_CURA*")
+		.includeObjectRepositoryFolder("**/Page_CURA*")
 		.build()
 
 String json = gc.jsonifyBackwardReferences()

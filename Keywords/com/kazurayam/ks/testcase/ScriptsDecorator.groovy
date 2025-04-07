@@ -78,7 +78,7 @@ public class ScriptsDecorator {
 			includeFolder.add(pattern)
 			return this
 		}
-		public Builder includeFolders(List<String> pattern) {
+		public Builder includeFolder(List<String> pattern) {
 			includeFolder.addAll(pattern)
 			return this
 		}

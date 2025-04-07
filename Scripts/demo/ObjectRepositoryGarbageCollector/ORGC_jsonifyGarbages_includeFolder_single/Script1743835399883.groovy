@@ -14,7 +14,7 @@ import groovy.json.JsonOutput
  */
 ObjectRepositoryGarbageCollector gc = 
 		new ObjectRepositoryGarbageCollector.Builder()
-			.includeFolder("main/Page_CURA Healthcare Service")
+			.includeObjectRepositoryFolder("main/Page_CURA Healthcare Service")
 			.build()
 
 String json = gc.jsonifyGarbages()

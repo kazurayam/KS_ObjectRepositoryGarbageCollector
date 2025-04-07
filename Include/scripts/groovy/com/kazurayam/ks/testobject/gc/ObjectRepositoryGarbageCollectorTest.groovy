@@ -31,7 +31,12 @@ public class ObjectRepositoryGarbageCollectorTest {
 
 	@BeforeClass
 	static void beforeClass() {
-		garbageCollector = new ObjectRepositoryGarbageCollector.Builder(objectRepositoryDir, scriptsDir).build()
+		garbageCollector = new ObjectRepositoryGarbageCollector.Builder(objectRepositoryDir, scriptsDir)
+				.includeScriptsFolder("main")
+				.includeScriptsFolder("misc")
+				.includeObjectRepositoryFolder("main")
+				.includeObjectRepositoryFolder("misc")
+				.build()
 	}
 
 	@Test
