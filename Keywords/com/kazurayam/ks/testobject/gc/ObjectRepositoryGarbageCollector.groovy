@@ -74,13 +74,13 @@ class ObjectRepositoryGarbageCollector {
 
 		Database db = new Database()
 
-		ObjectRepositoryDecorator xor =
+		ObjectRepositoryDecorator ord =
 				new ObjectRepositoryDecorator.Builder(objectRepositoryDir)
 				.includeFolder(this.includeObjectRepositoryFolder)
 				.build()
 
 		// scan the Object Repository directory to make a list of TestObjectEssences
-		List<TestObjectEssence> essenceList = xor.getTestObjectEssenceList("", false)
+		List<TestObjectEssence> essenceList = ord.getTestObjectEssenceList("", false)
 		//
 		numberOfTestObjects = essenceList.size()
 
@@ -108,7 +108,7 @@ class ObjectRepositoryGarbageCollector {
 				}
 			}
 		}
-		return [db, xor]
+		return [db, ord]
 	}
 
 
@@ -125,19 +125,27 @@ class ObjectRepositoryGarbageCollector {
 	Database db() {
 		return db
 	}
+	
+	/**
+	 *
+	 */
+	String jsonifyDatabase() {
+		return db.toJson()
+	}
+
 
 	Path getProjectDir() {
 		return this.objectRepositoryDir.getParent().normalize().toAbsolutePath()
 	}
 
 	List<String> getIncludeObjectRepositoryFolder() {
-		return includeObjectRepositoryFolder	
+		return includeObjectRepositoryFolder
 	}
-	
+
 	List<String> getIncludeScriptsFolder() {
 		return includeScriptsFolder
 	}
-	
+
 	int getNumberOfTestCases() {
 		return numberOfTestCases
 	}
