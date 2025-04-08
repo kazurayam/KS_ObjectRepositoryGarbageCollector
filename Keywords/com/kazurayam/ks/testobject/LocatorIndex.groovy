@@ -76,9 +76,10 @@ public class LocatorIndex {
 			keys.each { locator ->
 				gen.writeStartObject()
 				gen.writeStringField("Locator", locator.getValue())
+				Set<TestObjectEssence> essences = locatorIndex.get(locator)
+				gen.writeNumberField("Number of duplicates", essences.size())
 				gen.writeFieldName("TestObjectEssences")
 				gen.writeStartArray()
-				Set<TestObjectEssence> essences = locatorIndex.get(locator)
 				essences.each { essence ->
 					gen.writeObject(essence)
 				}
