@@ -12,7 +12,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.junit.runners.MethodSorters;
-
+import com.kazurayam.ks.testobject.LocatorIndex
 import com.kazurayam.ks.testobject.TestObjectId
 import com.kazurayam.ks.reporting.Shorthand
 
@@ -64,6 +64,20 @@ public class ObjectRepositoryGarbageCollectorTest {
 	void test_jsonifyBackwardReferences() {
 		String json = garbageCollector.jsonifyBackwardReferences()
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName("test_jsonifyBackwardReferences.json").build()
+		sh.write(JsonOutput.prettyPrint(json))
+	}
+
+	@Test
+	void test_getLocatorIndex_with_pattern() {
+		LocatorIndex locatorIndex = garbageCollector.getLocatorIndex("td[31]", false)
+		assertNotNull(locatorIndex)
+		assertEquals(1, locatorIndex.size())
+	}
+
+	@Test
+	void jsonifyLocatorIndex_with_pattern() {
+		String json = garbageCollector.jsonifyLocatorIndex("td[31]", false)
+		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName("test_jsonifyLocatorIndex.json").build()
 		sh.write(JsonOutput.prettyPrint(json))
 	}
 

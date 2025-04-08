@@ -15,9 +15,9 @@ import internal.GlobalVariable
 
 @RunWith(JUnit4.class)
 public class DigestedTextTest {
-	
+
 	private DigestedText dText
-	
+
 	@Before
 	void setup() {
 		dText = new DigestedText()
@@ -27,17 +27,17 @@ public class DigestedTextTest {
 				.build()
 		dText.add(dline)
 	}
-	
+
 	@Test
 	void test_size() {
 		assertEquals(1, dText.size())
 	}
-	
+
 	@Test
 	void test_toJson() {
 		String json = dText.toJson()
 		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-						.fileName("test_toJson.json").build()
+				.fileName("test_toJson.json").build()
 		sh.write(JsonOutput.prettyPrint(json))
 		assertTrue(json.contains("Hello"))
 	}

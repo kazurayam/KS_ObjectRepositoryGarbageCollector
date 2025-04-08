@@ -47,13 +47,13 @@ public class ScriptsAccessorTest {
 		//
 		assertEquals(47, groovyFiles.size())
 	}
-	
+
 	@Test
 	public void test_getGroovyFiles_include_demo_and_main() {
 		accessor = new ScriptsAccessor.Builder(scriptsDir)
-					.includeFile("demo/**/*.groovy")
-					.includeFile("main/**/*.groovy")
-					.build()
+				.includeFile("demo/**/*.groovy")
+				.includeFile("main/**/*.groovy")
+				.build()
 		List<Path> groovyFiles = accessor.getGroovyFiles()
 		assertEquals(24, groovyFiles.size())
 	}

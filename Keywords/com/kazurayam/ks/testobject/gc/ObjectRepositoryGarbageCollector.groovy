@@ -16,6 +16,7 @@ import com.kazurayam.ks.testcase.DigestedLine
 import com.kazurayam.ks.testcase.ScriptsDecorator
 import com.kazurayam.ks.testcase.TestCaseId
 import com.kazurayam.ks.testcase.TestCaseScriptDigester
+import com.kazurayam.ks.testobject.LocatorIndex
 import com.kazurayam.ks.testobject.ObjectRepositoryDecorator
 import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kazurayam.ks.testobject.TestObjectId
@@ -125,7 +126,7 @@ class ObjectRepositoryGarbageCollector {
 	Database db() {
 		return db
 	}
-	
+
 	/**
 	 *
 	 */
@@ -175,6 +176,20 @@ class ObjectRepositoryGarbageCollector {
 	String jsonifyBackwardReferences() {
 		BackwardReferences backwardReferences = this.getBackwardReferences()
 		return backwardReferences.toJson()
+	}
+
+	/**
+	 * 
+	 */
+	LocatorIndex getLocatorIndex(String pattern = "", boolean isRegex = false) {
+		return ord.getLocatorIndex(pattern, isRegex)
+	}
+
+	/**
+	 * 
+	 */
+	String jsonifyLocatorIndex(String pattern = "", boolean isRegex = false) {
+		return ord.jsonifyLocatorIndex(pattern, isRegex)
 	}
 
 	/**
