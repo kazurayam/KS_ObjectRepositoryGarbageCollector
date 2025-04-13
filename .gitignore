@@ -1,20 +1,11 @@
+# Gradle
 .gradle
 
-bin
+# IntelliJ IDEA
+.idea
 
-Reports
+# Eclipse
+.settings
 
-Libs
-
-output
-
-!output/.gitkeep
-build
-
-.classpath
-
-.project
-
-.cache/
-
-build/
+# Visual Studio Code
+.vscode

@@ -1,0 +1,17 @@
+/Users/kazuakiurayama/katalon-workspace/KS_ObjectRepositoryGarbageCollector/katalon/Object Repository/main/Page_CURA Healthcare Service/a_Foo.rs
+/Users/kazuakiurayama/katalon-workspace/KS_ObjectRepositoryGarbageCollector/katalon/Object Repository/main/Page_CURA Healthcare Service/a_Go to Homepage.rs
+/Users/kazuakiurayama/katalon-workspace/KS_ObjectRepositoryGarbageCollector/katalon/Object Repository/main/Page_CURA Healthcare Service/a_Make Appointment.rs
+/Users/kazuakiurayama/katalon-workspace/KS_ObjectRepositoryGarbageCollector/katalon/Object Repository/main/Page_CURA Healthcare Service/button_Book Appointment.rs
+/Users/kazuakiurayama/katalon-workspace/KS_ObjectRepositoryGarbageCollector/katalon/Object Repository/main/Page_CURA Healthcare Service/button_Login.rs
+/Users/kazuakiurayama/katalon-workspace/KS_ObjectRepositoryGarbageCollector/katalon/Object Repository/main/Page_CURA Healthcare Service/input_Apply for hospital readmission_hospit_63901f.rs
+/Users/kazuakiurayama/katalon-workspace/KS_ObjectRepositoryGarbageCollector/katalon/Object Repository/main/Page_CURA Healthcare Service/input_Medicaid_programs.rs
+/Users/kazuakiurayama/katalon-workspace/KS_ObjectRepositoryGarbageCollector/katalon/Object Repository/main/Page_CURA Healthcare Service/input_Password_password.rs
+/Users/kazuakiurayama/katalon-workspace/KS_ObjectRepositoryGarbageCollector/katalon/Object Repository/main/Page_CURA Healthcare Service/input_Username_username.rs
+/Users/kazuakiurayama/katalon-workspace/KS_ObjectRepositoryGarbageCollector/katalon/Object Repository/main/Page_CURA Healthcare Service/input_Visit Date.rs
+/Users/kazuakiurayama/katalon-workspace/KS_ObjectRepositoryGarbageCollector/katalon/Object Repository/main/Page_CURA Healthcare Service/select_Tokyo CURA Healthcare Center        _5b4107.rs
+/Users/kazuakiurayama/katalon-workspace/KS_ObjectRepositoryGarbageCollector/katalon/Object Repository/main/Page_CURA Healthcare Service/td_28.rs
+/Users/kazuakiurayama/katalon-workspace/KS_ObjectRepositoryGarbageCollector/katalon/Object Repository/main/Page_CURA Healthcare Service/textarea_Comment_comment.rs
+/Users/kazuakiurayama/katalon-workspace/KS_ObjectRepositoryGarbageCollector/katalon/Object Repository/main/Page_CURA Healthcare Service/xtra/a_Go to Homepage.rs
+/Users/kazuakiurayama/katalon-workspace/KS_ObjectRepositoryGarbageCollector/katalon/Object Repository/main/Page_CURA Healthcare Service/xtra/td_28.rs
+/Users/kazuakiurayama/katalon-workspace/KS_ObjectRepositoryGarbageCollector/katalon/Object Repository/misc/dummy1.rs
+

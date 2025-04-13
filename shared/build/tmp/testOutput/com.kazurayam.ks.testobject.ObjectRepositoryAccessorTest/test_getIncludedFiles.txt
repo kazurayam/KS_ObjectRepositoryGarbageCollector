@@ -1,0 +1,17 @@
+main/Page_CURA Healthcare Service/a_Foo.rs
+main/Page_CURA Healthcare Service/a_Go to Homepage.rs
+main/Page_CURA Healthcare Service/a_Make Appointment.rs
+main/Page_CURA Healthcare Service/button_Book Appointment.rs
+main/Page_CURA Healthcare Service/button_Login.rs
+main/Page_CURA Healthcare Service/input_Apply for hospital readmission_hospit_63901f.rs
+main/Page_CURA Healthcare Service/input_Medicaid_programs.rs
+main/Page_CURA Healthcare Service/input_Password_password.rs
+main/Page_CURA Healthcare Service/input_Username_username.rs
+main/Page_CURA Healthcare Service/input_Visit Date.rs
+main/Page_CURA Healthcare Service/select_Tokyo CURA Healthcare Center        _5b4107.rs
+main/Page_CURA Healthcare Service/td_28.rs
+main/Page_CURA Healthcare Service/textarea_Comment_comment.rs
+main/Page_CURA Healthcare Service/xtra/a_Go to Homepage.rs
+main/Page_CURA Healthcare Service/xtra/td_28.rs
+misc/dummy1.rs
+

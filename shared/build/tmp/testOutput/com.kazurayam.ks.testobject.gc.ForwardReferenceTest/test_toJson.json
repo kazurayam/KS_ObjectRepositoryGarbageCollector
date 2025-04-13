@@ -1,0 +1,17 @@
+{
+    "TestCaseId": "main/TC1",
+    "DigestedLine": {
+        "lineNo": 9,
+        "line": "WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/a_Make Appointment')",
+        "pattern": "//a[@id='btn-make-appointment']",
+        "isRegex": false,
+        "isMatched": false,
+        "matchAt": 0,
+        "matchEnd": 0
+    },
+    "TestObjectEssence": {
+        "TestObjectId": "Page_CURA Healthcare Service/a_Make Appointment",
+        "Method": "BASIC",
+        "Locator": "//a[@id='btn-make-appointment']"
+    }
+}

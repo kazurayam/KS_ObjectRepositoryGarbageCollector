@@ -1,0 +1,3 @@
+5********** TestObjectEssenceTest#toString **********
+P{"TestObjectId":"testObjectX","Method":"BASIC","Locator":"//div[@id=\"main\"]"}
+fkatalonProjectDir=/Users/kazuakiurayama/katalon-workspace/KS_ObjectRepositoryGarbageCollector/katalon

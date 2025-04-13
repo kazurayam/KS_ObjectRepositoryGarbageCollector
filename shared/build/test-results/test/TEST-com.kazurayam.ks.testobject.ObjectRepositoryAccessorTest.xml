@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.kazurayam.ks.testobject.ObjectRepositoryAccessorTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2025-04-12T23:15:20" hostname="KAZUAKInoMacBook-Air-2.local" time="0.031">
+  <properties/>
+  <testcase name="test_getIncludedFiles" classname="com.kazurayam.ks.testobject.ObjectRepositoryAccessorTest" time="0.006"/>
+  <testcase name="test_getTestObjectIdList" classname="com.kazurayam.ks.testobject.ObjectRepositoryAccessorTest" time="0.008"/>
+  <testcase name="test_getIncludedFiles_mutiple" classname="com.kazurayam.ks.testobject.ObjectRepositoryAccessorTest" time="0.003"/>
+  <testcase name="test_getRsFiles" classname="com.kazurayam.ks.testobject.ObjectRepositoryAccessorTest" time="0.011"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

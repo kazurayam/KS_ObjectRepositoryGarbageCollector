@@ -1,0 +1,11 @@
+[
+    {
+        "lineNo": 11,
+        "line": "WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/a_Make Appointment'))",
+        "pattern": "Page_CURA Healthcare Service/a_Make Appointment",
+        "isRegex": false,
+        "isMatched": true,
+        "matchAt": 52,
+        "matchEnd": 99
+    }
+]

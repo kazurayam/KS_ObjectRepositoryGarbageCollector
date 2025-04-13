@@ -1,0 +1,104 @@
+plugins {
+  id 'groovy'
+  id 'maven-publish'
+  id 'signing'
+}
+
+group = 'com.kazurayam'
+version = "0.3.0-alpha"
+
+def defaultEncoding = 'UTF-8'
+tasks.withType(AbstractCompile).each {it.options.encoding = defaultEncoding }
+tasks.withType(GroovyCompile).each {it.groovyOptions.encoding = defaultEncoding}
+
+ext {
+    isReleaseVersion = ! version.endsWith("SNAPSHOT")
+    groovyVersion   = '3.0.17'
+}
+
+configurations {
+    generateDocs
+}
+
+repositories {
+  mavenCentral()
+  mavenLocal()
+}
+
+def homePath = System.properties['user.home']
+tasks.register('importDirectoryScanner', Copy) {
+     into layout.projectDirectory.dir("Drivers")
+     from("$homePath/.m2/repository/com/kazurayam/MonkDirectoryScanner/0.1.0") {
+     include '**/*.jar'
+  }
+}
+
+dependencies {
+    implementation fileTree(dir: "Drivers", include:['*.jar'])
+    implementation "org.codehaus.groovy:groovy-all:${groovyVersion}"
+    implementation fileTree(dir: "/Applications/Katalon Studio.app/Contents/Eclipse/plugins", include: ['*.jar'])
+    implementation fileTree(dir: "/Applications/Katalon Studio.app/Contents/Eclipse/configuration/resources/lib", include: ['*.jar'])
+
+    generateDocs "org.codehaus.groovy:groovy-all:${groovyVersion}"
+}
+
+sourceSets {
+    main {
+        groovy {
+            srcDirs = ['Keywords', 'Libs']
+            excludes = ['CustomKeywords.groovy', "Temp*.groovy"]
+        }
+    }
+    test {
+         groovy {
+            srcDirs = ['Include/scripts/groovy']
+         }
+    }
+}
+
+jar {
+    exclude('internal/**')
+    manifest {
+        attributes(
+            "Main-Class": "com.kazurayam.ks.testobject.gc.ObjectRepositoryGarbageCollector"
+        )
+    }
+}
+
+task groovydoc(type: Groovydoc, overwrite:true) {
+    group = 'com.kazurayam'
+    source = sourceSets.main.groovy
+    classpath = configurations.generateDocs
+    groovyClasspath = configurations.generateDocs
+    include 'com/kazurayam/ks/*'
+    exclude '**/*Test.groovy'
+}
+task publishGroovydoc(type: Copy) {
+    from 'build/docs/groovydoc'
+    into 'docs/api'
+}
+groovydoc.finalizedBy publishGroovydoc
+
+task katalonClean(type: Delete) {
+    delete '.cache'
+    delete 'bin'
+    delete 'Libs'
+}
+
+task deleteDocsDemo(type: Delete) {
+    delete 'docs/demo'
+}
+
+task copyDemoToDocs(type: Copy, dependsOn: deleteDocsDemo) {
+    from 'build/tmp/testOutput/demo'
+    into 'docs'
+}
+
+task generateDocs {
+    doLast {
+        exec {
+            workingDir 'docs'
+            commandLine './adoc2md.sh'
+        }
+    }
+}

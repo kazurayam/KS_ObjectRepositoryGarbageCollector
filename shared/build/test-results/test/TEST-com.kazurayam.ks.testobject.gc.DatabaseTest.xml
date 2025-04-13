@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.kazurayam.ks.testobject.gc.DatabaseTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2025-04-12T23:15:20" hostname="KAZUAKInoMacBook-Air-2.local" time="0.098">
+  <properties/>
+  <testcase name="test_findForwardReferencesTo" classname="com.kazurayam.ks.testobject.gc.DatabaseTest" time="0.047"/>
+  <testcase name="test_containsTestCaseId" classname="com.kazurayam.ks.testobject.gc.DatabaseTest" time="0.005"/>
+  <testcase name="test_size" classname="com.kazurayam.ks.testobject.gc.DatabaseTest" time="0.002"/>
+  <testcase name="test_get" classname="com.kazurayam.ks.testobject.gc.DatabaseTest" time="0.002"/>
+  <testcase name="test_containsTestObjectId" classname="com.kazurayam.ks.testobject.gc.DatabaseTest" time="0.003"/>
+  <testcase name="test_getAll" classname="com.kazurayam.ks.testobject.gc.DatabaseTest" time="0.002"/>
+  <testcase name="test_getAllTestObjectIdsContained" classname="com.kazurayam.ks.testobject.gc.DatabaseTest" time="0.006"/>
+  <testcase name="test_toJson" classname="com.kazurayam.ks.testobject.gc.DatabaseTest" time="0.016"/>
+  <testcase name="test_getAllTestCaseIdsContaind" classname="com.kazurayam.ks.testobject.gc.DatabaseTest" time="0.002"/>
+  <testcase name="test_findForwardReferencesFrom" classname="com.kazurayam.ks.testobject.gc.DatabaseTest" time="0.003"/>
+  <testcase name="test_toString" classname="com.kazurayam.ks.testobject.gc.DatabaseTest" time="0.007"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

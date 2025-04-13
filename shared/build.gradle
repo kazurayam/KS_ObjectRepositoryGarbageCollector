@@ -1,0 +1,55 @@
+plugins {
+    id 'myproject.java-conventions'
+    id 'groovy'
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+import org.gradle.internal.os.OperatingSystem
+String resolveKatalonStudioInstallationDirectory() {
+    OperatingSystem os = OperatingSystem.current();
+    println "*** Building on ${os.familyName} / ${os.name} / ${os.version} / ${System.getProperty("os.arch")}."
+    println "*** Building on ${os.toString()}."
+    if (os.isMacOsX()) {
+        return '/Applications/Katalon Studio.app'
+    } else if (os.isWindows()) {
+        // Consider Windows.
+        throw new UnsupportedOperationException("To be considered")
+    } else if (os.isLinux()) {
+        // Consider Linux.
+        throw new UnsupportedOperationException("I don't know")
+    } else {
+        // Unknown OS.
+        return new UnsupportedOperationException("Who knows?")
+    }
+}
+
+ext {
+    KATALON_STUDIO_INSTALLATION_DIRECTORY = resolveKatalonStudioInstallationDirectory()
+}
+
+dependencies {
+    // to import com.kms.katalon.core.testobject.TestObject
+    // to import com.kms.katalon.core.testobject.SelectorMethod
+    // to import com.kms.katalon.core.testobject.ObjectRepository
+    implementation fileTree(dir: "${KATALON_STUDIO_INSTALLATION_DIRECTORY}/Contents/Eclipse/plugins",
+            include: [
+                    'com.fasterxml.jackson*.jar',
+                    'com.kms.katalon.core*.jar',
+                    'org.codehaus.groovy*.jar',
+                    'org.dom4j*.jar',
+                    'org.eclipse.osgi*.jar',
+                    'slf4j*.jar'
+            ])
+
+    // will be resolved via mavenLocal()
+    implementation("com.kazurayam:MonkDirectoryScanner:0.1.0")
+
+    testImplementation "junit:junit:4.13.2"
+    testImplementation 'org.slf4j:slf4j-simple:1.7.25'
+    // https://mvnrepository.com/artifact/com.google.code.gson/gson
+    testImplementation("com.google.code.gson:gson:2.10.1")
+}
