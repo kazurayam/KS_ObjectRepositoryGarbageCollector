@@ -11,13 +11,13 @@ import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.assertTrue
 
 @RunWith(JUnit4.class)
-public class LocatorIndexTest {
+class LocatorIndexTest {
 
 	private ObjectRepositoryDecorator xor
 	private LocatorIndex locatorIndex
 
 	@Before
-	public void setup() {
+	void setup() {
 		xor = new ObjectRepositoryDecorator.Builder().build()
 		locatorIndex = new LocatorIndex()
 		List<TestObjectId> toiList = xor.getTestObjectIdList()
@@ -29,12 +29,12 @@ public class LocatorIndexTest {
 	}
 
 	@Test
-	public void test_size() {
+	void test_size() {
 		assertTrue(locatorIndex.size() > 0)
 	}
 
 	@Test
-	public void test_toJson() {
+	void test_toJson() {
 		String json = locatorIndex.toJson()
 		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
 				.fileName("test_toJson.json").build()

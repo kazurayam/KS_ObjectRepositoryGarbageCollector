@@ -74,7 +74,7 @@ public class ObjectRepositoryDecoratorTest {
 	void test_jsonifyTestObjectIdList_filterByRegex() {
 		String pattern = "button_(\\w+)"
 		String json = instance.jsonifyTestObjectIdList(pattern, true)
-		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
 				.fileName("test_jsonifyTestObjectIdList_filterByRegex.json").build()
 		sh.write(JsonOutput.prettyPrint(json))
 		assertTrue(json.contains("button_Login"))
@@ -103,7 +103,7 @@ public class ObjectRepositoryDecoratorTest {
 		String pattern = ""
 		Boolean isRegex = false
 		String json = instance.jsonifyTestObjectEssenceList(pattern, isRegex)
-		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
 				.fileName("test_jsonifyTestObjectEssenceList.json").build()
 		sh.write(JsonOutput.prettyPrint(json))
 		assertTrue("json should contain 'a_Make Appointment'", json.contains("a_Make Appointment"))
@@ -114,7 +114,7 @@ public class ObjectRepositoryDecoratorTest {
 		String pattern = "button_(\\w+)"
 		Boolean isRegex = true
 		String json = instance.jsonifyTestObjectEssenceList(pattern, isRegex)
-		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
 				.fileName("test_jsonifyTestObjectEssenceList_filterByRegex.json").build()
 		sh.write(JsonOutput.prettyPrint(json))
 		assertTrue(json.contains("button_Login"))
@@ -132,7 +132,7 @@ public class ObjectRepositoryDecoratorTest {
 			assertNotNull(toi.getValue())
 			assertNotEquals("", toi.getValue())
 		})
-		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
 				.fileName("test_getAllTestObjectIdSet.txt").build()
 		sh.write(sb.toString())
 	}
@@ -157,7 +157,7 @@ public class ObjectRepositoryDecoratorTest {
 	@Test
 	void test_jsonifyLocatorIndex() {
 		String json = instance.jsonifyLocatorIndex()
-		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
+		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
 				.fileName("test_jsonifyLocatorIndex.json").build()
 		sh.write(JsonOutput.prettyPrint(json))
 		assertTrue(json.contains("a_Make Appointment"))

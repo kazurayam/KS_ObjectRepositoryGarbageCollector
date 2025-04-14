@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory
 
 import java.nio.file.Path
 
-public class ObjectRepositoryAccessor {
+class ObjectRepositoryAccessor {
 
 	private static Logger logger = LoggerFactory.getLogger(ObjectRepositoryAccessor.class)
 
@@ -30,11 +30,11 @@ public class ObjectRepositoryAccessor {
 		ds.scan()
 	}
 
-	public String[] getIncludedFiles() {
+	String[] getIncludedFiles() {
 		return ds.getIncludedFiles()
 	}
 
-	public List<TestObjectId> getTestObjectIdList() {
+	List<TestObjectId> getTestObjectIdList() {
 		String[] includedFiles = getIncludedFiles()
 		List<TestObjectId> result = new ArrayList<>()
 		for (int i = 0; i < includedFiles.length; i++) {
@@ -48,7 +48,7 @@ public class ObjectRepositoryAccessor {
 		return result
 	}
 
-	public List<Path> getRsFiles() {
+	List<Path> getRsFiles() {
 		String[] includedFiles = getIncludedFiles()
 		List<Path> result = new ArrayList<>()
 		for (int i = 0; i < includedFiles.length; i++) {
@@ -68,24 +68,24 @@ public class ObjectRepositoryAccessor {
 	 * 
 	 * @author kazurayam
 	 */
-	public static class Builder {
+	static class Builder {
 		private Path objectRepositoryDir
 		private List<String> includeFiles
-		public Builder(Path orDir) {
+		Builder(Path orDir) {
 			objectRepositoryDir = orDir.toAbsolutePath().normalize()
 			includeFiles = new ArrayList<>()
 		}
-		public Builder includeFile(String pattern) {
+		Builder includeFile(String pattern) {
 			Objects.requireNonNull(pattern)
 			includeFiles.add(pattern)
 			return this
 		}
-		public Builder includeFiles(List<String> patterns) {
+		Builder includeFiles(List<String> patterns) {
 			Objects.requireNonNull(patterns)
 			includeFiles.addAll(patterns)
 			return this
 		}
-		public ObjectRepositoryAccessor build() {
+		ObjectRepositoryAccessor build() {
 			return new ObjectRepositoryAccessor(this)
 		}
 	}

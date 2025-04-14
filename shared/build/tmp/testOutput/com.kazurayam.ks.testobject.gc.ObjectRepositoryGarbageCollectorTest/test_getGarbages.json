@@ -1,0 +1,19 @@
+{
+    "Garbages": [
+        {
+            "TestObjectId": "main/Page_CURA Healthcare Service/a_Foo"
+        },
+        {
+            "TestObjectId": "main/Page_CURA Healthcare Service/td_28"
+        },
+        {
+            "TestObjectId": "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage"
+        },
+        {
+            "TestObjectId": "main/Page_CURA Healthcare Service/xtra/td_28"
+        },
+        {
+            "TestObjectId": "misc/dummy1"
+        }
+    ]
+}

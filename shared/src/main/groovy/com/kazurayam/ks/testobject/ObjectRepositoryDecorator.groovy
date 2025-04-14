@@ -16,7 +16,7 @@ import java.nio.file.Path
  * implements various accessor methods for the Test Objects stored in the directory.
  *
  */
-public class ObjectRepositoryDecorator {
+class ObjectRepositoryDecorator {
 
 	private Path objectRepositoryDir
 	private List<String> includeFolderSpecification
@@ -135,7 +135,7 @@ public class ObjectRepositoryDecorator {
 	/**
 	 * @return a Set of all TestObjectIds contained in the "Object Repository"
 	 */
-	public Set<TestObjectId> getAllTestObjectIdSet() {
+	Set<TestObjectId> getAllTestObjectIdSet() {
 		Set<TestObjectId> result = new TreeSet<>()   // ordered set
 		List<TestObjectEssence> allEssence = getTestObjectEssenceList("", false)
 		allEssence.forEach { essence ->
@@ -198,29 +198,29 @@ public class ObjectRepositoryDecorator {
 	 * 
 	 * @author kazurayam
 	 */
-	public static class Builder {
+	static class Builder {
 		private Path objectRepositoryDir
 		private List<String> includeFolder
-		public Builder() {
+		Builder() {
 			this(KatalonProjectDirectoryResolver.getProjectDir().resolve("Object Repository"))
 		}
-		public Builder(Path dir) {
+		Builder(Path dir) {
 			Objects.requireNonNull(dir)
 			assert Files.exists(dir)
 			objectRepositoryDir = dir
 			includeFolder = new ArrayList<>()
 		}
-		public Builder includeFolder(String pattern) {
+		Builder includeFolder(String pattern) {
 			Objects.requireNonNull(pattern)
 			this.includeFolder.add(pattern)
 			return this
 		}
-		public Builder includeFolder(List<String> pattern) {
+		Builder includeFolder(List<String> pattern) {
 			Objects.requireNonNull(pattern)
 			this.includeFolder.addAll(pattern)
 			return this
 		}
-		public ObjectRepositoryDecorator build() {
+		ObjectRepositoryDecorator build() {
 			assert objectRepositoryDir != null : "objectRepositoryDir is left null"
 			return new ObjectRepositoryDecorator(this)
 		}

@@ -1,0 +1,20 @@
+{
+    "LocatorIndex": [
+        {
+            "Locator": "(.//*[normalize-space(text()) and normalize-space(.)='Sa'])[1]/following::td[31]",
+            "Number of duplicates": 2,
+            "TestObjectEssences": [
+                {
+                    "TestObjectId": "main/Page_CURA Healthcare Service/td_28",
+                    "Method": "XPATH",
+                    "Locator": "(.//*[normalize-space(text()) and normalize-space(.)='Sa'])[1]/following::td[31]"
+                },
+                {
+                    "TestObjectId": "main/Page_CURA Healthcare Service/xtra/td_28",
+                    "Method": "XPATH",
+                    "Locator": "(.//*[normalize-space(text()) and normalize-space(.)='Sa'])[1]/following::td[31]"
+                }
+            ]
+        }
+    ]
+}

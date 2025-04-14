@@ -1,5 +1,7 @@
 package com.kazurayam.ks.testobject.gc
 
+import com.kazurayam.ks.configuration.KatalonProjectDirectoryResolver
+
 import static org.junit.Assert.*
 
 import java.nio.file.Path
@@ -22,7 +24,7 @@ import groovy.json.JsonOutput
 @RunWith(JUnit4.class)
 public class ObjectRepositoryGarbageCollectorTest {
 
-	private static Path projectDir = Paths.get(".")
+	private static Path projectDir = KatalonProjectDirectoryResolver .getProjectDir()
 	private static Path objectRepositoryDir = projectDir.resolve("Object Repository")
 	private static Path scriptsDir = projectDir.resolve("Scripts")
 
@@ -63,13 +65,15 @@ public class ObjectRepositoryGarbageCollectorTest {
 	@Test
 	void test_jsonifyBackwardReferences() {
 		String json = garbageCollector.jsonifyBackwardReferences()
-		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName("test_jsonifyBackwardReferences.json").build()
+		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
+				.fileName("test_jsonifyBackwardReferences.json").build()
 		sh.write(JsonOutput.prettyPrint(json))
 	}
 
 	@Test
 	void test_getLocatorIndex_with_pattern() {
-		LocatorIndex locatorIndex = garbageCollector.getLocatorIndex("td[31]", false)
+		LocatorIndex locatorIndex =
+				garbageCollector.getLocatorIndex("td[31]", false)
 		assertNotNull(locatorIndex)
 		assertEquals(1, locatorIndex.size())
 	}
@@ -77,7 +81,8 @@ public class ObjectRepositoryGarbageCollectorTest {
 	@Test
 	void jsonifyLocatorIndex_with_pattern() {
 		String json = garbageCollector.jsonifyLocatorIndex("td[31]", false)
-		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName("test_jsonifyLocatorIndex.json").build()
+		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
+				.fileName("test_jsonifyLocatorIndex.json").build()
 		sh.write(JsonOutput.prettyPrint(json))
 	}
 
@@ -86,7 +91,8 @@ public class ObjectRepositoryGarbageCollectorTest {
 		Garbages garbages = garbageCollector.getGarbages()
 		assertNotNull("the garbages variable is null", garbages)
 		assertTrue("the Garbages object is empty", garbages.size() > 0)
-		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName("test_getGarbages.json").build()
+		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
+				.fileName("test_getGarbages.json").build()
 		sh.write(JsonOutput.prettyPrint(garbages.toJson()))
 		//assertTrue(garbages.contains(new TestObjectId("Page_CURA Healthcare Service/a_Foo")))
 	}
@@ -94,7 +100,8 @@ public class ObjectRepositoryGarbageCollectorTest {
 	@Test
 	void test_jsonifyGarbages() {
 		String json = garbageCollector.jsonifyGarbages()
-		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName("test_jsonifyGarbages.json").build()
+		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
+				.fileName("test_jsonifyGarbages.json").build()
 		sh.write(JsonOutput.prettyPrint(json))
 		assertTrue("json should contain 'a_Foo'", json.contains("a_Foo"))
 	}
@@ -102,7 +109,8 @@ public class ObjectRepositoryGarbageCollectorTest {
 	@Test
 	void test_jsonifyDatabase() {
 		String json = garbageCollector.jsonifyDatabase()
-		Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID).fileName("test_jsonifyDatabase.json").build()
+		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
+				.fileName("test_jsonifyDatabase.json").build()
 		sh.write(JsonOutput.prettyPrint(json))
 		assertTrue("json should contain `//a[@id='btn-make-appointment']`", json.contains("//a[@id='btn-make-appointment']"))
 	}

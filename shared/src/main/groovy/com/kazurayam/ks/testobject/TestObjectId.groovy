@@ -6,11 +6,12 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
+import com.kazurayam.ks.configuration.RunConfigurationConfigurator
 import com.kms.katalon.core.testobject.ObjectRepository
 import com.kms.katalon.core.testobject.SelectorMethod
 import com.kms.katalon.core.testobject.TestObject
 
-public class TestObjectId implements Comparable<TestObjectId>{
+class TestObjectId implements Comparable<TestObjectId>{
 
 	private String value
 
@@ -24,7 +25,12 @@ public class TestObjectId implements Comparable<TestObjectId>{
 	}
 
 	TestObjectEssence toTestObjectEssence() {
+		// configure the RunConfiguration instance to return appropriate value of the katalon project directory
+		RunConfigurationConfigurator.configureProjectDir()
+
+		// ObjectRepository.findTestObject() internally calls RunConfiguration.getProjectDir()
 		TestObject tObj = ObjectRepository.findTestObject(this.getValue())
+
 		assert tObj != null: "ObjectRepository.findTestObject('${this.getValue()}') returned null"
 		SelectorMethod selectorMethod = tObj.getSelectorMethod()
 		Locator locator = new Locator(tObj.getSelectorCollection().getAt(selectorMethod))

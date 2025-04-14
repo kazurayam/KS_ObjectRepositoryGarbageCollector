@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.kazurayam.ks.configuration.KatalonProjectDirectoryResolverTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2025-04-12T23:15:19" hostname="KAZUAKInoMacBook-Air-2.local" time="0.009">
+<testsuite name="com.kazurayam.ks.configuration.KatalonProjectDirectoryResolverTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2025-04-14T10:12:14" hostname="KAZUAKInoMacBook-Air-2.local" time="1.187">
   <properties/>
-  <testcase name="test_getProjectDir" classname="com.kazurayam.ks.configuration.KatalonProjectDirectoryResolverTest" time="0.009"/>
+  <testcase name="test_getProjectDir" classname="com.kazurayam.ks.configuration.KatalonProjectDirectoryResolverTest" time="1.187"/>
   <system-out><![CDATA[katalonProjectDir=/Users/kazuakiurayama/katalon-workspace/KS_ObjectRepositoryGarbageCollector/katalon
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>

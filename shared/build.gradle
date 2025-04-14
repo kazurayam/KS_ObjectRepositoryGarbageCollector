@@ -1,5 +1,4 @@
 plugins {
-    id 'myproject.java-conventions'
     id 'groovy'
 }
 
@@ -11,7 +10,7 @@ repositories {
 import org.gradle.internal.os.OperatingSystem
 String resolveKatalonStudioInstallationDirectory() {
     OperatingSystem os = OperatingSystem.current();
-    println "*** Building on ${os.familyName} / ${os.name} / ${os.version} / ${System.getProperty("os.arch")}."
+    //println "*** Building on ${os.familyName} / ${os.name} / ${os.version} / ${System.getProperty("os.arch")}."
     println "*** Building on ${os.toString()}."
     if (os.isMacOsX()) {
         return '/Applications/Katalon Studio.app'
@@ -32,24 +31,37 @@ ext {
 }
 
 dependencies {
+    implementation fileTree(dir: "${KATALON_STUDIO_INSTALLATION_DIRECTORY}/Contents/Eclipse/configuration/resources/lib",
+            include: [
+                    'groovy-3.0.17.jar',
+                    'selenium-server*.jar',
+                    'slf4j*.jar'
+            ]
+    )
     // to import com.kms.katalon.core.testobject.TestObject
     // to import com.kms.katalon.core.testobject.SelectorMethod
     // to import com.kms.katalon.core.testobject.ObjectRepository
     implementation fileTree(dir: "${KATALON_STUDIO_INSTALLATION_DIRECTORY}/Contents/Eclipse/plugins",
             include: [
                     'com.fasterxml.jackson*.jar',
+                    'com.google.gson*.jar',
                     'com.kms.katalon.core*.jar',
-                    'org.codehaus.groovy*.jar',
+                    'com.kms.katalon.util*.jar',
+                    '**/org.codehaus.groovy*/lib/groovy*-indy.jar',
+                    'org.apache.commons.lang*.jar',
                     'org.dom4j*.jar',
-                    'org.eclipse.osgi*.jar',
-                    'slf4j*.jar'
+                    'org.eclipse.osgi*.jar'
             ])
 
     // will be resolved via mavenLocal()
     implementation("com.kazurayam:MonkDirectoryScanner:0.1.0")
-
     testImplementation "junit:junit:4.13.2"
     testImplementation 'org.slf4j:slf4j-simple:1.7.25'
-    // https://mvnrepository.com/artifact/com.google.code.gson/gson
-    testImplementation("com.google.code.gson:gson:2.10.1")
 }
+
+tasks.register('printClasspath') {
+    doFirst {
+        sourceSets.main.runtimeClasspath.sort().each { println it }
+    }
+}
+

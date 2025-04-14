@@ -5,11 +5,11 @@ import java.nio.file.Path
 import java.nio.file.Paths
 
 public class KatalonProjectDirectoryResolver {
-	
+
 	private static final String KATALON_PROJECT_RELATIVE_PATH = "../katalon"
-	
+
 	private KatalonProjectDirectoryResolver() {}
-	
+
 	public static Path resolve() {
 		try {
 			Class cls = Class.forName("com.kms.katalon.core.configuration.RunConfiguration")
@@ -20,7 +20,7 @@ public class KatalonProjectDirectoryResolver {
 			Path thePath
 			String thePathString = System.getProperty("com.kazurayam.ks.configuration.KatalonProjectDirectoryResolver.thePath")
 			if (thePathString != null) {
-				thePath = Paths.get(thePathString).toAbsolutePath().normalize()	
+				thePath = Paths.get(thePathString).toAbsolutePath().normalize()
 			} else {
 				thePath = Paths.get(KATALON_PROJECT_RELATIVE_PATH).toAbsolutePath().normalize()
 			}
