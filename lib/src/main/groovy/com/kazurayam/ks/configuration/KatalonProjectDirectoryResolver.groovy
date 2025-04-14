@@ -6,7 +6,7 @@ import java.nio.file.Paths
 
 class KatalonProjectDirectoryResolver {
 
-    private static final String KATALON_PROJECT_PATH_RELATIVE_TO_SHARED_PROJECT = "../katalon"
+    private static final String KATALON_PROJECT_PATH_RELATIVE_TO_THE_LIB_PROJECT = "../katalon"
 
     private KatalonProjectDirectoryResolver() {}
 
@@ -22,7 +22,7 @@ class KatalonProjectDirectoryResolver {
             thePath = Paths.get(thePathString).toAbsolutePath().normalize()
         } else {
             Path currentDir = Paths.get(System.getProperty('user.dir'))
-            thePath = currentDir.resolve(KATALON_PROJECT_PATH_RELATIVE_TO_SHARED_PROJECT)
+            thePath = currentDir.resolve(KATALON_PROJECT_PATH_RELATIVE_TO_THE_LIB_PROJECT)
                         .toAbsolutePath().normalize()
         }
         if (Files.exists(thePath)) {

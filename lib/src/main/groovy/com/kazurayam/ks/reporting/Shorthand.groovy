@@ -10,7 +10,7 @@ import java.nio.file.Paths
 /**
  * A utility that creates a directory and write a file into the directory.
  * The directory will be in the format of
- * "<sharedProjectDir>/build/tmp/testOutput/<subDir>/<fileName>"
+ * "<libProjectDir>/build/tmp/testOutput/<subDir>/<fileName>"
  *
  * It is recommended to specify "subDir" to be the fully-qualified-class-name of
  * each individual unit-test, e.g.,
