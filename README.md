@@ -62,10 +62,11 @@ I found that this project contains
 - 37 TestCase scripts
 - 15 TestObjects
 - out of 15, 4 TestObjects are unused by any of TestCase scripts.
+- it took approximately 3 seconds to get the result.
 
-It took me approximately 3 seconds to get the result.
+It would take just a few minutes to scan through 3000 TestObjects in your large Katalon project. It would tell you over the half TestObjects are unused (garbage).
 
-I hope that it would take just a few minutes to scan through 3000 TestObjects. I expect, it will tell you over the half TestObjects are unused garbages.
+This library gently compiles a report to tell where you have garbage to be cleaned, but does NOT remove any files as "Test Object". So this library is not really a garbage-collector; it is just an informer.
 
 ## How to install the library.
 
