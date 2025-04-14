@@ -7,7 +7,13 @@ import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 
-public class TestObjectEssence implements Comparable<TestObjectEssence> {
+/**
+ * A value object that contains the most essential part of Test Object:
+ * - Test Object Id
+ * - Method: Basic, XPath, CSS
+ * - Locator: e.g., "//input[@id='username']"
+ */
+class TestObjectEssence implements Comparable<TestObjectEssence> {
 
 	private TestObjectId testObjectId       // "Page_CURA Healthcare Service/a_Go to Homepage"
 	private String method   // "BASIC", "XPATH", "CSS"
@@ -70,7 +76,7 @@ public class TestObjectEssence implements Comparable<TestObjectEssence> {
 		return this.toJson()
 	}
 
-	public String toJson() {
+	String toJson() {
 		ObjectMapper mapper = new ObjectMapper()
 		SimpleModule module = new SimpleModule("TestObjectEssenceSerializer",
 				new Version(1, 0, 0, null, null, null))

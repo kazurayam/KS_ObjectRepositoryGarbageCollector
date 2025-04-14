@@ -7,7 +7,13 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
-public class ScriptsDecorator {
+/**
+ * ScriptsDecorator wraps ScriptsAccessor.
+ * ScriptsDecorator accepts patterns that match "sub-folder" in the "Test Cases" folder.
+ * ScriptsDecorator translates the pattern into new pattern struing that matches
+ * .groovy files in the "Scripts" folder.
+ */
+class ScriptsDecorator {
 
 	private static Logger logger = LoggerFactory.getLogger(ScriptsDecorator.class)
 
@@ -57,32 +63,32 @@ public class ScriptsDecorator {
 		return includeFolderSpecification
 	}
 
-	public List<Path> getGroovyFiles() {
+	List<Path> getGroovyFiles() {
 		return accessor.getGroovyFiles()
 	}
 
 
-	public static class Builder {
+	static class Builder {
 		private Path scriptsDir
 		private List<String> includeFolder
-		public Builder() {
+		Builder() {
 			this(Paths.get(".").resolve("Scripts"))
 		}
-		public Builder(Path dir) {
+		Builder(Path dir) {
 			Objects.requireNonNull(dir)
 			assert Files.exists(dir)
 			scriptsDir = dir
 			includeFolder = new ArrayList<>()
 		}
-		public Builder includeFolder(String pattern) {
+		Builder includeFolder(String pattern) {
 			includeFolder.add(pattern)
 			return this
 		}
-		public Builder includeFolder(List<String> pattern) {
+		Builder includeFolder(List<String> pattern) {
 			includeFolder.addAll(pattern)
 			return this
 		}
-		public ScriptsDecorator build() {
+		ScriptsDecorator build() {
 			assert scriptsDir != null : "scriptsDir is left null"
 			return new ScriptsDecorator(this)
 		}

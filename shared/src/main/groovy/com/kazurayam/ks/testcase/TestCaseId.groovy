@@ -9,7 +9,15 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer
 
 import java.nio.file.Path
 
-public class TestCaseId implements Comparable<TestCaseId> {
+/**
+ * Represents "Test Case Id".
+ *
+ * For example.
+ * "Test Cases/demo/ObjectRepositoryDecorator"
+ * "junit4/com.kazurayam.ks.configuration/RunConfigurationConfiguratorTest"
+ * "main/TC1"
+ */
+class TestCaseId implements Comparable<TestCaseId> {
 
 	private String value
 

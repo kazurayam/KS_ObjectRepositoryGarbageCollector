@@ -7,7 +7,13 @@ import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 
-public class LocatorIndex {
+/**
+ * LocatorIndex is a key-values pair; the key is a Locator, the values is a set
+ * of TestObjectEssense objects.
+ * LocatorIndex makes it visible a single instance of Locator is repeatedly
+ * specified in which Test Objects.
+ */
+class LocatorIndex {
 
 	private Map<Locator, Set<TestObjectEssence>> locatorIndex
 
@@ -39,7 +45,7 @@ public class LocatorIndex {
 		set.add(essence)
 	}
 
-	public int size() {
+	int size() {
 		return locatorIndex.size()
 	}
 

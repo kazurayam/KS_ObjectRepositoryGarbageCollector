@@ -1,5 +1,0 @@
-{
-    "TestObjectId": "testObjectX",
-    "Method": "BASIC",
-    "Locator": "//div[@id=\"main\"]"
-}

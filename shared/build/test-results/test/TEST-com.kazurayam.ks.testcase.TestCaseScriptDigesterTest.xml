@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.kazurayam.ks.testcase.TestCaseScriptDigesterTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2025-04-14T10:12:16" hostname="KAZUAKInoMacBook-Air-2.local" time="0.137">
-  <properties/>
-  <testcase name="test_digestTestCase" classname="com.kazurayam.ks.testcase.TestCaseScriptDigesterTest" time="0.137"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.kazurayam.ks.testcase.TestCaseIdTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2025-04-14T10:12:16" hostname="KAZUAKInoMacBook-Air-2.local" time="0.024">
-  <properties/>
-  <testcase name="test_toJson" classname="com.kazurayam.ks.testcase.TestCaseIdTest" time="0.02"/>
-  <testcase name="test_resolveTestCaseId" classname="com.kazurayam.ks.testcase.TestCaseIdTest" time="0.002"/>
-  <testcase name="test_value" classname="com.kazurayam.ks.testcase.TestCaseIdTest" time="0.001"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

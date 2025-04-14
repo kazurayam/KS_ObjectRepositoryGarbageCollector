@@ -3,6 +3,10 @@ package com.kazurayam.ks.testobject
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
+/**
+ * implements a pattern matching against text, returns a boolean result.
+ * the pattern can be either of plain text, for a regular expression
+ */
 class RegexOptedTextMatcher {
 
 	private String pattern

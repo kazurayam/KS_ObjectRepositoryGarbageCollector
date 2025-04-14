@@ -12,9 +12,9 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 /**
- * ExtendedObjectRepository wraps the so-called "Object Repository" directory,
- * implements various accessor methods for the Test Objects stored in the directory.
- *
+ * ObjectRepositoryDecorator implements methods that returns a list of TestObjectId,
+ * a list of TestObjectEssenses, that match with the pattern for Locators.
+ * ObjectRepositoryDecorator enables to look up Test Objects by Locators.
  */
 class ObjectRepositoryDecorator {
 

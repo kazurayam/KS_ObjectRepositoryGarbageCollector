@@ -7,7 +7,11 @@ import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 
-public class DigestedLine implements Comparable<DigestedLine> {
+/**
+ * DigestedLine class is a value object,
+ * which represents a single line of souce code of a Test Case script.
+ */
+class DigestedLine implements Comparable<DigestedLine> {
 
 	private String line
 	private int lineNo
@@ -29,41 +33,41 @@ public class DigestedLine implements Comparable<DigestedLine> {
 		this.matched = builder.matched
 	}
 
-	public String getLine() {
+	String getLine() {
 		return this.line
 	}
 
-	public int getLineNo() {
+	int getLineNo() {
 		return this.lineNo
 	}
 
-	public String getPattern() {
+	String getPattern() {
 		return this.pattern
 	}
 
-	public Boolean isRegex() {
+	Boolean isRegex() {
 		return this.isRegex
 	}
 
-	public int getMatchAt() {
+	int getMatchAt() {
 		return this.matchAt
 	}
 
-	public int getMatchEnd() {
+	int getMatchEnd() {
 		return this.matchEnd
 	}
 
-	public Boolean isMatched() {
+	Boolean isMatched() {
 		return this.matched
 	}
 
 	@Override
-	public String toString() {
+	String toString() {
 		this.toJson()
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	boolean equals(Object obj) {
 		if (!(obj instanceof DigestedLine))	{
 			return false
 		}
@@ -76,7 +80,7 @@ public class DigestedLine implements Comparable<DigestedLine> {
 	}
 
 	@Override
-	public int hashCode() {
+	int hashCode() {
 		int hash = 7;
 		hash = 31 * hash + lineNo;
 		hash = 31 * hash + line.hashCode()
@@ -142,7 +146,7 @@ public class DigestedLine implements Comparable<DigestedLine> {
 	 * 
 	 * 
 	 */
-	public static class Builder {
+	static class Builder {
 		String line
 		int lineNo
 		//

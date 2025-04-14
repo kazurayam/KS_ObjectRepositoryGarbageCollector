@@ -4,7 +4,15 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.util.stream.Collectors
 
-public class TestCaseScriptDigester {
+/**
+ * TestCaseScriptDigester reads a Test Case script to scan the whole text,
+ * look up lines that matches with the specified pattern,
+ * returns a list of DigestedLine objects which contains the lines that have
+ * matches.
+ *
+ * TestCaseScriptDigester uses TextDigester to digested a specifed Test Case script.
+ */
+class TestCaseScriptDigester {
 
 	private Path scriptsDir
 
@@ -25,7 +33,7 @@ public class TestCaseScriptDigester {
 		return searchResults
 	}
 
-	private Path findChildGroovyFile(Path testCaseDir) {
+	private static Path findChildGroovyFile(Path testCaseDir) {
 		if (Files.isDirectory(testCaseDir)) {
 			List<Path> fileList = Files.list(testCaseDir)
 					.filter({ p -> !Files.isDirectory(p) })

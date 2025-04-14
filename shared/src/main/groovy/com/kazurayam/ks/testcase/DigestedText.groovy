@@ -7,7 +7,12 @@ import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 
-public class DigestedText {
+/**
+ * DigestedText is a value-object,
+ * is a list of DigestedLine objects, which is an representation of
+ * a source file of Test Case script.
+ */
+class DigestedText {
 
 	private List<DigestedLine> digestedLines
 

@@ -5,21 +5,21 @@ import java.nio.file.Path
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
-public class TextDigester {
+class TextDigester {
 
 	private List<String> lines = new ArrayList<>()
 
-	public TextDigester(String code) {
+	TextDigester(String code) {
 		Objects.requireNonNull(code)
 		this.lines = toLines(code)
 	}
 
-	public TextDigester(Path file) throws IOException {
+	TextDigester(Path file) throws IOException {
 		Objects.requireNonNull(file)
 		this.lines = toLines(file.toFile().text)
 	}
 
-	public TextDigester(File file) throws IOException {
+	TextDigester(File file) throws IOException {
 		Objects.requireNonNull(file)
 		this.lines = toLines(file.text)
 	}
@@ -34,7 +34,7 @@ public class TextDigester {
 		return lines
 	}
 
-	public List<DigestedLine> digestText(String pattern = "", Boolean isRegex = false) {
+	List<DigestedLine> digestText(String pattern = "", Boolean isRegex = false) {
 		List<DigestedLine> result = new ArrayList<>()
 		if (pattern.length() == 0) {
 			return result    // no search will be performed; return an empty list

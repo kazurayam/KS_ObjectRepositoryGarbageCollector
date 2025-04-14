@@ -7,7 +7,10 @@ import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 
-public class Locator implements Comparable<Locator> {
+/**
+ * Locator is a part of Test Object; XPath expression, CSS Selector, etc
+ */
+class Locator implements Comparable<Locator> {
 
 	public static Locator NULL_OBJECT = new Locator("")
 

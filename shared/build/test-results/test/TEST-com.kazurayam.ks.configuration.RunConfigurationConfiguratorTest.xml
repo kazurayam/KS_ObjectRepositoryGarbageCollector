@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.kazurayam.ks.configuration.RunConfigurationConfiguratorTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2025-04-14T10:12:15" hostname="KAZUAKInoMacBook-Air-2.local" time="0.178">
-  <properties/>
-  <testcase name="test_configure" classname="com.kazurayam.ks.configuration.RunConfigurationConfiguratorTest" time="0.178"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

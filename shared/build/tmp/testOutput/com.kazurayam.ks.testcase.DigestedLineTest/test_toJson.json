@@ -1,9 +1,0 @@
-{
-    "lineNo": 1,
-    "line": "Hello, new world!",
-    "pattern": "new",
-    "isRegex": false,
-    "isMatched": true,
-    "matchAt": 8,
-    "matchEnd": 10
-}

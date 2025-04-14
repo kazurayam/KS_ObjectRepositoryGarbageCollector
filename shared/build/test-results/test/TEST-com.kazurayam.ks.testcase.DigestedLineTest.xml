@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.kazurayam.ks.testcase.DigestedLineTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2025-04-14T10:12:15" hostname="KAZUAKInoMacBook-Air-2.local" time="0.449">
-  <properties/>
-  <testcase name="test_toJson" classname="com.kazurayam.ks.testcase.DigestedLineTest" time="0.442"/>
-  <testcase name="test_smoke" classname="com.kazurayam.ks.testcase.DigestedLineTest" time="0.007"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

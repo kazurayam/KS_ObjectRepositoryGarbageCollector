@@ -11,6 +11,9 @@ import com.kms.katalon.core.testobject.ObjectRepository
 import com.kms.katalon.core.testobject.SelectorMethod
 import com.kms.katalon.core.testobject.TestObject
 
+/**
+ * E.g, "Object Repository/main/Page_CURA Healthcare Service/a_Make Appointment"
+ */
 class TestObjectId implements Comparable<TestObjectId>{
 
 	private String value

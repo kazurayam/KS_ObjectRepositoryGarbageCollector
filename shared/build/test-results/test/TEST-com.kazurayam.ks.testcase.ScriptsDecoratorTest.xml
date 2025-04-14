@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.kazurayam.ks.testcase.ScriptsDecoratorTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2025-04-14T10:12:16" hostname="KAZUAKInoMacBook-Air-2.local" time="0.056">
-  <properties/>
-  <testcase name="test_getGroovyFile_include_all" classname="com.kazurayam.ks.testcase.ScriptsDecoratorTest" time="0.038"/>
-  <testcase name="test_getGroovyFile_include_main_only" classname="com.kazurayam.ks.testcase.ScriptsDecoratorTest" time="0.017"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

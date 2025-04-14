@@ -38,16 +38,21 @@ dependencies {
                     'slf4j*.jar'
             ]
     )
-    // to import com.kms.katalon.core.testobject.TestObject
-    // to import com.kms.katalon.core.testobject.SelectorMethod
-    // to import com.kms.katalon.core.testobject.ObjectRepository
+
     implementation fileTree(dir: "${KATALON_STUDIO_INSTALLATION_DIRECTORY}/Contents/Eclipse/plugins",
             include: [
                     'com.fasterxml.jackson*.jar',
                     'com.google.gson*.jar',
+
+                    // to import com.kms.katalon.core.testobject.TestObject
+                    // to import com.kms.katalon.core.testobject.SelectorMethod
+                    // to import com.kms.katalon.core.testobject.ObjectRepository
                     'com.kms.katalon.core*.jar',
                     'com.kms.katalon.util*.jar',
+
+                    // to import groovy.lang.GroovyObject
                     '**/org.codehaus.groovy*/lib/groovy*-indy.jar',
+
                     'org.apache.commons.lang*.jar',
                     'org.dom4j*.jar',
                     'org.eclipse.osgi*.jar'

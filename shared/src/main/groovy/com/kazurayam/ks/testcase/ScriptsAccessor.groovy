@@ -7,7 +7,15 @@ import org.slf4j.LoggerFactory
 import java.nio.file.Files
 import java.nio.file.Path
 
-public class ScriptsAccessor {
+/**
+ * The ScriptsAccessor.Builder requires the path of `Scripts` directory of
+ * a Katalon project.
+ * Optionally accepts the Ant-like patterns to specify the sub-folders
+ * from which .groovy files under the `Scripts` dir are selected.
+ * `getGroovyFiles()` method returns a list of Path of .groovy files that
+ * are included by the pattern given.
+ */
+class ScriptsAccessor {
 
 	private static Logger logger = LoggerFactory.getLogger(ScriptsAccessor.class)
 
@@ -31,11 +39,11 @@ public class ScriptsAccessor {
 		ds.scan()
 	}
 
-	public String[] includedFiles() {
+	String[] includedFiles() {
 		return ds.getIncludedFiles()
 	}
 
-	public List<Path> getGroovyFiles() {
+	List<Path> getGroovyFiles() {
 		String[] includedFiles = ds.getIncludedFiles()
 		List<Path> groovyFiles = new ArrayList<>()
 		for (int i = 0; i < includedFiles.length; i++) {
@@ -56,7 +64,7 @@ public class ScriptsAccessor {
 	 * 
 	 * @author kazurayam
 	 */
-	public static class Builder {
+	static class Builder {
 		private Path scriptsDir
 		private List<String> includeFiles
 		Builder(Path scriptsDir) {
@@ -65,12 +73,12 @@ public class ScriptsAccessor {
 			this.scriptsDir = scriptsDir.toAbsolutePath().normalize()
 			includeFiles = new ArrayList<>()
 		}
-		public Builder includeFile(String pattern) {
+		Builder includeFile(String pattern) {
 			Objects.requireNonNull(pattern)
 			includeFiles.add(pattern)
 			return this
 		}
-		public Builder includeFiles(List<String> patterns) {
+		Builder includeFiles(List<String> patterns) {
 			Objects.requireNonNull(patterns)
 			includeFiles.addAll(patterns)
 			return this

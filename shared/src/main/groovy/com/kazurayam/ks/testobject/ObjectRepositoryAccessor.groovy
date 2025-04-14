@@ -6,6 +6,11 @@ import org.slf4j.LoggerFactory
 
 import java.nio.file.Path
 
+/**
+ * ObjectRepositoryAccessor requires the path of "Object Repository" folder in a
+ * Katalon project. Optionally it accepts Ant-like patterns that represents
+ * the sub-folders of "Object Repository" to be included.
+ */
 class ObjectRepositoryAccessor {
 
 	private static Logger logger = LoggerFactory.getLogger(ObjectRepositoryAccessor.class)
