@@ -1,0 +1,8 @@
+tasks.register("generateDocs") {
+    doLast {
+        exec {
+            workingDir 'docs'
+            commandLine './adoc2md.sh'
+        }
+    }
+}

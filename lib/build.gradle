@@ -1,11 +1,17 @@
 plugins {
     id 'groovy'
+    id 'maven-publish'
+    id 'signing'
 }
 
 repositories {
     mavenCentral()
     mavenLocal()
 }
+
+group = "com.kazurayam"
+version = "0.3.0-SNAPSHOT"
+ext.isReleaseVersion = ! version.endsWith("SNAPSHOT")
 
 import org.gradle.internal.os.OperatingSystem
 String resolveKatalonStudioInstallationDirectory() {
@@ -25,10 +31,7 @@ String resolveKatalonStudioInstallationDirectory() {
         return new UnsupportedOperationException("Who knows?")
     }
 }
-
-ext {
-    KATALON_STUDIO_INSTALLATION_DIRECTORY = resolveKatalonStudioInstallationDirectory()
-}
+ext.KATALON_STUDIO_INSTALLATION_DIRECTORY = resolveKatalonStudioInstallationDirectory()
 
 dependencies {
     implementation fileTree(dir: "${KATALON_STUDIO_INSTALLATION_DIRECTORY}/Contents/Eclipse/configuration/resources/lib",
@@ -65,8 +68,79 @@ dependencies {
 }
 
 tasks.register('printClasspath') {
-    doFirst {
+    doLast {
         sourceSets.main.runtimeClasspath.sort().each { println it }
     }
 }
 
+tasks.register("publishGroovydoc", Copy) {
+    from 'build/docs/groovydoc'
+    into "${rootProject.projectDir}/docs/api"
+}
+groovydoc.finalizedBy publishGroovydoc
+
+// Apply a specific Java toolchain to ease working with different environments.
+java {
+    toolchain {
+        // Katalon Studio v10.1.0 runs on top of JDK17
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+jar {
+    archiveBaseName = rootProject.name
+    include('com/kazurayam/ks/**')
+    exclude('internal/**')
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = project.group
+            artifactId = project.rootProject.name
+            from components.java
+            pom {
+                description = "Tool to find unused TestObject in a project of Katalon Studio"
+                url = "https://kazurayam.github.io/KS_ObjecdtRespositoryGarbageCollection"
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'https://www.apache.org.licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'kazurayam'
+                        name = 'URAYAMA,kazuaki'
+                        email = 'kazuaki.urayama@gmail.com'
+                    }
+                }
+                scm {
+                    connection = "scm:git:https://github.com/kazurayam/${project.rootProject.name}.git"
+                    developerConnection = "scm:git:git@github.com:kazurayam/${project.rootProject.name}.git"
+                    url = "https://github.com/kazurayam/${project.rootProject.name}"
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            def releaseRepo = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotRepo = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            url = project.ext.get("isReleaseVersion") ? releaseRepo: snapshotRepo
+            credentials {
+                username = project.hasProperty('ossrhUsername') ? ossrhUsername : "Unknown user"
+                password = project.hasProperty('ossrhPassword') ? ossrhPassword : "Unknown password"
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
+}
+
+// I do not want to sign the SNAPSHOT
+tasks.withType(Sign) {
+    onlyIf { isReleaseVersion }
+}

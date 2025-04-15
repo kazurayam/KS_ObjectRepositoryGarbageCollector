@@ -8,42 +8,7 @@ Let me start with explaining what problem this library is designed to solve.
 
 I will present a sample Katalon Studio project that has a Test Case named [Test Cases/main/TC1](https://github.com/kazurayam/ObjectRepositoryGarbageCollection/blob/develop/Scripts/main/TC1/Script1677544889443.groovy). The script is as follows:
 
-    // Test Cases/main/TC1
-
-    import static com.kms.katalon.core.testobject.ObjectRepository.findTestObject
-    import com.kms.katalon.core.model.FailureHandling as FailureHandling
-    import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords as WebUI
-
-    WebUI.openBrowser('')
-
-    WebUI.navigateToUrl('https://katalon-demo-cura.herokuapp.com/')
-
-    WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/a_Make Appointment'))
-
-    WebUI.waitForElementPresent(findTestObject('Object Repository/Page_CURA Healthcare Service/a_Mark Appointments'), 3, FailureHandling.OPTIONAL)
-
-    WebUI.setText(findTestObject('Object Repository/main/Page_CURA Healthcare Service/input_Username_username'), 'John Doe')
-
-    WebUI.setEncryptedText(findTestObject('Object Repository/main/Page_CURA Healthcare Service/input_Password_password'), 'g3/DOGG74jC3Flrr3yH+3D/yKbOqqUNM')
-
-    WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/button_Login'))
-
-    WebUI.selectOptionByValue(findTestObject('Object Repository/main/Page_CURA Healthcare Service/select_Tokyo CURA Healthcare Center        _5b4107'), 
-        'Hongkong CURA Healthcare Center', true)
-
-    WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/input_Apply for hospital readmission_hospit_63901f'))
-
-    WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/input_Medicaid_programs'))
-
-    WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/input_Visit Date'))
-
-    WebUI.setText(findTestObject('Object Repository/main/Page_CURA Healthcare Service/input_Visit Date'), "20230325")
-
-    WebUI.setText(findTestObject('Object Repository/main/Page_CURA Healthcare Service/textarea_Comment_comment'), 'This is a comment')
-
-    WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/button_Book Appointment'))
-
-    WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/a_Go to Homepage'))
+    Unresolved directive in s1_problem_to_solve.adoc - include::../Scripts/main/TC1/Script1677544889443.groovy[]
 
 This script contains lines with fragment `findTestObject(…​)`. A call `findTestObject(…​)` method refers to a **Test Object**. If you read the script, you would find that it contains 13 lines with `findTestObject(…​)` call. However, if you read it carefully, you will find this script refers to 11 Test objects.
 
@@ -101,37 +66,7 @@ How to get started with the **Object Repository Garbage Collector** in your own 
 
 `Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbages`:
 
-    import com.kazurayam.ks.testobject.gc.ObjectRepositoryGarbageCollector
-
-    import groovy.json.JsonOutput
-
-    /**
-     * A demonstration of ObjectRepositoryGarbageCollector, the simplest case
-     *
-     * This TestCase outputs a JSON file which contains a list of garbage Test Objects
-     * in the "Object Repository" folder.
-     *
-     * A "garbage" means a Test Object which is not used by any scripts
-     * in the "Test Cases" folder.
-     */
-
-    // the Garbage Collector instance will scan 2 folders: "Object Repository" and "Test Cases".
-
-    // Amongst the folders in the "Object Repository" folder, the TestObjectsCase scripts contained 
-    // in the subfolder that match "**/Page_CURA*" will be selected, and others are ignored
-    ObjectRepositoryGarbageCollector gc = 
-            new ObjectRepositoryGarbageCollector.Builder()
-                .includeFolder("**/*")
-                .build()
-
-    // gc.jsonifyGarbages() triggers scanning through the entire "Object Repository".
-    // All references from TestCase scripts to TestObjects will be identified.
-    // Consequently, it can result a list of unused TestObjects.
-    // Will output the result into a JSON string
-    String json = gc.jsonifyGarbages()
-
-    // just print the JSON into the console
-    println JsonOutput.prettyPrint(json)
+    Unresolved directive in s3_1_demo_ORGC_jsonifyGarbages.adoc - include::../Scripts/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbages/Script1743835392014.groovy[]
 
 #### Output
 
