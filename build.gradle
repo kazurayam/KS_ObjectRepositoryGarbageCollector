@@ -1,4 +1,5 @@
 tasks.register("generateDocs") {
+    group = 'Custom'
     doLast {
         exec {
             workingDir 'docs'

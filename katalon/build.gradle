@@ -6,6 +6,7 @@ def userHome = System.getProperty('user.home')
 def rootProjectDir = rootProject.projectDir
 
 tasks.register('importDrivers') {
+    group = 'Custom'
     doFirst {
         delete 'Drivers'
     }
@@ -28,12 +29,14 @@ tasks.register('importDrivers') {
 }
 
 tasks.register("cleanProject", Delete) {
+    group = 'Custom'
     delete '.cache'
     delete 'bin'
     delete 'Libs'
 }
 
 tasks.register("publishDemoToDocs") {
+    group = 'Custom'
     doFirst {
         delete "$rootProjectDir/docs/testOutput"
         delete "$rootProjectDir/docs/Scripts"

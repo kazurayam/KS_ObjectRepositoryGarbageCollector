@@ -29,3 +29,4 @@ String json = gc.jsonifyGarbages()
 
 // just print the JSON into the console
 println JsonOutput.prettyPrint(json)
+

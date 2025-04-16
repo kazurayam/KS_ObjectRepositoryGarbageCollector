@@ -22,7 +22,7 @@ String json = gc.jsonifyGarbages()
 
 Path projectDir = Paths.get(RunConfiguration.getProjectDir())
 Path classOutputDir = projectDir.resolve("build/tmp/testOutput/demo/ObjectRepositoryGarbageCollector")
-Path outDir = classOutputDir.resolve("includeFolder_single")
+Path outDir = classOutputDir.resolve("ORGC_jsonifyGarbages_includeFolder_multiple")
 Files.createDirectories(outDir)
 File outFile = outDir.resolve("garbages.json").toFile()
 

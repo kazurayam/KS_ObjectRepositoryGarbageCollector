@@ -68,12 +68,14 @@ dependencies {
 }
 
 tasks.register('printClasspath') {
+    group = 'Custom'
     doLast {
         sourceSets.main.runtimeClasspath.sort().each { println it }
     }
 }
 
 tasks.register("publishGroovydoc", Copy) {
+    group = 'Custom'
     from 'build/docs/groovydoc'
     into "${rootProject.projectDir}/docs/api"
 }
