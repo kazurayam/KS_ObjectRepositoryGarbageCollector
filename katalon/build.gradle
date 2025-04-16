@@ -35,12 +35,20 @@ tasks.register("cleanProject", Delete) {
 
 tasks.register("publishDemoToDocs") {
     doFirst {
-        delete "$rootProjectDir/docs/demo"
+        delete "$rootProjectDir/docs/testOutput"
+        delete "$rootProjectDir/docs/Scripts"
     }
+
     doLast {
         copy {
-            from "build/tmp/testOutput/demo"
-            into "$rootProjectDir/docs"
+            from("build/tmp/testOutput") {
+                include "demo/**"
+            }
+            into "$rootProjectDir/docs/testOutput"
+        }
+        copy {
+            from("Scripts")
+            into "$rootProjectDir/docs/Scripts"
         }
     }
 }
