@@ -7,8 +7,10 @@ def rootProjectDir = rootProject.projectDir
 
 tasks.register('importDrivers') {
     group = 'Custom'
+    description = "import the KS_ObjectRepositoryGarbageCollector jar and the MockDirectoryScanner jar into the Drivers folder"
     doFirst {
         delete 'Drivers'
+        mkdir 'Drivers'
     }
     doLast {
         copy {
@@ -30,6 +32,7 @@ tasks.register('importDrivers') {
 
 tasks.register("cleanProject", Delete) {
     group = 'Custom'
+    description = "remove the bin folder and others to clean up the Katalon project"
     delete '.cache'
     delete 'bin'
     delete 'Libs'
@@ -37,21 +40,21 @@ tasks.register("cleanProject", Delete) {
 
 tasks.register("publishDemoToDocs") {
     group = 'Custom'
+    description = "copy the source of the Demo testcases and its outputs into the rootProject/docs folder"
     doFirst {
-        delete "$rootProjectDir/docs/testOutput"
-        delete "$rootProjectDir/docs/Scripts"
+        delete "$rootProjectDir/docs/assets/testOutput"
+        delete "$rootProjectDir/docs/assets/Scripts"
     }
-
     doLast {
         copy {
             from("build/tmp/testOutput") {
                 include "demo/**"
             }
-            into "$rootProjectDir/docs/testOutput"
+            into "$rootProjectDir/docs/assets/testOutput"
         }
         copy {
             from("Scripts")
-            into "$rootProjectDir/docs/Scripts"
+            into "$rootProjectDir/docs/assets/Scripts"
         }
     }
 }

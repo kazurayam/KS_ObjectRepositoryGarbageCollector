@@ -1,0 +1,58 @@
+tasks.register("generateDocs") {
+    group = 'Custom'
+    doLast {
+        exec {
+            workingDir "."
+            commandLine './adoc2md.sh'
+        }
+    }
+}
+
+tasks.register("getProjectTree") {
+    group = 'Custom'
+    doFirst {
+        delete "${projectDir}/assets/project-structure"
+        mkdir "${projectDir}/assets/project-structure"
+    }
+    doLast {
+        exec {
+            workingDir "${getRootDir()}"
+            commandLine 'tree', '.', '-d', '-L', '2', '-I', 'docs', '-I', 'gradle'
+            File out = new File("${projectDir}/assets/project-structure/rootProject.txt")
+            standardOutput = new FileOutputStream(out)
+        }
+        exec {
+            workingDir "${projectDir}/assets/project-structure"
+            commandLine 'sed', '-i', '', "s/^\\./${rootProject.name}/", 'rootProject.txt'
+        }
+    }
+    doLast {
+        exec {
+            workingDir "${getRootDir()}/katalon"
+            commandLine 'tree', '.', '-I', 'Checkpoints', '-I', 'Data Files',
+                '-I', "${rootProject.name}.prj", '-I', 'bin', '-I', 'Libs',
+                '-I', 'Reports', '-I', 'Include', '-I', 'Keywords',
+                '-I', 'Plugins', '-I', 'Scripts', '-I', 'build', '-I', 'settings',
+                '-I', 'build.gradle', '-I', 'console.properties'
+            File out = new File("${projectDir}/assets/project-structure/subProject-katalon.txt")
+            standardOutput = new FileOutputStream(out)
+        }
+        exec {
+            workingDir "${projectDir}/assets/project-structure"
+            commandLine 'sed', '-i', '', "s/^\\./katalon/", 'subProject-katalon.txt'
+        }
+    }
+    doLast {
+        exec {
+            workingDir "${getRootDir()}/lib"
+            commandLine 'tree', '.', '-I', 'classes', '-I', 'generated', '-I', 'publications',
+                '-I', 'resources', '-I', 'tmp', '-I', 'test'
+            File out = new File("${projectDir}/assets/project-structure/subProject-lib.txt")
+            standardOutput = new FileOutputStream(out)
+        }
+        exec {
+            workingDir "${projectDir}/assets/project-structure"
+            commandLine 'sed', '-i', '', "s/^\\./lib/", 'subProject-lib.txt'
+        }
+    }
+}

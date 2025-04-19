@@ -1,0 +1,24 @@
+KS_ObjectRepositoryGarbageCollector
+├── katalon
+│   ├── Checkpoints
+│   ├── Data Files
+│   ├── Drivers
+│   ├── Include
+│   ├── Keywords
+│   ├── Libs
+│   ├── Object Repository
+│   ├── Plugins
+│   ├── Profiles
+│   ├── Reports
+│   ├── Scripts
+│   ├── Test Cases
+│   ├── Test Listeners
+│   ├── Test Suites
+│   ├── bin
+│   ├── build
+│   └── settings
+└── lib
+    ├── build
+    └── src
+
+22 directories

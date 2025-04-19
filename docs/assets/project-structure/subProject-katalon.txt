@@ -1,0 +1,70 @@
+katalon
+├── Drivers
+│   ├── KS_ObjectRepositoryGarbageCollector-0.3.0-SNAPSHOT.jar
+│   └── MonkDirectoryScanner-0.1.0.jar
+├── Object Repository
+│   ├── main
+│   │   └── Page_CURA Healthcare Service
+│   │       ├── a_Foo.rs
+│   │       ├── a_Go to Homepage.rs
+│   │       ├── a_Make Appointment.rs
+│   │       ├── button_Book Appointment.rs
+│   │       ├── button_Login.rs
+│   │       ├── input_Apply for hospital readmission_hospit_63901f.rs
+│   │       ├── input_Medicaid_programs.rs
+│   │       ├── input_Password_password.rs
+│   │       ├── input_Username_username.rs
+│   │       ├── input_Visit Date.rs
+│   │       ├── select_Tokyo CURA Healthcare Center        _5b4107.rs
+│   │       ├── td_28.rs
+│   │       ├── textarea_Comment_comment.rs
+│   │       └── xtra
+│   │           ├── a_Go to Homepage.rs
+│   │           └── td_28.rs
+│   └── misc
+│       └── dummy1.rs
+├── Profiles
+│   └── default.glbl
+├── Test Cases
+│   ├── demo
+│   │   ├── ObjectRepositoryDecorator
+│   │   │   ├── ORD_getLocatorIndex.tc
+│   │   │   ├── ORD_getLocatorIndex_filterByRegex.tc
+│   │   │   ├── ORD_getLocatorIndex_filterByString.tc
+│   │   │   ├── ORD_getTestObjectIdList.tc
+│   │   │   ├── ORD_getTestObjectIdList_filteredByRegex.tc
+│   │   │   ├── ORD_getTestObjectIdList_filteredByString.tc
+│   │   │   ├── ORD_jsonifyLocatorIndex.tc
+│   │   │   ├── ORD_jsonifyLocatorIndex_filterByRegex.tc
+│   │   │   ├── ORD_jsonifyLocatorIndex_filterByString.tc
+│   │   │   ├── ORD_jsonifyTestObjectIdList.tc
+│   │   │   ├── ORD_jsonifyTestObjectIdList_filterByRegex.tc
+│   │   │   └── ORD_jsonifyTestObjectIdList_filterByString.tc
+│   │   ├── ObjectRepositoryGarbageCollector
+│   │   │   ├── ORGC_getGarbages_includeFolder_pattern.tc
+│   │   │   ├── ORGC_jsonifyBackwardReferences_includeFolder_pattern.tc
+│   │   │   ├── ORGC_jsonifyGarbages.tc
+│   │   │   ├── ORGC_jsonifyGarbages_includeFolder_multiple.tc
+│   │   │   ├── ORGC_jsonifyGarbages_includeFolder_pattern.tc
+│   │   │   ├── ORGC_jsonifyGarbages_includeFolder_single.tc
+│   │   │   └── ORGC_jsonifyLocatorIndex.tc
+│   │   ├── ScriptsDecorator
+│   │   │   ├── SD_getGroovyFiles.tc
+│   │   │   ├── SD_getGroovyFiles_include_demo_and_main.tc
+│   │   │   └── SD_getGroovyFiles_include_main_only.tc
+│   │   └── cleanTestOutput.tc
+│   ├── main
+│   │   ├── TC0.tc
+│   │   └── TC1.tc
+│   └── misc
+│       ├── runDirectoryScanner.tc
+│       ├── runKatalonProjectDirectoryResolver.tc
+│       └── studyRunConfiguration.tc
+├── Test Listeners
+│   └── TL1.groovy
+└── Test Suites
+    └── demo
+        ├── runAll.groovy
+        └── runAll.ts
+
+18 directories, 50 files

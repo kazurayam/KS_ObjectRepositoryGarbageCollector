@@ -1,3 +1,4 @@
 rootProject.name = "KS_ObjectRepositoryGarbageCollector"
 include 'lib'
 include 'katalon'
+include 'docs'

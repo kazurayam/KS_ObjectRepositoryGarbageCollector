@@ -69,6 +69,7 @@ dependencies {
 
 tasks.register('printClasspath') {
     group = 'Custom'
+    description = "show the entries included in the runtime classpath"
     doLast {
         sourceSets.main.runtimeClasspath.sort().each { println it }
     }
@@ -76,6 +77,7 @@ tasks.register('printClasspath') {
 
 tasks.register("publishGroovydoc", Copy) {
     group = 'Custom'
+    description = "copy the Groovydoc files into the rootProject/docs directory to make it publicly accessible"
     from 'build/docs/groovydoc'
     into "${rootProject.projectDir}/docs/api"
 }

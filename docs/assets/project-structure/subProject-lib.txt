@@ -1,0 +1,43 @@
+lib
+├── build
+│   └── libs
+│       ├── KS_ObjectRepositoryGarbageCollector-0.3.0.jar
+│       └── KS_ObjectRepositoryGarbageCollector-0.3.0.jar.asc
+├── build.gradle
+└── src
+    └── main
+        └── groovy
+            ├── com
+            │   └── kazurayam
+            │       └── ks
+            │           ├── configuration
+            │           │   ├── KatalonProjectDirectoryResolver.groovy
+            │           │   └── RunConfigurationConfigurator.groovy
+            │           ├── reporting
+            │           │   └── Shorthand.groovy
+            │           ├── testcase
+            │           │   ├── DigestedLine.groovy
+            │           │   ├── DigestedText.groovy
+            │           │   ├── ScriptsAccessor.groovy
+            │           │   ├── ScriptsDecorator.groovy
+            │           │   ├── TestCaseId.groovy
+            │           │   ├── TestCaseScriptDigester.groovy
+            │           │   └── TextDigester.groovy
+            │           └── testobject
+            │               ├── Locator.groovy
+            │               ├── LocatorIndex.groovy
+            │               ├── ObjectRepositoryAccessor.groovy
+            │               ├── ObjectRepositoryDecorator.groovy
+            │               ├── RegexOptedTextMatcher.groovy
+            │               ├── TestObjectEssence.groovy
+            │               ├── TestObjectId.groovy
+            │               └── gc
+            │                   ├── BackwardReferences.groovy
+            │                   ├── Database.groovy
+            │                   ├── ForwardReference.groovy
+            │                   ├── Garbages.groovy
+            │                   └── ObjectRepositoryGarbageCollector.groovy
+            └── internal
+                └── GlobalVariable.groovy
+
+15 directories, 26 files

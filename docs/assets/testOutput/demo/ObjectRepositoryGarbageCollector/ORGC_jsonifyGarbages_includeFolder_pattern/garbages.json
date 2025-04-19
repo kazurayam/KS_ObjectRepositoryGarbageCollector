@@ -1,7 +1,7 @@
 {
     "Project name": "katalon",
     "includeObjectRepositoryFolder": [
-        "main/Page_CURA Healthcare Service"
+        "**/Page_CURA*"
     ],
     "Number of TestCases": 28,
     "Number of TestObjects": 15,
@@ -12,5 +12,5 @@
         "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
         "main/Page_CURA Healthcare Service/xtra/td_28"
     ],
-    "Duration seconds": 0.241
+    "Duration seconds": 0.284
 }
