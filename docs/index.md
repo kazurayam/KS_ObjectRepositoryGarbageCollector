@@ -1,9 +1,7 @@
+- Table of content 
+{:toc}
+
 # \[Katalon Studio\] Object Repository Garbage Collector / User Guide
-
--   Table of Content
-    {:toc}
-
-<!-- -->
 
 -   [repository](https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector)
 
