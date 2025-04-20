@@ -5,10 +5,6 @@ tasks.register("generateDocs") {
             workingDir "."
             commandLine './adoc2md.sh', './index_.adoc'
         }
-        exec {
-            workingDir "."
-            commandLine './adoc2md.sh', './developersguide_.adoc'
-        }
     }
 }
 

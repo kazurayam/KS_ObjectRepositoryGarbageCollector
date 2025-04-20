@@ -1,8 +1,9 @@
-= KS_ObjectRepositoryGarbageCollector / Developers' guide
 
-== Project structure
+== Developers' guide
 
-link:https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector[This repository] contains a Gradle link:https://docs.gradle.org/current/userguide/intro_multi_project_builds.html[Multi-project].
+=== Project structure
+
+link:{PagesURL}[This repository] contains a Gradle link:https://docs.gradle.org/current/userguide/intro_multi_project_builds.html[Multi-project].
 
 `$rootProject/settings.gradle`:
 [source,text]
@@ -24,14 +25,14 @@ The sub-project `katalon` is a typical Katalon Studio project. Please note that 
 include::./assets/project-structure/subProject-katalon.txt[]
 ----
 
-The `lib` sub-project is a typical Gradle projct that as a typical directory structure for Java programming language.
+The sub-project `lib` is a Gradle Java project that has a typical directory structure.
 
 [source,text]
 ----
 include::./assets/project-structure/subProject-lib.txt[]
 ----
 
-## Building jar in the `lib` project
+=== Building jar in the `lib` project
 
 [source,text]
 ```
@@ -39,7 +40,7 @@ $ cd $rootProject/lib
 $ gradle jar
 ```
 
-## Importing jars from the `lib` sub-project into the `katalon` sub-project
+=== Importing jars from the `lib` sub-project into the `katalon` sub-project
 
 [source,text]
 ```
@@ -47,3 +48,10 @@ $ cd $rootProject/katalon
 $ gradle importDrivers
 ```
 
+See the link:{ReposURL}/tree/develop/katalon/build.gradle[katalon/build.gradle]
+
+`katalon/build.gradle`
+[source.text]
+----
+include::../katalon/build.gradle[lines=8..22]
+----

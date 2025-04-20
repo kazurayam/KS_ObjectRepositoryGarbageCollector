@@ -1,28 +1,24 @@
 == Problem to solve
 
-Let me start with explaining what problem this library is designed to solve.
-
-I will present a sample Katalon Studio project that has a Test Case named link:https://github.com/kazurayam/ObjectRepositoryGarbageCollection/blob/develop/Scripts/main/TC1/Script1677544889443.groovy[Test Cases/main/TC1]. The script is as follows:
+Here is a sample Test Case script named link:https://github.com/kazurayam/ObjectRepositoryGarbageCollection/blob/develop/katalon/Scripts/main/TC1/Script1677544889443.groovy[`Test Cases/main/TC1`] in a Katalon Studio project.
 
 [source, groovy]
 ----
-include::../Scripts/main/TC1/Script1677544889443.groovy[]
+include::../katalon/Scripts/main/TC1/Script1677544889443.groovy[]
 ----
 
+This script contains a lot of lines with fragment `findTestObject(...)`. A call `findTestObject(...)` method refers to a *Test Object*. If you read the script, you would find that it contains 13 lines with `findTestObject(...)` call.
 
-This script contains lines with fragment `findTestObject(...)`. A call `findTestObject(...)` method refers to a *Test Object*. If you read the script, you would find that it contains 13 lines with `findTestObject(...)` call. However, if you read it carefully, you will find this script refers to 11 Test objects.
+Let me show you a screenshot of the `Object Repository` of the Katalon project. The directory tree looks like this:
 
-Now let's look at the `Object Repository` directory. In the Katalon Studio GUI, the directory tree looks like this:
+image:https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/images/1_1_ObjectRepositoryContainingUnusedTestObjects.png[Object Repository containing unused Test Objects]
 
-image:https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/images/1_1_ObjectRepositoryContains15TestObjects.png[Object Repository with 15 Test Objects]
+In the `Object Repository` there are 16 Test Objects defined.
 
-The `Object Repository` there are 15 Test Objects defined.
+Easily we can see that there are some unused Test Objects.
 
-On the other hand, I carefully read all Test Case scripts, and I found that only 11 Test Objects are actually refered to by Test Cases. 15 minus 11 = 4 Test Objects are not used. These are garbages. Now I want to clean up the Object Repository.
+**Problem** : _How can I tell which Test Objects are unused by any of Test Cases? How can I be sure each Test Objects are safe to delete?_
 
-**Problem** : _How can I tell which Test Objects are garbages? How can I be sure each Test Objects are safe to delete?_
+This sample is small; it has only 16 Test Objects. But it is already terrible to to find identify garbage. I believe that many Katalon users have far larger projects with 100 Test Objects, 500, 1000, ... or even more. The more Test Objects you have, it will get worse.
 
-This sample Katalon Studio project is a small one; it has just 15 Test Objects. I believe that many Katalon users have far larger projects with 100 Test Objects, 200, 3000, ... possibly even more. The more Test Objects you have, the more garbages you would have. The more garbages you have, the more it becomes difficult to maintain the project clean.
-
-Therefore I have developed this ObjectRepositoryGarbageCollector class, which will show the list of unused Test Objects.
-
+So I developed this library, which will scan a katalon project and identify unused Test Objects quickly.
