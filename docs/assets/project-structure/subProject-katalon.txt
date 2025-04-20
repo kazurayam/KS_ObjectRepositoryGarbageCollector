@@ -62,9 +62,10 @@ katalon
 │       └── studyRunConfiguration.tc
 ├── Test Listeners
 │   └── TL1.groovy
-└── Test Suites
-    └── demo
-        ├── runAll.groovy
-        └── runAll.ts
+├── Test Suites
+│   └── demo
+│       ├── runAll.groovy
+│       └── runAll.ts
+└── build.gradle
 
-18 directories, 50 files
+18 directories, 51 files

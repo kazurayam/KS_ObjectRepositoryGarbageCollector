@@ -3,7 +3,11 @@ tasks.register("generateDocs") {
     doLast {
         exec {
             workingDir "."
-            commandLine './adoc2md.sh'
+            commandLine './adoc2md.sh', './index_.adoc'
+        }
+        exec {
+            workingDir "."
+            commandLine './adoc2md.sh', './developersguide_.adoc'
         }
     }
 }
@@ -33,7 +37,7 @@ tasks.register("getProjectTree") {
                 '-I', "${rootProject.name}.prj", '-I', 'bin', '-I', 'Libs',
                 '-I', 'Reports', '-I', 'Include', '-I', 'Keywords',
                 '-I', 'Plugins', '-I', 'Scripts', '-I', 'build', '-I', 'settings',
-                '-I', 'build.gradle', '-I', 'console.properties'
+                '-I', 'console.properties'
             File out = new File("${projectDir}/assets/project-structure/subProject-katalon.txt")
             standardOutput = new FileOutputStream(out)
         }
