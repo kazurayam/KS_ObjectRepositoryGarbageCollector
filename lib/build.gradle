@@ -4,14 +4,17 @@ plugins {
     id 'signing'
 }
 
-repositories {
-    mavenCentral()
-    mavenLocal()
-}
-
 group = "com.kazurayam"
 version = "0.3.0"
 ext.isReleaseVersion = ! version.endsWith("SNAPSHOT")
+
+repositories {
+    mavenCentral()
+    maven {
+        url = uri("https://maven.pkg.github.com/kazurayam/monk-directory-scanner")
+    }
+    mavenLocal()
+}
 
 import org.gradle.internal.os.OperatingSystem
 String resolveKatalonStudioInstallationDirectory() {
@@ -21,7 +24,9 @@ String resolveKatalonStudioInstallationDirectory() {
     if (os.isMacOsX()) {
         return '/Applications/Katalon Studio.app'
     } else if (os.isWindows()) {
-        // Consider Windows.
+        // Users can install Katalon Studio anywhere they like. Therefore it impossible
+        // to resolve the installation directory automatically.
+        // You need to hard code the path
         throw new UnsupportedOperationException("To be considered")
     } else if (os.isLinux()) {
         // Consider Linux.
@@ -33,7 +38,9 @@ String resolveKatalonStudioInstallationDirectory() {
 }
 ext.KATALON_STUDIO_INSTALLATION_DIRECTORY = resolveKatalonStudioInstallationDirectory()
 
+
 dependencies {
+    // will look into the Katalon Studio installation directory
     implementation fileTree(dir: "${KATALON_STUDIO_INSTALLATION_DIRECTORY}/Contents/Eclipse/configuration/resources/lib",
             include: [
                     'groovy-3.0.17.jar',
@@ -41,7 +48,6 @@ dependencies {
                     'slf4j*.jar'
             ]
     )
-
     implementation fileTree(dir: "${KATALON_STUDIO_INSTALLATION_DIRECTORY}/Contents/Eclipse/plugins",
             include: [
                     'com.fasterxml.jackson*.jar',
@@ -61,15 +67,17 @@ dependencies {
                     'org.eclipse.osgi*.jar'
             ])
 
-    // will be resolved via mavenLocal()
-    implementation("com.kazurayam:MonkDirectoryScanner:0.1.0")
+    // will look into the GitHub Packages
+    implementation('com.kazurayam:monk-directory-scanner:0.1.0')
+
+    // will look into the Maven Central repository
     testImplementation "junit:junit:4.13.2"
     testImplementation 'org.slf4j:slf4j-simple:1.7.25'
 }
 
 tasks.register('printClasspath') {
     group = 'Custom'
-    description = "show the entries included in the runtime classpath"
+    description = "show the entries included in the runtime classpath, sorted alphabetically"
     doLast {
         sourceSets.main.runtimeClasspath.sort().each { println it }
     }
@@ -99,13 +107,13 @@ jar {
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
+        mylib(MavenPublication) {
             groupId = project.group
-            artifactId = project.rootProject.name
+            artifactId = 'ks-object-repository-garbage-collector'
             from components.java
             pom {
                 description = "Tool to find unused TestObject in a project of Katalon Studio"
-                url = "https://kazurayam.github.io/KS_ObjecdtRespositoryGarbageCollection"
+                url = "https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector"
                 licenses {
                     license {
                         name = 'The Apache License, Version 2.0'
@@ -129,19 +137,19 @@ publishing {
     }
     repositories {
         maven {
-            def releaseRepo = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-            def snapshotRepo = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-            url = project.ext.get("isReleaseVersion") ? releaseRepo: snapshotRepo
+            name = "gpr"
+            url = uri("https://maven.pkg.github.com/kazurayam/${rootProject.name}")
             credentials {
-                username = project.hasProperty('ossrhUsername') ? ossrhUsername : "Unknown user"
-                password = project.hasProperty('ossrhPassword') ? ossrhPassword : "Unknown password"
+                username = project.findProperty('gpr.user')
+                password = project.findProperty('gpr.key')
             }
         }
     }
 }
+// type "$ gradle publishMylibPublicationToGprRepository" to publish
 
 signing {
-    sign publishing.publications.mavenJava
+    sign publishing.publications.mylib
 }
 
 // I do not want to sign the SNAPSHOT

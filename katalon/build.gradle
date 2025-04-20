@@ -1,17 +1,44 @@
 plugins {
-  id 'groovy'
+    id "com.katalon.gradle-plugin" version "0.1.2"
+}
+
+repositories {
+    maven {
+        url = uri("https://maven.pkg.github.com/kazurayam/monk-directory-scanner")
+        credentials {
+            username = project.findProperty('gpr.user')
+            password = project.findProperty('gpr.key')
+        }
+    }
+    maven {
+        url = uri("https://maven.pkg.github.com/kazurayam/ks-object-repository-garbage-collector")
+        credentials {
+            username = project.findProperty('gpr.user')
+            password = project.findProperty('gpr.key')
+        }
+    }
+}
+
+dependencies {
+    implementation('com.kazurayam:monk-directory-scanner:0.1.0')
+    implementation('com.kazurayam:ks-object-repository-garbage-collector:0.3.0')
 }
 
 def userHome = System.getProperty('user.home')
 def rootProjectDir = rootProject.projectDir
 
-tasks.register('importDrivers') {
+tasks.register('cleanDrivers') {
     group = 'Custom'
-    description = "import the KS_ObjectRepositoryGarbageCollector jar and the MockDirectoryScanner jar into the Drivers folder"
+    description = "remove jars out of the Drivers folder"
     doFirst {
         delete 'Drivers'
         mkdir 'Drivers'
     }
+}
+
+tasks.register('importDrivers') {
+    group = 'Custom'
+    description = "import the KS_ObjectRepositoryGarbageCollector jar and the MockDirectoryScanner jar into the Drivers folder"
     doLast {
         copy {
             into layout.projectDirectory.dir("Drivers")
@@ -23,12 +50,15 @@ tasks.register('importDrivers') {
     doLast {
         copy {
             into layout.projectDirectory.dir("Drivers")
-            from("$userHome/.m2/repository/com/kazurayam/MonkDirectoryScanner/0.1.0") {
+            from("$userHome/.m2/repository/com/kazurayam/monk-directory-scanner/0.1.0") {
                 include '**/*.jar'
             }
         }
     }
+    dependsOn 'cleanDrivers'
 }
+
+katalonCopyDependencies.dependsOn cleanDrivers
 
 tasks.register("cleanProject", Delete) {
     group = 'Custom'
@@ -58,3 +88,4 @@ tasks.register("publishDemoToDocs") {
         }
     }
 }
+
