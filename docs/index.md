@@ -1,4 +1,3 @@
-- Table of content 
 {:toc}
 
 # \[Katalon Studio\] Object Repository Garbage Collector / User Guide
@@ -46,7 +45,7 @@ Here is a sample Test Case script named [`Test Cases/main/TC1`](https://github.c
 
     WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/a_Go to Homepage'))
 
-This script contains a lot of lines with fragment `findTestObject(…​)`. A call `findTestObject(…​)` method refers to a **Test Object**. If you read the script, you would find that it contains 13 lines with `findTestObject(…​)` call.
+This script contains a lot of lines with fragment `findTestObject(…​)`. Each call `findTestObject(…​)` method refers to a **Test Object**. If you read the script, you would find that it contains 13 lines with `findTestObject(…​)` call.
 
 Let me show you a screenshot of the `Object Repository` of the Katalon project. The directory tree looks like this:
 
@@ -56,9 +55,9 @@ In the `Object Repository` there are 16 Test Objects defined.
 
 Easily we can see that there are some unused Test Objects.
 
-**Problem** : *How can I tell which Test Objects are unused by any of Test Cases? How can I be sure each Test Objects are safe to delete?*
+**Problem** : *How can I tell which Test Objects are unused by any of Test Cases? How can I be sure which Test Objects are safe to delete?*
 
-This sample is small; it has only 16 Test Objects. But it is already terrible to to find identify garbage. I believe that many Katalon users have far larger projects with 100 Test Objects, 500, 1000, …​ or even more. The more Test Objects you have, it will get worse.
+This sample is small; it has only 16 Test Objects. But it is a hard job yet to look for garbage. I believe that many Katalon users have far larger projects with 100 Test Objects, 500, 1000, …​ or even more. The more Test Objects you have, it will be even worse.
 
 So I developed this library, which will scan a katalon project and identify unused Test Objects quickly.
 
