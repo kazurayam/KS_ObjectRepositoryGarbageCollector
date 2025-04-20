@@ -1,4 +1,5 @@
-- Table of content {:toc}
+-   Table of content
+    {:toc}
 
 # \[Katalon Studio\] Object Repository Garbage Collector / User Guide
 
