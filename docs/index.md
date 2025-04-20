@@ -3,7 +3,7 @@
 
 # \[Katalon Studio\] Object Repository Garbage Collector / User Guide
 
--   [repository](https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector)
+-   link to the [repository](https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector)
 
 ## Problem to solve
 
@@ -46,21 +46,17 @@ Here is a sample Test Case script named [`Test Cases/main/TC1`](https://github.c
 
     WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/a_Go to Homepage'))
 
-This script contains a lot of lines with fragment `findTestObject(…​)`. Each call `findTestObject(…​)` method refers to a **Test Object**. If you read the script, you would find that it contains 13 lines with `findTestObject(…​)` call.
-
-Let me show you a screenshot of the `Object Repository` of the Katalon project. The directory tree looks like this:
+This script contains 13 statements with a fragment `findTestObject(…​)`. Each call `findTestObject(…​)` method refers to a specific **Test Object**. Let me show you a screenshot of the `Object Repository` of the Katalon project. The directory tree looks like this:
 
 ![Object Repository containing unused Test Objects](https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/images/1_1_ObjectRepositoryContainingUnusedTestObjects.png)
 
-In the `Object Repository` there are 16 Test Objects defined.
+This small project has 16 Test Objects in the `Object Repository`. Among these, there are several unused Test Objects. I believe that many Katalon users have larger projects with 100 Test Objects, 500 or even more. The "Web Recording" tool generates a lot of Test Objects. The generated set of Test Objects contains a lot of duplications. The tool tends to make your project cluttered.
 
-Easily we can see that there are some unused Test Objects.
+Now I want to tidy up my Katalon project, but …​
 
-**Problem** : *How can I tell which Test Objects are unused by any of Test Cases? How can I be sure which Test Objects are safe to delete?*
+**Problem** : *How can I tell which Test Objects are unused by any of Test Cases? How can I tell duplicating Test Objects with same locators (XPath expression, CSS selectors)? How can I be sure which Test Objects are safe to delete?*
 
-This sample is small; it has only 16 Test Objects. But it is a hard job yet to look for garbage. I believe that many Katalon users have far larger projects with 100 Test Objects, 500, 1000, …​ or even more. The more Test Objects you have, it will be even worse.
-
-So I developed this library, which will scan a katalon project and identify unused Test Objects quickly.
+So I developed the `ObjectRepositoryGarbageCollector`. This will scan a Katalon project, analyze the "Test Cases" and "Object Repository" folder, and inform you of unused Test Objects quickly.
 
 ## Solution
 
@@ -72,11 +68,9 @@ I developed this project using the following environment:
 
 -   Katalon Studio Free v10.1.0 which bundles JDK17
 
-The KS\_ObjectRepositoryGargageCollecor-x.x.x.jar requires Katalon Studio v10 and newer.
+The KS\_ObjectRepositoryGargageCollecor-x.x.x.jar requires Katalon Studio v10 and newer. The jar doesn’t run on Katalon Studio v9 and older due to JDK version.
 
-It wouldn’t run on v9 and older due to JDK version.
-
-The jar would run in Katalon Runtime Engine not only in Katalon Studio.
+The jar would run on Katalon Runtime Engine, not only on Katalon Studio.
 
 ### Installation
 
@@ -88,9 +82,9 @@ How to get started with the **Object Repository Garbage Collector** in your own 
 
 3.  Close your project and reopen it so that your Katalon Studio recognize the new jar files.
 
-4.  Open the "Project" &gt; "Settings", "Library Management" dialog. Check if 2 jars are there: ![2 1 LibraryManagement](https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/images/2_1_LibraryManagement.png)
+4.  Open the "Project" &gt; "Settings", "Library Management" dialog. Check if two jars are there: ![2 1 LibraryManagement](https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/images/2_1_LibraryManagement.png)
 
-5.  You want to create a Test Case to run the **garbage collector** class. You can copy & reuse the code [Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC\_jsonifyGarbages](https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector/blob/develop/Scripts/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbages/Script1743835392014.groovy). Thes Test Case should run in any project.
+5.  You want to create a Test Case to run the **ObjectRepositoryGarbageCollector** class. You can copy & reuse the code [Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC\_jsonifyGarbages](https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/assets/Scripts/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbages/Script1743835392014.groovy). Thes Test Case should run in any project.
 
 6.  You are done! Run the test case and see the output in the console.
 

@@ -4,7 +4,7 @@
 :ReposURL: https://www.github.com/kazurayam/KS_ObjectRepositoryGarbageCollector
 :PagesURL: https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector
 
-- link:https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector[repository]
+- link to the link:https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector[repository]
 
 include::s1_problem_to_solve.adoc[]
 

@@ -43,30 +43,34 @@ When I ran this, I got the following output in the console:
 
 ```
 {
-    "Project name": "KS_ObjectRepositoryGarbageCollector",
-    "Number of TestCases": 37,
-    "Number of TestObjects": 15,
-    "Number of unused TestObjects": 4,
-    "Unused TestObjects": [
-        "Page_CURA Healthcare Service/a_Foo",
-        "Page_CURA Healthcare Service/td_28",
-        "Page_CURA Healthcare Service2/a_Go to Homepage",
-        "Page_CURA Healthcare Service2/td_28"
+    "Project name": "katalon",
+    "includeObjectRepositoryFolder": [
+        "**/*"
     ],
-    "Duration seconds": 2.956
+    "Number of TestCases": 28,
+    "Number of TestObjects": 16,
+    "Number of unused TestObjects": 5,
+    "Unused TestObjects": [
+        "main/Page_CURA Healthcare Service/a_Foo",
+        "main/Page_CURA Healthcare Service/td_28",
+        "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
+        "main/Page_CURA Healthcare Service/xtra/td_28",
+        "misc/dummy1"
+    ],
+    "Duration seconds": 1.153
 }
 ```
 
 I found that this project contains
 
-- 37 TestCase scripts
-- 15 TestObjects
-- out of 15, 4 TestObjects are unused by any of TestCase scripts.
-- it took approximately 3 seconds to get the result.
+- 28 TestCase scripts
+- 16 TestObjects
+- out of 16, 5 TestObjects are unused by any of TestCase scripts.
+- it took approximately 1.2 seconds to get the result.
 
 It would take just a few minutes to scan through 3000 TestObjects in your large Katalon project. It would tell you over the half TestObjects are unused (garbage).
 
-This library gently compiles a report to tell where you have garbage to be cleaned, but does NOT remove any files as "Test Object". So this library is not really a garbage-collector; it is just an informer.
+This library compiles a report that tells where you have garbage to be cleaned, but does NOT remove any files. So this library is not really a garbage collector; it is just an informer.
 
 ## How to install the library.
 

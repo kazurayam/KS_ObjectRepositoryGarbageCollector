@@ -7,11 +7,9 @@ I developed this project using the following environment:
 - macOS Sonoma 14.7.4
 - Katalon Studio Free v10.1.0 which bundles JDK17
 
-The KS_ObjectRepositoryGargageCollecor-x.x.x.jar requires Katalon Studio v10 and newer.
+The KS_ObjectRepositoryGargageCollecor-x.x.x.jar requires Katalon Studio v10 and newer. The jar doesn't run on Katalon Studio v9 and older due to JDK version.
 
-It wouldn't run on v9 and older due to JDK version.
-
-The jar would run in Katalon Runtime Engine not only in Katalon Studio.
+The jar would run on Katalon Runtime Engine, not only on Katalon Studio.
 
 === Installation
 
@@ -20,8 +18,8 @@ How to get started with the *Object Repository Garbage Collector* in your own Ka
 1. Visit the link:https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector/releases[KS_ObjectRepositoryGarbageCollector, Releases] page. Identify the latest release. Find the `KS_ObjectRepositoryGarbageCollector-x.x.x.jar` attached to each release. Download the jar, save it into the `Drivers` folder of your local Katalon Studio project.
 2. Visit the link:https://github.com/kazurayam/MonkDirectoryScanner/releases[MonkDirectoryScanner, Releases] page. Identify the latest release. Find the `MonkDirectoryScanner-x.x.x.jar` attached to each release. Download the jar, save it into the `Drivers` folder of your local Katalon Studio project.
 3. Close your project and reopen it so that your Katalon Studio recognize the new jar files.
-4. Open the "Project" > "Settings", "Library Management" dialog. Check if 2 jars are there: image:https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/images/2_1_LibraryManagement.png[]
-5. You want to create a Test Case to run the *garbage collector* class. You can copy & reuse the code link:https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector/blob/develop/Scripts/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbages/Script1743835392014.groovy[Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbages]. Thes Test Case should run in any project.
+4. Open the "Project" > "Settings", "Library Management" dialog. Check if two jars are there: image:https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/images/2_1_LibraryManagement.png[]
+5. You want to create a Test Case to run the *ObjectRepositoryGarbageCollector* class. You can copy & reuse the code link:{PagesURL}/assets/Scripts/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbages/Script1743835392014.groovy[Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbages]. Thes Test Case should run in any project.
 6. You are done! Run the test case and see the output in the console.
 
 
