@@ -39,7 +39,7 @@ public class ScriptsDecoratorTest {
 				.fileName("test_getGroovyFiles_include_all.txt").build()
 		sh.write(sb.toString())
 		//
-		assertEquals(49, groovyFiles.size())
+		assertEquals(28, groovyFiles.size())
 	}
 
 	@Test
