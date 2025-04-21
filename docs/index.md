@@ -245,11 +245,14 @@ Script: `Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage_in
     import java.nio.file.Path
     import java.nio.file.Paths
 
+    import com.kazurayam.ks.reporting.Shorthand
     import com.kazurayam.ks.testobject.gc.Garbage
     import com.kazurayam.ks.testobject.gc.ObjectRepositoryGarbageCollector
     import com.kms.katalon.core.configuration.RunConfiguration
 
     import groovy.json.JsonOutput
+    import internal.GlobalVariable
+
 
     /**
      * Similar to the GC script but
@@ -263,13 +266,10 @@ Script: `Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage_in
 
     String json = gc.jsonifyGarbage()
 
-    Path projectDir = Paths.get(RunConfiguration.getProjectDir())
-    Path classOutputDir = projectDir.resolve("build/tmp/testOutput/demo/ObjectRepositoryGarbageCollector")
-    Path outDir = classOutputDir.resolve("ORGC_jsonifyGarbage_includeFolder_multiple")
-    Files.createDirectories(outDir)
-    File outFile = outDir.resolve("garbage.json").toFile()
-
-    outFile.text = JsonOutput.prettyPrint(json)
+    Shorthand sh = new Shorthand.Builder()
+                        .subDir(GlobalVariable.TESTCASE_ID)
+                        .fileName('garbage.json').build()
+    sh.write(JsonOutput.prettyPrint(json))
 
     Garbage garbage = gc.getGarbage()
     assert 4 == garbage.size() : "expected garbage.size()==4 but was ${garbage.size()}"
@@ -297,22 +297,58 @@ Output:
             "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
             "main/Page_CURA Healthcare Service/xtra/td_28"
         ],
-        "Duration seconds": 0.406
+        "Duration seconds": 1.032
+    }
+
+### Shorthand class
+
+The previous script uses [`com.kazurayam.ks.reporting.Shorthand`](https://www.github.com/kazurayam/KS_ObjectRepositoryGarbageCollector/blob/develop/lib/src/main/groovy/com/kazurayam/ks/reporting/Shorthand.groovy) class. The **Shorthand** class is a utility that encapsulates the following steps:
+
+1.  create a folder `<rootProjectDir>/katalon/build/tmp/testOutput` as target if not there
+
+2.  create a folder `<TestCaseId>` under the target folder
+
+3.  create a file of name `<fileName>` as specfied, write the given string into it
+
+So the previous sample script creates a file at
+
+`katalon/build/tmp/testOutput/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage_includeFolder_multiple/garbage.json`
+
+The `Shorthand` class helps standardize the path of output from Test Case scripts. It also helps shorten the scripts and make them readable.
+
+### GlobalVariable.TESTCASE\_ID is set by Test Listener
+
+The above script refers to `GlobalVariable.TESTCASE_ID`. It contains a string like `demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage_includeFolder_multiple`. How is it set?
+
+The project has a Test Listener `TL1` defined, which automatically set a value into the `GlobalVariable.TESTCASE_ID`.
+
+`TL1`
+
+    import com.kms.katalon.core.annotation.BeforeTestCase
+    import com.kms.katalon.core.context.TestCaseContext
+
+    import internal.GlobalVariable
+
+    class TL1 {
+        
+        @BeforeTestCase
+        def beforeTestCase(TestCaseContext testCaseContext) {
+            // shorten "Test Cases/main/TC1" -> "main/TC1"
+            GlobalVariable.TESTCASE_ID = testCaseContext.getTestCaseId().replace("Test Cases/", "")
+        }
+        
     }
 
 ### Example 4: Scanning sub-folders selected by pattern, find unused Test Objects, print the result into a JSON file
 
 Script: `Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage_includeFolder_pattern`
 
-    import java.nio.file.Files
-    import java.nio.file.Path
-    import java.nio.file.Paths
-
+    import com.kazurayam.ks.reporting.Shorthand
     import com.kazurayam.ks.testobject.gc.Garbage
     import com.kazurayam.ks.testobject.gc.ObjectRepositoryGarbageCollector
-    import com.kms.katalon.core.configuration.RunConfiguration
 
     import groovy.json.JsonOutput
+    import internal.GlobalVariable
 
     /**
      * Similar to the GC script but
@@ -325,13 +361,10 @@ Script: `Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage_in
                 .build()
     String json = gc.jsonifyGarbage()
 
-    Path projectDir = Paths.get(RunConfiguration.getProjectDir())
-    Path classOutputDir = projectDir.resolve("build/tmp/testOutput/demo/ObjectRepositoryGarbageCollector")
-    Path outDir = classOutputDir.resolve("ORGC_jsonifyGarbage_includeFolder_pattern")
-    Files.createDirectories(outDir)
-    File outFile = outDir.resolve("garbage.json").toFile()
-
-    outFile.text = JsonOutput.prettyPrint(json)
+    Shorthand sh = new Shorthand.Builder()
+                    .subDir(GlobalVariable.TESTCASE_ID)
+                    .fileName('garbage.json').build()
+    sh.write(JsonOutput.prettyPrint(json))
 
     Garbage garbage = gc.getGarbage()
     assert 4 == garbage.size() : "expected garbage.size()==4 but was ${garbage.size()}"
@@ -354,7 +387,7 @@ Output:
             "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
             "main/Page_CURA Healthcare Service/xtra/td_28"
         ],
-        "Duration seconds": 0.275
+        "Duration seconds": 1.277
     }
 
 ### Example 5: Scanning sub-folders selected by pattern, find unused Test Objects, get the result as `Garbage` instance, use it as you like

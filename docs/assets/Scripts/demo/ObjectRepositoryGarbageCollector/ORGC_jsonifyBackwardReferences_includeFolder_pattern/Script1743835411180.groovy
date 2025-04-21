@@ -1,13 +1,8 @@
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.Paths
-
+import com.kazurayam.ks.reporting.Shorthand
 import com.kazurayam.ks.testobject.gc.ObjectRepositoryGarbageCollector
-import com.kms.katalon.core.configuration.RunConfiguration
 
 import groovy.json.JsonOutput
 import internal.GlobalVariable
-import com.kazurayam.ks.reporting.Shorthand
 
 /**
  * ObjectRepositoryGarbageCollector#getBackwardReference() demonstration

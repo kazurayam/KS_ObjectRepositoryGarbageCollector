@@ -2,6 +2,7 @@
 
 
 :ReposURL: https://www.github.com/kazurayam/KS_ObjectRepositoryGarbageCollector
+:BlobURL: {ReposURL}/blob/develop
 :PagesURL: https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector
 
 - link to the link:https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector[repository]

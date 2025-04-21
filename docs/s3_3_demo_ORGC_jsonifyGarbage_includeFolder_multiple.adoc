@@ -16,3 +16,28 @@ Output:
 include::assets/testOutput/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage_includeFolder_multiple/garbage.json[]
 ```
 
+=== Shorthand class
+
+The previous script uses link:{BlobURL}/lib/src/main/groovy/com/kazurayam/ks/reporting/Shorthand.groovy[`com.kazurayam.ks.reporting.Shorthand`] class. The *Shorthand* class is a utility that encapsulates the following steps:
+
+1. create a folder `<rootProjectDir>/katalon/build/tmp/testOutput` as target if not there
+2. create a folder `<TestCaseId>` under the target folder
+3. create a file of name `<fileName>` as specfied, write the given string into it
+
+So the previous sample script creates a file at
+
+`katalon/build/tmp/testOutput/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage_includeFolder_multiple/garbage.json`
+
+The `Shorthand` class helps standardize the path of output from Test Case scripts. It also helps shorten the scripts and make them readable.
+
+=== GlobalVariable.TESTCASE_ID is set by Test Listener
+
+The above script refers to `GlobalVariable.TESTCASE_ID`. It contains a string like `demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage_includeFolder_multiple`. How is it set?
+
+The project has a Test Listener `TL1` defined, which automatically set a value into the `GlobalVariable.TESTCASE_ID`.
+
+`TL1`
+[source,groovy]
+----
+include::../katalon/Test Listeners/TL1.groovy[]
+----
