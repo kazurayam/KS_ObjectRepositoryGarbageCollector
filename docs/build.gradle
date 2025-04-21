@@ -6,6 +6,7 @@ tasks.register("generateDocs") {
             commandLine './adoc2md.sh', '-t', './index_.adoc'
         }
     }
+    dependsOn ':lib:publishGroovydoc', ':katalon:publishDemoToDocs', getProjectTree
 }
 
 tasks.register("getProjectTree") {

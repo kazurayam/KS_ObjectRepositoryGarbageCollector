@@ -2,10 +2,10 @@
 
 ===
 
-Script: `Test Cases/demo/ObjectRepositoryGarbageCollector/jsonifyGarbages`
+Script: `Test Cases/demo/ObjectRepositoryGarbageCollector/jsonifyGarbage`
 
 ```
-include::./assets/Scripts/demo/ObjectRepositoryGarbageCollector/jsonifyGarbages/Script1743835419429.groovy[]
+include::./assets/Scripts/demo/ObjectRepositoryGarbageCollector/jsonifyGarbage/Script1743835419429.groovy[]
 ```
 
 Output:

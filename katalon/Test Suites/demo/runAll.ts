@@ -106,7 +106,7 @@
       <guid>40d48176-fbb1-4028-96ed-3e92e13e327d</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_getGarbages_includeFolder_pattern</testCaseId>
+      <testCaseId>Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_getGarbage_includeFolder_pattern</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
@@ -120,28 +120,28 @@
       <guid>961cc7c0-0a48-4962-a7b7-546e88a4e615</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbages</testCaseId>
+      <testCaseId>Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
       <guid>d09f31fe-8b0c-4de8-be1d-d80b56184cf5</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbages_includeFolder_multiple</testCaseId>
+      <testCaseId>Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage_includeFolder_multiple</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
       <guid>6d29eef5-2fcd-4212-bb92-c10bd9e87e16</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbages_includeFolder_pattern</testCaseId>
+      <testCaseId>Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage_includeFolder_pattern</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
       <guid>635d444b-7f53-4f6b-8ba5-9dfbbd27c67f</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbages_includeFolder_single</testCaseId>
+      <testCaseId>Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage_includeFolder_single</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
 </TestSuiteEntity>

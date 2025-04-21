@@ -84,11 +84,19 @@ How to get started with the **Object Repository Garbage Collector** in your own 
 
 4.  Open the "Project" &gt; "Settings", "Library Management" dialog. Check if two jars are there: ![2 1 LibraryManagement](https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/images/2_1_LibraryManagement.png)
 
-5.  You want to create a Test Case to run the **ObjectRepositoryGarbageCollector** class. You can copy & reuse the code [Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC\_jsonifyGarbages](https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/assets/Scripts/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbages/Script1743835392014.groovy). Thes Test Case should run in any project.
+5.  You want to create a Test Case to run the **ObjectRepositoryGarbageCollector** class. You can copy & reuse the code [Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC\_jsonifyGarbage](https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/assets/Scripts/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage/Script1743835392014.groovy). Thes Test Case should run in any project.
 
 6.  You are done! Run the test case and see the output in the console.
 
 ## Examples
+
+===
+
+Script: `Test Cases/demo/ObjectRepositoryGarbageCollector/jsonifyGarbage`
+
+    Unresolved directive in s3_description.adoc - include::./assets/Scripts/demo/ObjectRepositoryGarbageCollector/jsonifyGarbage/Script1743835419429.groovy[]
+
+Output:
 
 ## Developers' guide
 
@@ -134,8 +142,8 @@ The sub-project `katalon` is a typical Katalon Studio project. Please note that 
 
     katalon
     ├── Drivers
-    │   ├── KS_ObjectRepositoryGarbageCollector-0.3.0-SNAPSHOT.jar
-    │   └── MonkDirectoryScanner-0.1.0.jar
+    │   ├── KS_ObjectRepositoryGarbageCollector-0.3.1-SNAPSHOT.jar
+    │   └── monk-directory-scanner-0.1.0.jar
     ├── Object Repository
     │   ├── main
     │   │   └── Page_CURA Healthcare Service
@@ -175,12 +183,12 @@ The sub-project `katalon` is a typical Katalon Studio project. Please note that 
     │   │   │   ├── ORD_jsonifyTestObjectIdList_filterByRegex.tc
     │   │   │   └── ORD_jsonifyTestObjectIdList_filterByString.tc
     │   │   ├── ObjectRepositoryGarbageCollector
-    │   │   │   ├── ORGC_getGarbages_includeFolder_pattern.tc
+    │   │   │   ├── ORGC_getGarbage_includeFolder_pattern.tc
     │   │   │   ├── ORGC_jsonifyBackwardReferences_includeFolder_pattern.tc
-    │   │   │   ├── ORGC_jsonifyGarbages.tc
-    │   │   │   ├── ORGC_jsonifyGarbages_includeFolder_multiple.tc
-    │   │   │   ├── ORGC_jsonifyGarbages_includeFolder_pattern.tc
-    │   │   │   ├── ORGC_jsonifyGarbages_includeFolder_single.tc
+    │   │   │   ├── ORGC_jsonifyGarbage.tc
+    │   │   │   ├── ORGC_jsonifyGarbage_includeFolder_multiple.tc
+    │   │   │   ├── ORGC_jsonifyGarbage_includeFolder_pattern.tc
+    │   │   │   ├── ORGC_jsonifyGarbage_includeFolder_single.tc
     │   │   │   └── ORGC_jsonifyLocatorIndex.tc
     │   │   ├── ScriptsDecorator
     │   │   │   ├── SD_getGroovyFiles.tc
@@ -208,9 +216,84 @@ The sub-project `lib` is a Gradle Java project that has a typical directory stru
 
     lib
     ├── build
+    │   ├── docs
+    │   │   └── groovydoc
+    │   │       ├── allclasses-frame.html
+    │   │       ├── com
+    │   │       │   └── kazurayam
+    │   │       │       └── ks
+    │   │       │           ├── configuration
+    │   │       │           │   ├── KatalonProjectDirectoryResolver.html
+    │   │       │           │   ├── RunConfigurationConfigurator.html
+    │   │       │           │   ├── package-frame.html
+    │   │       │           │   └── package-summary.html
+    │   │       │           ├── reporting
+    │   │       │           │   ├── Shorthand.Builder.html
+    │   │       │           │   ├── Shorthand.html
+    │   │       │           │   ├── package-frame.html
+    │   │       │           │   └── package-summary.html
+    │   │       │           ├── testcase
+    │   │       │           │   ├── DigestedLine.Builder.html
+    │   │       │           │   ├── DigestedLine.DigestedLineSerializer.html
+    │   │       │           │   ├── DigestedLine.html
+    │   │       │           │   ├── DigestedText.DigestedTextSerializer.html
+    │   │       │           │   ├── DigestedText.html
+    │   │       │           │   ├── ScriptsAccessor.Builder.html
+    │   │       │           │   ├── ScriptsAccessor.html
+    │   │       │           │   ├── ScriptsDecorator.Builder.html
+    │   │       │           │   ├── ScriptsDecorator.html
+    │   │       │           │   ├── TestCaseId.TestCaseIdSerializer.html
+    │   │       │           │   ├── TestCaseId.html
+    │   │       │           │   ├── TestCaseScriptDigester.html
+    │   │       │           │   ├── TextDigester.html
+    │   │       │           │   ├── package-frame.html
+    │   │       │           │   └── package-summary.html
+    │   │       │           └── testobject
+    │   │       │               ├── Locator.LocatorSerializer.html
+    │   │       │               ├── Locator.html
+    │   │       │               ├── LocatorIndex.LocatorIndexSerializer.html
+    │   │       │               ├── LocatorIndex.html
+    │   │       │               ├── ObjectRepositoryAccessor.Builder.html
+    │   │       │               ├── ObjectRepositoryAccessor.html
+    │   │       │               ├── ObjectRepositoryDecorator.Builder.html
+    │   │       │               ├── ObjectRepositoryDecorator.html
+    │   │       │               ├── RegexOptedTextMatcher.html
+    │   │       │               ├── TestObjectEssence.TestObjectEssenceSerializer.html
+    │   │       │               ├── TestObjectEssence.html
+    │   │       │               ├── TestObjectId.TestObjectIdSerializer.html
+    │   │       │               ├── TestObjectId.html
+    │   │       │               ├── gc
+    │   │       │               │   ├── BackwardReferences.BackwardReferencesSerializer.html
+    │   │       │               │   ├── BackwardReferences.html
+    │   │       │               │   ├── Database.DatabaseSerializer.html
+    │   │       │               │   ├── Database.html
+    │   │       │               │   ├── ForwardReference.ForwardReferenceSerializer.html
+    │   │       │               │   ├── ForwardReference.html
+    │   │       │               │   ├── Garbage.GarbageSerializer.html
+    │   │       │               │   ├── Garbage.html
+    │   │       │               │   ├── ObjectRepositoryGarbageCollector.Builder.html
+    │   │       │               │   ├── ObjectRepositoryGarbageCollector.ObjectRepositoryGarbageCollectorSerializer.html
+    │   │       │               │   ├── ObjectRepositoryGarbageCollector.html
+    │   │       │               │   ├── package-frame.html
+    │   │       │               │   └── package-summary.html
+    │   │       │               ├── package-frame.html
+    │   │       │               └── package-summary.html
+    │   │       ├── deprecated-list.html
+    │   │       ├── groovy.ico
+    │   │       ├── help-doc.html
+    │   │       ├── index-all.html
+    │   │       ├── index.html
+    │   │       ├── inherit.gif
+    │   │       ├── internal
+    │   │       │   ├── GlobalVariable.html
+    │   │       │   ├── package-frame.html
+    │   │       │   └── package-summary.html
+    │   │       ├── overview-frame.html
+    │   │       ├── overview-summary.html
+    │   │       ├── package-list
+    │   │       └── stylesheet.css
     │   └── libs
-    │       ├── KS_ObjectRepositoryGarbageCollector-0.3.0.jar
-    │       └── KS_ObjectRepositoryGarbageCollector-0.3.0.jar.asc
+    │       └── KS_ObjectRepositoryGarbageCollector-0.3.1-SNAPSHOT.jar
     ├── build.gradle
     └── src
         └── main
@@ -243,12 +326,12 @@ The sub-project `lib` is a Gradle Java project that has a typical directory stru
                 │                   ├── BackwardReferences.groovy
                 │                   ├── Database.groovy
                 │                   ├── ForwardReference.groovy
-                │                   ├── Garbages.groovy
+                │                   ├── Garbage.groovy
                 │                   └── ObjectRepositoryGarbageCollector.groovy
                 └── internal
                     └── GlobalVariable.groovy
 
-    15 directories, 26 files
+    26 directories, 90 files
 
 ### Building jar in the `lib` project
 

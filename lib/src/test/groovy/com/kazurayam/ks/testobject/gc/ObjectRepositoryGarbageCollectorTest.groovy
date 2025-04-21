@@ -5,11 +5,9 @@ import com.kazurayam.ks.configuration.KatalonProjectDirectoryResolver
 import static org.junit.Assert.*
 
 import java.nio.file.Path
-import java.nio.file.Paths
 
 import org.junit.BeforeClass
-import org.junit.FixMethodOrder;
-import org.junit.Ignore
+import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -87,21 +85,21 @@ public class ObjectRepositoryGarbageCollectorTest {
 	}
 
 	@Test
-	void test_getGarbages() {
-		Garbages garbages = garbageCollector.getGarbages()
-		assertNotNull("the garbages variable is null", garbages)
-		assertTrue("the Garbages object is empty", garbages.size() > 0)
+	void test_getGarbage() {
+		Garbage garbage = garbageCollector.getGarbage()
+		assertNotNull("the garbage variable is null", garbage)
+		assertTrue("the Garbage object is empty", garbage.size() > 0)
 		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
-				.fileName("test_getGarbages.json").build()
-		sh.write(JsonOutput.prettyPrint(garbages.toJson()))
-		//assertTrue(garbages.contains(new TestObjectId("Page_CURA Healthcare Service/a_Foo")))
+				.fileName("test_getGarbage.json").build()
+		sh.write(JsonOutput.prettyPrint(garbage.toJson()))
+		//assertTrue(garbage.contains(new TestObjectId("Page_CURA Healthcare Service/a_Foo")))
 	}
 
 	@Test
-	void test_jsonifyGarbages() {
-		String json = garbageCollector.jsonifyGarbages()
+	void test_jsonifyGarbage() {
+		String json = garbageCollector.jsonifyGarbage()
 		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
-				.fileName("test_jsonifyGarbages.json").build()
+				.fileName("test_jsonifyGarbage.json").build()
 		sh.write(JsonOutput.prettyPrint(json))
 		assertTrue("json should contain 'a_Foo'", json.contains("a_Foo"))
 	}

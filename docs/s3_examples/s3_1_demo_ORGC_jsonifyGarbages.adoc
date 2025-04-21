@@ -1,11 +1,11 @@
-=== ORGC_jsonifyGarbages
+=== ORGC_jsonifyGarbage
 
 ==== Test Case script
 
-`Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbages`:
+`Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage`:
 [source]
 ----
-include::../Scripts/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbages/Script1743835392014.groovy[]
+include::../Scripts/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage/Script1743835392014.groovy[]
 ----
 
 ==== Output

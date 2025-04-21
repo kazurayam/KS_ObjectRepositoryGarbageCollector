@@ -19,7 +19,7 @@ How to get started with the *Object Repository Garbage Collector* in your own Ka
 2. Visit the link:https://github.com/kazurayam/MonkDirectoryScanner/releases[MonkDirectoryScanner, Releases] page. Identify the latest release. Find the `MonkDirectoryScanner-x.x.x.jar` attached to each release. Download the jar, save it into the `Drivers` folder of your local Katalon Studio project.
 3. Close your project and reopen it so that your Katalon Studio recognize the new jar files.
 4. Open the "Project" > "Settings", "Library Management" dialog. Check if two jars are there: image:https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/images/2_1_LibraryManagement.png[]
-5. You want to create a Test Case to run the *ObjectRepositoryGarbageCollector* class. You can copy & reuse the code link:{PagesURL}/assets/Scripts/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbages/Script1743835392014.groovy[Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbages]. Thes Test Case should run in any project.
+5. You want to create a Test Case to run the *ObjectRepositoryGarbageCollector* class. You can copy & reuse the code link:{PagesURL}/assets/Scripts/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage/Script1743835392014.groovy[Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage]. Thes Test Case should run in any project.
 6. You are done! Run the test case and see the output in the console.
 
 

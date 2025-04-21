@@ -23,7 +23,7 @@ import java.time.LocalDateTime
 
 /**
  * A sort of "Garbage Collector" for the "Object Repository" of a Katalon Studio project.
- * This class can lookup a list of unused Test Objects = "garbages".
+ * This class can lookup a list of unused Test Objects = "garbage".
  *
  * This class just compiles a report for you. It does not actually remove the unused TestObjects.
  *
@@ -194,29 +194,29 @@ class ObjectRepositoryGarbageCollector {
 	/**
 	 * generate a Garbage object, which contains a list of the unused TestObject Id.
 	 */
-	Garbages getGarbages() {
-		Garbages garbages = new Garbages()
+	Garbage getGarbage() {
+		Garbage garbage = new Garbage()
 		//println "ord.getAllTestObjectIdSet().size()=" + ord.getAllTestObjectIdSet().size()
 		this.ord.getAllTestObjectIdSet().each { testObjectId ->
 			Set<ForwardReference> forwardReferences = db.findForwardReferencesTo(testObjectId)
 			//println "testObjectId=" + testObjectId.getValue() + " forwardReferences.size()=" + forwardReferences.size()
 			if (forwardReferences.size() == 0) {
 				// Oh, no TestCase uses this TestObject, this TestObject is unused
-				garbages.add(testObjectId)
+				garbage.add(testObjectId)
 			}
 		}
-		return garbages
+		return garbage
 	}
 
-	String jsonifyGarbages( ) {
+	String jsonifyGarbage( ) {
 		SimpleModule module = new SimpleModule("ObjectRepositoryGarbageCollectorSerializer",
 				new Version(1, 0, 0, null, null, null))
 
 		module.addSerializer(ObjectRepositoryGarbageCollector.class,
 				new ObjectRepositoryGarbageCollector.ObjectRepositoryGarbageCollectorSerializer())
 
-		module.addSerializer(Garbages.class,
-				new Garbages.GarbagesSerializer())
+		module.addSerializer(Garbage.class,
+				new Garbage.GarbageSerializer())
 
 		module.addSerializer(ForwardReference.class,
 				new ForwardReference.ForwardReferenceSerializer())
@@ -267,10 +267,10 @@ class ObjectRepositoryGarbageCollector {
 			}
 			gen.writeNumberField("Number of TestCases", gc.getNumberOfTestCases())
 			gen.writeNumberField("Number of TestObjects", gc.getNumberOfTestObjects())
-			gen.writeNumberField("Number of unused TestObjects", gc.getGarbages().size())
+			gen.writeNumberField("Number of unused TestObjects", gc.getGarbage().size())
 			gen.writeFieldName("Unused TestObjects")
 			gen.writeStartArray()
-			Set<TestObjectId> toiSet = gc.getGarbages().getAllTestObjectIds()
+			Set<TestObjectId> toiSet = gc.getGarbage().getAllTestObjectIds()
 			toiSet.each { TestObjectId toi ->
 				gen.writeString(toi.getValue())
 			}

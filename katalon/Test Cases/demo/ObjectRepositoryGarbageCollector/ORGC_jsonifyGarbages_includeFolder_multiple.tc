@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<TestCaseEntity>
-   <description></description>
-   <name>ORGC_jsonifyGarbages_includeFolder_multiple</name>
-   <tag></tag>
-   <comment></comment>
-   <recordOption>OTHER</recordOption>
-   <testCaseGuid>5ca3f5c9-3a3f-4005-bf58-2f0731a130e2</testCaseGuid>
-</TestCaseEntity>

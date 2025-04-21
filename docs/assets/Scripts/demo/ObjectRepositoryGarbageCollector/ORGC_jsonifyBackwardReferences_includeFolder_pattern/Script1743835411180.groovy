@@ -21,5 +21,5 @@ ObjectRepositoryGarbageCollector gc =
 String json = gc.jsonifyBackwardReferences()
 
 Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-					.fileName('garbages.json').build()
+					.fileName('garbage.json').build()
 sh.write(JsonOutput.prettyPrint(json))

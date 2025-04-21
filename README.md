@@ -29,12 +29,12 @@ ObjectRepositoryGarbageCollector gc =
             .includeFolder("**/Page_CURA*")
             .build()
 
-// gc.jsonifyGarbages() triggers scanning through the 2 folders and analyze the files.
+// gc.jsonifyGarbage() triggers scanning through the 2 folders and analyze the files.
 // All forward references from TestCase scripts to TestObject entities are identified.
 // Consequently, it can result a list of unused TestObjects.
 // Will output the result in a JSON string
 
-String json = gc.jsonifyGarbages()
+String json = gc.jsonifyGarbage()
 
 println JsonOutput.prettyPrint(json)
 ```
@@ -100,4 +100,4 @@ See [the doc](https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/) 
 
 ## Disclaimer
 
-I hope the library reports correctly. But I would not be responsible for the damages when you manually clear away what it found as “garbages”. I would recommend you to set your project backed by Git, and to store the snapshots before cleaning.
+I hope the library reports correctly. But I would not be responsible for the damages when you manually clear away what it found as “garbage”. I would recommend you to set your project backed by Git, and to store the snapshots before cleaning.
