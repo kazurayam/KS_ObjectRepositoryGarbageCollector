@@ -519,6 +519,82 @@ The sub-project `lib` is a Gradle Java project that has a typical directory stru
 
     lib
     ├── build
+    │   ├── docs
+    │   │   └── groovydoc
+    │   │       ├── allclasses-frame.html
+    │   │       ├── com
+    │   │       │   └── kazurayam
+    │   │       │       └── ks
+    │   │       │           ├── configuration
+    │   │       │           │   ├── KatalonProjectDirectoryResolver.html
+    │   │       │           │   ├── RunConfigurationConfigurator.html
+    │   │       │           │   ├── package-frame.html
+    │   │       │           │   └── package-summary.html
+    │   │       │           ├── reporting
+    │   │       │           │   ├── Shorthand.Builder.html
+    │   │       │           │   ├── Shorthand.html
+    │   │       │           │   ├── package-frame.html
+    │   │       │           │   └── package-summary.html
+    │   │       │           ├── testcase
+    │   │       │           │   ├── DigestedLine.Builder.html
+    │   │       │           │   ├── DigestedLine.DigestedLineSerializer.html
+    │   │       │           │   ├── DigestedLine.html
+    │   │       │           │   ├── DigestedText.DigestedTextSerializer.html
+    │   │       │           │   ├── DigestedText.html
+    │   │       │           │   ├── ScriptsAccessor.Builder.html
+    │   │       │           │   ├── ScriptsAccessor.html
+    │   │       │           │   ├── ScriptsDecorator.Builder.html
+    │   │       │           │   ├── ScriptsDecorator.html
+    │   │       │           │   ├── TestCaseId.TestCaseIdSerializer.html
+    │   │       │           │   ├── TestCaseId.html
+    │   │       │           │   ├── TestCaseScriptDigester.html
+    │   │       │           │   ├── TextDigester.html
+    │   │       │           │   ├── package-frame.html
+    │   │       │           │   └── package-summary.html
+    │   │       │           └── testobject
+    │   │       │               ├── Locator.LocatorSerializer.html
+    │   │       │               ├── Locator.html
+    │   │       │               ├── LocatorIndex.LocatorIndexSerializer.html
+    │   │       │               ├── LocatorIndex.html
+    │   │       │               ├── ObjectRepositoryAccessor.Builder.html
+    │   │       │               ├── ObjectRepositoryAccessor.html
+    │   │       │               ├── ObjectRepositoryDecorator.Builder.html
+    │   │       │               ├── ObjectRepositoryDecorator.html
+    │   │       │               ├── RegexOptedTextMatcher.html
+    │   │       │               ├── TestObjectEssence.TestObjectEssenceSerializer.html
+    │   │       │               ├── TestObjectEssence.html
+    │   │       │               ├── TestObjectId.TestObjectIdSerializer.html
+    │   │       │               ├── TestObjectId.html
+    │   │       │               ├── gc
+    │   │       │               │   ├── BackwardReferences.BackwardReferencesSerializer.html
+    │   │       │               │   ├── BackwardReferences.html
+    │   │       │               │   ├── Database.DatabaseSerializer.html
+    │   │       │               │   ├── Database.html
+    │   │       │               │   ├── ForwardReference.ForwardReferenceSerializer.html
+    │   │       │               │   ├── ForwardReference.html
+    │   │       │               │   ├── Garbage.GarbageSerializer.html
+    │   │       │               │   ├── Garbage.html
+    │   │       │               │   ├── ObjectRepositoryGarbageCollector.Builder.html
+    │   │       │               │   ├── ObjectRepositoryGarbageCollector.ObjectRepositoryGarbageCollectorSerializer.html
+    │   │       │               │   ├── ObjectRepositoryGarbageCollector.html
+    │   │       │               │   ├── package-frame.html
+    │   │       │               │   └── package-summary.html
+    │   │       │               ├── package-frame.html
+    │   │       │               └── package-summary.html
+    │   │       ├── deprecated-list.html
+    │   │       ├── groovy.ico
+    │   │       ├── help-doc.html
+    │   │       ├── index-all.html
+    │   │       ├── index.html
+    │   │       ├── inherit.gif
+    │   │       ├── internal
+    │   │       │   ├── GlobalVariable.html
+    │   │       │   ├── package-frame.html
+    │   │       │   └── package-summary.html
+    │   │       ├── overview-frame.html
+    │   │       ├── overview-summary.html
+    │   │       ├── package-list
+    │   │       └── stylesheet.css
     │   └── libs
     │       ├── KS_ObjectRepositoryGarbageCollector-0.3.1.jar
     │       └── KS_ObjectRepositoryGarbageCollector-0.3.1.jar.asc
@@ -559,7 +635,7 @@ The sub-project `lib` is a Gradle Java project that has a typical directory stru
                 └── internal
                     └── GlobalVariable.groovy
 
-    15 directories, 26 files
+    26 directories, 91 files
 
 ### Building jar in the `lib` project
 
