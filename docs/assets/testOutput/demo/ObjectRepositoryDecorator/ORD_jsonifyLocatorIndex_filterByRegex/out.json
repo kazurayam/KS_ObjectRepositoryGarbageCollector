@@ -1,0 +1,37 @@
+{
+    "LocatorIndex": [
+        {
+            "Locator": "//a[@id='btn-make-appointment']",
+            "Number of duplicates": 1,
+            "TestObjectEssences": [
+                {
+                    "TestObjectId": "main/Page_CURA Healthcare Service/a_Make Appointment",
+                    "Method": "XPATH",
+                    "Locator": "//a[@id='btn-make-appointment']"
+                }
+            ]
+        },
+        {
+            "Locator": "//button[@id='btn-book-appointment']",
+            "Number of duplicates": 1,
+            "TestObjectEssences": [
+                {
+                    "TestObjectId": "main/Page_CURA Healthcare Service/button_Book Appointment",
+                    "Method": "XPATH",
+                    "Locator": "//button[@id='btn-book-appointment']"
+                }
+            ]
+        },
+        {
+            "Locator": "//button[@id='btn-login']",
+            "Number of duplicates": 1,
+            "TestObjectEssences": [
+                {
+                    "TestObjectId": "main/Page_CURA Healthcare Service/button_Login",
+                    "Method": "XPATH",
+                    "Locator": "//button[@id='btn-login']"
+                }
+            ]
+        }
+    ]
+}

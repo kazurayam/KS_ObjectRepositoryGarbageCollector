@@ -1,8 +1,15 @@
-= [Katalon Studio] Object Repository Garbage Collection
+= [Katalon Studio] Object Repository Garbage Collector / User Guide
 
-back to the link:https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector[repository]
+
+:ReposURL: https://www.github.com/kazurayam/KS_ObjectRepositoryGarbageCollector
+:PagesURL: https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector
+
+- link to the link:https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector[repository]
 
 include::s1_problem_to_solve.adoc[]
-include::s2_solution_proposed.adoc[]
-include::s3_demo_ORGC.adoc[]
-include::s4_demo_XOR.adoc[]
+
+include::s2_solution.adoc[]
+
+include::s3_description.adoc[]
+
+include::s4_developersguide.adoc[]

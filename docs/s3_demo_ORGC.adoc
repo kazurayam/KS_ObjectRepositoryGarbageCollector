@@ -1,6 +1,0 @@
-
-== ObjectRepositoryGarbageCollector class usages
-
-include::./s3_1_demo_ORGC_jsonifyGarbages.adoc[]
-
-

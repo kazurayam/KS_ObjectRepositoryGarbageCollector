@@ -1,0 +1,11 @@
+== Examples
+
+===
+
+Script: `Test Cases/demo/ObjectRepositoryGarbageCollector/jsonifyGarbage`
+
+```
+include::./assets/Scripts/demo/ObjectRepositoryGarbageCollector/jsonifyGarbage/Script1743835419429.groovy[]
+```
+
+Output:

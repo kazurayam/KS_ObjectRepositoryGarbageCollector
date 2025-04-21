@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<TestCaseEntity>
-   <description></description>
-   <name>ObjectRepositoryGarbageCollectorTestRunner</name>
-   <tag></tag>
-   <comment></comment>
-   <recordOption>OTHER</recordOption>
-   <testCaseGuid>8a78c1d7-fa1a-4dc5-9edc-d08e7aeac35c</testCaseGuid>
-</TestCaseEntity>

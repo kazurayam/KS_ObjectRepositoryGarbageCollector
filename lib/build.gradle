@@ -1,0 +1,158 @@
+plugins {
+    id 'groovy'
+    id 'maven-publish'
+    id 'signing'
+}
+
+group = "com.kazurayam"
+version = "0.3.1"
+ext.isReleaseVersion = ! version.endsWith("SNAPSHOT")
+
+repositories {
+    mavenCentral()
+    maven {
+        url = uri("https://maven.pkg.github.com/kazurayam/monk-directory-scanner")
+    }
+    mavenLocal()
+}
+
+import org.gradle.internal.os.OperatingSystem
+String resolveKatalonStudioInstallationDirectory() {
+    OperatingSystem os = OperatingSystem.current();
+    //println "*** Building on ${os.familyName} / ${os.name} / ${os.version} / ${System.getProperty("os.arch")}."
+    println "*** Building on ${os.toString()}."
+    if (os.isMacOsX()) {
+        return '/Applications/Katalon Studio.app'
+    } else if (os.isWindows()) {
+        // Users can install Katalon Studio anywhere they like. Therefore it impossible
+        // to resolve the installation directory automatically.
+        // You need to hard code the path
+        throw new UnsupportedOperationException("To be considered")
+    } else if (os.isLinux()) {
+        // Consider Linux.
+        throw new UnsupportedOperationException("I don't know")
+    } else {
+        // Unknown OS.
+        return new UnsupportedOperationException("Who knows?")
+    }
+}
+ext.KATALON_STUDIO_INSTALLATION_DIRECTORY = resolveKatalonStudioInstallationDirectory()
+
+
+dependencies {
+    // will look into the Katalon Studio installation directory
+    implementation fileTree(dir: "${KATALON_STUDIO_INSTALLATION_DIRECTORY}/Contents/Eclipse/configuration/resources/lib",
+            include: [
+                    'groovy-3.0.17.jar',
+                    'selenium-server*.jar',
+                    'slf4j*.jar'
+            ]
+    )
+    implementation fileTree(dir: "${KATALON_STUDIO_INSTALLATION_DIRECTORY}/Contents/Eclipse/plugins",
+            include: [
+                    'com.fasterxml.jackson*.jar',
+                    'com.google.gson*.jar',
+
+                    // to import com.kms.katalon.core.testobject.TestObject
+                    // to import com.kms.katalon.core.testobject.SelectorMethod
+                    // to import com.kms.katalon.core.testobject.ObjectRepository
+                    'com.kms.katalon.core*.jar',
+                    'com.kms.katalon.util*.jar',
+
+                    // to import groovy.lang.GroovyObject
+                    '**/org.codehaus.groovy*/lib/groovy*-indy.jar',
+
+                    'org.apache.commons.lang*.jar',
+                    'org.dom4j*.jar',
+                    'org.eclipse.osgi*.jar'
+            ])
+
+    // will look into the GitHub Packages
+    implementation('com.kazurayam:monk-directory-scanner:0.1.0')
+
+    // will look into the Maven Central repository
+    testImplementation "junit:junit:4.13.2"
+    testImplementation 'org.slf4j:slf4j-simple:1.7.25'
+}
+
+tasks.register('printClasspath') {
+    group = 'Custom'
+    description = "show the entries included in the runtime classpath, sorted alphabetically"
+    doLast {
+        sourceSets.main.runtimeClasspath.sort().each { println it }
+    }
+}
+
+tasks.register("publishGroovydoc", Copy) {
+    group = 'Custom'
+    description = "copy the Groovydoc files into the rootProject/docs directory to make it publicly accessible"
+    from 'build/docs/groovydoc'
+    into "${rootProject.projectDir}/docs/api"
+}
+groovydoc.finalizedBy publishGroovydoc
+
+// Apply a specific Java toolchain to ease working with different environments.
+java {
+    toolchain {
+        // Katalon Studio v10.1.0 runs on top of JDK17
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+jar {
+    archiveBaseName = rootProject.name
+    include('com/kazurayam/ks/**')
+    exclude('internal/**')
+}
+
+publishing {
+    publications {
+        mylib(MavenPublication) {
+            groupId = project.group
+            artifactId = 'ks-object-repository-garbage-collector'
+            from components.java
+            pom {
+                description = "Tool to find unused TestObject in a project of Katalon Studio"
+                url = "https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector"
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'https://www.apache.org.licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'kazurayam'
+                        name = 'URAYAMA,kazuaki'
+                        email = 'kazuaki.urayama@gmail.com'
+                    }
+                }
+                scm {
+                    connection = "scm:git:https://github.com/kazurayam/${project.rootProject.name}.git"
+                    developerConnection = "scm:git:git@github.com:kazurayam/${project.rootProject.name}.git"
+                    url = "https://github.com/kazurayam/${project.rootProject.name}"
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "gpr"
+            url = uri("https://maven.pkg.github.com/kazurayam/${rootProject.name}")
+            credentials {
+                username = project.findProperty('gpr.user')
+                password = project.findProperty('gpr.key')
+            }
+        }
+    }
+}
+// type "$ gradle publishMylibPublicationToGprRepository" to publish
+
+signing {
+    sign publishing.publications.mylib
+}
+
+// I do not want to sign the SNAPSHOT
+tasks.withType(Sign) {
+    onlyIf { isReleaseVersion }
+}

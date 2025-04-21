@@ -1,0 +1,57 @@
+
+== Developers' guide
+
+=== Project structure
+
+link:{PagesURL}[This repository] contains a Gradle link:https://docs.gradle.org/current/userguide/intro_multi_project_builds.html[Multi-project].
+
+`$rootProject/settings.gradle`:
+[source,text]
+----
+include::../settings.gradle[]
+----
+
+The `rootProject` contains 2 sub projects: `katalon` and `lib`.
+
+[source,text]
+----
+include::./assets/project-structure/rootProject.txt[]
+----
+
+The sub-project `katalon` is a typical Katalon Studio project. Please note that the `Drivers` folder contains 2 additional jar files. There are a lot of codes in the `Object Repository`. It has many scripts under the `Test Cases` folder.
+
+[source,text]
+----
+include::./assets/project-structure/subProject-katalon.txt[]
+----
+
+The sub-project `lib` is a Gradle Java project that has a typical directory structure.
+
+[source,text]
+----
+include::./assets/project-structure/subProject-lib.txt[]
+----
+
+=== Building jar in the `lib` project
+
+[source,text]
+```
+$ cd $rootProject/lib
+$ gradle jar
+```
+
+=== Importing jars from the `lib` sub-project into the `katalon` sub-project
+
+[source,text]
+```
+$ cd $rootProject/katalon
+$ gradle importDrivers
+```
+
+See the link:{ReposURL}/tree/develop/katalon/build.gradle[katalon/build.gradle]
+
+`katalon/build.gradle`
+[source.text]
+----
+include::../katalon/build.gradle[lines=8..22]
+----

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>ORGC_getGarbage_includeFolder_pattern</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>2d22f543-7744-4689-a32b-221048a35a7d</testCaseGuid>
+</TestCaseEntity>

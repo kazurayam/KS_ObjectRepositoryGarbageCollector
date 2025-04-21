@@ -1,12 +1,13 @@
-# \[Katalon Studio\] Object Repository Garbage Collection
+- Table of contents
+{:toc}
 
-back to the [repository](https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector)
+# \[Katalon Studio\] Object Repository Garbage Collector / User Guide
+
+-   link to the [repository](https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector)
 
 ## Problem to solve
 
-Let me start with explaining what problem this library is designed to solve.
-
-I will present a sample Katalon Studio project that has a Test Case named [Test Cases/main/TC1](https://github.com/kazurayam/ObjectRepositoryGarbageCollection/blob/develop/Scripts/main/TC1/Script1677544889443.groovy). The script is as follows:
+Here is a sample Test Case script named [`Test Cases/main/TC1`](https://github.com/kazurayam/ObjectRepositoryGarbageCollection/blob/develop/katalon/Scripts/main/TC1/Script1677544889443.groovy) in a Katalon Studio project.
 
     // Test Cases/main/TC1
 
@@ -45,21 +46,17 @@ I will present a sample Katalon Studio project that has a Test Case named [Test 
 
     WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/a_Go to Homepage'))
 
-This script contains lines with fragment `findTestObject(…​)`. A call `findTestObject(…​)` method refers to a **Test Object**. If you read the script, you would find that it contains 13 lines with `findTestObject(…​)` call. However, if you read it carefully, you will find this script refers to 11 Test objects.
+This script contains 13 statements with a fragment `findTestObject(…​)`. Each call `findTestObject(…​)` method refers to a specific **Test Object**. Let me show you a screenshot of the `Object Repository` of the Katalon project. The directory tree looks like this:
 
-Now let’s look at the `Object Repository` directory. In the Katalon Studio GUI, the directory tree looks like this:
+![Object Repository containing unused Test Objects](https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/images/1_1_ObjectRepositoryContainingUnusedTestObjects.png)
 
-![Object Repository with 15 Test Objects](https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/images/1_1_ObjectRepositoryContains15TestObjects.png)
+This small project has 16 Test Objects in the `Object Repository`. Among these, there are several unused Test Objects. I believe that many Katalon users have larger projects with 100 Test Objects, 500 or even more. The "Web Recording" tool generates a lot of Test Objects. The generated set of Test Objects contains a lot of duplications. The tool tends to make your project cluttered.
 
-The `Object Repository` there are 15 Test Objects defined.
+Now I want to tidy up my Katalon project, but …​
 
-On the other hand, I carefully read all Test Case scripts, and I found that only 11 Test Objects are actually refered to by Test Cases. 15 minus 11 = 4 Test Objects are not used. These are garbages. Now I want to clean up the Object Repository.
+**Problem** : *How can I tell which Test Objects are unused by any of Test Cases? How can I tell duplicating Test Objects with same locators (XPath expression, CSS selectors)? How can I be sure which Test Objects are safe to delete?*
 
-**Problem** : *How can I tell which Test Objects are garbages? How can I be sure each Test Objects are safe to delete?*
-
-This sample Katalon Studio project is a small one; it has just 15 Test Objects. I believe that many Katalon users have far larger projects with 100 Test Objects, 200, 3000, …​ possibly even more. The more Test Objects you have, the more garbages you would have. The more garbages you have, the more it becomes difficult to maintain the project clean.
-
-Therefore I have developed this ObjectRepositoryGarbageCollector class, which will show the list of unused Test Objects.
+So I developed the `ObjectRepositoryGarbageCollector`. This will scan a Katalon project, analyze the "Test Cases" and "Object Repository" folder, and inform you of unused Test Objects quickly.
 
 ## Solution
 
@@ -71,11 +68,9 @@ I developed this project using the following environment:
 
 -   Katalon Studio Free v10.1.0 which bundles JDK17
 
-The KS\_ObjectRepositoryGargageCollecor-x.x.x.jar requires Katalon Studio v10 and newer.
+The KS\_ObjectRepositoryGargageCollecor-x.x.x.jar requires Katalon Studio v10 and newer. The jar doesn’t run on Katalon Studio v9 and older due to JDK version.
 
-It wouldn’t run on v9 and older due to JDK version.
-
-The jar would run in Katalon Runtime Engine not only in Katalon Studio.
+The jar would run on Katalon Runtime Engine, not only on Katalon Studio.
 
 ### Installation
 
@@ -87,64 +82,283 @@ How to get started with the **Object Repository Garbage Collector** in your own 
 
 3.  Close your project and reopen it so that your Katalon Studio recognize the new jar files.
 
-4.  Open the "Project" &gt; "Settings", "Library Management" dialog. Check if 2 jars are there: ![2 1 LibraryManagement](https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/images/2_1_LibraryManagement.png)
+4.  Open the "Project" &gt; "Settings", "Library Management" dialog. Check if two jars are there: ![2 1 LibraryManagement](https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/images/2_1_LibraryManagement.png)
 
-5.  You want to create a Test Case to run the **garbage collector** class. You can copy & reuse the code [Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC\_jsonifyGarbages](https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector/blob/develop/Scripts/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbages/Script1743835392014.groovy). Thes Test Case should run in any project.
+5.  You want to create a Test Case to run the **ObjectRepositoryGarbageCollector** class. You can copy & reuse the code [Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC\_jsonifyGarbage](https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/assets/Scripts/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage/Script1743835392014.groovy). Thes Test Case should run in any project.
 
 6.  You are done! Run the test case and see the output in the console.
 
-## ObjectRepositoryGarbageCollector class usages
+## Examples
 
-### ORGC\_jsonifyGarbages
+===
 
-#### Test Case script
+Script: `Test Cases/demo/ObjectRepositoryGarbageCollector/jsonifyGarbage`
 
-`Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbages`:
+    Unresolved directive in s3_description.adoc - include::./assets/Scripts/demo/ObjectRepositoryGarbageCollector/jsonifyGarbage/Script1743835419429.groovy[]
 
-    import com.kazurayam.ks.testobject.gc.ObjectRepositoryGarbageCollector
+Output:
 
-    import groovy.json.JsonOutput
+## Developers' guide
 
-    /**
-     * A demonstration of ObjectRepositoryGarbageCollector, the simplest case
-     *
-     * This TestCase outputs a JSON file which contains a list of garbage Test Objects
-     * in the "Object Repository" folder.
-     *
-     * A "garbage" means a Test Object which is not used by any scripts
-     * in the "Test Cases" folder.
-     */
+### Project structure
 
-    // the Garbage Collector instance will scan 2 folders: "Object Repository" and "Test Cases".
+[This repository](https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector) contains a Gradle [Multi-project](https://docs.gradle.org/current/userguide/intro_multi_project_builds.html).
 
-    // Amongst the folders in the "Object Repository" folder, the TestObjectsCase scripts contained 
-    // in the subfolder that match "**/Page_CURA*" will be selected, and others are ignored
-    ObjectRepositoryGarbageCollector gc = 
-            new ObjectRepositoryGarbageCollector.Builder()
-                .includeFolder("**/*")
-                .build()
+`$rootProject/settings.gradle`:
 
-    // gc.jsonifyGarbages() triggers scanning through the entire "Object Repository".
-    // All references from TestCase scripts to TestObjects will be identified.
-    // Consequently, it can result a list of unused TestObjects.
-    // Will output the result into a JSON string
-    String json = gc.jsonifyGarbages()
+    rootProject.name = "KS_ObjectRepositoryGarbageCollector"
+    include 'lib'
+    include 'katalon'
+    include 'docs'
 
-    // just print the JSON into the console
-    println JsonOutput.prettyPrint(json)
+The `rootProject` contains 2 sub projects: `katalon` and `lib`.
 
-#### Output
+    KS_ObjectRepositoryGarbageCollector
+    ├── katalon
+    │   ├── Checkpoints
+    │   ├── Data Files
+    │   ├── Drivers
+    │   ├── Include
+    │   ├── Keywords
+    │   ├── Libs
+    │   ├── Object Repository
+    │   ├── Plugins
+    │   ├── Profiles
+    │   ├── Reports
+    │   ├── Scripts
+    │   ├── Test Cases
+    │   ├── Test Listeners
+    │   ├── Test Suites
+    │   ├── bin
+    │   ├── build
+    │   └── settings
+    └── lib
+        ├── build
+        └── src
 
-#### Explanation
+    22 directories
 
-1.  The script will look into the entire "Object Repository" folder and check the contained TestObjects if used or not by any of TestCase scripts
+The sub-project `katalon` is a typical Katalon Studio project. Please note that the `Drivers` folder contains 2 additional jar files. There are a lot of codes in the `Object Repository`. It has many scripts under the `Test Cases` folder.
 
-2.  there are 30 Test Cases in the `Test Cases` folder
+    katalon
+    ├── Drivers
+    │   ├── KS_ObjectRepositoryGarbageCollector-0.3.1-SNAPSHOT.jar
+    │   └── monk-directory-scanner-0.1.0.jar
+    ├── Object Repository
+    │   ├── main
+    │   │   └── Page_CURA Healthcare Service
+    │   │       ├── a_Foo.rs
+    │   │       ├── a_Go to Homepage.rs
+    │   │       ├── a_Make Appointment.rs
+    │   │       ├── button_Book Appointment.rs
+    │   │       ├── button_Login.rs
+    │   │       ├── input_Apply for hospital readmission_hospit_63901f.rs
+    │   │       ├── input_Medicaid_programs.rs
+    │   │       ├── input_Password_password.rs
+    │   │       ├── input_Username_username.rs
+    │   │       ├── input_Visit Date.rs
+    │   │       ├── select_Tokyo CURA Healthcare Center        _5b4107.rs
+    │   │       ├── td_28.rs
+    │   │       ├── textarea_Comment_comment.rs
+    │   │       └── xtra
+    │   │           ├── a_Go to Homepage.rs
+    │   │           └── td_28.rs
+    │   └── misc
+    │       └── dummy1.rs
+    ├── Profiles
+    │   └── default.glbl
+    ├── Test Cases
+    │   ├── demo
+    │   │   ├── ObjectRepositoryDecorator
+    │   │   │   ├── ORD_getLocatorIndex.tc
+    │   │   │   ├── ORD_getLocatorIndex_filterByRegex.tc
+    │   │   │   ├── ORD_getLocatorIndex_filterByString.tc
+    │   │   │   ├── ORD_getTestObjectIdList.tc
+    │   │   │   ├── ORD_getTestObjectIdList_filteredByRegex.tc
+    │   │   │   ├── ORD_getTestObjectIdList_filteredByString.tc
+    │   │   │   ├── ORD_jsonifyLocatorIndex.tc
+    │   │   │   ├── ORD_jsonifyLocatorIndex_filterByRegex.tc
+    │   │   │   ├── ORD_jsonifyLocatorIndex_filterByString.tc
+    │   │   │   ├── ORD_jsonifyTestObjectIdList.tc
+    │   │   │   ├── ORD_jsonifyTestObjectIdList_filterByRegex.tc
+    │   │   │   └── ORD_jsonifyTestObjectIdList_filterByString.tc
+    │   │   ├── ObjectRepositoryGarbageCollector
+    │   │   │   ├── ORGC_getGarbage_includeFolder_pattern.tc
+    │   │   │   ├── ORGC_jsonifyBackwardReferences_includeFolder_pattern.tc
+    │   │   │   ├── ORGC_jsonifyGarbage.tc
+    │   │   │   ├── ORGC_jsonifyGarbage_includeFolder_multiple.tc
+    │   │   │   ├── ORGC_jsonifyGarbage_includeFolder_pattern.tc
+    │   │   │   ├── ORGC_jsonifyGarbage_includeFolder_single.tc
+    │   │   │   └── ORGC_jsonifyLocatorIndex.tc
+    │   │   ├── ScriptsDecorator
+    │   │   │   ├── SD_getGroovyFiles.tc
+    │   │   │   ├── SD_getGroovyFiles_include_demo_and_main.tc
+    │   │   │   └── SD_getGroovyFiles_include_main_only.tc
+    │   │   └── cleanTestOutput.tc
+    │   ├── main
+    │   │   ├── TC0.tc
+    │   │   └── TC1.tc
+    │   └── misc
+    │       ├── runDirectoryScanner.tc
+    │       ├── runKatalonProjectDirectoryResolver.tc
+    │       └── studyRunConfiguration.tc
+    ├── Test Listeners
+    │   └── TL1.groovy
+    ├── Test Suites
+    │   └── demo
+    │       ├── runAll.groovy
+    │       └── runAll.ts
+    └── build.gradle
 
-3.  there are 15 Test Objects in the `Object Repository` folder
+    18 directories, 51 files
 
-4.  amongst 15, there are 4 unused Test Objects
+The sub-project `lib` is a Gradle Java project that has a typical directory structure.
 
-5.  The script took 1.6 seconds to finish.
+    lib
+    ├── build
+    │   ├── docs
+    │   │   └── groovydoc
+    │   │       ├── allclasses-frame.html
+    │   │       ├── com
+    │   │       │   └── kazurayam
+    │   │       │       └── ks
+    │   │       │           ├── configuration
+    │   │       │           │   ├── KatalonProjectDirectoryResolver.html
+    │   │       │           │   ├── RunConfigurationConfigurator.html
+    │   │       │           │   ├── package-frame.html
+    │   │       │           │   └── package-summary.html
+    │   │       │           ├── reporting
+    │   │       │           │   ├── Shorthand.Builder.html
+    │   │       │           │   ├── Shorthand.html
+    │   │       │           │   ├── package-frame.html
+    │   │       │           │   └── package-summary.html
+    │   │       │           ├── testcase
+    │   │       │           │   ├── DigestedLine.Builder.html
+    │   │       │           │   ├── DigestedLine.DigestedLineSerializer.html
+    │   │       │           │   ├── DigestedLine.html
+    │   │       │           │   ├── DigestedText.DigestedTextSerializer.html
+    │   │       │           │   ├── DigestedText.html
+    │   │       │           │   ├── ScriptsAccessor.Builder.html
+    │   │       │           │   ├── ScriptsAccessor.html
+    │   │       │           │   ├── ScriptsDecorator.Builder.html
+    │   │       │           │   ├── ScriptsDecorator.html
+    │   │       │           │   ├── TestCaseId.TestCaseIdSerializer.html
+    │   │       │           │   ├── TestCaseId.html
+    │   │       │           │   ├── TestCaseScriptDigester.html
+    │   │       │           │   ├── TextDigester.html
+    │   │       │           │   ├── package-frame.html
+    │   │       │           │   └── package-summary.html
+    │   │       │           └── testobject
+    │   │       │               ├── Locator.LocatorSerializer.html
+    │   │       │               ├── Locator.html
+    │   │       │               ├── LocatorIndex.LocatorIndexSerializer.html
+    │   │       │               ├── LocatorIndex.html
+    │   │       │               ├── ObjectRepositoryAccessor.Builder.html
+    │   │       │               ├── ObjectRepositoryAccessor.html
+    │   │       │               ├── ObjectRepositoryDecorator.Builder.html
+    │   │       │               ├── ObjectRepositoryDecorator.html
+    │   │       │               ├── RegexOptedTextMatcher.html
+    │   │       │               ├── TestObjectEssence.TestObjectEssenceSerializer.html
+    │   │       │               ├── TestObjectEssence.html
+    │   │       │               ├── TestObjectId.TestObjectIdSerializer.html
+    │   │       │               ├── TestObjectId.html
+    │   │       │               ├── gc
+    │   │       │               │   ├── BackwardReferences.BackwardReferencesSerializer.html
+    │   │       │               │   ├── BackwardReferences.html
+    │   │       │               │   ├── Database.DatabaseSerializer.html
+    │   │       │               │   ├── Database.html
+    │   │       │               │   ├── ForwardReference.ForwardReferenceSerializer.html
+    │   │       │               │   ├── ForwardReference.html
+    │   │       │               │   ├── Garbage.GarbageSerializer.html
+    │   │       │               │   ├── Garbage.html
+    │   │       │               │   ├── ObjectRepositoryGarbageCollector.Builder.html
+    │   │       │               │   ├── ObjectRepositoryGarbageCollector.ObjectRepositoryGarbageCollectorSerializer.html
+    │   │       │               │   ├── ObjectRepositoryGarbageCollector.html
+    │   │       │               │   ├── package-frame.html
+    │   │       │               │   └── package-summary.html
+    │   │       │               ├── package-frame.html
+    │   │       │               └── package-summary.html
+    │   │       ├── deprecated-list.html
+    │   │       ├── groovy.ico
+    │   │       ├── help-doc.html
+    │   │       ├── index-all.html
+    │   │       ├── index.html
+    │   │       ├── inherit.gif
+    │   │       ├── internal
+    │   │       │   ├── GlobalVariable.html
+    │   │       │   ├── package-frame.html
+    │   │       │   └── package-summary.html
+    │   │       ├── overview-frame.html
+    │   │       ├── overview-summary.html
+    │   │       ├── package-list
+    │   │       └── stylesheet.css
+    │   └── libs
+    │       └── KS_ObjectRepositoryGarbageCollector-0.3.1-SNAPSHOT.jar
+    ├── build.gradle
+    └── src
+        └── main
+            └── groovy
+                ├── com
+                │   └── kazurayam
+                │       └── ks
+                │           ├── configuration
+                │           │   ├── KatalonProjectDirectoryResolver.groovy
+                │           │   └── RunConfigurationConfigurator.groovy
+                │           ├── reporting
+                │           │   └── Shorthand.groovy
+                │           ├── testcase
+                │           │   ├── DigestedLine.groovy
+                │           │   ├── DigestedText.groovy
+                │           │   ├── ScriptsAccessor.groovy
+                │           │   ├── ScriptsDecorator.groovy
+                │           │   ├── TestCaseId.groovy
+                │           │   ├── TestCaseScriptDigester.groovy
+                │           │   └── TextDigester.groovy
+                │           └── testobject
+                │               ├── Locator.groovy
+                │               ├── LocatorIndex.groovy
+                │               ├── ObjectRepositoryAccessor.groovy
+                │               ├── ObjectRepositoryDecorator.groovy
+                │               ├── RegexOptedTextMatcher.groovy
+                │               ├── TestObjectEssence.groovy
+                │               ├── TestObjectId.groovy
+                │               └── gc
+                │                   ├── BackwardReferences.groovy
+                │                   ├── Database.groovy
+                │                   ├── ForwardReference.groovy
+                │                   ├── Garbage.groovy
+                │                   └── ObjectRepositoryGarbageCollector.groovy
+                └── internal
+                    └── GlobalVariable.groovy
 
-## ExtendedObjectRepository class usages
+    26 directories, 90 files
+
+### Building jar in the `lib` project
+
+    $ cd $rootProject/lib
+    $ gradle jar
+
+### Importing jars from the `lib` sub-project into the `katalon` sub-project
+
+    $ cd $rootProject/katalon
+    $ gradle importDrivers
+
+See the [katalon/build.gradle](https://www.github.com/kazurayam/KS_ObjectRepositoryGarbageCollector/tree/develop/katalon/build.gradle)
+
+`katalon/build.gradle`
+
+            credentials {
+                username = project.findProperty('gpr.user')
+                password = project.findProperty('gpr.key')
+            }
+        }
+        maven {
+            url = uri("https://maven.pkg.github.com/kazurayam/ks-object-repository-garbage-collector")
+            credentials {
+                username = project.findProperty('gpr.user')
+                password = project.findProperty('gpr.key')
+            }
+        }
+    }
+
+    dependencies {

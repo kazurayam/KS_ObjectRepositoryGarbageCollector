@@ -29,12 +29,12 @@ ObjectRepositoryGarbageCollector gc =
             .includeFolder("**/Page_CURA*")
             .build()
 
-// gc.jsonifyGarbages() triggers scanning through the 2 folders and analyze the files.
+// gc.jsonifyGarbage() triggers scanning through the 2 folders and analyze the files.
 // All forward references from TestCase scripts to TestObject entities are identified.
 // Consequently, it can result a list of unused TestObjects.
 // Will output the result in a JSON string
 
-String json = gc.jsonifyGarbages()
+String json = gc.jsonifyGarbage()
 
 println JsonOutput.prettyPrint(json)
 ```
@@ -43,34 +43,39 @@ When I ran this, I got the following output in the console:
 
 ```
 {
-    "Project name": "KS_ObjectRepositoryGarbageCollector",
-    "Number of TestCases": 37,
-    "Number of TestObjects": 15,
-    "Number of unused TestObjects": 4,
-    "Unused TestObjects": [
-        "Page_CURA Healthcare Service/a_Foo",
-        "Page_CURA Healthcare Service/td_28",
-        "Page_CURA Healthcare Service2/a_Go to Homepage",
-        "Page_CURA Healthcare Service2/td_28"
+    "Project name": "katalon",
+    "includeObjectRepositoryFolder": [
+        "**/*"
     ],
-    "Duration seconds": 2.956
+    "Number of TestCases": 28,
+    "Number of TestObjects": 16,
+    "Number of unused TestObjects": 5,
+    "Unused TestObjects": [
+        "main/Page_CURA Healthcare Service/a_Foo",
+        "main/Page_CURA Healthcare Service/td_28",
+        "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
+        "main/Page_CURA Healthcare Service/xtra/td_28",
+        "misc/dummy1"
+    ],
+    "Duration seconds": 1.153
 }
 ```
 
 I found that this project contains
 
-- 37 TestCase scripts
-- 15 TestObjects
-- out of 15, 4 TestObjects are unused by any of TestCase scripts.
+- 28 TestCase scripts
+- 16 TestObjects
+- out of 16, 5 TestObjects are unused by any of TestCase scripts.
+- it took approximately 1.2 seconds to get the result.
 
-It took me approximately 3 seconds to get the result.
+It would take just a few minutes to scan through 3000 TestObjects in your large Katalon project. It would tell you over the half TestObjects are unused (garbage).
 
-I hope that it would take just a few minutes to scan through 3000 TestObjects. I expect, it will tell you over the half TestObjects are unused garbages.
+This library compiles a report that tells where you have garbage to be cleaned, but does NOT remove any files. So this library is not really a garbage collector; it is just an informer.
 
 ## How to install the library.
 
 1. Visit the [KS_ObjectRepositoryGargabeCollector, Releases](https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector/releases) page. Identify the latest version. Find a `KS_ObjectRepositoryGarbageCollector-x.x.x.jar` file attached. Download the jar file, save it into the `Drivers` folder of your Katalon project.
-2. Visit the [MonkDirectoryScanner, Releases](https://github.com/kazurayam/MonkDirectoryScanner/releases/tag/0.1.0). Identify the latest version. Find a `MondDirectoryScanner-x.x.x.jar` file attached. Download the jar file, save into the `Drivers` folder of your katalon project.
+2. Visit the [MonkDirectoryScanner, Releases](https://github.com/kazurayam/MonkDirectoryScanner/releases/tag/0.1.0). Identify the latest version. Find a `MonkDirectoryScanner-x.x.x.jar` file attached. Download the jar file, save into the `Drivers` folder of your katalon project.
 3. Close and reopen the project. Confirm that the jars are recognized by Katalon Studio.
 4. Create a Test Case script, which should be similar to the above "GC" script.
 5. You are done. Run it and see how quickly you can get the result.
@@ -80,7 +85,7 @@ I hope that it would take just a few minutes to scan through 3000 TestObjects. I
 You need to add the aforementioned jars developed by kazurayam.
 This library depends on a few external libraries which is bundled in Katalon Studio, e.g, FastXML Jackson Databind.
 
-This library should run on any version of Katalon Studio and Katalon Runtime Engine.
+This library should run on Katalon Studio Free, Katalon Studio Enterprise, and Katalon Runtime Engine. The jar is compiled by Katalon Studio Free v10.1.0 with JDK17, so the jar requires KS v10.x or above.
 
 ## More features?
 
@@ -95,4 +100,4 @@ See [the doc](https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/) 
 
 ## Disclaimer
 
-I hope the library reports correctly. But I would not be responsible for the damages when you manually clear away what it found as “garbages”. I would recommend you to set your project backed by Git, and to store the snapshots before cleaning.
+I hope the library reports correctly. But I would not be responsible for the damages when you manually clear away what it found as “garbage”. I would recommend you to set your project backed by Git, and to store the snapshots before cleaning.
