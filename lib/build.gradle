@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.kazurayam"
-version = "0.3.1"
+version = "0.3.2-SNAPSHOT"
 ext.isReleaseVersion = ! version.endsWith("SNAPSHOT")
 
 repositories {
@@ -81,6 +81,10 @@ tasks.register('printClasspath') {
     doLast {
         sourceSets.main.runtimeClasspath.sort().each { println it }
     }
+}
+
+groovydoc {
+    docTitle = 'ks-object-repository-garbage-collector' + ' ' + project.version + " API"
 }
 
 tasks.register("publishGroovydoc", Copy) {

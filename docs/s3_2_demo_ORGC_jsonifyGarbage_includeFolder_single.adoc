@@ -1,0 +1,15 @@
+=== Example 2: Scanning a single sub-folder of Object Repository, find unused Test Objects, print the result into a JSON file
+
+Script: `Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage_includeFolder_single`
+
+```
+include::assets/Scripts/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage_includeFolder_single/Script1745193362971.groovy[]
+```
+
+This script selects Test Objects in a single sub-folder `main/Page_CURA Healthcare Service` in the Object Repository.
+
+Output:
+```
+include::assets/testOutput/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage_includeFolder_single/garbage.json[]
+```
+

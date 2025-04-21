@@ -1,0 +1,15 @@
+=== Example 5: Scanning sub-folders selected by pattern, find unused Test Objects, get the result as `Garbage` instance, use it as you like
+
+Script: `Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_getGarbage_includeFolder_pattern`
+
+```
+include::assets/Scripts/demo/ObjectRepositoryGarbageCollector/ORGC_getGarbage_includeFolder_pattern/Script1745194432677.groovy[]
+```
+
+This script receives an instance of `Garbage` object which contains the data reported by the `ObjectRepositoryGarbageCollector`. The script calls the link:{PagesURL}/api/com/kazurayam/ks/testobject/gc/Garbage.html[Garbage class API].
+
+Output:
+```
+include::assets/consoleOutput/demo/ObjectRepositoryGarbageCollector/ORGC_getGarbage_includeFolder_pattern/output.txt[]
+```
+

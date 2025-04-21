@@ -5,11 +5,12 @@
 :PagesURL: https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector
 
 - link to the link:https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector[repository]
+- link to the link:{PagesURL}/api/com/kazurayam/ks/testobject/gc/Garbage.html[Javadoc]
 
 include::s1_problem_to_solve.adoc[]
 
 include::s2_solution.adoc[]
 
-include::s3_description.adoc[]
+include::s3_0_description.adoc[]
 
 include::s4_developersguide.adoc[]

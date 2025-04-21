@@ -5,6 +5,8 @@
 
 -   link to the [repository](https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector)
 
+-   link to the [Javadoc](https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/api/com/kazurayam/ks/testobject/gc/Garbage.html)
+
 ## Problem to solve
 
 Here is a sample Test Case script named [`Test Cases/main/TC1`](https://github.com/kazurayam/ObjectRepositoryGarbageCollection/blob/develop/katalon/Scripts/main/TC1/Script1677544889443.groovy) in a Katalon Studio project.
@@ -88,15 +90,316 @@ How to get started with the **Object Repository Garbage Collector** in your own 
 
 6.  You are done! Run the test case and see the output in the console.
 
-## Examples
+## Description
 
-===
+### Example 1: Scanning entire Object Repository, find unused Test Objects, print the result into the console
 
-Script: `Test Cases/demo/ObjectRepositoryGarbageCollector/jsonifyGarbage`
+Script: `Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage`
 
-    Unresolved directive in s3_description.adoc - include::./assets/Scripts/demo/ObjectRepositoryGarbageCollector/jsonifyGarbage/Script1743835419429.groovy[]
+    import com.kazurayam.ks.testobject.gc.ObjectRepositoryGarbageCollector
+
+    import groovy.json.JsonOutput
+
+    /**
+     * A demonstration of ObjectRepositoryGarbageCollector, the simplest case
+     *
+     * This TestCase outputs a JSON file which contains a list of garbage Test Objects
+     * in the "Object Repository" folder.
+     *
+     * A "garbage" means a Test Object which is not used by any scripts
+     * in the "Test Cases" folder.
+     */
+
+    // the Garbage Collector instance will scan 2 folders: "Object Repository" and "Test Cases".
+
+    // Amongst the folders in the "Object Repository" folder, the TestObjectsCase scripts contained 
+    // in the subfolder that match "**/Page_CURA*" will be selected, and others are ignored
+    ObjectRepositoryGarbageCollector gc = 
+            new ObjectRepositoryGarbageCollector.Builder()
+                .includeObjectRepositoryFolder("**/*")
+                .build()
+
+    // gc.jsonifyGarbage() triggers scanning through the entire "Object Repository".
+    // All references from TestCase scripts to TestObjects will be identified.
+    // Consequently, it can result a list of unused TestObjects.
+    // Will output the result into a JSON string
+    String json = gc.jsonifyGarbage()
+
+    // just print the JSON into the console
+    println JsonOutput.prettyPrint(json)
 
 Output:
+
+    4月 21, 2025 6:24:13 午後 com.kms.katalon.core.logging.KeywordLogger startTest
+    情報: --------------------
+    4月 21, 2025 6:24:13 午後 com.kms.katalon.core.logging.KeywordLogger startTest
+    情報: START Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage
+    {
+        "Project name": "katalon",
+        "includeObjectRepositoryFolder": [
+            "**/*"
+        ],
+        "Number of TestCases": 28,
+        "Number of TestObjects": 16,
+        "Number of unused TestObjects": 5,
+        "Unused TestObjects": [
+            "main/Page_CURA Healthcare Service/a_Foo",
+            "main/Page_CURA Healthcare Service/td_28",
+            "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
+            "main/Page_CURA Healthcare Service/xtra/td_28",
+            "misc/dummy1"
+        ],
+        "Duration seconds": 1.515
+    }
+    4月 21, 2025 6:24:17 午後 com.kms.katalon.core.logging.KeywordLogger endTest
+    情報: END Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage
+
+1.  The script will look into the entire `Object Repository` folder to check the contained TestObjects if used or not by any of TestCase scripts
+
+2.  there are 28 Test Cases in the `Test Cases` folder
+
+3.  there are 16 Test Objects in the `Object Repository` folder
+
+4.  amongst 16, there are 5 unused Test Objects
+
+5.  The script took approximately 1.5 seconds to finish.
+
+### Patterns
+
+    new ObjectRepositoryGarbageCollector.Builder()
+        .includeObjectRepositoryFolder("**/*")
+        .build()
+
+this statement could be shortened to:
+
+    new ObjectRepositoryGarbageCollector.Builder().build()
+
+because `.includeObjectRepositoryFolder("**/*")` is assumed as default.
+
+The pattern `"**/*"` stands for all sub-folders under the `Object Repository` folder.
+
+The pattern language is derived from the [Apache Ant](https://ant.apache.org/) build tool. Refer to the [Ant manual](https://ant.apache.org/manual/dirtasks.html#patterns) for detail.
+
+### Example 2: Scanning a single sub-folder of Object Repository, find unused Test Objects, print the result into a JSON file
+
+Script: `Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage_includeFolder_single`
+
+    import java.nio.file.Files
+    import java.nio.file.Path
+    import java.nio.file.Paths
+
+    import com.kazurayam.ks.testobject.gc.Garbage
+    import com.kazurayam.ks.testobject.gc.ObjectRepositoryGarbageCollector
+    import com.kms.katalon.core.configuration.RunConfiguration
+
+    import groovy.json.JsonOutput
+
+    /**
+     * Similar to the GC script but 
+     * the TestObjects under the specified sub-folder in the "Object Repository" are selected. 
+     */
+    ObjectRepositoryGarbageCollector gc = 
+            new ObjectRepositoryGarbageCollector.Builder()
+                .includeObjectRepositoryFolder("main/Page_CURA Healthcare Service")
+                .build()
+
+    String json = gc.jsonifyGarbage()
+
+    Path projectDir = Paths.get(RunConfiguration.getProjectDir())
+    Path classOutputDir = projectDir.resolve("build/tmp/testOutput/demo/ObjectRepositoryGarbageCollector")
+    Path outDir = classOutputDir.resolve("ORGC_jsonifyGarbage_includeFolder_single")
+    Files.createDirectories(outDir)
+    File outFile = outDir.resolve("garbage.json").toFile()
+
+    outFile.text = JsonOutput.prettyPrint(json)
+
+    Garbage garbage = gc.getGarbage()
+    assert 4 == garbage.size() : "expected garbage.size()==4 but was ${garbage.size()}"
+
+This script selects Test Objects in a single sub-folder `main/Page_CURA Healthcare Service` in the Object Repository.
+
+Output:
+
+    {
+        "Project name": "katalon",
+        "includeObjectRepositoryFolder": [
+            "main/Page_CURA Healthcare Service"
+        ],
+        "Number of TestCases": 28,
+        "Number of TestObjects": 15,
+        "Number of unused TestObjects": 4,
+        "Unused TestObjects": [
+            "main/Page_CURA Healthcare Service/a_Foo",
+            "main/Page_CURA Healthcare Service/td_28",
+            "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
+            "main/Page_CURA Healthcare Service/xtra/td_28"
+        ],
+        "Duration seconds": 0.972
+    }
+
+### Example 3: Scanning multiple sub-folders of Object Repository, find unused Test Objects, print the result into a JSON file
+
+Script: `Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage_includeFolder_multiple`
+
+    import java.nio.file.Files
+    import java.nio.file.Path
+    import java.nio.file.Paths
+
+    import com.kazurayam.ks.testobject.gc.Garbage
+    import com.kazurayam.ks.testobject.gc.ObjectRepositoryGarbageCollector
+    import com.kms.katalon.core.configuration.RunConfiguration
+
+    import groovy.json.JsonOutput
+
+    /**
+     * Similar to the GC script but
+     * the TestObjects under the specified sub-folder in the "Object Repository" are selected.
+     */
+    ObjectRepositoryGarbageCollector gc =
+            new ObjectRepositoryGarbageCollector.Builder()
+                .includeObjectRepositoryFolder("main/Page_CURA Healthcare Service")
+                .includeObjectRepositoryFolder("main/Page_CURA Healthcare Service/xtra")
+                .build()
+
+    String json = gc.jsonifyGarbage()
+
+    Path projectDir = Paths.get(RunConfiguration.getProjectDir())
+    Path classOutputDir = projectDir.resolve("build/tmp/testOutput/demo/ObjectRepositoryGarbageCollector")
+    Path outDir = classOutputDir.resolve("ORGC_jsonifyGarbage_includeFolder_multiple")
+    Files.createDirectories(outDir)
+    File outFile = outDir.resolve("garbage.json").toFile()
+
+    outFile.text = JsonOutput.prettyPrint(json)
+
+    Garbage garbage = gc.getGarbage()
+    assert 4 == garbage.size() : "expected garbage.size()==4 but was ${garbage.size()}"
+
+This script selects Test Objects in multiple sub-folders in the Object Repository:
+
+1.  `main/Page_CURA Healthcare Service`
+
+2.  `main/Page_CURA Healthcare Service/xtra`
+
+Output:
+
+    {
+        "Project name": "katalon",
+        "includeObjectRepositoryFolder": [
+            "main/Page_CURA Healthcare Service",
+            "main/Page_CURA Healthcare Service/xtra"
+        ],
+        "Number of TestCases": 28,
+        "Number of TestObjects": 15,
+        "Number of unused TestObjects": 4,
+        "Unused TestObjects": [
+            "main/Page_CURA Healthcare Service/a_Foo",
+            "main/Page_CURA Healthcare Service/td_28",
+            "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
+            "main/Page_CURA Healthcare Service/xtra/td_28"
+        ],
+        "Duration seconds": 0.406
+    }
+
+### Example 4: Scanning sub-folders selected by pattern, find unused Test Objects, print the result into a JSON file
+
+Script: `Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage_includeFolder_pattern`
+
+    import java.nio.file.Files
+    import java.nio.file.Path
+    import java.nio.file.Paths
+
+    import com.kazurayam.ks.testobject.gc.Garbage
+    import com.kazurayam.ks.testobject.gc.ObjectRepositoryGarbageCollector
+    import com.kms.katalon.core.configuration.RunConfiguration
+
+    import groovy.json.JsonOutput
+
+    /**
+     * Similar to the GC script but
+     * the TestObjects under the specified sub-folders in the "Object Repository" are selected. 
+     * The folder names are matched with the pattern like Ant DirectoryScanner.
+     */
+    ObjectRepositoryGarbageCollector gc =
+            new ObjectRepositoryGarbageCollector.Builder()
+                .includeObjectRepositoryFolder("**/Page_CURA*")
+                .build()
+    String json = gc.jsonifyGarbage()
+
+    Path projectDir = Paths.get(RunConfiguration.getProjectDir())
+    Path classOutputDir = projectDir.resolve("build/tmp/testOutput/demo/ObjectRepositoryGarbageCollector")
+    Path outDir = classOutputDir.resolve("ORGC_jsonifyGarbage_includeFolder_pattern")
+    Files.createDirectories(outDir)
+    File outFile = outDir.resolve("garbage.json").toFile()
+
+    outFile.text = JsonOutput.prettyPrint(json)
+
+    Garbage garbage = gc.getGarbage()
+    assert 4 == garbage.size() : "expected garbage.size()==4 but was ${garbage.size()}"
+
+This script selects Test Objects in multiple sub-folders in the Object Repository selected by a pattern `"**/Page_CURA*"`
+
+Output:
+
+    {
+        "Project name": "katalon",
+        "includeObjectRepositoryFolder": [
+            "**/Page_CURA*"
+        ],
+        "Number of TestCases": 28,
+        "Number of TestObjects": 15,
+        "Number of unused TestObjects": 4,
+        "Unused TestObjects": [
+            "main/Page_CURA Healthcare Service/a_Foo",
+            "main/Page_CURA Healthcare Service/td_28",
+            "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
+            "main/Page_CURA Healthcare Service/xtra/td_28"
+        ],
+        "Duration seconds": 0.275
+    }
+
+### Example 5: Scanning sub-folders selected by pattern, find unused Test Objects, get the result as `Garbage` instance, use it as you like
+
+Script: `Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_getGarbage_includeFolder_pattern`
+
+    import com.kazurayam.ks.testobject.TestObjectId
+    import com.kazurayam.ks.testobject.gc.Garbage
+    import com.kazurayam.ks.testobject.gc.ObjectRepositoryGarbageCollector
+
+    import groovy.json.JsonOutput
+
+    /**
+     * ObjectRepositoryGarbageCollector#getGarbage() demonstration
+     */
+
+    ObjectRepositoryGarbageCollector gc =
+        new ObjectRepositoryGarbageCollector.Builder()
+            .includeObjectRepositoryFolder("**/Page_CURA*")
+            .build()
+
+    Garbage garbage = gc.getGarbage()
+
+    Set<TestObjectId> testObjectIds = garbage.getAllTestObjectIds()
+
+    for (TestObjectId toi : testObjectIds) {
+        println toi
+    }
+
+    assert testObjectIds.size() == 4
+
+This script receives an instance of `Garbage` object which contains the data reported by the `ObjectRepositoryGarbageCollector`. The script calls the [Garbage class API](https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/api/com/kazurayam/ks/testobject/gc/Garbage.html).
+
+Output:
+
+    4月 21, 2025 9:49:57 午後 com.kms.katalon.core.logging.KeywordLogger startTest
+    情報: --------------------
+    4月 21, 2025 9:49:57 午後 com.kms.katalon.core.logging.KeywordLogger startTest
+    情報: START Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_getGarbage_includeFolder_pattern
+    main/Page_CURA Healthcare Service/a_Foo
+    main/Page_CURA Healthcare Service/td_28
+    main/Page_CURA Healthcare Service/xtra/a_Go to Homepage
+    main/Page_CURA Healthcare Service/xtra/td_28
+    4月 21, 2025 9:49:59 午後 com.kms.katalon.core.logging.KeywordLogger endTest
+    情報: END Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_getGarbage_includeFolder_pattern
 
 ## Developers' guide
 
@@ -216,84 +519,9 @@ The sub-project `lib` is a Gradle Java project that has a typical directory stru
 
     lib
     ├── build
-    │   ├── docs
-    │   │   └── groovydoc
-    │   │       ├── allclasses-frame.html
-    │   │       ├── com
-    │   │       │   └── kazurayam
-    │   │       │       └── ks
-    │   │       │           ├── configuration
-    │   │       │           │   ├── KatalonProjectDirectoryResolver.html
-    │   │       │           │   ├── RunConfigurationConfigurator.html
-    │   │       │           │   ├── package-frame.html
-    │   │       │           │   └── package-summary.html
-    │   │       │           ├── reporting
-    │   │       │           │   ├── Shorthand.Builder.html
-    │   │       │           │   ├── Shorthand.html
-    │   │       │           │   ├── package-frame.html
-    │   │       │           │   └── package-summary.html
-    │   │       │           ├── testcase
-    │   │       │           │   ├── DigestedLine.Builder.html
-    │   │       │           │   ├── DigestedLine.DigestedLineSerializer.html
-    │   │       │           │   ├── DigestedLine.html
-    │   │       │           │   ├── DigestedText.DigestedTextSerializer.html
-    │   │       │           │   ├── DigestedText.html
-    │   │       │           │   ├── ScriptsAccessor.Builder.html
-    │   │       │           │   ├── ScriptsAccessor.html
-    │   │       │           │   ├── ScriptsDecorator.Builder.html
-    │   │       │           │   ├── ScriptsDecorator.html
-    │   │       │           │   ├── TestCaseId.TestCaseIdSerializer.html
-    │   │       │           │   ├── TestCaseId.html
-    │   │       │           │   ├── TestCaseScriptDigester.html
-    │   │       │           │   ├── TextDigester.html
-    │   │       │           │   ├── package-frame.html
-    │   │       │           │   └── package-summary.html
-    │   │       │           └── testobject
-    │   │       │               ├── Locator.LocatorSerializer.html
-    │   │       │               ├── Locator.html
-    │   │       │               ├── LocatorIndex.LocatorIndexSerializer.html
-    │   │       │               ├── LocatorIndex.html
-    │   │       │               ├── ObjectRepositoryAccessor.Builder.html
-    │   │       │               ├── ObjectRepositoryAccessor.html
-    │   │       │               ├── ObjectRepositoryDecorator.Builder.html
-    │   │       │               ├── ObjectRepositoryDecorator.html
-    │   │       │               ├── RegexOptedTextMatcher.html
-    │   │       │               ├── TestObjectEssence.TestObjectEssenceSerializer.html
-    │   │       │               ├── TestObjectEssence.html
-    │   │       │               ├── TestObjectId.TestObjectIdSerializer.html
-    │   │       │               ├── TestObjectId.html
-    │   │       │               ├── gc
-    │   │       │               │   ├── BackwardReferences.BackwardReferencesSerializer.html
-    │   │       │               │   ├── BackwardReferences.html
-    │   │       │               │   ├── Database.DatabaseSerializer.html
-    │   │       │               │   ├── Database.html
-    │   │       │               │   ├── ForwardReference.ForwardReferenceSerializer.html
-    │   │       │               │   ├── ForwardReference.html
-    │   │       │               │   ├── Garbage.GarbageSerializer.html
-    │   │       │               │   ├── Garbage.html
-    │   │       │               │   ├── ObjectRepositoryGarbageCollector.Builder.html
-    │   │       │               │   ├── ObjectRepositoryGarbageCollector.ObjectRepositoryGarbageCollectorSerializer.html
-    │   │       │               │   ├── ObjectRepositoryGarbageCollector.html
-    │   │       │               │   ├── package-frame.html
-    │   │       │               │   └── package-summary.html
-    │   │       │               ├── package-frame.html
-    │   │       │               └── package-summary.html
-    │   │       ├── deprecated-list.html
-    │   │       ├── groovy.ico
-    │   │       ├── help-doc.html
-    │   │       ├── index-all.html
-    │   │       ├── index.html
-    │   │       ├── inherit.gif
-    │   │       ├── internal
-    │   │       │   ├── GlobalVariable.html
-    │   │       │   ├── package-frame.html
-    │   │       │   └── package-summary.html
-    │   │       ├── overview-frame.html
-    │   │       ├── overview-summary.html
-    │   │       ├── package-list
-    │   │       └── stylesheet.css
     │   └── libs
-    │       └── KS_ObjectRepositoryGarbageCollector-0.3.1-SNAPSHOT.jar
+    │       ├── KS_ObjectRepositoryGarbageCollector-0.3.1.jar
+    │       └── KS_ObjectRepositoryGarbageCollector-0.3.1.jar.asc
     ├── build.gradle
     └── src
         └── main
@@ -331,7 +559,7 @@ The sub-project `lib` is a Gradle Java project that has a typical directory stru
                 └── internal
                     └── GlobalVariable.groovy
 
-    26 directories, 90 files
+    15 directories, 26 files
 
 ### Building jar in the `lib` project
 

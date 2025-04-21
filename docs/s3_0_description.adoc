@@ -1,0 +1,11 @@
+== Description
+
+include::s3_1_demo_ORGC_jsonifyGarbages.adoc[]
+
+include::s3_2_demo_ORGC_jsonifyGarbage_includeFolder_single.adoc[]
+
+include::s3_3_demo_ORGC_jsonifyGarbage_includeFolder_multiple.adoc[]
+
+include::s3_4_demo_ORGC_jsonifyGarbage_includeFolder_pattern.adoc[]
+
+include::s3_5_demo_ORGC_getGarbage_includeFolder_pattern.adoc[]

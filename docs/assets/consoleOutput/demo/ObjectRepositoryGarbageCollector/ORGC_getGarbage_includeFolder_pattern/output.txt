@@ -1,0 +1,10 @@
+4月 21, 2025 9:49:57 午後 com.kms.katalon.core.logging.KeywordLogger startTest
+情報: --------------------
+4月 21, 2025 9:49:57 午後 com.kms.katalon.core.logging.KeywordLogger startTest
+情報: START Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_getGarbage_includeFolder_pattern
+main/Page_CURA Healthcare Service/a_Foo
+main/Page_CURA Healthcare Service/td_28
+main/Page_CURA Healthcare Service/xtra/a_Go to Homepage
+main/Page_CURA Healthcare Service/xtra/td_28
+4月 21, 2025 9:49:59 午後 com.kms.katalon.core.logging.KeywordLogger endTest
+情報: END Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_getGarbage_includeFolder_pattern

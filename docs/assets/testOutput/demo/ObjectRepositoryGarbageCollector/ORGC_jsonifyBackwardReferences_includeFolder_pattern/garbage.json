@@ -1,0 +1,297 @@
+{
+    "BackwardReferences": [
+        {
+            "TestObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
+            "ForwardReferences": [
+                {
+                    "TestCaseId": "main/TC1",
+                    "DigestedLine": {
+                        "line": "WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/a_Go to Homepage'))",
+                        "lineNo": 36,
+                        "pattern": "main/Page_CURA Healthcare Service/a_Go to Homepage",
+                        "matchAt": 47,
+                        "matchEnd": 97,
+                        "matched": true,
+                        "regex": false
+                    },
+                    "TestObjectEssence": {
+                        "TestObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
+                        "Method": "XPATH",
+                        "Locator": "//section[@id='summary']/div/div/div[7]/p/a"
+                    }
+                }
+            ]
+        },
+        {
+            "TestObjectId": "main/Page_CURA Healthcare Service/a_Make Appointment",
+            "ForwardReferences": [
+                {
+                    "TestCaseId": "main/TC0",
+                    "DigestedLine": {
+                        "line": "WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/a_Make Appointment'))",
+                        "lineNo": 12,
+                        "pattern": "main/Page_CURA Healthcare Service/a_Make Appointment",
+                        "matchAt": 47,
+                        "matchEnd": 99,
+                        "matched": true,
+                        "regex": false
+                    },
+                    "TestObjectEssence": {
+                        "TestObjectId": "main/Page_CURA Healthcare Service/a_Make Appointment",
+                        "Method": "XPATH",
+                        "Locator": "//a[@id='btn-make-appointment']"
+                    }
+                },
+                {
+                    "TestCaseId": "main/TC1",
+                    "DigestedLine": {
+                        "line": "WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/a_Make Appointment'))",
+                        "lineNo": 11,
+                        "pattern": "main/Page_CURA Healthcare Service/a_Make Appointment",
+                        "matchAt": 47,
+                        "matchEnd": 99,
+                        "matched": true,
+                        "regex": false
+                    },
+                    "TestObjectEssence": {
+                        "TestObjectId": "main/Page_CURA Healthcare Service/a_Make Appointment",
+                        "Method": "XPATH",
+                        "Locator": "//a[@id='btn-make-appointment']"
+                    }
+                }
+            ]
+        },
+        {
+            "TestObjectId": "main/Page_CURA Healthcare Service/button_Book Appointment",
+            "ForwardReferences": [
+                {
+                    "TestCaseId": "main/TC1",
+                    "DigestedLine": {
+                        "line": "WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/button_Book Appointment'))",
+                        "lineNo": 34,
+                        "pattern": "main/Page_CURA Healthcare Service/button_Book Appointment",
+                        "matchAt": 47,
+                        "matchEnd": 104,
+                        "matched": true,
+                        "regex": false
+                    },
+                    "TestObjectEssence": {
+                        "TestObjectId": "main/Page_CURA Healthcare Service/button_Book Appointment",
+                        "Method": "XPATH",
+                        "Locator": "//button[@id='btn-book-appointment']"
+                    }
+                },
+                {
+                    "TestCaseId": "misc/studyRunConfiguration",
+                    "DigestedLine": {
+                        "line": "TestObject tObj = findTestObject('main/Page_CURA Healthcare Service/button_Book Appointment')",
+                        "lineNo": 14,
+                        "pattern": "main/Page_CURA Healthcare Service/button_Book Appointment",
+                        "matchAt": 35,
+                        "matchEnd": 92,
+                        "matched": true,
+                        "regex": false
+                    },
+                    "TestObjectEssence": {
+                        "TestObjectId": "main/Page_CURA Healthcare Service/button_Book Appointment",
+                        "Method": "XPATH",
+                        "Locator": "//button[@id='btn-book-appointment']"
+                    }
+                }
+            ]
+        },
+        {
+            "TestObjectId": "main/Page_CURA Healthcare Service/button_Login",
+            "ForwardReferences": [
+                {
+                    "TestCaseId": "main/TC1",
+                    "DigestedLine": {
+                        "line": "WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/button_Login'))",
+                        "lineNo": 19,
+                        "pattern": "main/Page_CURA Healthcare Service/button_Login",
+                        "matchAt": 47,
+                        "matchEnd": 93,
+                        "matched": true,
+                        "regex": false
+                    },
+                    "TestObjectEssence": {
+                        "TestObjectId": "main/Page_CURA Healthcare Service/button_Login",
+                        "Method": "XPATH",
+                        "Locator": "//button[@id='btn-login']"
+                    }
+                }
+            ]
+        },
+        {
+            "TestObjectId": "main/Page_CURA Healthcare Service/input_Apply for hospital readmission_hospit_63901f",
+            "ForwardReferences": [
+                {
+                    "TestCaseId": "main/TC1",
+                    "DigestedLine": {
+                        "line": "WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/input_Apply for hospital readmission_hospit_63901f'))",
+                        "lineNo": 24,
+                        "pattern": "main/Page_CURA Healthcare Service/input_Apply for hospital readmission_hospit_63901f",
+                        "matchAt": 47,
+                        "matchEnd": 131,
+                        "matched": true,
+                        "regex": false
+                    },
+                    "TestObjectEssence": {
+                        "TestObjectId": "main/Page_CURA Healthcare Service/input_Apply for hospital readmission_hospit_63901f",
+                        "Method": "XPATH",
+                        "Locator": "//input[@id='chk_hospotal_readmission']"
+                    }
+                }
+            ]
+        },
+        {
+            "TestObjectId": "main/Page_CURA Healthcare Service/input_Medicaid_programs",
+            "ForwardReferences": [
+                {
+                    "TestCaseId": "main/TC1",
+                    "DigestedLine": {
+                        "line": "WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/input_Medicaid_programs'))",
+                        "lineNo": 26,
+                        "pattern": "main/Page_CURA Healthcare Service/input_Medicaid_programs",
+                        "matchAt": 47,
+                        "matchEnd": 104,
+                        "matched": true,
+                        "regex": false
+                    },
+                    "TestObjectEssence": {
+                        "TestObjectId": "main/Page_CURA Healthcare Service/input_Medicaid_programs",
+                        "Method": "XPATH",
+                        "Locator": "//input[@id='radio_program_medicaid']"
+                    }
+                }
+            ]
+        },
+        {
+            "TestObjectId": "main/Page_CURA Healthcare Service/input_Password_password",
+            "ForwardReferences": [
+                {
+                    "TestCaseId": "main/TC1",
+                    "DigestedLine": {
+                        "line": "WebUI.setEncryptedText(findTestObject('Object Repository/main/Page_CURA Healthcare Service/input_Password_password'), 'g3/DOGG74jC3Flrr3yH+3D/yKbOqqUNM')",
+                        "lineNo": 17,
+                        "pattern": "main/Page_CURA Healthcare Service/input_Password_password",
+                        "matchAt": 58,
+                        "matchEnd": 115,
+                        "matched": true,
+                        "regex": false
+                    },
+                    "TestObjectEssence": {
+                        "TestObjectId": "main/Page_CURA Healthcare Service/input_Password_password",
+                        "Method": "XPATH",
+                        "Locator": "//input[@id='txt-password']"
+                    }
+                }
+            ]
+        },
+        {
+            "TestObjectId": "main/Page_CURA Healthcare Service/input_Username_username",
+            "ForwardReferences": [
+                {
+                    "TestCaseId": "main/TC1",
+                    "DigestedLine": {
+                        "line": "WebUI.setText(findTestObject('Object Repository/main/Page_CURA Healthcare Service/input_Username_username'), 'John Doe')",
+                        "lineNo": 15,
+                        "pattern": "main/Page_CURA Healthcare Service/input_Username_username",
+                        "matchAt": 49,
+                        "matchEnd": 106,
+                        "matched": true,
+                        "regex": false
+                    },
+                    "TestObjectEssence": {
+                        "TestObjectId": "main/Page_CURA Healthcare Service/input_Username_username",
+                        "Method": "XPATH",
+                        "Locator": "//input[@id='txt-username']"
+                    }
+                }
+            ]
+        },
+        {
+            "TestObjectId": "main/Page_CURA Healthcare Service/input_Visit Date",
+            "ForwardReferences": [
+                {
+                    "TestCaseId": "main/TC1",
+                    "DigestedLine": {
+                        "line": "WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/input_Visit Date'))",
+                        "lineNo": 28,
+                        "pattern": "main/Page_CURA Healthcare Service/input_Visit Date",
+                        "matchAt": 47,
+                        "matchEnd": 97,
+                        "matched": true,
+                        "regex": false
+                    },
+                    "TestObjectEssence": {
+                        "TestObjectId": "main/Page_CURA Healthcare Service/input_Visit Date",
+                        "Method": "XPATH",
+                        "Locator": "//input[@id='txt_visit_date']"
+                    }
+                },
+                {
+                    "TestCaseId": "main/TC1",
+                    "DigestedLine": {
+                        "line": "WebUI.setText(findTestObject('Object Repository/main/Page_CURA Healthcare Service/input_Visit Date'), \"20230325\")",
+                        "lineNo": 30,
+                        "pattern": "main/Page_CURA Healthcare Service/input_Visit Date",
+                        "matchAt": 49,
+                        "matchEnd": 99,
+                        "matched": true,
+                        "regex": false
+                    },
+                    "TestObjectEssence": {
+                        "TestObjectId": "main/Page_CURA Healthcare Service/input_Visit Date",
+                        "Method": "XPATH",
+                        "Locator": "//input[@id='txt_visit_date']"
+                    }
+                }
+            ]
+        },
+        {
+            "TestObjectId": "main/Page_CURA Healthcare Service/select_Tokyo CURA Healthcare Center        _5b4107",
+            "ForwardReferences": [
+                {
+                    "TestCaseId": "main/TC1",
+                    "DigestedLine": {
+                        "line": "WebUI.selectOptionByValue(findTestObject('Object Repository/main/Page_CURA Healthcare Service/select_Tokyo CURA Healthcare Center        _5b4107'), ",
+                        "lineNo": 21,
+                        "pattern": "main/Page_CURA Healthcare Service/select_Tokyo CURA Healthcare Center        _5b4107",
+                        "matchAt": 61,
+                        "matchEnd": 145,
+                        "matched": true,
+                        "regex": false
+                    },
+                    "TestObjectEssence": {
+                        "TestObjectId": "main/Page_CURA Healthcare Service/select_Tokyo CURA Healthcare Center        _5b4107",
+                        "Method": "XPATH",
+                        "Locator": "//select[@id='combo_facility']"
+                    }
+                }
+            ]
+        },
+        {
+            "TestObjectId": "main/Page_CURA Healthcare Service/textarea_Comment_comment",
+            "ForwardReferences": [
+                {
+                    "TestCaseId": "main/TC1",
+                    "DigestedLine": {
+                        "line": "WebUI.setText(findTestObject('Object Repository/main/Page_CURA Healthcare Service/textarea_Comment_comment'), 'This is a comment')",
+                        "lineNo": 32,
+                        "pattern": "main/Page_CURA Healthcare Service/textarea_Comment_comment",
+                        "matchAt": 49,
+                        "matchEnd": 107,
+                        "matched": true,
+                        "regex": false
+                    },
+                    "TestObjectEssence": {
+                        "TestObjectId": "main/Page_CURA Healthcare Service/textarea_Comment_comment",
+                        "Method": "XPATH",
+                        "Locator": "//textarea[@id='txt_comment']"
+                    }
+                }
+            ]
+        }
+    ]
+}
