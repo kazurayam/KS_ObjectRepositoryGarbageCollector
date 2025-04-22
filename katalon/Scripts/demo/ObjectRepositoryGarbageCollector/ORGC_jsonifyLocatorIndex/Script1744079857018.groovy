@@ -22,5 +22,5 @@ ObjectRepositoryGarbageCollector gc =
 String json = gc.jsonifyLocatorIndex("td[31]", false)
 
 Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-					.fileName('garbage.json').build()
+					.fileName('LocatorIndex.json').build()
 sh.write(JsonOutput.prettyPrint(json))
