@@ -77,10 +77,18 @@ public class ObjectRepositoryGarbageCollectorTest {
 	}
 
 	@Test
-	void jsonifyLocatorIndex_with_pattern() {
-		String json = garbageCollector.jsonifyLocatorIndex("td[31]", false)
+	void test_jsonifyLocatorIndex() {
+		String json = garbageCollector.jsonifyLocatorIndex()
 		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
 				.fileName("test_jsonifyLocatorIndex.json").build()
+		sh.write(JsonOutput.prettyPrint(json))
+	}
+
+	@Test
+	void test_jsonifyLocatorIndex_with_pattern() {
+		String json = garbageCollector.jsonifyLocatorIndex("td[31]", false)
+		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
+				.fileName("test_jsonifyLocatorIndex_with_pattern.json").build()
 		sh.write(JsonOutput.prettyPrint(json))
 	}
 

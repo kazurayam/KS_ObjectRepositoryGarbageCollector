@@ -18,6 +18,7 @@ class TestObjectEssence implements Comparable<TestObjectEssence> {
 	private TestObjectId testObjectId       // "Page_CURA Healthcare Service/a_Go to Homepage"
 	private String method   // "BASIC", "XPATH", "CSS"
 	private Locator locator  // "//section[@id='summary']/div/div/div[7]/p/a" ; could be null
+	private int numberOfReferrers = 0
 
 	TestObjectEssence(TestObjectId testObjectId, String method, Locator locator) {
 		Objects.requireNonNull(testObjectId)
@@ -38,6 +39,14 @@ class TestObjectEssence implements Comparable<TestObjectEssence> {
 
 	Locator getLocator() {
 		return locator
+	}
+
+	void setNumberOfReferrers(int value) {
+		this.numberOfReferrers = value
+	}
+
+	int getNumberOfReferrers() {
+		return this.numberOfReferrers
 	}
 
 	@Override
@@ -102,6 +111,7 @@ class TestObjectEssence implements Comparable<TestObjectEssence> {
 				JsonGenerator gen, SerializerProvider serializer) {
 			gen.writeStartObject()
 			gen.writeStringField("TestObjectId", essence.getTestObjectId().getValue())
+			gen.writeNumberField("Number of referrers", essence.getNumberOfReferrers())
 			gen.writeStringField("Method", essence.getMethod())
 			gen.writeStringField("Locator", essence.getLocator().getValue())
 			gen.writeEndObject()

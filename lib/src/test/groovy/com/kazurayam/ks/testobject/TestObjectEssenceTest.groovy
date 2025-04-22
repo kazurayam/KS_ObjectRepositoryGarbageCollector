@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
 
 @RunWith(JUnit4.class)
-public class TestObjectEssenceTest {
+class TestObjectEssenceTest {
 
 	private TestObjectEssence essence
 
@@ -22,6 +22,7 @@ public class TestObjectEssenceTest {
 	@Before
 	void setup() {
 		essence = new TestObjectEssence(testObjectId, method, locator)
+		essence.setNumberOfReferrers(1)
 	}
 
 	@Test
@@ -37,6 +38,11 @@ public class TestObjectEssenceTest {
 	@Test
 	void test_locator() {
 		assertEquals(locator, essence.getLocator())
+	}
+
+	@Test
+	void test_NumberOfReferrers() {
+		assertEquals(1, essence.getNumberOfReferrers())
 	}
 
 	@Test

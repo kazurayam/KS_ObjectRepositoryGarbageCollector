@@ -181,14 +181,14 @@ class ObjectRepositoryGarbageCollector {
 	 * 
 	 */
 	LocatorIndex getLocatorIndex(String pattern = "", boolean isRegex = false) {
-		return ord.getLocatorIndex(pattern, isRegex)
+		return ord.getLocatorIndex(db(), pattern, isRegex)
 	}
 
 	/**
 	 * 
 	 */
 	String jsonifyLocatorIndex(String pattern = "", boolean isRegex = false) {
-		return ord.jsonifyLocatorIndex(pattern, isRegex)
+		return ord.jsonifyLocatorIndex(db(), pattern, isRegex)
 	}
 
 	/**
