@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.kazurayam.ks.configuration.KatalonProjectDirectoryResolver
 import com.kazurayam.ks.testobject.TestObjectEssence.TestObjectEssenceSerializer
-import com.kazurayam.ks.testobject.gc.Database
 import com.kms.katalon.core.testobject.ObjectRepository
 import com.kms.katalon.core.testobject.TestObject
 import org.slf4j.Logger
@@ -176,8 +175,7 @@ class ObjectRepositoryDecorator {
 	 * You should pay attention to the locators that has 2 or more belonging TestObjectEssence objects;
 	 * as it means you have duplicating TestObjects with the same Locator.
 	 */
-	LocatorIndex getLocatorIndex(Database db, String pattern = "", Boolean isRegex = false) throws IOException {
-		Objects.requireNonNull(db)
+	LocatorIndex getLocatorIndex(String pattern = "", Boolean isRegex = false) throws IOException {
 		LocatorIndex locatorIndex = new LocatorIndex()
 		RegexOptedTextMatcher textMatcher = new RegexOptedTextMatcher(pattern, isRegex)
 		List<TestObjectId> idList = this.getTestObjectIdList("", false)  // list of IDs of Test Object
@@ -185,8 +183,6 @@ class ObjectRepositoryDecorator {
 			Locator locator = id.toTestObjectEssence().getLocator()
 			if (textMatcher.found(locator.getValue())) {
 				TestObjectEssence essence = id.toTestObjectEssence()
-				int numberOfReferrers = db.findForwardReferencesTo(essence.getTestObjectId()).size()
-				essence.setNumberOfReferrers(numberOfReferrers)
 				locatorIndex.put(locator, essence)
 			}
 		}
@@ -196,8 +192,8 @@ class ObjectRepositoryDecorator {
 	/**
 	 * returns a JSON string representation of the LocatorIndex object that is returned by the "getLocatorIndex" call.
 	 */
-	String jsonifyLocatorIndex(Database db, String pattern = "", Boolean isRegex = false) throws IOException {
-		LocatorIndex locatorIndex = this.getLocatorIndex(db, pattern, isRegex)
+	String jsonifyLocatorIndex(String pattern = "", Boolean isRegex = false) throws IOException {
+		LocatorIndex locatorIndex = this.getLocatorIndex(pattern, isRegex)
 		return locatorIndex.toJson()
 	}
 
