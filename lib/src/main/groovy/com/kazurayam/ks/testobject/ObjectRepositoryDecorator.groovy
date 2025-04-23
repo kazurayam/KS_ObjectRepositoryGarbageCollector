@@ -96,6 +96,15 @@ class ObjectRepositoryDecorator {
 		return result
 	}
 
+	TestObjectEssence getTestObjectEssence(TestObjectId testObjectId) {
+		List<TestObjectEssence> essences = getTestObjectEssenceList(testObjectId.toString(), false)
+		if (essences != null && essences.size() > 0) {
+			return essences.get(0)
+		} else {
+			throw new IllegalStateException(testObjectId + " is not found in the TestObjectEssenceList")
+		}
+	}
+
 	/**
 	 * convert a pattern for Object Repository sub-folders to a pattern for TestObject files 
 	 *　E.g, "** /Page_CURA*" -> "** /Page_CURA* /** /*.rs"

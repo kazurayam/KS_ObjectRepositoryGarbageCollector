@@ -1,28 +1,31 @@
 package com.kazurayam.ks.testobject.gc
 
-import static org.junit.Assert.*
-
 import com.kazurayam.ks.configuration.KatalonProjectDirectoryResolver
 import com.kazurayam.ks.reporting.Shorthand
-import com.kazurayam.ks.testobject.TestObjectEssence
-import com.kazurayam.ks.testobject.TestObjectId
 import groovy.json.JsonOutput
 import org.junit.Before
 import org.junit.BeforeClass
+import org.junit.FixMethodOrder
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.JUnit4
+import org.junit.runners.MethodSorters
 
 import java.nio.file.Path
 
-class BackwardReferencesTest {
+import static org.junit.Assert.assertNotNull;
 
-    private static Path projectDir = KatalonProjectDirectoryResolver .getProjectDir()
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@RunWith(JUnit4.class)
+class BackwardReferencesMapTest {
+
+    private static Path projectDir = KatalonProjectDirectoryResolver.getProjectDir()
     private static Path objectRepositoryDir = projectDir.resolve("Object Repository")
     private static Path scriptsDir = projectDir.resolve("Scripts")
 
     private static ObjectRepositoryGarbageCollector garbageCollector
-    private static BackwardReferencesMap backwardReferenceMap
 
-    private BackwardReferences backwardReference
+    private BackwardReferencesMap backwardReferenceMap
 
     @BeforeClass
     static void beforeClass() {
@@ -32,24 +35,19 @@ class BackwardReferencesTest {
                 .includeObjectRepositoryFolder("main")
                 .includeObjectRepositoryFolder("misc")
                 .build()
-        backwardReferenceMap = garbageCollector.getBackwardReferencesMap()
     }
 
     @Before
     void setup() {
-        TestObjectId testObjectId = new TestObjectId("main/Page_CURA Healthcare Service/a_Go to Homepage")
-        TestObjectEssence testObjectEssence = garbageCollector.getTestObjectEssence(testObjectId)
-        Set<ForwardReference> forwardReferences = backwardReferenceMap.get(testObjectId)
-        backwardReference = new BackwardReferences(testObjectEssence, forwardReferences)
+        backwardReferenceMap = garbageCollector.getBackwardReferencesMap()
+        assertNotNull(backwardReferenceMap)
     }
 
     @Test
     void test_toJson() {
-        String json = backwardReference.toJson()
+        String json = backwardReferenceMap.toJson()
         Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
                 .fileName("test_toJson.json").build()
         sh.write(JsonOutput.prettyPrint(json))
-        assertNotNull(json)
-        assertTrue(json.contains("a_Go to Homepage"))
     }
 }

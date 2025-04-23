@@ -28,6 +28,13 @@ class TestObjectEssence implements Comparable<TestObjectEssence> {
 		this.locator = locator
 	}
 
+	/**
+	 * Copy constructor
+	 */
+	TestObjectEssence(TestObjectEssence that) {
+		this(that.getTestObjectId(), that.getMethod(), that.getLocator())
+	}
+
 	TestObjectId getTestObjectId() {
 		return testObjectId
 	}

@@ -49,12 +49,12 @@ public class ObjectRepositoryGarbageCollectorTest {
 	}
 
 	@Test
-	void test_getBackwardReferences() {
-		BackwardReferences bRefs = garbageCollector.getBackwardReferences()
-		assertNotNull(bRefs)
+	void test_getBackwardReferencesMap() {
+		BackwardReferencesMap brm = garbageCollector.getBackwardReferencesMap()
+		assertNotNull(brm)
 		TestObjectId toi = new TestObjectId("main/Page_CURA Healthcare Service/a_Go to Homepage")
-		assertTrue(bRefs.keySet().contains(toi))
-		Set<ForwardReference> refs = bRefs.get(toi)
+		assertTrue(brm.keySet().contains(toi))
+		Set<ForwardReference> refs = brm.get(toi)
 		List<ForwardReference> refList = refs as List
 		assertEquals(1, refList.size())
 		assertEquals(toi, refList.get(0).getTestObjectEssence().getTestObjectId())

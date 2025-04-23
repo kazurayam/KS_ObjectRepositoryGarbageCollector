@@ -39,6 +39,7 @@ class ObjectRepositoryGarbageCollector {
 
 	private Database db
 	private ObjectRepositoryDecorator ord
+	private BackwardReferencesMap backwardReferencesMap
 
 	private LocalDateTime startedAt
 	private LocalDateTime finishedAt
@@ -59,6 +60,7 @@ class ObjectRepositoryGarbageCollector {
 		def recv = this.scan(this.objectRepositoryDir, this.scriptsDir)
 		this.db = recv[0]
 		this.ord = recv[1]
+		this.backwardReferencesMap = this.getBackwardReferencesMap()
 		finishedAt = LocalDateTime.now()
 	}
 
@@ -154,26 +156,30 @@ class ObjectRepositoryGarbageCollector {
 		return numberOfTestObjects
 	}
 
+	TestObjectEssence getTestObjectEssence(TestObjectId testObjectId) {
+		return ord.getTestObjectEssence(testObjectId)
+	}
+
 	/**
 	 *
 	 */
-	BackwardReferences getBackwardReferences() {
-		BackwardReferences backwardReferences = new BackwardReferences()
+	BackwardReferencesMap getBackwardReferencesMap() {
+		BackwardReferencesMap backwardReferenceMap = new BackwardReferencesMap()
 		Set<TestObjectId> allTestObjectIds = db.getAllTestObjectIdsContained()
 		allTestObjectIds.each { testObjectId ->
 			Set<ForwardReference> forwardReferences = db.findForwardReferencesTo(testObjectId)
 			forwardReferences.each { ForwardReference fr ->
-				backwardReferences.put(testObjectId, fr)
+				backwardReferenceMap.put(testObjectId, fr)
 			}
 		}
-		return backwardReferences
+		return backwardReferenceMap
 	}
 
 	/**
 	 *
 	 */
 	String jsonifyBackwardReferences() {
-		BackwardReferences backwardReferences = this.getBackwardReferences()
+		BackwardReferencesMap backwardReferences = this.getBackwardReferencesMap()
 		return backwardReferences.toJson()
 	}
 

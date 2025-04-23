@@ -33,6 +33,14 @@ class DigestedLine implements Comparable<DigestedLine> {
 		this.matched = builder.matched
 	}
 
+	DigestedLine(DigestedLine that) {
+		this(new DigestedLine.Builder(that.getLine(), that.getLineNo())
+				.pattern(that.getPattern(), that.isRegex)
+				.matchFound(that.getMatchAt(), that.getMatchEnd()
+				)
+		)
+	}
+
 	String getLine() {
 		return this.line
 	}

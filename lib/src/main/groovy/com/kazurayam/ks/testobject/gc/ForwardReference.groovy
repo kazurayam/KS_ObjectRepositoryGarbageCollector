@@ -28,6 +28,16 @@ public class ForwardReference implements Comparable<ForwardReference> {
 		this.testObjectEssence = testObjectEssence
 	}
 
+	/**
+	 * Copy constructor
+	 */
+	ForwardReference(ForwardReference that) {
+		this(that.getTestCaseId(),
+				new DigestedLine(that.getDigestedLine()),
+				new TestObjectEssence(that.getTestObjectEssence())
+		)
+	}
+
 	TestCaseId getTestCaseId() {
 		return testCaseId
 	}
