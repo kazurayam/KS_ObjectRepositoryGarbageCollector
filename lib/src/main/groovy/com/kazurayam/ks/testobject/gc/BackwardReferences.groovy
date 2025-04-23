@@ -42,7 +42,7 @@ public class BackwardReferences {
 		set.add(forwardReference)
 	}
 
-	public int size() {
+	int size() {
 		return backwardReferences.size()
 	}
 
