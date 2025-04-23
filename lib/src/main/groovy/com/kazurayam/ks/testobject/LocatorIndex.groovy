@@ -45,6 +45,15 @@ class LocatorIndex {
 		set.add(essence)
 	}
 
+	/**
+	 * Removes the mapping for a locator from this LocatorIndex if it is present (optional operation).
+	 * @param locator
+	 * @return the previous value of Set<TestObjectEssence> associated with locator, or null if there was no mapping for locator.
+	 */
+	Set<TestObjectEssence> remove(Locator locator) {
+		return locatorIndex.remove(locator)
+	}
+
 	int size() {
 		return locatorIndex.size()
 	}
@@ -70,7 +79,7 @@ class LocatorIndex {
 		LocatorIndexSerializer() {
 			this(null)
 		}
-		LocatorIndexSerializer(Class<LocatorIndexSerializer> t) {
+		LocatorIndexSerializer(Class<LocatorIndex> t) {
 			super(t)
 		}
 		@Override
