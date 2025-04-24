@@ -2,6 +2,7 @@ package com.kazurayam.ks.testobject
 
 import com.kazurayam.ks.reporting.Shorthand
 import com.kazurayam.ks.configuration.KatalonProjectDirectoryResolver
+import com.kazurayam.ks.testobject.combine.LocatorIndex
 import groovy.json.JsonOutput
 import org.junit.Before
 import org.junit.FixMethodOrder
@@ -11,7 +12,6 @@ import org.junit.runners.JUnit4
 import org.junit.runners.MethodSorters
 
 import java.nio.file.Path
-import java.nio.file.Paths
 
 import static org.junit.Assert.*
 

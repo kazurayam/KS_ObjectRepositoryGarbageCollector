@@ -1,4 +1,4 @@
-package com.kazurayam.ks.testobject.gc
+package com.kazurayam.ks.testobject.combine
 
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.Version
@@ -11,7 +11,6 @@ import com.kazurayam.ks.testcase.DigestedLine
 import com.kazurayam.ks.testcase.ScriptsDecorator
 import com.kazurayam.ks.testcase.TestCaseId
 import com.kazurayam.ks.testcase.TestCaseScriptDigester
-import com.kazurayam.ks.testobject.LocatorIndex
 import com.kazurayam.ks.testobject.ObjectRepositoryDecorator
 import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kazurayam.ks.testobject.TestObjectId
@@ -60,7 +59,7 @@ class ObjectRepositoryGarbageCollector {
 		def recv = this.scan(this.objectRepositoryDir, this.scriptsDir)
 		this.db = recv[0]
 		this.ord = recv[1]
-		this.backwardReferencesMap = this.getBackwardReferencesMap()
+		this.backwardReferencesMap = this.createBackwardReferencesMap()
 		finishedAt = LocalDateTime.now()
 	}
 
@@ -163,7 +162,7 @@ class ObjectRepositoryGarbageCollector {
 	/**
 	 *
 	 */
-	BackwardReferencesMap getBackwardReferencesMap() {
+	BackwardReferencesMap createBackwardReferencesMap() {
 		BackwardReferencesMap backwardReferenceMap = new BackwardReferencesMap()
 		Set<TestObjectId> allTestObjectIds = db.getAllTestObjectIdsContained()
 		allTestObjectIds.each { testObjectId ->
@@ -178,9 +177,9 @@ class ObjectRepositoryGarbageCollector {
 	/**
 	 *
 	 */
-	String jsonifyBackwardReferences() {
-		BackwardReferencesMap backwardReferences = this.getBackwardReferencesMap()
-		return backwardReferences.toJson()
+	String jsonifyBackwardReferencesMap() {
+		BackwardReferencesMap backwardReferencesMap = this.createBackwardReferencesMap()
+		return backwardReferencesMap.toJson()
 	}
 
 	/**

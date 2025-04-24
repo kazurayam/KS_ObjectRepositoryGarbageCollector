@@ -1,4 +1,4 @@
-package com.kazurayam.ks.testobject.gc
+package com.kazurayam.ks.testobject.combine
 
 import com.kazurayam.ks.configuration.KatalonProjectDirectoryResolver
 
@@ -11,8 +11,7 @@ import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.junit.runners.MethodSorters;
-import com.kazurayam.ks.testobject.LocatorIndex
+import org.junit.runners.MethodSorters
 import com.kazurayam.ks.testobject.TestObjectId
 import com.kazurayam.ks.reporting.Shorthand
 
@@ -49,8 +48,8 @@ public class ObjectRepositoryGarbageCollectorTest {
 	}
 
 	@Test
-	void test_getBackwardReferencesMap() {
-		BackwardReferencesMap brm = garbageCollector.getBackwardReferencesMap()
+	void test_createBackwardReferencesMap() {
+		BackwardReferencesMap brm = garbageCollector.createBackwardReferencesMap()
 		assertNotNull(brm)
 		TestObjectId toi = new TestObjectId("main/Page_CURA Healthcare Service/a_Go to Homepage")
 		assertTrue(brm.keySet().contains(toi))
@@ -61,10 +60,10 @@ public class ObjectRepositoryGarbageCollectorTest {
 	}
 
 	@Test
-	void test_jsonifyBackwardReferences() {
-		String json = garbageCollector.jsonifyBackwardReferences()
+	void test_jsonifyBackwardReferencesMap() {
+		String json = garbageCollector.jsonifyBackwardReferencesMap()
 		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
-				.fileName("test_jsonifyBackwardReferences.json").build()
+				.fileName("test_jsonifyBackwardReferencesMap.json").build()
 		sh.write(JsonOutput.prettyPrint(json))
 	}
 

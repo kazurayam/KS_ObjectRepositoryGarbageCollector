@@ -1,13 +1,15 @@
-package com.kazurayam.ks.testobject
+package com.kazurayam.ks.testobject.combine
 
 import com.kazurayam.ks.reporting.Shorthand
+import com.kazurayam.ks.testobject.ObjectRepositoryDecorator
+import com.kazurayam.ks.testobject.TestObjectEssence
+import com.kazurayam.ks.testobject.TestObjectId
 import groovy.json.JsonOutput
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
-import static org.junit.Assert.assertFalse
 import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.assertTrue
 import static org.junit.Assert.assertEquals

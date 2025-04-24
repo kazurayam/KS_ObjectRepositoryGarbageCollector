@@ -1,4 +1,4 @@
-package com.kazurayam.ks.testobject.gc
+package com.kazurayam.ks.testobject.combine
 
 import static org.junit.Assert.*
 
@@ -32,7 +32,7 @@ class BackwardReferencesTest {
                 .includeObjectRepositoryFolder("main")
                 .includeObjectRepositoryFolder("misc")
                 .build()
-        backwardReferenceMap = garbageCollector.getBackwardReferencesMap()
+        backwardReferenceMap = garbageCollector.createBackwardReferencesMap()
     }
 
     @Before

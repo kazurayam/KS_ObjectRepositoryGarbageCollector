@@ -1,4 +1,4 @@
-package com.kazurayam.ks.testobject.gc
+package com.kazurayam.ks.testobject.combine
 
 import com.kazurayam.ks.configuration.KatalonProjectDirectoryResolver
 import com.kazurayam.ks.reporting.Shorthand
@@ -39,7 +39,7 @@ class BackwardReferencesMapTest {
 
     @Before
     void setup() {
-        backwardReferenceMap = garbageCollector.getBackwardReferencesMap()
+        backwardReferenceMap = garbageCollector.createBackwardReferencesMap()
         assertNotNull(backwardReferenceMap)
     }
 

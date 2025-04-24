@@ -1,4 +1,4 @@
-package com.kazurayam.ks.testobject.gc
+package com.kazurayam.ks.testobject.combine
 
 import static org.junit.Assert.*
 
@@ -13,7 +13,6 @@ import org.junit.runners.MethodSorters;
 import com.kazurayam.ks.reporting.Shorthand
 import com.kazurayam.ks.testcase.DigestedLine
 import com.kazurayam.ks.testcase.TestCaseId
-import com.kazurayam.ks.testobject.Locator
 import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kazurayam.ks.testobject.TestObjectId
 

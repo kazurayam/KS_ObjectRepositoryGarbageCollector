@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.kazurayam.ks.configuration.KatalonProjectDirectoryResolver
 import com.kazurayam.ks.testobject.TestObjectEssence.TestObjectEssenceSerializer
+import com.kazurayam.ks.testobject.combine.Locator
+import com.kazurayam.ks.testobject.combine.LocatorIndex
 import com.kms.katalon.core.testobject.ObjectRepository
 import com.kms.katalon.core.testobject.TestObject
 import org.slf4j.Logger

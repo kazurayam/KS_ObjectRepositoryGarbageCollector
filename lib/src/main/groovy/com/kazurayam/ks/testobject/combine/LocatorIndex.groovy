@@ -1,4 +1,4 @@
-package com.kazurayam.ks.testobject
+package com.kazurayam.ks.testobject.combine
 
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.Version
@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
+import com.kazurayam.ks.testobject.TestObjectEssence
+import com.kazurayam.ks.testobject.TestObjectId
 
 /**
  * LocatorIndex is a key-values pair; the key is a Locator, the values is a set

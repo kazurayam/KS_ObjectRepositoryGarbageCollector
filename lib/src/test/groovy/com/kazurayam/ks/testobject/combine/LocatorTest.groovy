@@ -1,4 +1,4 @@
-package com.kazurayam.ks.testobject
+package com.kazurayam.ks.testobject.combine
 
 import com.kazurayam.ks.reporting.Shorthand
 import groovy.json.JsonOutput
