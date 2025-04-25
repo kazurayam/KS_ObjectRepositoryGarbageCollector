@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import com.kazurayam.ks.configuration.RunConfigurationConfigurator
-import com.kazurayam.ks.testobject.combine.Locator
 import com.kms.katalon.core.testobject.ObjectRepository
 import com.kms.katalon.core.testobject.SelectorMethod
 import com.kms.katalon.core.testobject.TestObject

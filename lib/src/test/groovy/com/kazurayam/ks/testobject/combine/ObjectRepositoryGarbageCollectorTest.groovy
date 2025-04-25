@@ -1,6 +1,8 @@
 package com.kazurayam.ks.testobject.combine
 
 import com.kazurayam.ks.configuration.KatalonProjectDirectoryResolver
+import com.kazurayam.ks.testobject.Locator
+import com.kazurayam.ks.testobject.LocatorIndex
 
 import static org.junit.Assert.*
 
@@ -67,24 +69,7 @@ class ObjectRepositoryGarbageCollectorTest {
 		sh.write(JsonOutput.prettyPrint(json))
 	}
 
-	//-----------------------------------------------------------------
 
-	@Test
-	void test_getLocatorIndex() {
-		LocatorIndex locatorIndex = garbageCollector.getLocatorIndex()
-		assertNotNull(locatorIndex)
-		assertTrue(locatorIndex.size() > 0)
-		//
-
-	}
-
-	@Test
-	void test_jsonifyLocatorIndex() {
-		String json = garbageCollector.jsonifyLocatorIndex()
-		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
-				.fileName("test_jsonifyLocatorIndex.json").build()
-		sh.write(JsonOutput.prettyPrint(json))
-	}
 
 	@Test
 	void test_getGarbage() {
@@ -113,17 +98,6 @@ class ObjectRepositoryGarbageCollectorTest {
 				.fileName("test_jsonifyDatabase.json").build()
 		sh.write(JsonOutput.prettyPrint(json))
 		assertTrue("json should contain `//a[@id='btn-make-appointment']`", json.contains("//a[@id='btn-make-appointment']"))
-	}
-
-	@Test
-	void test_findTestObjectsWithLocator() {
-		Locator locator = new Locator("//body")
-		Set<TestObjectId> found = garbageCollector.findTestObjectsWithLocator(locator)
-		assertNotNull(found)
-		assertEquals(1, found.size())
-		found.each { toi ->
-			println toi.toString()
-		}
 	}
 
 }

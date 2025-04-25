@@ -5,8 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.kazurayam.ks.configuration.KatalonProjectDirectoryResolver
 import com.kazurayam.ks.testobject.TestObjectEssence.TestObjectEssenceSerializer
-import com.kazurayam.ks.testobject.combine.Locator
-import com.kazurayam.ks.testobject.combine.LocatorIndex
+import com.kazurayam.ks.testobject.combine.BackwardReferences
 import com.kms.katalon.core.testobject.ObjectRepository
 import com.kms.katalon.core.testobject.TestObject
 import org.slf4j.Logger
@@ -184,6 +183,45 @@ class ObjectRepositoryDecorator {
 	}
 
 	//
+
+	/**
+	 * LocatorIndex is a list of "Locators", each of which associated with
+	 * the list of TestObjectEssence objects which have the same "Locator" string.
+	 *
+	 * You should pay attention to the locators that has 2 or more belonging TestObjectEssence objects;
+	 * as it means you have duplicating TestObjects with the same Locator.
+	 */
+	LocatorIndex getLocatorIndex() throws IOException {
+		LocatorIndex locatorIndex = new LocatorIndex()
+		List<TestObjectId> idList = this.getTestObjectIdList()  // list of IDs of Test Object
+		idList.forEach { id ->
+			Locator locator = id.toTestObjectEssence().getLocator()
+			Set<LocatorDeclarations> declarations = this.findTestObjectsWithLocator(locator)
+			locatorIndex.put(locator, declarations)
+		}
+		return locatorIndex
+	}
+
+	Set<TestObjectId> findTestObjectsWithLocator(Locator locator) {
+		Set<TestObjectId> testObjectsWithTheLocator = new TreeSet<>()
+		this.getTestObjectIdList().each { toi ->
+			TestObjectEssence toe = toi.toTestObjectEssence()
+			if (locator == toe.getLocator()) {
+				testObjectsWithTheLocator.add(toi)
+			}
+		}
+		return testObjectsWithTheLocator
+	}
+
+	/**
+	 * returns a JSON string representation of the LocatorIndex object that is returned by the "getLocatorIndex" call.
+	 */
+	String jsonifyLocatorIndex() throws IOException {
+		LocatorIndex locatorIndex = this.getLocatorIndex()
+		return locatorIndex.toJson()
+	}
+
+
 
 	/**
 	 * 

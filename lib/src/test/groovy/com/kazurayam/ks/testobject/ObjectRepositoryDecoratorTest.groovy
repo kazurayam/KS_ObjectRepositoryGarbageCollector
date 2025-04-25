@@ -2,7 +2,6 @@ package com.kazurayam.ks.testobject
 
 import com.kazurayam.ks.reporting.Shorthand
 import com.kazurayam.ks.configuration.KatalonProjectDirectoryResolver
-import com.kazurayam.ks.testobject.combine.LocatorIndex
 import groovy.json.JsonOutput
 import org.junit.Before
 import org.junit.FixMethodOrder
@@ -152,4 +151,33 @@ public class ObjectRepositoryDecoratorTest {
 		assertEquals("misc/**/*.rs", patternsForFiles.get(1))
 		assertEquals("**/Page_CURA*/**/*.rs", patternsForFiles.get(2))
 	}
+
+	//-----------------------------------------------------------------
+
+	@Test
+	void test_getLocatorIndex() {
+		LocatorIndex locatorIndex = instance.getLocatorIndex()
+		assertNotNull(locatorIndex)
+		assertTrue(locatorIndex.size() > 0)
+	}
+
+	@Test
+	void test_findTestObjectsWithLocator() {
+		Locator locator = new Locator("//body")
+		Set<TestObjectId> found = instance.findTestObjectsWithLocator(locator)
+		assertNotNull(found)
+		assertEquals(1, found.size())
+		found.each { toi ->
+			println toi.toString()
+		}
+	}
+
+	@Test
+	void test_jsonifyLocatorIndex() {
+		String json = instance.jsonifyLocatorIndex()
+		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
+				.fileName("test_jsonifyLocatorIndex.json").build()
+		sh.write(JsonOutput.prettyPrint(json))
+	}
+
 }

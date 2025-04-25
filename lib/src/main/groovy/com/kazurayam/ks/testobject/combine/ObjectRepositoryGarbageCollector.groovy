@@ -11,8 +11,9 @@ import com.kazurayam.ks.testcase.DigestedLine
 import com.kazurayam.ks.testcase.ScriptsDecorator
 import com.kazurayam.ks.testcase.TestCaseId
 import com.kazurayam.ks.testcase.TestCaseScriptDigester
+import com.kazurayam.ks.testobject.Locator
+import com.kazurayam.ks.testobject.LocatorIndex
 import com.kazurayam.ks.testobject.ObjectRepositoryDecorator
-import com.kazurayam.ks.testobject.RegexOptedTextMatcher
 import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kazurayam.ks.testobject.TestObjectId
 
@@ -186,43 +187,6 @@ class ObjectRepositoryGarbageCollector {
 	String jsonifyBackwardReferencesMap() {
 		BackwardReferencesMap backwardReferencesMap = this.createBackwardReferencesMap()
 		return backwardReferencesMap.toJson()
-	}
-
-	Set<TestObjectId> findTestObjectsWithLocator(Locator locator) {
-		Set<TestObjectId> testObjectsWithTheLocator = new TreeSet<>()
-		ord.getTestObjectIdList().each { toi ->
-			TestObjectEssence toe = toi.toTestObjectEssence()
-			if (locator == toe.getLocator()) {
-				testObjectsWithTheLocator.add(toi)
-			}
-		}
-		return testObjectsWithTheLocator
-	}
-
-	/**
-	 * LocatorIndex is a list of "Locators", each of which associated with
-	 * the list of TestObjectEssence objects which have the same "Locator" string.
-	 *
-	 * You should pay attention to the locators that has 2 or more belonging TestObjectEssence objects;
-	 * as it means you have duplicating TestObjects with the same Locator.
-	 */
-	LocatorIndex getLocatorIndex() throws IOException {
-		LocatorIndex locatorIndex = new LocatorIndex()
-		List<TestObjectId> idList = ord.getTestObjectIdList()  // list of IDs of Test Object
-		idList.forEach { id ->
-			Locator locator = id.toTestObjectEssence().getLocator()
-			Set<BackwardReferences> brSet = backwardReferencesMap.get(id)
-			locatorIndex.put(locator, brSet)  // brSet might be null
-		}
-		return locatorIndex
-	}
-
-	/**
-	 * returns a JSON string representation of the LocatorIndex object that is returned by the "getLocatorIndex" call.
-	 */
-	String jsonifyLocatorIndex() throws IOException {
-		LocatorIndex locatorIndex = this.getLocatorIndex()
-		return locatorIndex.toJson()
 	}
 
 	/**

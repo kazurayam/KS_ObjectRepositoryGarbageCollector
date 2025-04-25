@@ -1,10 +1,9 @@
-package com.kazurayam.ks.testobject.combine
+package com.kazurayam.ks.testobject
 
 import com.kazurayam.ks.configuration.KatalonProjectDirectoryResolver
 import com.kazurayam.ks.reporting.Shorthand
-import com.kazurayam.ks.testobject.ObjectRepositoryDecorator
-import com.kazurayam.ks.testobject.TestObjectEssence
-import com.kazurayam.ks.testobject.TestObjectId
+import com.kazurayam.ks.testobject.combine.ForwardReference
+import com.kazurayam.ks.testobject.combine.ObjectRepositoryGarbageCollector
 import groovy.json.JsonOutput
 import org.junit.Before
 import org.junit.BeforeClass
@@ -21,36 +20,24 @@ import static org.junit.Assert.assertEquals
 @RunWith(JUnit4.class)
 class LocatorIndexTest {
 
-	private static Path projectDir = KatalonProjectDirectoryResolver .getProjectDir()
-	private static Path objectRepositoryDir = projectDir.resolve("Object Repository")
-	private static Path scriptsDir = projectDir.resolve("Scripts")
-
-	private static ObjectRepositoryGarbageCollector garbageCollector
-
-	private LocatorIndex locatorIndex
-
-	@BeforeClass
-	static void beforeClass() {
-		garbageCollector = new ObjectRepositoryGarbageCollector.Builder(objectRepositoryDir, scriptsDir)
-				.includeScriptsFolder("main")
-				.includeScriptsFolder("misc")
-				.includeObjectRepositoryFolder("main")
-				.includeObjectRepositoryFolder("misc")
-				.build()
-	}
+	private ObjectRepositoryDecorator ord
 
 	@Before
 	void setup() {
-		locatorIndex = garbageCollector.getLocatorIndex()
+		Path objectRepositoryDir =  KatalonProjectDirectoryResolver.getProjectDir()
+				.resolve("Object Repository")
+		ord = new ObjectRepositoryDecorator.Builder(objectRepositoryDir).build()
 	}
 
 	@Test
 	void test_size() {
+		LocatorIndex locatorIndex = ord.getLocatorIndex()
 		assertTrue(locatorIndex.size() > 0)
 	}
 
 	@Test
 	void test_toJson() {
+		LocatorIndex locatorIndex = ord.getLocatorIndex()
 		String json = locatorIndex.toJson()
 		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
 				.fileName("test_toJson.json").build()
@@ -79,8 +66,9 @@ class LocatorIndexTest {
 	 */
 	@Test
 	void test_remove() {
+		LocatorIndex locatorIndex = ord.getLocatorIndex()
 		int previousSize = locatorIndex.size()
-		Locator key = new Locator("//body")
+        Locator key = new Locator("//body")
 		Set<ForwardReference> value = locatorIndex.remove(key)
 		if (value != null) {
 			assertEquals(previousSize - 1, locatorIndex.size())

@@ -1,5 +1,7 @@
 package com.kazurayam.ks.testobject.combine
 
+import com.kazurayam.ks.testobject.Locator
+
 import static org.junit.Assert.*
 
 import org.junit.Before

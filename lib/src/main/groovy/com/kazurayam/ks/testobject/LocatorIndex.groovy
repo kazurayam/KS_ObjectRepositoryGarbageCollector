@@ -1,4 +1,4 @@
-package com.kazurayam.ks.testobject.combine
+package com.kazurayam.ks.testobject
 
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.Version
@@ -6,8 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
-import com.kazurayam.ks.testobject.TestObjectEssence
-import com.kazurayam.ks.testobject.TestObjectId
+import com.kazurayam.ks.testobject.combine.BackwardReferences
+import com.kazurayam.ks.testobject.combine.ForwardReference
 
 /**
  * LocatorIndex is a key-values pair; the key is a Locator, the values is a set
@@ -18,7 +18,7 @@ import com.kazurayam.ks.testobject.TestObjectId
  */
 class LocatorIndex {
 
-	private Map<Locator, Set<BackwardReferences>> locatorIndex
+	private Map<Locator, Set<LocatorDeclarations>> locatorIndex
 
 	LocatorIndex() {
 		this.locatorIndex = new TreeMap<>()
@@ -28,33 +28,36 @@ class LocatorIndex {
 		return locatorIndex.keySet()
 	}
 
-	Iterator<Map.Entry<Locator, Set<BackwardReferences>>> iterator() {
+	Iterator<Map.Entry<Locator, Set<LocatorDeclarations>>> iterator() {
 		return locatorIndex.entrySet().iterator()
 	}
 
-	Set<BackwardReferences> get(Locator locator) {
+	Set<LocatorDeclarations> get(Locator locator) {
 		Objects.requireNonNull(locator)
 		return locatorIndex.get(locator)
 	}
 
-	void put(Locator locator, Set<BackwardReferences> backwardReferencesSet = null) {
+	void put(Locator locator, Set<LocatorDeclarations> declarations) {
 		Objects.requireNonNull(locator)
+		Objects.requireNonNull(declarations)
 		if (!locatorIndex.containsKey(locator)) {
-			Set<BackwardReferences> emptySet = new TreeSet<>()
+			Set<LocatorDeclarations> emptySet = new TreeSet<>()
 			locatorIndex.put(locator, emptySet)
 		}
-		Set<BackwardReferences> set = locatorIndex.get(locator)
-		if (backwardReferencesSet != null) {
-			set.addAll(backwardReferencesSet)
+		Set<LocatorDeclarations> set = locatorIndex.get(locator)
+		if (set != null) {
+			set.addAll(declarations)
 		}
 	}
 
 	/**
-	 * Removes the mapping for a locator from this LocatorIndex if it is present (optional operation).
+	 * Removes the mapping for a locator from this LocatorIndex if it is present
+	 * (optional operation).
 	 * @param locator
-	 * @return the previous value of Set<BackwardReferences> associated with locator, or null if there was no mapping for locator.
+	 * @return the previous value of Set<LocatorDeclarations> associated with
+	 * locator, or null if there was no mapping for locator.
 	 */
-	Set<BackwardReferences> remove(Locator locator) {
+	Set<LocatorDeclarations> remove(Locator locator) {
 		return locatorIndex.remove(locator)
 	}
 
@@ -76,9 +79,7 @@ class LocatorIndex {
 				new Version(1, 0, 0, null, null, null))
 		module.addSerializer(LocatorIndex.class, new LocatorIndexSerializer())
 		module.addSerializer(Locator.class, new Locator.LocatorSerializer())
-		module.addSerializer(BackwardReferences.class, new BackwardReferences.BackwardReferencesSerializer())
-		module.addSerializer(ForwardReference.class, new ForwardReference.ForwardReferenceSerializer())
-		module.addSerializer(TestObjectEssence.class, new TestObjectEssence.TestObjectEssenceSerializer())
+		module.addSerializer(LocatorDeclarations.class, new LocatorDeclarations.LocatorDeclarationsSerializer())
 		module.addSerializer(TestObjectId.class, new TestObjectId.TestObjectIdSerializer())
 		mapper.registerModule(module)
 		return mapper.writeValueAsString(this)
@@ -100,12 +101,12 @@ class LocatorIndex {
 			keys.each { locator ->
 				gen.writeStartObject()
 				gen.writeStringField("Locator", locator.getValue())
-				Set<BackwardReferences> backwardReferencesSet = locatorIndex.get(locator)
-				gen.writeNumberField("Number of TestObjects containing this Locator", backwardReferencesSet.size())
+				Set<LocatorDeclarations> declarations = locatorIndex.get(locator)
+				gen.writeNumberField("Number of TestObjects containing this Locator", declarations.size())
 				gen.writeFieldName("TestObjects")
 				gen.writeStartArray()
-				backwardReferencesSet.each { br ->
-					gen.writeObject(br)
+				declarations.each { ld ->
+					gen.writeObject(ld)
 				}
 				gen.writeEndArray()
 				gen.writeEndObject()

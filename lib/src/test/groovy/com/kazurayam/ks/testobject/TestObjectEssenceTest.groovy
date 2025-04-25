@@ -1,7 +1,6 @@
 package com.kazurayam.ks.testobject
 
 import com.kazurayam.ks.reporting.Shorthand
-import com.kazurayam.ks.testobject.combine.Locator
 import groovy.json.JsonOutput
 import org.junit.Before
 import org.junit.Test
