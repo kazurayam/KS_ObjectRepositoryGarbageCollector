@@ -20,9 +20,9 @@ class BackwardReferencesTest {
     private static Path scriptsDir = projectDir.resolve("Scripts")
 
     private static ObjectRepositoryGarbageCollector garbageCollector
-    private static BackwardReferencesMap backwardReferenceMap
+    private static BackwardReferencesMap backwardReferencesMap
 
-    private BackwardReferences backwardReference
+    private Set<BackwardReferences> backwardReferencesSet
 
     @BeforeClass
     static void beforeClass() {
@@ -32,24 +32,24 @@ class BackwardReferencesTest {
                 .includeObjectRepositoryFolder("main")
                 .includeObjectRepositoryFolder("misc")
                 .build()
-        backwardReferenceMap = garbageCollector.createBackwardReferencesMap()
+        backwardReferencesMap = garbageCollector.createBackwardReferencesMap()
     }
 
     @Before
     void setup() {
-        TestObjectId testObjectId = new TestObjectId("main/Page_CURA Healthcare Service/a_Go to Homepage")
-        TestObjectEssence testObjectEssence = garbageCollector.getTestObjectEssence(testObjectId)
-        Set<ForwardReference> forwardReferences = backwardReferenceMap.get(testObjectId)
-        backwardReference = new BackwardReferences(testObjectEssence, forwardReferences)
+        TestObjectId testObjectId = new TestObjectId("main/Page_CURA Healthcare Service/a_Make Appointment")
+        backwardReferencesSet = backwardReferencesMap.get(testObjectId)
     }
 
     @Test
     void test_toJson() {
-        String json = backwardReference.toJson()
+        List<BackwardReferences> list = backwardReferencesSet as List
+        assert list.size() > 0
+        String json = list.get(0).toJson()
         Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
                 .fileName("test_toJson.json").build()
         sh.write(JsonOutput.prettyPrint(json))
         assertNotNull(json)
-        assertTrue(json.contains("a_Go to Homepage"))
+        assertTrue(json.contains("a_Make Appointment"))
     }
 }

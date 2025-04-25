@@ -11,13 +11,14 @@ import com.kazurayam.ks.testobject.TestObjectId
 
 /**
  * LocatorIndex is a key-values pair; the key is a Locator, the values is a set
- * of TestObjectEssense objects.
- * LocatorIndex makes it visible a single instance of Locator is repeatedly
- * specified in which Test Objects.
+ * of BackwardReference objects.
+ * LocatorIndex makes it visible how a single instance of Locator is repeatedly
+ * specified in which Test Objects, plus if each Test Object is referred to
+ * by which Test Case script.
  */
 class LocatorIndex {
 
-	private Map<Locator, Set<TestObjectEssence>> locatorIndex
+	private Map<Locator, Set<BackwardReferences>> locatorIndex
 
 	LocatorIndex() {
 		this.locatorIndex = new TreeMap<>()
@@ -27,35 +28,39 @@ class LocatorIndex {
 		return locatorIndex.keySet()
 	}
 
-	Iterator<Map.Entry<Locator, Set<TestObjectEssence>>> iterator() {
+	Iterator<Map.Entry<Locator, Set<BackwardReferences>>> iterator() {
 		return locatorIndex.entrySet().iterator()
 	}
 
-	Set<TestObjectEssence> get(Locator locator) {
+	Set<BackwardReferences> get(Locator locator) {
 		Objects.requireNonNull(locator)
 		return locatorIndex.get(locator)
 	}
 
-	void put(Locator locator, TestObjectEssence essence) {
+	void put(Locator locator, Set<BackwardReferences> backwardReferencesSet = null) {
 		Objects.requireNonNull(locator)
-		Objects.requireNonNull(essence)
 		if (!locatorIndex.containsKey(locator)) {
-			Set<TestObjectEssence> emptySet = new TreeSet<>()
+			Set<BackwardReferences> emptySet = new TreeSet<>()
 			locatorIndex.put(locator, emptySet)
 		}
-		Set<TestObjectEssence> set = locatorIndex.get(locator)
-		set.add(essence)
+		Set<BackwardReferences> set = locatorIndex.get(locator)
+		if (backwardReferencesSet != null) {
+			set.addAll(backwardReferencesSet)
+		}
 	}
 
 	/**
 	 * Removes the mapping for a locator from this LocatorIndex if it is present (optional operation).
 	 * @param locator
-	 * @return the previous value of Set<TestObjectEssence> associated with locator, or null if there was no mapping for locator.
+	 * @return the previous value of Set<BackwardReferences> associated with locator, or null if there was no mapping for locator.
 	 */
-	Set<TestObjectEssence> remove(Locator locator) {
+	Set<BackwardReferences> remove(Locator locator) {
 		return locatorIndex.remove(locator)
 	}
 
+	/**
+	 * @return number of Locators registered
+	 */
 	int size() {
 		return locatorIndex.size()
 	}
@@ -71,6 +76,8 @@ class LocatorIndex {
 				new Version(1, 0, 0, null, null, null))
 		module.addSerializer(LocatorIndex.class, new LocatorIndexSerializer())
 		module.addSerializer(Locator.class, new Locator.LocatorSerializer())
+		module.addSerializer(BackwardReferences.class, new BackwardReferences.BackwardReferencesSerializer())
+		module.addSerializer(ForwardReference.class, new ForwardReference.ForwardReferenceSerializer())
 		module.addSerializer(TestObjectEssence.class, new TestObjectEssence.TestObjectEssenceSerializer())
 		module.addSerializer(TestObjectId.class, new TestObjectId.TestObjectIdSerializer())
 		mapper.registerModule(module)
@@ -93,12 +100,12 @@ class LocatorIndex {
 			keys.each { locator ->
 				gen.writeStartObject()
 				gen.writeStringField("Locator", locator.getValue())
-				Set<TestObjectEssence> essences = locatorIndex.get(locator)
-				gen.writeNumberField("Number of duplicates", essences.size())
-				gen.writeFieldName("TestObjectEssences")
+				Set<BackwardReferences> backwardReferencesSet = locatorIndex.get(locator)
+				gen.writeNumberField("Number of TestObjects containing this Locator", backwardReferencesSet.size())
+				gen.writeFieldName("TestObjects")
 				gen.writeStartArray()
-				essences.each { essence ->
-					gen.writeObject(essence)
+				backwardReferencesSet.each { br ->
+					gen.writeObject(br)
 				}
 				gen.writeEndArray()
 				gen.writeEndObject()

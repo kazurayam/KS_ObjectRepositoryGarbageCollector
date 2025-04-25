@@ -12,7 +12,7 @@ import com.kazurayam.ks.testobject.TestObjectId
 
 class BackwardReferencesMap {
 
-	Map<TestObjectId, Set<ForwardReference>> backwardReferenceMap;
+	Map<TestObjectId, Set<BackwardReferences>> backwardReferenceMap;
 
 	BackwardReferencesMap() {
 		this.backwardReferenceMap = new TreeMap<>()
@@ -22,24 +22,24 @@ class BackwardReferencesMap {
 		return backwardReferenceMap.keySet()
 	}
 
-	Iterator<Map.Entry<TestObjectId, Set<ForwardReference>>> iterator() {
+	Iterator<Map.Entry<TestObjectId, Set<BackwardReferences>>> iterator() {
 		return backwardReferenceMap.entrySet().iterator()
 	}
 
-	Set<ForwardReference> get(TestObjectId testObjectId) {
+	Set<BackwardReferences> get(TestObjectId testObjectId) {
 		Objects.requireNonNull(testObjectId)
 		return backwardReferenceMap.get(testObjectId)
 	}
 
-	void put(TestObjectId testObjectId, ForwardReference forwardReference) {
+	void put(TestObjectId testObjectId, BackwardReferences backwardReferences) {
 		Objects.requireNonNull(testObjectId)
-		Objects.requireNonNull(forwardReference)
+		Objects.requireNonNull(backwardReferences)
 		if (!backwardReferenceMap.containsKey(testObjectId)) {
-			Set<ForwardReference> emptySet = new TreeSet<>()
+			Set<BackwardReferences> emptySet = new TreeSet<>()
 			backwardReferenceMap.put(testObjectId, emptySet)
 		}
-		Set<ForwardReference> set = backwardReferenceMap.get(testObjectId)
-		set.add(forwardReference)
+		Set<BackwardReferences> set = backwardReferenceMap.get(testObjectId)
+		set.add(backwardReferences)
 	}
 
 	int size() {
@@ -59,6 +59,7 @@ class BackwardReferencesMap {
 		module.addSerializer(TestCaseId.class, new TestCaseId.TestCaseIdSerializer())
 		module.addSerializer(TestObjectEssence.class, new TestObjectEssence.TestObjectEssenceSerializer())
 		module.addSerializer(TestObjectId.class, new TestObjectId.TestObjectIdSerializer())
+		module.addSerializer(BackwardReferences.class, new BackwardReferences.BackwardReferencesSerializer())
 		module.addSerializer(ForwardReference.class, new ForwardReference.ForwardReferenceSerializer())
 		mapper.registerModule(module)
 		return mapper.writeValueAsString(this)
@@ -84,12 +85,12 @@ class BackwardReferencesMap {
 				TestObjectId testObjectId = entry.key
 				gen.writeStringField("TestObjectId", testObjectId.getValue())
 				//
-				Set<ForwardReference> forwardReferences = entry.value
-				gen.writeNumberField("Number of references", forwardReferences.size())
-				gen.writeFieldName("ForwardReferences")
+				Set<BackwardReferences> backwardReferences = entry.value
+				gen.writeNumberField("Number of TestObjects", backwardReferences.size())
+				gen.writeFieldName("TestObjects")
 				gen.writeStartArray()
-				forwardReferences.each { fr ->
-					gen.writeObject(fr)
+				backwardReferences.each { br ->
+					gen.writeObject(br)
 				}
 				gen.writeEndArray()
 				//

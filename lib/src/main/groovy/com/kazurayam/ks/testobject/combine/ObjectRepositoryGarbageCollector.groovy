@@ -12,6 +12,7 @@ import com.kazurayam.ks.testcase.ScriptsDecorator
 import com.kazurayam.ks.testcase.TestCaseId
 import com.kazurayam.ks.testcase.TestCaseScriptDigester
 import com.kazurayam.ks.testobject.ObjectRepositoryDecorator
+import com.kazurayam.ks.testobject.RegexOptedTextMatcher
 import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kazurayam.ks.testobject.TestObjectId
 
@@ -113,7 +114,7 @@ class ObjectRepositoryGarbageCollector {
 	}
 
 
-	private List<TestCaseId> getTestCaseIdList(Path scriptsDir, List<Path> groovyFiles) {
+	private static List<TestCaseId> getTestCaseIdList(Path scriptsDir, List<Path> groovyFiles) {
 		List<TestCaseId> list = new ArrayList<>()
 		groovyFiles.forEach ({ groovyFile ->
 			TestCaseId id = TestCaseId.resolveTestCaseId(scriptsDir, groovyFile)
@@ -166,10 +167,15 @@ class ObjectRepositoryGarbageCollector {
 		BackwardReferencesMap backwardReferenceMap = new BackwardReferencesMap()
 		Set<TestObjectId> allTestObjectIds = db.getAllTestObjectIdsContained()
 		allTestObjectIds.each { testObjectId ->
+			BackwardReferences br = new BackwardReferences(testObjectId)
 			Set<ForwardReference> forwardReferences = db.findForwardReferencesTo(testObjectId)
-			forwardReferences.each { ForwardReference fr ->
-				backwardReferenceMap.put(testObjectId, fr)
+			if (forwardReferences != null) {
+				forwardReferences.each { fr ->
+					br.add(fr)
+				}
 			}
+
+			backwardReferenceMap.put(testObjectId, br)
 		}
 		return backwardReferenceMap
 	}
@@ -182,18 +188,41 @@ class ObjectRepositoryGarbageCollector {
 		return backwardReferencesMap.toJson()
 	}
 
-	/**
-	 * 
-	 */
-	LocatorIndex getLocatorIndex(String pattern = "", boolean isRegex = false) {
-		return ord.getLocatorIndex(pattern, isRegex)
+	Set<TestObjectId> findTestObjectsWithLocator(Locator locator) {
+		Set<TestObjectId> testObjectsWithTheLocator = new TreeSet<>()
+		ord.getTestObjectIdList().each { toi ->
+			TestObjectEssence toe = toi.toTestObjectEssence()
+			if (locator == toe.getLocator()) {
+				testObjectsWithTheLocator.add(toi)
+			}
+		}
+		return testObjectsWithTheLocator
 	}
 
 	/**
-	 * 
+	 * LocatorIndex is a list of "Locators", each of which associated with
+	 * the list of TestObjectEssence objects which have the same "Locator" string.
+	 *
+	 * You should pay attention to the locators that has 2 or more belonging TestObjectEssence objects;
+	 * as it means you have duplicating TestObjects with the same Locator.
 	 */
-	String jsonifyLocatorIndex(String pattern = "", boolean isRegex = false) {
-		return ord.jsonifyLocatorIndex(pattern, isRegex)
+	LocatorIndex getLocatorIndex() throws IOException {
+		LocatorIndex locatorIndex = new LocatorIndex()
+		List<TestObjectId> idList = ord.getTestObjectIdList()  // list of IDs of Test Object
+		idList.forEach { id ->
+			Locator locator = id.toTestObjectEssence().getLocator()
+			Set<BackwardReferences> brSet = backwardReferencesMap.get(id)
+			locatorIndex.put(locator, brSet)  // brSet might be null
+		}
+		return locatorIndex
+	}
+
+	/**
+	 * returns a JSON string representation of the LocatorIndex object that is returned by the "getLocatorIndex" call.
+	 */
+	String jsonifyLocatorIndex() throws IOException {
+		LocatorIndex locatorIndex = this.getLocatorIndex()
+		return locatorIndex.toJson()
 	}
 
 	/**

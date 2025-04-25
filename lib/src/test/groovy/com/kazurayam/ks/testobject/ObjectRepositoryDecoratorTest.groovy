@@ -137,34 +137,6 @@ public class ObjectRepositoryDecoratorTest {
 		sh.write(sb.toString())
 	}
 
-	//-----------------------------------------------------------------
-
-	@Test
-	void test_getLocatorIndex() {
-		LocatorIndex locatorIndex = instance.getLocatorIndex()
-		assertNotNull(locatorIndex)
-		assertTrue(locatorIndex.size() > 0)
-	}
-
-	@Test
-	void test_getLocatorIndex_with_pattern() {
-		LocatorIndex locatorIndex = instance.getLocatorIndex("td[31]", false)
-		println "locatorIndex.sie()=${locatorIndex.size()}"
-		assertNotNull(locatorIndex)
-		assertEquals(1, locatorIndex.size())
-	}
-	
-	@Test
-	void test_jsonifyLocatorIndex() {
-		String json = instance.jsonifyLocatorIndex()
-		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
-				.fileName("test_jsonifyLocatorIndex.json").build()
-		sh.write(JsonOutput.prettyPrint(json))
-		assertTrue(json.contains("a_Make Appointment"))
-	}
-	
-	
-
 	//-------------------------------------------------------------------------
 
 	@Test

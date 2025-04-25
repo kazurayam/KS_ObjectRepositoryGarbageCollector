@@ -178,36 +178,12 @@ class ObjectRepositoryDecorator {
 	}
 
 	//-------------------------------------------------------------------------
+	Set<Locator> getAllLocators() {
+		Set<Locator> locators = new TreeSet<>()
 
-	/**
-	 * LocatorIndex is a list of "Locators", each of which associated with 
-	 * the list of TestObjectEssence objects which have the same "Locator" string.
-	 * 
-	 * You should pay attention to the locators that has 2 or more belonging TestObjectEssence objects;
-	 * as it means you have duplicating TestObjects with the same Locator.
-	 */
-	LocatorIndex getLocatorIndex(String pattern = "", Boolean isRegex = false) throws IOException {
-		LocatorIndex locatorIndex = new LocatorIndex()
-		RegexOptedTextMatcher textMatcher = new RegexOptedTextMatcher(pattern, isRegex)
-		List<TestObjectId> idList = this.getTestObjectIdList("", false)  // list of IDs of Test Object
-		idList.forEach { id ->
-			Locator locator = id.toTestObjectEssence().getLocator()
-			if (textMatcher.found(locator.getValue())) {
-				TestObjectEssence essence = id.toTestObjectEssence()
-				locatorIndex.put(locator, essence)
-			}
-		}
-		return locatorIndex
 	}
 
-	/**
-	 * returns a JSON string representation of the LocatorIndex object that is returned by the "getLocatorIndex" call.
-	 */
-	String jsonifyLocatorIndex(String pattern = "", Boolean isRegex = false) throws IOException {
-		LocatorIndex locatorIndex = this.getLocatorIndex(pattern, isRegex)
-		return locatorIndex.toJson()
-	}
-
+	//
 
 	/**
 	 * 

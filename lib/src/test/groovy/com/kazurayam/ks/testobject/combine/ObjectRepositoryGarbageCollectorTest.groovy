@@ -19,9 +19,9 @@ import groovy.json.JsonOutput
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(JUnit4.class)
-public class ObjectRepositoryGarbageCollectorTest {
+class ObjectRepositoryGarbageCollectorTest {
 
-	private static Path projectDir = KatalonProjectDirectoryResolver .getProjectDir()
+	private static Path projectDir = KatalonProjectDirectoryResolver.getProjectDir()
 	private static Path objectRepositoryDir = projectDir.resolve("Object Repository")
 	private static Path scriptsDir = projectDir.resolve("Scripts")
 
@@ -53,10 +53,10 @@ public class ObjectRepositoryGarbageCollectorTest {
 		assertNotNull(brm)
 		TestObjectId toi = new TestObjectId("main/Page_CURA Healthcare Service/a_Go to Homepage")
 		assertTrue(brm.keySet().contains(toi))
-		Set<ForwardReference> refs = brm.get(toi)
-		List<ForwardReference> refList = refs as List
-		assertEquals(1, refList.size())
-		assertEquals(toi, refList.get(0).getTestObjectEssence().getTestObjectId())
+		Set<BackwardReferences> brSet = brm.get(toi)
+		List<BackwardReferences> brList = brSet as List
+		assertEquals(1, brList.size())
+		assertEquals(toi, brList.get(0).getTestObjectId())
 	}
 
 	@Test
@@ -67,12 +67,15 @@ public class ObjectRepositoryGarbageCollectorTest {
 		sh.write(JsonOutput.prettyPrint(json))
 	}
 
+	//-----------------------------------------------------------------
+
 	@Test
-	void test_getLocatorIndex_with_pattern() {
-		LocatorIndex locatorIndex =
-				garbageCollector.getLocatorIndex("td[31]", false)
+	void test_getLocatorIndex() {
+		LocatorIndex locatorIndex = garbageCollector.getLocatorIndex()
 		assertNotNull(locatorIndex)
-		assertEquals(1, locatorIndex.size())
+		assertTrue(locatorIndex.size() > 0)
+		//
+
 	}
 
 	@Test
@@ -80,14 +83,6 @@ public class ObjectRepositoryGarbageCollectorTest {
 		String json = garbageCollector.jsonifyLocatorIndex()
 		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
 				.fileName("test_jsonifyLocatorIndex.json").build()
-		sh.write(JsonOutput.prettyPrint(json))
-	}
-
-	@Test
-	void test_jsonifyLocatorIndex_with_pattern() {
-		String json = garbageCollector.jsonifyLocatorIndex("td[31]", false)
-		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
-				.fileName("test_jsonifyLocatorIndex_with_pattern.json").build()
 		sh.write(JsonOutput.prettyPrint(json))
 	}
 
@@ -119,4 +114,16 @@ public class ObjectRepositoryGarbageCollectorTest {
 		sh.write(JsonOutput.prettyPrint(json))
 		assertTrue("json should contain `//a[@id='btn-make-appointment']`", json.contains("//a[@id='btn-make-appointment']"))
 	}
+
+	@Test
+	void test_findTestObjectsWithLocator() {
+		Locator locator = new Locator("//body")
+		Set<TestObjectId> found = garbageCollector.findTestObjectsWithLocator(locator)
+		assertNotNull(found)
+		assertEquals(1, found.size())
+		found.each { toi ->
+			println toi.toString()
+		}
+	}
+
 }

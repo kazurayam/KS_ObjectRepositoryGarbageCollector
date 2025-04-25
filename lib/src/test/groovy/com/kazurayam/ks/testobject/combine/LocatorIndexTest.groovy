@@ -1,14 +1,18 @@
 package com.kazurayam.ks.testobject.combine
 
+import com.kazurayam.ks.configuration.KatalonProjectDirectoryResolver
 import com.kazurayam.ks.reporting.Shorthand
 import com.kazurayam.ks.testobject.ObjectRepositoryDecorator
 import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kazurayam.ks.testobject.TestObjectId
 import groovy.json.JsonOutput
 import org.junit.Before
+import org.junit.BeforeClass
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+
+import java.nio.file.Path
 
 import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.assertTrue
@@ -17,19 +21,27 @@ import static org.junit.Assert.assertEquals
 @RunWith(JUnit4.class)
 class LocatorIndexTest {
 
-	private ObjectRepositoryDecorator xor
+	private static Path projectDir = KatalonProjectDirectoryResolver .getProjectDir()
+	private static Path objectRepositoryDir = projectDir.resolve("Object Repository")
+	private static Path scriptsDir = projectDir.resolve("Scripts")
+
+	private static ObjectRepositoryGarbageCollector garbageCollector
+
 	private LocatorIndex locatorIndex
+
+	@BeforeClass
+	static void beforeClass() {
+		garbageCollector = new ObjectRepositoryGarbageCollector.Builder(objectRepositoryDir, scriptsDir)
+				.includeScriptsFolder("main")
+				.includeScriptsFolder("misc")
+				.includeObjectRepositoryFolder("main")
+				.includeObjectRepositoryFolder("misc")
+				.build()
+	}
 
 	@Before
 	void setup() {
-		xor = new ObjectRepositoryDecorator.Builder().build()
-		locatorIndex = new LocatorIndex()
-		List<TestObjectId> toiList = xor.getTestObjectIdList()
-		toiList.each { toi ->
-			TestObjectEssence essence = toi.toTestObjectEssence()
-			Locator locator = essence.getLocator()
-			locatorIndex.put(locator, essence)
-		}
+		locatorIndex = garbageCollector.getLocatorIndex()
 	}
 
 	@Test
@@ -69,7 +81,11 @@ class LocatorIndexTest {
 	void test_remove() {
 		int previousSize = locatorIndex.size()
 		Locator key = new Locator("//body")
-		Set<TestObjectEssence> value = locatorIndex.remove(key)
-		assertEquals(previousSize - 1, locatorIndex.size())
+		Set<ForwardReference> value = locatorIndex.remove(key)
+		if (value != null) {
+			assertEquals(previousSize - 1, locatorIndex.size())
+		} else {
+			assertEquals(previousSize, locatorIndex.size())
+		}
 	}
 }

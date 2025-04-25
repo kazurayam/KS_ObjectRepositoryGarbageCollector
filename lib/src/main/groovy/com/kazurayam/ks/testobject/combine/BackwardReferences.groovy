@@ -9,36 +9,38 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kazurayam.ks.testobject.TestObjectId
 
-class BackwardReferences {
+class BackwardReferences implements Comparable<BackwardReferences> {
 
-    private TestObjectEssence testObjectEssence
+    private TestObjectId testObjectId
     private Set<ForwardReference> forwardReferences
 
-    BackwardReferences(TestObjectEssence testObjectEssence,
-                       Set<ForwardReference> forwardReferences) {
-        Objects.requireNonNull(testObjectEssence)
-        Objects.requireNonNull(forwardReferences)
-        this.testObjectEssence = testObjectEssence
-        this.forwardReferences = forwardReferences
+    BackwardReferences(TestObjectId testObjectId) {
+        Objects.requireNonNull(testObjectId)
+        this.testObjectId = testObjectId
+        this.forwardReferences = new TreeSet<>()
     }
 
     /**
      * Copy constructor
      */
     BackwardReferences(BackwardReferences that) {
-        this.testObjectEssence = new TestObjectEssence(that.getTestObjectEssence())
+        this.testObjectId = that.getTestObjectId()
         this.forwardReferences = new TreeSet<>()
         that.getForwardReferences().each { ForwardReference ref ->
             forwardReferences.add(new ForwardReference(ref))
         }
     }
 
-    TestObjectId getTestObjectId() {
-        return testObjectEssence.getTestObjectId()
+    void add(ForwardReference value) {
+        forwardReferences.add(value)
     }
 
-    TestObjectEssence getTestObjectEssence() {
-        return testObjectEssence
+    void addAll(Set<ForwardReference> values) {
+        forwardReferences.addAll(values)
+    }
+
+    TestObjectId getTestObjectId() {
+        return testObjectId
     }
 
     Set<ForwardReference> getForwardReferences() {
@@ -47,6 +49,65 @@ class BackwardReferences {
 
     int getNumberOfReferences() {
         return forwardReferences.size()
+    }
+
+    @Override
+    boolean equals(Object obj) {
+        if (!(obj instanceof BackwardReferences)) {
+            return false
+        }
+        BackwardReferences other = (BackwardReferences) obj
+        if (this.testObjectId != other.testObjectId) {
+            return false
+        }
+        if (this.getNumberOfReferences() != other.getNumberOfReferences()) {
+            return false
+        }
+        List<ForwardReference> theForwardReferences = this.getForwardReferences() as List
+        List<ForwardReference> otherForwardReferences = other.getForwardReferences() as List
+        for (int i = 0; i < theForwardReferences.size(); i++) {
+            ForwardReference theFR = theForwardReferences.get(i)
+            ForwardReference otherFR = otherForwardReferences.get(i)
+            if (theFR != otherFR) {
+                return false
+            }
+        }
+        return true
+    }
+
+    @Override
+    int hashCode() {
+        int hash = 7;
+        hash = 31 * hash + testObjectId.hashCode()
+        forwardReferences.each { fr ->
+            hash = 31 * hash + fr.hashCode()
+        }
+        return hash
+    }
+
+    @Override
+    int compareTo(BackwardReferences other) {
+        int v = this.testObjectId.compareTo(other.testObjectId)
+        if (v != 0) {
+            return v
+        } else {
+            v = this.forwardReferences.size() - other.forwardReferences.size()
+            if (v != 0) {
+                return v
+            } else {
+                List<ForwardReference> theFRList = this.forwardReferences as List
+                List<ForwardReference> otherFRList = other.forwardReferences as List
+                for (int i = 0; i < theFRList.size(); i++) {
+                    ForwardReference theFR = theFRList.get(i)
+                    ForwardReference otherFR = otherFRList.get(i)
+                    v = theFR.compareTo(otherFR)
+                    if (v != 0) {
+                        return v
+                    }
+                }
+                return 0
+            }
+        }
     }
 
     @Override
@@ -78,7 +139,7 @@ class BackwardReferences {
         void serialize(BackwardReferences br,
                        JsonGenerator gen, SerializerProvider serializer) {
             gen.writeStartObject()
-            gen.writeObjectField("TestObjectEssence", br.getTestObjectEssence())
+            gen.writeObjectField("TestObjectId", br.getTestObjectId())
             gen.writeNumberField("Number of references", br.getNumberOfReferences())
             gen.writeFieldName("ForwardReferences")
             gen.writeStartArray()
