@@ -1,9 +1,9 @@
 package com.kazurayam.ks.testobject
 
 import com.kazurayam.ks.configuration.KatalonProjectDirectoryResolver
+import com.kazurayam.ks.configuration.RunConfigurationConfigurator
 import com.kazurayam.ks.reporting.Shorthand
 import com.kazurayam.ks.testobject.combine.ForwardReference
-import com.kazurayam.ks.testobject.combine.ObjectRepositoryGarbageCollector
 import groovy.json.JsonOutput
 import org.junit.Before
 import org.junit.BeforeClass
@@ -21,6 +21,11 @@ import static org.junit.Assert.assertEquals
 class LocatorIndexTest {
 
 	private ObjectRepositoryDecorator ord
+
+	@BeforeClass
+	static void beforeClass() {
+		RunConfigurationConfigurator.configureProjectDir()
+	}
 
 	@Before
 	void setup() {
@@ -68,7 +73,7 @@ class LocatorIndexTest {
 	void test_remove() {
 		LocatorIndex locatorIndex = ord.getLocatorIndex()
 		int previousSize = locatorIndex.size()
-        Locator key = new Locator("//body")
+        Locator key = new Locator("//body", SelectorMethod.XPATH)
 		Set<ForwardReference> value = locatorIndex.remove(key)
 		if (value != null) {
 			assertEquals(previousSize - 1, locatorIndex.size())

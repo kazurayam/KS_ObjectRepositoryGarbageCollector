@@ -12,10 +12,14 @@ class LocatorDeclarations implements Comparable<LocatorDeclarations>{
     private Locator locator
     private Set<TestObjectId> declarations
 
-    LocatorDeclarations(Locator locator) {
+    LocatorDeclarations(Locator locator, Set<TestObjectId> declarations) {
         Objects.requireNonNull(locator)
         this.locator = locator
-        this.declarations = new TreeSet<>()
+        this.declarations = declarations
+    }
+
+    LocatorDeclarations(Locator locator) {
+        this(locator, new TreeSet<TestObjectId>())
     }
 
     Locator getLocator() {
@@ -76,7 +80,7 @@ class LocatorDeclarations implements Comparable<LocatorDeclarations>{
                 for (int i = 0; i < thisDeclarations.size(); i++) {
                     TestObjectId thisTOI = thisDeclarations.get(i)
                     TestObjectId thatTOI = thatDeclarations.get(i)
-                    v = thisTOI.compare(thatTOI)
+                    v = thisTOI <=> thatTOI
                     if (v != 0) {
                         return v
                     }

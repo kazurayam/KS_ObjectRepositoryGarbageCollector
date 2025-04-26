@@ -4,7 +4,6 @@ import static org.junit.Assert.*
 
 import com.kazurayam.ks.configuration.KatalonProjectDirectoryResolver
 import com.kazurayam.ks.reporting.Shorthand
-import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kazurayam.ks.testobject.TestObjectId
 import groovy.json.JsonOutput
 import org.junit.Before

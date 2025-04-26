@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.Version
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.kazurayam.ks.configuration.KatalonProjectDirectoryResolver
-import com.kazurayam.ks.testobject.TestObjectEssence.TestObjectEssenceSerializer
-import com.kazurayam.ks.testobject.combine.BackwardReferences
 import com.kms.katalon.core.testobject.ObjectRepository
+import com.kms.katalon.core.testobject.SelectorMethod as KsSelectorMethod
 import com.kms.katalon.core.testobject.TestObject
+
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -75,36 +75,6 @@ class ObjectRepositoryDecorator {
 		return result;
 	}
 
-	/**
-	 *
-	 * returns a List of TestObjectEssense object, which comprises with "TestObjectId", "Method" and "Locator".
-	 * You can select the target TestObjects to choose by the "pattern" and "isRegex" parameters
-	 */
-	List<TestObjectEssence> getTestObjectEssenceList(String pattern, Boolean isRegex = false) throws IOException {
-		List<TestObjectId> ids = accessor.getTestObjectIdList()
-		RegexOptedTextMatcher m = new RegexOptedTextMatcher(pattern, isRegex)
-		//
-		List<TestObjectEssence> result = new ArrayList<>()
-		ids.forEach { id ->
-			TestObject tObj = ObjectRepository.findTestObject(id.getValue())
-			Locator locator = id.toTestObjectEssence().getLocator()
-			if (tObj != null && m.found(id.getValue())) {
-				TestObjectEssence essence =
-						new TestObjectEssence(id, tObj.getSelectorMethod().toString(), locator)
-				result.add(essence)
-			}
-		}
-		return result
-	}
-
-	TestObjectEssence getTestObjectEssence(TestObjectId testObjectId) {
-		List<TestObjectEssence> essences = getTestObjectEssenceList(testObjectId.toString(), false)
-		if (essences != null && essences.size() > 0) {
-			return essences.get(0)
-		} else {
-			throw new IllegalStateException(testObjectId + " is not found in the TestObjectEssenceList")
-		}
-	}
 
 	/**
 	 * convert a pattern for Object Repository sub-folders to a pattern for TestObject files 
@@ -138,7 +108,6 @@ class ObjectRepositoryDecorator {
 		SimpleModule module = new SimpleModule("jsonifyTestObjectIdList",
 				new Version(1, 0, 0, null, null, null))
 		module.addSerializer(TestObjectId.class, new TestObjectId.TestObjectIdSerializer())
-		module.addSerializer(TestObjectEssence.class, new TestObjectEssenceSerializer())
 		module.addSerializer(Locator.class, new Locator.LocatorSerializer())
 		mapper.registerModule(module)
 		//
@@ -151,9 +120,8 @@ class ObjectRepositoryDecorator {
 	 */
 	Set<TestObjectId> getAllTestObjectIdSet() {
 		Set<TestObjectId> result = new TreeSet<>()   // ordered set
-		List<TestObjectEssence> allEssence = getTestObjectEssenceList("", false)
-		allEssence.forEach { essence ->
-			TestObjectId toi = essence.getTestObjectId()
+		List<TestObjectId> toiList = getTestObjectIdList("", false)
+		toiList.forEach { toi ->
 			if (toi != null && toi.getValue() != "") {
 				result.add(toi)
 			}
@@ -162,24 +130,35 @@ class ObjectRepositoryDecorator {
 	}
 
 
-	String jsonifyTestObjectEssenceList(String pattern, Boolean isRegex) throws IOException {
-		//
-		ObjectMapper mapper = new ObjectMapper()
-		SimpleModule module = new SimpleModule("jsonifyTestObjectEssenceList",
-				new Version(1, 0, 0, null, null, null))
-		module.addSerializer(TestObjectId.class, new TestObjectId.TestObjectIdSerializer())
-		module.addSerializer(TestObjectEssence.class, new TestObjectEssenceSerializer())
-		module.addSerializer(Locator.class, new Locator.LocatorSerializer())
-		mapper.registerModule(module)
-		//
-		List<TestObjectEssence> list = getTestObjectEssenceList(pattern, isRegex)
-		return mapper.writeValueAsString(list)
-	}
-
 	//-------------------------------------------------------------------------
 	Set<Locator> getAllLocators() {
 		Set<Locator> locators = new TreeSet<>()
+		Set<TestObjectId> toiSet = getAllTestObjectIdSet()
+		toiSet.each {toi ->
+			Locator locator = getLocator(toi)
+			locators.add(locator)
+		}
+		return locators
+	}
 
+	/**
+	 * Returns an instance of Locator that corresponds to the given TestObjectId.
+	 * This method depends on the Katalon API for
+	 * com.kms.katalon.core.testobject.ObjectRepository and
+	 * com.ksm.katalon.core.testobject.TestObject
+	 *
+	 * @param testObjectId
+	 * @return the Locator object that corresponds to the given TestObjectId
+	 */
+	static Locator getLocator(TestObjectId testObjectId) {
+		TestObject tObj = ObjectRepository.findTestObject(testObjectId.getValue())
+		if (tObj != null) {
+			KsSelectorMethod method = tObj.getSelectorMethod()
+			String locatorValue = tObj.getSelectorCollection().getAt(method)
+			return new Locator(locatorValue, SelectorMethod.valueOf(method.name()))
+		} else {
+			return Locator.NULL_OBJECT
+		}
 	}
 
 	//
@@ -195,8 +174,9 @@ class ObjectRepositoryDecorator {
 		LocatorIndex locatorIndex = new LocatorIndex()
 		List<TestObjectId> idList = this.getTestObjectIdList()  // list of IDs of Test Object
 		idList.forEach { id ->
-			Locator locator = id.toTestObjectEssence().getLocator()
-			Set<LocatorDeclarations> declarations = this.findTestObjectsWithLocator(locator)
+			Locator locator = getLocator(id)
+			Set<TestObjectId> testObjectIds = this.findTestObjectsWithLocator(locator)
+			LocatorDeclarations declarations = new LocatorDeclarations(locator, testObjectIds)
 			locatorIndex.put(locator, declarations)
 		}
 		return locatorIndex
@@ -205,8 +185,7 @@ class ObjectRepositoryDecorator {
 	Set<TestObjectId> findTestObjectsWithLocator(Locator locator) {
 		Set<TestObjectId> testObjectsWithTheLocator = new TreeSet<>()
 		this.getTestObjectIdList().each { toi ->
-			TestObjectEssence toe = toi.toTestObjectEssence()
-			if (locator == toe.getLocator()) {
+			if (locator == getLocator(toi)) {
 				testObjectsWithTheLocator.add(toi)
 			}
 		}

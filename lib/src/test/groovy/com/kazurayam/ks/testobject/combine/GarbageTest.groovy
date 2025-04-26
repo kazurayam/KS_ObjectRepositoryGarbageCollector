@@ -14,7 +14,7 @@ import com.kazurayam.ks.testobject.TestObjectId
 import groovy.json.JsonOutput
 
 @RunWith(JUnit4.class)
-public class GarbageTest {
+class GarbageTest {
 	
 	private Garbage garbage
 	
@@ -22,7 +22,7 @@ public class GarbageTest {
 	void setup() {
 		garbage = new Garbage()
 		ForwardReference reference = ForwardReferenceTest.createSampleInstance()
-		TestObjectId testObjectId = reference.getTestObjectEssence().getTestObjectId()
+		TestObjectId testObjectId = reference.getTestObjectId()
 		garbage.add(testObjectId)
 	}
 	

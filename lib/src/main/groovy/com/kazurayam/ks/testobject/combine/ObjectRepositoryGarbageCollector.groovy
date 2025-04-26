@@ -11,10 +11,7 @@ import com.kazurayam.ks.testcase.DigestedLine
 import com.kazurayam.ks.testcase.ScriptsDecorator
 import com.kazurayam.ks.testcase.TestCaseId
 import com.kazurayam.ks.testcase.TestCaseScriptDigester
-import com.kazurayam.ks.testobject.Locator
-import com.kazurayam.ks.testobject.LocatorIndex
 import com.kazurayam.ks.testobject.ObjectRepositoryDecorator
-import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kazurayam.ks.testobject.TestObjectId
 
 import java.nio.file.Files
@@ -82,10 +79,9 @@ class ObjectRepositoryGarbageCollector {
 				.includeFolder(this.includeObjectRepositoryFolder)
 				.build()
 
-		// scan the Object Repository directory to make a list of TestObjectEssences
-		List<TestObjectEssence> essenceList = ord.getTestObjectEssenceList("", false)
+		List<TestObjectId> testObjectIdList = ord.getTestObjectIdList("", false)
 		//
-		numberOfTestObjects = essenceList.size()
+		numberOfTestObjects = testObjectIdList.size()
 
 		// scan the Scripts directory to make a list of TestCaseIds
 		ScriptsDecorator scriptsDecorator =
@@ -102,11 +98,10 @@ class ObjectRepositoryGarbageCollector {
 		// If true, record the reference into the database
 		TestCaseScriptDigester scriptTraverser = new TestCaseScriptDigester(scriptsDir)
 		testCaseIdList.each { testCaseId ->
-			essenceList.each { essence ->
-				TestObjectId testObjectId = essence.getTestObjectId()
+			testObjectIdList.each { testObjectId ->
 				List<DigestedLine> digestedLines = scriptTraverser.digestTestCase(testCaseId, testObjectId.getValue(), false)
 				digestedLines.each { digestedLine ->
-					ForwardReference reference = new ForwardReference(testCaseId, digestedLine, essence)
+					ForwardReference reference = new ForwardReference(testCaseId, digestedLine, testObjectId)
 					db.add(reference)
 				}
 			}
@@ -155,10 +150,6 @@ class ObjectRepositoryGarbageCollector {
 
 	int getNumberOfTestObjects() {
 		return numberOfTestObjects
-	}
-
-	TestObjectEssence getTestObjectEssence(TestObjectId testObjectId) {
-		return ord.getTestObjectEssence(testObjectId)
 	}
 
 	/**
@@ -221,9 +212,6 @@ class ObjectRepositoryGarbageCollector {
 
 		module.addSerializer(TestCaseId.class,
 				new TestCaseId.TestCaseIdSerializer())
-
-		module.addSerializer(TestObjectEssence.class,
-				new TestObjectEssence.TestObjectEssenceSerializer())
 
 		module.addSerializer(TestObjectId.class,
 				new TestObjectId.TestObjectIdSerializer())

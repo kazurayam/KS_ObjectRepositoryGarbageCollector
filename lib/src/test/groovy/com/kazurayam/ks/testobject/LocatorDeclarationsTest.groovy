@@ -17,7 +17,7 @@ class LocatorDeclarationsTest {
 
     @Before
     void setup() {
-        Locator locator = new Locator("//body")
+        Locator locator = new Locator("//body", SelectorMethod.XPATH)
         locatorDeclarations = new LocatorDeclarations(locator)
         TestObjectId testObjectId = new TestObjectId("misc/dummy1")
         locatorDeclarations.add(testObjectId)

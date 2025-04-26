@@ -1,9 +1,11 @@
 package com.kazurayam.ks.testobject
 
+import com.kazurayam.ks.configuration.RunConfigurationConfigurator
 import com.kazurayam.ks.reporting.Shorthand
 import com.kazurayam.ks.configuration.KatalonProjectDirectoryResolver
 import groovy.json.JsonOutput
 import org.junit.Before
+import org.junit.BeforeClass
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -17,9 +19,14 @@ import static org.junit.Assert.*
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(JUnit4.class)
 
-public class ObjectRepositoryDecoratorTest {
+class ObjectRepositoryDecoratorTest {
 
 	private ObjectRepositoryDecorator instance
+
+	@BeforeClass
+	static void beforeClass() {
+		RunConfigurationConfigurator.configureProjectDir()
+	}
 
 	@Before
 	void setup() {
@@ -82,46 +89,6 @@ public class ObjectRepositoryDecoratorTest {
 	//-----------------------------------------------------------------
 
 	@Test
-	void test_getTestObjectEssenceList() {
-		String pattern = ""
-		Boolean isRegex = false
-		List<Map<String, String>> result = instance.getTestObjectEssenceList(pattern, isRegex)
-		assertTrue( result.size() > 0 )
-	}
-
-	@Test
-	void test_getTestObjectEssenceList_filterByRegex() {
-		String pattern = "button_(\\w+)"
-		Boolean isRegex = true
-		List<Map<String, String>> result = instance.getTestObjectEssenceList(pattern, isRegex)
-		assertTrue( result.size() > 0 )
-	}
-
-	@Test
-	void test_jsonifyTestObjectEssenceList() {
-		String pattern = ""
-		Boolean isRegex = false
-		String json = instance.jsonifyTestObjectEssenceList(pattern, isRegex)
-		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
-				.fileName("test_jsonifyTestObjectEssenceList.json").build()
-		sh.write(JsonOutput.prettyPrint(json))
-		assertTrue("json should contain 'a_Make Appointment'", json.contains("a_Make Appointment"))
-	}
-
-	@Test
-	void test_jsonifyTestObjectEssenceList_filterByRegex() {
-		String pattern = "button_(\\w+)"
-		Boolean isRegex = true
-		String json = instance.jsonifyTestObjectEssenceList(pattern, isRegex)
-		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
-				.fileName("test_jsonifyTestObjectEssenceList_filterByRegex.json").build()
-		sh.write(JsonOutput.prettyPrint(json))
-		assertTrue(json.contains("button_Login"))
-	}
-
-	//-----------------------------------------------------------------
-
-	@Test
 	void test_getAllTestObjectIdSet() {
 		Set<TestObjectId> allTOI = instance.getAllTestObjectIdSet()
 		StringBuilder sb = new StringBuilder()
@@ -163,7 +130,7 @@ public class ObjectRepositoryDecoratorTest {
 
 	@Test
 	void test_findTestObjectsWithLocator() {
-		Locator locator = new Locator("//body")
+		Locator locator = new Locator("//body", SelectorMethod.XPATH)
 		Set<TestObjectId> found = instance.findTestObjectsWithLocator(locator)
 		assertNotNull(found)
 		assertEquals(1, found.size())

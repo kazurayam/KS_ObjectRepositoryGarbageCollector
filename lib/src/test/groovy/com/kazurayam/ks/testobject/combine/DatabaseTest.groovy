@@ -14,7 +14,7 @@ import com.kazurayam.ks.testobject.TestObjectId
 import groovy.json.JsonOutput
 
 @RunWith(JUnit4.class)
-public class DatabaseTest {
+class DatabaseTest {
 
 	private Database db
 	private TestCaseId testCaseId
@@ -29,7 +29,7 @@ public class DatabaseTest {
 		db.add(reference)
 		//
 		assertEquals("main/TC1", reference.getTestCaseId().getValue())
-		testObjectId = reference.getTestObjectEssence().getTestObjectId()
+		testObjectId = reference.getTestObjectId()
 		assertEquals("Page_CURA Healthcare Service/a_Make Appointment",
 				testObjectId.getValue())
 	}

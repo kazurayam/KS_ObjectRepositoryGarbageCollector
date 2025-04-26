@@ -15,14 +15,13 @@ import org.junit.runners.MethodSorters;
 import com.kazurayam.ks.reporting.Shorthand
 import com.kazurayam.ks.testcase.DigestedLine
 import com.kazurayam.ks.testcase.TestCaseId
-import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kazurayam.ks.testobject.TestObjectId
 
 import groovy.json.JsonOutput
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(JUnit4.class)
-public class ForwardReferenceTest {
+class ForwardReferenceTest {
 
 	private ForwardReference fref
 
@@ -37,20 +36,16 @@ public class ForwardReferenceTest {
 		fref = createSampleInstance()
 	}
 
-	public static final ForwardReference createSampleInstance() {
+	static final ForwardReference createSampleInstance() {
 		String testCaseIdValue = "main/TC1"
 		String line = '''WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/a_Make Appointment')'''
-		String togValue = "Page_CURA Healthcare Service/a_Make Appointment"
-		String locValue = """//a[@id='btn-make-appointment']"""
+		String toiValue = "Page_CURA Healthcare Service/a_Make Appointment"
 		TestCaseId testCaseId = new TestCaseId(testCaseIdValue)
 		DigestedLine textSearchResult = new DigestedLine.Builder(line, 9)
-				.pattern(locValue, false)
+				.pattern(toiValue, false)
 				.build()
-		TestObjectEssence testObjectEssence = new TestObjectEssence(
-				new TestObjectId(togValue),
-				"BASIC",
-				new Locator(locValue))
-		return new ForwardReference(testCaseId, textSearchResult, testObjectEssence)
+		TestObjectId testObjectId = new TestObjectId(toiValue)
+		return new ForwardReference(testCaseId, textSearchResult, testObjectId)
 	}
 
 	@Test
@@ -65,10 +60,9 @@ public class ForwardReferenceTest {
 	}
 
 	@Test
-	void test_testObjectEssence() {
-		TestObjectEssence essence = fref.getTestObjectEssence()
-		assertEquals("Page_CURA Healthcare Service/a_Make Appointment", essence.getTestObjectId().getValue())
-		assertEquals("""//a[@id='btn-make-appointment']""", essence.getLocator().getValue())
+	void test_getTestObjectId() {
+		TestObjectId toi = fref.getTestObjectId()
+		assertEquals("Page_CURA Healthcare Service/a_Make Appointment", toi.getValue())
 	}
 
 	@Test

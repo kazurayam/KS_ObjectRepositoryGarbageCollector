@@ -6,8 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
-import com.kazurayam.ks.testobject.combine.BackwardReferences
-import com.kazurayam.ks.testobject.combine.ForwardReference
 
 /**
  * LocatorIndex is a key-values pair; the key is a Locator, the values is a set
@@ -18,35 +16,48 @@ import com.kazurayam.ks.testobject.combine.ForwardReference
  */
 class LocatorIndex {
 
-	private Map<Locator, Set<LocatorDeclarations>> locatorIndex
+	private Map<Locator, Set<LocatorDeclarations>> map
 
 	LocatorIndex() {
-		this.locatorIndex = new TreeMap<>()
+		this.map = new TreeMap<>()
 	}
 
 	Set<Locator> keySet() {
-		return locatorIndex.keySet()
+		return map.keySet()
 	}
 
 	Iterator<Map.Entry<Locator, Set<LocatorDeclarations>>> iterator() {
-		return locatorIndex.entrySet().iterator()
+		return map.entrySet().iterator()
 	}
 
 	Set<LocatorDeclarations> get(Locator locator) {
 		Objects.requireNonNull(locator)
-		return locatorIndex.get(locator)
+		return map.get(locator)
 	}
 
-	void put(Locator locator, Set<LocatorDeclarations> declarations) {
+	void put(Locator locator, LocatorDeclarations declarations) {
 		Objects.requireNonNull(locator)
 		Objects.requireNonNull(declarations)
-		if (!locatorIndex.containsKey(locator)) {
+		if (!map.containsKey(locator)) {
 			Set<LocatorDeclarations> emptySet = new TreeSet<>()
-			locatorIndex.put(locator, emptySet)
+			map.put(locator, emptySet)
 		}
-		Set<LocatorDeclarations> set = locatorIndex.get(locator)
+		Set<LocatorDeclarations> set = map.get(locator)
 		if (set != null) {
-			set.addAll(declarations)
+			set.add(declarations)
+		}
+	}
+
+	void put(Locator locator, Set<LocatorDeclarations> declarationsSet) {
+		Objects.requireNonNull(locator)
+		Objects.requireNonNull(declarationsSet)
+		if (!map.containsKey(locator)) {
+			Set<LocatorDeclarations> emptySet = new TreeSet<>()
+			map.put(locator, emptySet)
+		}
+		Set<LocatorDeclarations> set = map.get(locator)
+		if (set != null) {
+			set.addAll(declarationsSet)
 		}
 	}
 
@@ -58,14 +69,14 @@ class LocatorIndex {
 	 * locator, or null if there was no mapping for locator.
 	 */
 	Set<LocatorDeclarations> remove(Locator locator) {
-		return locatorIndex.remove(locator)
+		return map.remove(locator)
 	}
 
 	/**
 	 * @return number of Locators registered
 	 */
 	int size() {
-		return locatorIndex.size()
+		return map.size()
 	}
 
 	@Override

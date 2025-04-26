@@ -1,7 +1,6 @@
-package com.kazurayam.ks.testobject.combine
+package com.kazurayam.ks.testobject
 
 import com.kazurayam.ks.reporting.Shorthand
-import com.kazurayam.ks.testobject.Locator
 import groovy.json.JsonOutput
 import org.junit.Before
 import org.junit.Test
@@ -11,13 +10,13 @@ import org.junit.runners.JUnit4
 import static org.junit.Assert.assertEquals
 
 @RunWith(JUnit4.class)
-public class LocatorTest {
+class LocatorTest {
 
 	private Locator locator
 
 	@Before
-	public void setup() {
-		locator = new Locator("//a")
+	void setup() {
+		locator = new Locator("//a", SelectorMethod.XPATH)
 	}
 
 	@Test
@@ -31,6 +30,6 @@ public class LocatorTest {
 		Shorthand sh = new Shorthand .Builder().subDir(this.getClass().getName())
 				.fileName("test_toJson.json").build()
 		sh.write(json)
-		assertEquals('{\"Locator\":\"//a\"}', locator.toJson())
+		assertEquals('{\"Locator\":\"//a\",\"Method\":\"XPATH\"}', locator.toJson())
 	}
 }

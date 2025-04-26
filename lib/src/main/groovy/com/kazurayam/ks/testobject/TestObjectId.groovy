@@ -6,10 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
-import com.kazurayam.ks.configuration.RunConfigurationConfigurator
-import com.kms.katalon.core.testobject.ObjectRepository
-import com.kms.katalon.core.testobject.SelectorMethod
-import com.kms.katalon.core.testobject.TestObject
 
 /**
  * E.g, "Object Repository/main/Page_CURA Healthcare Service/a_Make Appointment"
@@ -23,22 +19,12 @@ class TestObjectId implements Comparable<TestObjectId>{
 		this.value = value
 	}
 
-	String getValue() {
-		return value
+	TestObjectId(TestObjectId that) {
+		this(that.getValue())
 	}
 
-	TestObjectEssence toTestObjectEssence() {
-		// configure the RunConfiguration instance to return appropriate value of the katalon project directory
-		RunConfigurationConfigurator.configureProjectDir()
-
-		// ObjectRepository.findTestObject() internally calls RunConfiguration.getProjectDir()
-		TestObject tObj = ObjectRepository.findTestObject(this.getValue())
-
-		assert tObj != null: "ObjectRepository.findTestObject('${this.getValue()}') returned null"
-		SelectorMethod selectorMethod = tObj.getSelectorMethod()
-        Locator locator = new Locator(tObj.getSelectorCollection().getAt(selectorMethod))
-		TestObjectEssence essence = new TestObjectEssence(this, selectorMethod.toString(), locator)
-		return essence
+	String getValue() {
+		return value
 	}
 
 	@Override

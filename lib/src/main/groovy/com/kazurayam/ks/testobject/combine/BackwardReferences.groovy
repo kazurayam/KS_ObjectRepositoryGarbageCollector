@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
-import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kazurayam.ks.testobject.TestObjectId
 
 class BackwardReferences implements Comparable<BackwardReferences> {
@@ -120,7 +119,6 @@ class BackwardReferences implements Comparable<BackwardReferences> {
         SimpleModule module = new SimpleModule("BackwardReferencesSerializer",
                 new Version(1, 0, 0, null, null, null))
         module.addSerializer(BackwardReferences.class, new BackwardReferencesSerializer())
-        module.addSerializer(TestObjectEssence.class, new TestObjectEssence.TestObjectEssenceSerializer())
         module.addSerializer(TestObjectId.class, new TestObjectId.TestObjectIdSerializer())
         module.addSerializer(ForwardReference.class, new ForwardReference.ForwardReferenceSerializer())
         mapper.registerModule(module)

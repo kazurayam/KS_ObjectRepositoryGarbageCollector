@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import com.kazurayam.ks.testcase.DigestedLine
 import com.kazurayam.ks.testcase.TestCaseId
-import com.kazurayam.ks.testobject.TestObjectEssence
 import com.kazurayam.ks.testobject.TestObjectId
 
 import java.util.stream.Collectors
@@ -76,8 +75,8 @@ public class Database {
 
 	Set<ForwardReference> findForwardReferencesTo(TestObjectId testObjectId) {
 		return db.stream()
-				.filter({ tctoRef ->
-					tctoRef.getTestObjectEssence().getTestObjectId() == testObjectId
+				.filter({ forwardReference ->
+					forwardReference.getTestObjectId() == testObjectId
 				})
 				.collect(Collectors.toSet())
 	}
@@ -88,8 +87,8 @@ public class Database {
 
 	Set<TestObjectId> getAllTestObjectIdsContained() {
 		return db.stream()
-				.map({ tctoRef ->
-					tctoRef.getTestObjectEssence().getTestObjectId()
+				.map({ forwardReference ->
+					forwardReference.getTestObjectId()
 				})
 				.collect(Collectors.toSet())
 	}
@@ -109,7 +108,6 @@ public class Database {
 		module.addSerializer(ForwardReference.class, new ForwardReference.ForwardReferenceSerializer())
 		module.addSerializer(TestCaseId.class, new TestCaseId.TestCaseIdSerializer())
 		module.addSerializer(DigestedLine.class, new DigestedLine.DigestedLineSerializer())
-		module.addSerializer(TestObjectEssence.class, new TestObjectEssence.TestObjectEssenceSerializer())
 		mapper.registerModule(module)
 		return mapper.writeValueAsString(this)
 	}

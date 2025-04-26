@@ -69,8 +69,6 @@ class ObjectRepositoryGarbageCollectorTest {
 		sh.write(JsonOutput.prettyPrint(json))
 	}
 
-
-
 	@Test
 	void test_getGarbage() {
 		Garbage garbage = garbageCollector.getGarbage()
@@ -97,7 +95,9 @@ class ObjectRepositoryGarbageCollectorTest {
 		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
 				.fileName("test_jsonifyDatabase.json").build()
 		sh.write(JsonOutput.prettyPrint(json))
-		assertTrue("json should contain `//a[@id='btn-make-appointment']`", json.contains("//a[@id='btn-make-appointment']"))
+		String expected = "main/Page_CURA Healthcare Service/a_Make Appointment"
+		assertTrue("json should contain `${expected}`",
+				json.contains(expected))
 	}
 
 }
