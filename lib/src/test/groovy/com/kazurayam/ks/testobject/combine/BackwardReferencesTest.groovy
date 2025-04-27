@@ -31,7 +31,7 @@ class BackwardReferencesTest {
                 .includeObjectRepositoryFolder("main")
                 .includeObjectRepositoryFolder("misc")
                 .build()
-        backwardReferencesMap = garbageCollector.createBackwardReferencesMap()
+        backwardReferencesMap = garbageCollector.getBackwardReferencesMap()
     }
 
     @Before

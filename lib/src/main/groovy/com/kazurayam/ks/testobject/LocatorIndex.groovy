@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer
 
 /**
  * LocatorIndex is a key-values pair; the key is a Locator, the values is a set
- * of BackwardReference objects.
+ * of TestObjectId objects.
  * LocatorIndex makes it visible how a single instance of Locator is repeatedly
  * specified in which Test Objects, plus if each Test Object is referred to
  * by which Test Case script.
@@ -104,7 +104,8 @@ class LocatorIndex {
 			super(t)
 		}
 		@Override
-		void serialize(LocatorIndex locatorIndex, JsonGenerator gen, SerializerProvider serializer) {
+		void serialize(LocatorIndex locatorIndex,
+					   JsonGenerator gen, SerializerProvider serializer) {
 			gen.writeStartObject()
 			gen.writeFieldName("LocatorIndex")
 			gen.writeStartArray()
@@ -113,7 +114,7 @@ class LocatorIndex {
 				gen.writeStartObject()
 				gen.writeStringField("Locator", locator.getValue())
 				Set<LocatorDeclarations> declarations = locatorIndex.get(locator)
-				gen.writeNumberField("Number of TestObjects containing this Locator", declarations.size())
+				gen.writeNumberField("Number of TestObjects that contain this Locator", declarations.size())
 				gen.writeFieldName("TestObjects")
 				gen.writeStartArray()
 				declarations.each { ld ->

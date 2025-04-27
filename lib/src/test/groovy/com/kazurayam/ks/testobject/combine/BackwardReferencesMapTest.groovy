@@ -39,7 +39,7 @@ class BackwardReferencesMapTest {
 
     @Before
     void setup() {
-        backwardReferenceMap = garbageCollector.createBackwardReferencesMap()
+        backwardReferenceMap = garbageCollector.getBackwardReferencesMap()
         assertNotNull(backwardReferenceMap)
     }
 

@@ -11,6 +11,7 @@ import com.kazurayam.ks.testcase.DigestedLine
 import com.kazurayam.ks.testcase.ScriptsDecorator
 import com.kazurayam.ks.testcase.TestCaseId
 import com.kazurayam.ks.testcase.TestCaseScriptDigester
+import com.kazurayam.ks.testobject.Locator
 import com.kazurayam.ks.testobject.ObjectRepositoryDecorator
 import com.kazurayam.ks.testobject.TestObjectId
 
@@ -58,7 +59,7 @@ class ObjectRepositoryGarbageCollector {
 		def recv = this.scan(this.objectRepositoryDir, this.scriptsDir)
 		this.db = recv[0]
 		this.ord = recv[1]
-		this.backwardReferencesMap = this.createBackwardReferencesMap()
+		this.backwardReferencesMap = this.getBackwardReferencesMap()
 		finishedAt = LocalDateTime.now()
 	}
 
@@ -67,7 +68,7 @@ class ObjectRepositoryGarbageCollector {
 	 * to create an instance of Database internally and fill it with information found
 	 * out of the directories.
 	 * You can retrieve the Database by calling "db()" method.
-	 * You can retrieve an Garbage Collection plan by calling "xref()" method, in which you can
+	 * You can retrieve an Garbage Collection plan by calling "getGarbage()" method, in which you can
 	 * find a list of "garbage" Test Objects which are not used by any of the Test Cases.
 	 */
 	private def scan(Path objectRepositoryDir, Path scriptsDir) {
@@ -155,7 +156,7 @@ class ObjectRepositoryGarbageCollector {
 	/**
 	 *
 	 */
-	BackwardReferencesMap createBackwardReferencesMap() {
+	BackwardReferencesMap getBackwardReferencesMap() {
 		BackwardReferencesMap backwardReferenceMap = new BackwardReferencesMap()
 		Set<TestObjectId> allTestObjectIds = db.getAllTestObjectIdsContained()
 		allTestObjectIds.each { testObjectId ->
@@ -176,7 +177,7 @@ class ObjectRepositoryGarbageCollector {
 	 *
 	 */
 	String jsonifyBackwardReferencesMap() {
-		BackwardReferencesMap backwardReferencesMap = this.createBackwardReferencesMap()
+		BackwardReferencesMap backwardReferencesMap = this.getBackwardReferencesMap()
 		return backwardReferencesMap.toJson()
 	}
 
@@ -219,6 +220,27 @@ class ObjectRepositoryGarbageCollector {
 		ObjectMapper mapper = new ObjectMapper()
 		mapper.registerModule(module)
 		return mapper.writeValueAsString( this )
+	}
+
+	/**
+	 *
+	 */
+	CombinedLocatorIndex getCombinedLocatorIndex() {
+		CombinedLocatorIndex clx = new CombinedLocatorIndex()
+		List<TestObjectId> idList = ord.getTestObjectIdList()
+		idList.each {toi ->
+			Locator locator = ord.getLocator(toi)
+			Set<TestObjectId> containers = ord.findTestObjectsWithLocator(locator)
+			CombinedLocatorDeclarations declarations = new CombinedLocatorDeclarations(locator)
+			containers.each {testObjectId ->
+				Set<BackwardReferences> backwardReferences = backwardReferencesMap.get(testObjectId)
+				backwardReferences.each { br ->
+					declarations.add(br)
+				}
+				clx.put(locator, declarations)
+			}
+		}
+		return clx
 	}
 
 	static class ObjectRepositoryGarbageCollectorSerializer extends StdSerializer<ObjectRepositoryGarbageCollector> {

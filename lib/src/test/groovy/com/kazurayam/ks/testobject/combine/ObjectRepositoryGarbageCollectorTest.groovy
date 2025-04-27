@@ -1,23 +1,20 @@
 package com.kazurayam.ks.testobject.combine
 
 import com.kazurayam.ks.configuration.KatalonProjectDirectoryResolver
-import com.kazurayam.ks.testobject.Locator
-import com.kazurayam.ks.testobject.LocatorIndex
-
-import static org.junit.Assert.*
-
-import java.nio.file.Path
-
+import com.kazurayam.ks.configuration.RunConfigurationConfigurator
+import com.kazurayam.ks.reporting.Shorthand
+import com.kazurayam.ks.testobject.TestObjectId
+import groovy.json.JsonOutput
 import org.junit.BeforeClass
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.junit.runners.MethodSorters
-import com.kazurayam.ks.testobject.TestObjectId
-import com.kazurayam.ks.reporting.Shorthand
 
-import groovy.json.JsonOutput
+import java.nio.file.Path
+
+import static org.junit.Assert.*
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(JUnit4.class)
@@ -31,6 +28,8 @@ class ObjectRepositoryGarbageCollectorTest {
 
 	@BeforeClass
 	static void beforeClass() {
+		RunConfigurationConfigurator.configureProjectDir()
+
 		garbageCollector = new ObjectRepositoryGarbageCollector.Builder(objectRepositoryDir, scriptsDir)
 				.includeScriptsFolder("main")
 				.includeScriptsFolder("misc")
@@ -50,8 +49,8 @@ class ObjectRepositoryGarbageCollectorTest {
 	}
 
 	@Test
-	void test_createBackwardReferencesMap() {
-		BackwardReferencesMap brm = garbageCollector.createBackwardReferencesMap()
+	void test_getBackwardReferencesMap() {
+		BackwardReferencesMap brm = garbageCollector.getBackwardReferencesMap()
 		assertNotNull(brm)
 		TestObjectId toi = new TestObjectId("main/Page_CURA Healthcare Service/a_Go to Homepage")
 		assertTrue(brm.keySet().contains(toi))

@@ -86,7 +86,7 @@ class BackwardReferences implements Comparable<BackwardReferences> {
 
     @Override
     int compareTo(BackwardReferences other) {
-        int v = this.testObjectId.compareTo(other.testObjectId)
+        int v = this.getTestObjectId().compareTo(other.getTestObjectId())
         if (v != 0) {
             return v
         } else {

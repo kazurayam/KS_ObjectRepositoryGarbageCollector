@@ -173,8 +173,8 @@ class ObjectRepositoryDecorator {
 	LocatorIndex getLocatorIndex() throws IOException {
 		LocatorIndex locatorIndex = new LocatorIndex()
 		List<TestObjectId> idList = this.getTestObjectIdList()  // list of IDs of Test Object
-		idList.forEach { id ->
-			Locator locator = getLocator(id)
+		idList.each { toi ->
+			Locator locator = getLocator(toi)
 			Set<TestObjectId> testObjectIds = this.findTestObjectsWithLocator(locator)
 			LocatorDeclarations declarations = new LocatorDeclarations(locator, testObjectIds)
 			locatorIndex.put(locator, declarations)

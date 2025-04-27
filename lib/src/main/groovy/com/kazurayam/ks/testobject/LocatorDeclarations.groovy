@@ -14,6 +14,7 @@ class LocatorDeclarations implements Comparable<LocatorDeclarations>{
 
     LocatorDeclarations(Locator locator, Set<TestObjectId> declarations) {
         Objects.requireNonNull(locator)
+        Objects.requireNonNull(declarations)
         this.locator = locator
         this.declarations = declarations
     }
@@ -30,6 +31,10 @@ class LocatorDeclarations implements Comparable<LocatorDeclarations>{
         return this.declarations
     }
 
+    /**
+     * copy constructor
+     * @param that
+     */
     LocatorDeclarations(LocatorDeclarations that) {
         this(that.getLocator())
         this.declarations = new TreeSet<>()
@@ -48,13 +53,20 @@ class LocatorDeclarations implements Comparable<LocatorDeclarations>{
         if (!obj instanceof LocatorDeclarations) {
             return false
         }
-        LocatorDeclarations other = (LocatorDeclarations)obj
-        if (this.getLocator() != other.getLocator()) {
+        LocatorDeclarations that = (LocatorDeclarations)obj
+        if (this.getLocator() != that.getLocator()) {
             return false
         }
-        // TODO:
-        //  Should I check the equality of this.getDeclarations() and other.getDeclarations()?
-        //  or not necessary? ... possibly not
+        if (this.getDeclarations().size() != that.getDeclarations().size()) {
+            return false
+        }
+        List<TestObjectId> thisList = this.getDeclarations() as List
+        List<TestObjectId> thatList = that.getDeclarations() as List
+        for (int i = 0; i < thisList.size(); i++) {
+            if (thisList.get(i) != thatList.get(i)) {
+                return false
+            }
+        }
         return true
     }
 
@@ -97,7 +109,7 @@ class LocatorDeclarations implements Comparable<LocatorDeclarations>{
 
     String toJson() {
         ObjectMapper mapper = new ObjectMapper()
-        SimpleModule module = new SimpleModule("LocatorDeclrationsSerializer",
+        SimpleModule module = new SimpleModule("LocatorDeclarationsSerializer",
                 new Version(1, 0, 0, null, null, null))
         module.addSerializer(LocatorDeclarations.class, new LocatorDeclarationsSerializer())
         module.addSerializer(TestObjectId.class, new TestObjectId.TestObjectIdSerializer())
