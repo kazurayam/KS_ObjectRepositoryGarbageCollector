@@ -113,12 +113,15 @@ class LocatorIndex {
 			keys.each { locator ->
 				gen.writeStartObject()
 				gen.writeObjectField("Locator", locator)
-				Set<LocatorDeclarations> declarations = locatorIndex.get(locator)
-				gen.writeNumberField("Number of TestObjects that contain this Locator", declarations.size())
+				Set<LocatorDeclarations> declarationsSet = locatorIndex.get(locator)
+				gen.writeNumberField("Number of container TestObjects", declarationsSet.size())
 				gen.writeFieldName("TestObjects")
 				gen.writeStartArray()
-				declarations.each { ld ->
-					gen.writeObject(ld)
+				declarationsSet.each { ld ->
+					Set<TestObjectId> declarations = ld.getDeclarations()
+					declarations.each { toi ->
+						gen.writeString(toi.getValue())
+					}
 				}
 				gen.writeEndArray()
 				gen.writeEndObject()

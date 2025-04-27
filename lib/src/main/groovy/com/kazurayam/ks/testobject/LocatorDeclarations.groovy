@@ -129,6 +129,7 @@ class LocatorDeclarations implements Comparable<LocatorDeclarations>{
                        JsonGenerator gen, SerializerProvider serializer) {
             gen.writeStartObject()
             gen.writeObjectField("Locator", ld.getLocator())
+            gen.writeNumberField("Number of container TestObjects", ld.getDeclarations().size())
             gen.writeFieldName("TestObjectIds")
             gen.writeStartArray()
             ld.getDeclarations().each { toi ->
