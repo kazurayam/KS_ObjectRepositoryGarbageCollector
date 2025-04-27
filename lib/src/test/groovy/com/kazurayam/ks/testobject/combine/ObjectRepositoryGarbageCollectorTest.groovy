@@ -50,7 +50,7 @@ class ObjectRepositoryGarbageCollectorTest {
 
 	@Test
 	void test_getBackwardReferencesMap() {
-		BackwardReferencesMap brm = garbageCollector.getBackwardReferencesMap()
+		BackwardReferencesDatabase brm = garbageCollector.getBackwardReferencesDatabase()
 		assertNotNull(brm)
 		TestObjectId toi = new TestObjectId("main/Page_CURA Healthcare Service/a_Go to Homepage")
 		assertTrue(brm.keySet().contains(toi))

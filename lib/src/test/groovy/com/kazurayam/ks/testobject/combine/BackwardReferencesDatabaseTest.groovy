@@ -17,7 +17,7 @@ import static org.junit.Assert.assertNotNull;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(JUnit4.class)
-class BackwardReferencesMapTest {
+class BackwardReferencesDatabaseTest {
 
     private static Path projectDir = KatalonProjectDirectoryResolver.getProjectDir()
     private static Path objectRepositoryDir = projectDir.resolve("Object Repository")
@@ -25,7 +25,7 @@ class BackwardReferencesMapTest {
 
     private static ObjectRepositoryGarbageCollector garbageCollector
 
-    private BackwardReferencesMap backwardReferenceMap
+    private BackwardReferencesDatabase backwardReferenceMap
 
     @BeforeClass
     static void beforeClass() {
@@ -39,7 +39,7 @@ class BackwardReferencesMapTest {
 
     @Before
     void setup() {
-        backwardReferenceMap = garbageCollector.getBackwardReferencesMap()
+        backwardReferenceMap = garbageCollector.getBackwardReferencesDatabase()
         assertNotNull(backwardReferenceMap)
     }
 

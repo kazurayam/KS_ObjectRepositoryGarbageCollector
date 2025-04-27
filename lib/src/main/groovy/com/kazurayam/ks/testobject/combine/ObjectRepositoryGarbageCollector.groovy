@@ -38,7 +38,7 @@ class ObjectRepositoryGarbageCollector {
 
 	private Database db
 	private ObjectRepositoryDecorator ord
-	private BackwardReferencesMap backwardReferencesMap
+	private BackwardReferencesDatabase backwardReferencesDatabase
 
 	private LocalDateTime startedAt
 	private LocalDateTime finishedAt
@@ -59,7 +59,7 @@ class ObjectRepositoryGarbageCollector {
 		def recv = this.scan(this.objectRepositoryDir, this.scriptsDir)
 		this.db = recv[0]
 		this.ord = recv[1]
-		this.backwardReferencesMap = this.getBackwardReferencesMap()
+		this.backwardReferencesDatabase = this.getBackwardReferencesDatabase()
 		finishedAt = LocalDateTime.now()
 	}
 
@@ -156,8 +156,8 @@ class ObjectRepositoryGarbageCollector {
 	/**
 	 *
 	 */
-	BackwardReferencesMap getBackwardReferencesMap() {
-		BackwardReferencesMap backwardReferenceMap = new BackwardReferencesMap()
+	BackwardReferencesDatabase getBackwardReferencesDatabase() {
+		BackwardReferencesDatabase brdb = new BackwardReferencesDatabase()
 		Set<TestObjectId> allTestObjectIds = db.getAllTestObjectIdsContained()
 		allTestObjectIds.each { testObjectId ->
 			BackwardReferences br = new BackwardReferences(testObjectId)
@@ -167,17 +167,16 @@ class ObjectRepositoryGarbageCollector {
 					br.add(fr)
 				}
 			}
-
-			backwardReferenceMap.put(testObjectId, br)
+			brdb.put(testObjectId, br)
 		}
-		return backwardReferenceMap
+		return brdb
 	}
 
 	/**
 	 *
 	 */
 	String jsonifyBackwardReferencesMap() {
-		BackwardReferencesMap backwardReferencesMap = this.getBackwardReferencesMap()
+		BackwardReferencesDatabase backwardReferencesMap = this.getBackwardReferencesDatabase()
 		return backwardReferencesMap.toJson()
 	}
 
@@ -233,7 +232,7 @@ class ObjectRepositoryGarbageCollector {
 			Set<TestObjectId> containers = ord.findTestObjectsWithLocator(locator)
 			CombinedLocatorDeclarations declarations = new CombinedLocatorDeclarations(locator)
 			containers.each {testObjectId ->
-				Set<BackwardReferences> backwardReferences = backwardReferencesMap.get(testObjectId)
+				Set<BackwardReferences> backwardReferences = backwardReferencesDatabase.get(testObjectId)
 				backwardReferences.each { br ->
 					declarations.add(br)
 				}

@@ -9,11 +9,11 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import com.kazurayam.ks.testcase.TestCaseId
 import com.kazurayam.ks.testobject.TestObjectId
 
-class BackwardReferencesMap {
+class BackwardReferencesDatabase {
 
 	Map<TestObjectId, Set<BackwardReferences>> backwardReferenceMap;
 
-	BackwardReferencesMap() {
+	BackwardReferencesDatabase() {
 		this.backwardReferenceMap = new TreeMap<>()
 	}
 
@@ -54,7 +54,7 @@ class BackwardReferencesMap {
 		ObjectMapper mapper = new ObjectMapper()
 		SimpleModule module = new SimpleModule("BackwardReferencesSerializer",
 				new Version(1, 0, 0, null, null, null))
-		module.addSerializer(BackwardReferencesMap.class, new BackwardReferenceMapSerializer())
+		module.addSerializer(BackwardReferencesDatabase.class, new BackwardReferenceDatabaseSerializer())
 		module.addSerializer(TestCaseId.class, new TestCaseId.TestCaseIdSerializer())
 		module.addSerializer(TestObjectId.class, new TestObjectId.TestObjectIdSerializer())
 		module.addSerializer(BackwardReferences.class, new BackwardReferences.BackwardReferencesSerializer())
@@ -63,16 +63,16 @@ class BackwardReferencesMap {
 		return mapper.writeValueAsString(this)
 	}
 
-	static class BackwardReferenceMapSerializer extends StdSerializer<BackwardReferencesMap> {
-		BackwardReferenceMapSerializer() {
+	static class BackwardReferenceDatabaseSerializer extends StdSerializer<BackwardReferencesDatabase> {
+		BackwardReferenceDatabaseSerializer() {
 			this(null)
 		}
 
-		BackwardReferenceMapSerializer(Class<BackwardReferencesMap> t) {
+		BackwardReferenceDatabaseSerializer(Class<BackwardReferencesDatabase> t) {
 			super(t)
 		}
 		@Override
-		void serialize(BackwardReferencesMap brm,
+		void serialize(BackwardReferencesDatabase brm,
 					   JsonGenerator gen, SerializerProvider serializer) {
 			gen.writeStartObject()
 			gen.writeFieldName("BackwardReferenceMap")

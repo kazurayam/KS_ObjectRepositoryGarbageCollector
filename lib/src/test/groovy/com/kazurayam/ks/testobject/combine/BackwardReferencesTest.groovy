@@ -19,7 +19,7 @@ class BackwardReferencesTest {
     private static Path scriptsDir = projectDir.resolve("Scripts")
 
     private static ObjectRepositoryGarbageCollector garbageCollector
-    private static BackwardReferencesMap backwardReferencesMap
+    private static BackwardReferencesDatabase backwardReferencesMap
 
     private Set<BackwardReferences> backwardReferencesSet
 
@@ -31,7 +31,7 @@ class BackwardReferencesTest {
                 .includeObjectRepositoryFolder("main")
                 .includeObjectRepositoryFolder("misc")
                 .build()
-        backwardReferencesMap = garbageCollector.getBackwardReferencesMap()
+        backwardReferencesMap = garbageCollector.getBackwardReferencesDatabase()
     }
 
     @Before
