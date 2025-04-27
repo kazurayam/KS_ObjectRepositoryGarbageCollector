@@ -99,4 +99,27 @@ class ObjectRepositoryGarbageCollectorTest {
 				json.contains(expected))
 	}
 
+	@Test
+	void test_jsonifyCombinedLocatorIndex() {
+		String json = garbageCollector.jsonifyCombinedLocatorIndex()
+		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
+				.fileName("test_jsonifyCombinedLocatorIndex.json").build()
+		sh.write(JsonOutput.prettyPrint(json))
+		String expected = "main/Page_CURA Healthcare Service/a_Make Appointment"
+		assertTrue("json should contain `${expected}`",
+				json.contains(expected))
+	}
+
+	@Test
+	void test_jsonifySuspiciousLocatorIndex() {
+		String json = garbageCollector.jsonifySuspiciousLocatorIndex()
+		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
+				.fileName("test_jsonifySuspiciousLocatorIndex.json").build()
+		sh.write(JsonOutput.prettyPrint(json))
+		String expected = "//body"
+		assertTrue("json should contain `${expected}`",
+				json.contains(expected))
+	}
+
+
 }

@@ -242,6 +242,14 @@ class ObjectRepositoryGarbageCollector {
 		return clx
 	}
 
+	String jsonifyCombinedLocatorIndex() {
+		return getCombinedLocatorIndex().toJson()
+	}
+
+	String jsonifySuspiciousLocatorIndex() {
+		return getCombinedLocatorIndex().suspect()
+	}
+
 	static class ObjectRepositoryGarbageCollectorSerializer extends StdSerializer<ObjectRepositoryGarbageCollector> {
 		ObjectRepositoryGarbageCollectorSerializer() {
 			this(null)
