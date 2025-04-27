@@ -104,7 +104,7 @@ class CombinedLocatorIndex {
             Set<Locator> keys = clx.keySet()
             keys.each {locator ->
                 gen.writeStartObject()
-                gen.writeStringField("Locator", locator.getValue())
+                gen.writeObjectField("Locator", locator)
                 Set<CombinedLocatorDeclarations> cldSet = clx.get(locator)
                 gen.writeNumberField("Number of TestObjects that contain this Locator", cldSet.size())
                 gen.writeFieldName("TestObjects")

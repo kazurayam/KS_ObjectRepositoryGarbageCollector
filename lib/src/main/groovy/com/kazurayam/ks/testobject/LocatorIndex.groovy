@@ -112,7 +112,7 @@ class LocatorIndex {
 			Set<Locator> keys = locatorIndex.keySet()
 			keys.each { locator ->
 				gen.writeStartObject()
-				gen.writeStringField("Locator", locator.getValue())
+				gen.writeObjectField("Locator", locator)
 				Set<LocatorDeclarations> declarations = locatorIndex.get(locator)
 				gen.writeNumberField("Number of TestObjects that contain this Locator", declarations.size())
 				gen.writeFieldName("TestObjects")
