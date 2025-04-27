@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
-import com.kazurayam.ks.testobject.Locator
 import com.kazurayam.ks.testobject.TestObjectId
 
 class CombinedLocatorDeclarations implements Comparable<CombinedLocatorDeclarations> {
@@ -39,6 +38,10 @@ class CombinedLocatorDeclarations implements Comparable<CombinedLocatorDeclarati
 
     Set<BackwardReferences> getDeclarations() {
         return this.declarations
+    }
+
+    int size() {
+        return getDeclarations().size()
     }
 
     void add(BackwardReferences declaration) {

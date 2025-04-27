@@ -55,6 +55,18 @@ class CombinedLocatorIndexTest {
     }
 
     @Test
+    void test_suspect() {
+        CombinedLocatorIndex clx = orgc.getCombinedLocatorIndex()
+        String json = clx.suspect()
+        //
+        Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
+                .fileName("test_suspect.json").build()
+        sh.write(JsonOutput.prettyPrint(json))
+        assertNotNull(json)
+        assertTrue(json.contains("//body"))
+    }
+
+    @Test
     void test_remove() {
         CombinedLocatorIndex clx = orgc.getCombinedLocatorIndex()
         int previousSize = clx.size()
