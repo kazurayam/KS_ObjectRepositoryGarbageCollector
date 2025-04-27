@@ -15,9 +15,9 @@ class CombinedLocatorDeclarationsTest {
 
     @Test
     void test_caseOfUnusedTestObject() {
-        Locator locator = new Locator("//body", SelectorMethod.XPATH)
-        cld = new CombinedLocatorDeclarations(locator)
+        //Locator locator = new Locator("//body", SelectorMethod.XPATH)
         TestObjectId testObjectId = new TestObjectId("misc/dummy1")
+        cld = new CombinedLocatorDeclarations(testObjectId)
         BackwardReferences br = new BackwardReferences(testObjectId)
         cld.add(br)
         //

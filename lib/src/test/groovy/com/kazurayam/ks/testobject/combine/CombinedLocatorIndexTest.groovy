@@ -59,7 +59,7 @@ class CombinedLocatorIndexTest {
         CombinedLocatorIndex clx = orgc.getCombinedLocatorIndex()
         int previousSize = clx.size()
         Locator key = new Locator("//body", SelectorMethod.XPATH)
-        Set<BackwardReferences> value = clx.remove(key)
+        CombinedLocatorDeclarations value = clx.remove(key)
         if (value != null) {
             assertEquals(previousSize - 1, clx.size())
         } else {

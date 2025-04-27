@@ -230,7 +230,7 @@ class ObjectRepositoryGarbageCollector {
 		idList.each {toi ->
 			Locator locator = ord.getLocator(toi)
 			Set<TestObjectId> containers = ord.findTestObjectsWithLocator(locator)
-			CombinedLocatorDeclarations declarations = new CombinedLocatorDeclarations(locator)
+			CombinedLocatorDeclarations declarations = new CombinedLocatorDeclarations(toi)
 			containers.each {testObjectId ->
 				Set<BackwardReferences> backwardReferences = backwardReferencesDatabase.get(testObjectId)
 				backwardReferences.each { br ->

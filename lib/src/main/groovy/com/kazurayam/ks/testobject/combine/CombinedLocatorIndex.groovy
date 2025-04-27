@@ -31,34 +31,20 @@ class CombinedLocatorIndex {
         return map.get(locator)
     }
 
-    void put(Locator locator, CombinedLocatorDeclarations cld) {
-        Objects.requireNonNull(locator)
-        // cld might be null
-        if (!map.containsKey(locator)) {
-            Set<CombinedLocatorDeclarations> emptySet = new TreeSet<>()
-            map.put(locator, emptySet)
-        }
-        Set<CombinedLocatorDeclarations> set = map.get(locator)
-        if (set != null) {
-            if (cld != null) {
-                set.add(cld)
-            }
-        }
-    }
-
     void put(Locator locator, Set<CombinedLocatorDeclarations> cldSet) {
         Objects.requireNonNull(locator)
-        // cldSet could be null
+        Objects.requireNonNull(cldSet)
+        map.put(locator, cldSet)
+    }
+
+    void put(Locator locator, CombinedLocatorDeclarations cld) {
+        Objects.requireNonNull(locator)
+        Objects.requireNonNull(cld)
         if (!map.containsKey(locator)) {
-            Set<CombinedLocatorDeclarations> emptySet = new TreeSet<>()
-            map.put(locator, emptySet)
+            map.put(locator, new TreeSet<CombinedLocatorDeclarations>())
         }
         Set<CombinedLocatorDeclarations> set = map.get(locator)
-        if (set != null) {
-            if (cldSet != null) {
-                set.addAll(cldSet)
-            }
-        }
+        set.add(cld)
     }
 
     Set<CombinedLocatorDeclarations> remove(Locator locator) {
@@ -106,13 +92,15 @@ class CombinedLocatorIndex {
                 gen.writeStartObject()
                 gen.writeObjectField("Locator", locator)
                 Set<CombinedLocatorDeclarations> cldSet = clx.get(locator)
-                gen.writeNumberField("Number of TestObjects that contain this Locator", cldSet.size())
-                gen.writeFieldName("TestObjects")
-                gen.writeStartArray()
-                cldSet.each { cld ->
-                    gen.writeObject(cld)
+                gen.writeNumberField("Number of container TestObjects", cldSet.size())
+                if (cldSet.size() > 0) {
+                    gen.writeFieldName("Locator Declarations")
+                    gen.writeStartArray()
+                    cldSet.each {cld ->
+                        gen.writeObject(cld)
+                    }
+                    gen.writeEndArray()
                 }
-                gen.writeEndArray()
                 gen.writeEndObject()
             }
             gen.writeEndArray()

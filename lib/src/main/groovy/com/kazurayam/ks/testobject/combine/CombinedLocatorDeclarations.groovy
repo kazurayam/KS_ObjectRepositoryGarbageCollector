@@ -11,30 +11,30 @@ import com.kazurayam.ks.testobject.TestObjectId
 
 class CombinedLocatorDeclarations implements Comparable<CombinedLocatorDeclarations> {
 
-    private Locator locator
+    private TestObjectId testObjectId
     private Set<BackwardReferences> declarations
 
-    CombinedLocatorDeclarations(Locator locator, Set<BackwardReferences> declarations) {
-        Objects.requireNonNull(locator)
+    CombinedLocatorDeclarations(TestObjectId testObjectId, Set<BackwardReferences> declarations) {
+        Objects.requireNonNull(testObjectId)
         Objects.requireNonNull(declarations)
-        this.locator = locator
+        this.testObjectId = testObjectId
         this.declarations = declarations
     }
 
-    CombinedLocatorDeclarations(Locator locator) {
-        this(locator, new TreeSet<BackwardReferences>())
+    CombinedLocatorDeclarations(TestObjectId testObjectId) {
+        this(testObjectId, new TreeSet<BackwardReferences>())
     }
 
     CombinedLocatorDeclarations(CombinedLocatorDeclarations that) {
-        this(that.locator)
+        this(that.testObjectId)
         this.declarations = new TreeSet<>()
         that.getDeclarations().each { backwardReference ->
             this.declarations.add(backwardReference)
         }
     }
 
-    Locator getLocator() {
-        return this.locator
+    TestObjectId getTestObjectId() {
+        return this.testObjectId
     }
 
     Set<BackwardReferences> getDeclarations() {
@@ -52,7 +52,7 @@ class CombinedLocatorDeclarations implements Comparable<CombinedLocatorDeclarati
             return false
         }
         CombinedLocatorDeclarations that = (CombinedLocatorDeclarations)obj
-        if (this.getLocator() != that.getLocator()) {
+        if (this.getTestObjectId() != that.getTestObjectId()) {
             return false
         }
         if (this.getDeclarations().size() != that.getDeclarations().size()) {
@@ -70,12 +70,12 @@ class CombinedLocatorDeclarations implements Comparable<CombinedLocatorDeclarati
 
     @Override
     int hashCode() {
-        return this.locator.hashCode()
+        return getTestObjectId().hashCode()
     }
 
     @Override
     int compareTo(CombinedLocatorDeclarations that) {
-        int v = this.locator.compareTo(that.locator)
+        int v = getTestObjectId().compareTo(that.getTestObjectId())
         if (v != 0) {
             return v
         } else {
@@ -123,13 +123,16 @@ class CombinedLocatorDeclarations implements Comparable<CombinedLocatorDeclarati
         void serialize(CombinedLocatorDeclarations cld,
                        JsonGenerator gen, SerializerProvider serializer) {
             gen.writeStartObject()
-            gen.writeObjectField("Locator", cld.getLocator())
-            gen.writeFieldName("TestObjectIds")
-            gen.writeStartArray()
-            cld.getDeclarations().each { br ->
-                gen.writeObject(br)
+            gen.writeStringField("TestObjectId", cld.getTestObjectId().getValue())
+            gen.writeNumberField("Number of BackwardReferences", cld.getDeclarations().size())
+            if (cld.getDeclarations().size() > 0) {
+                gen.writeFieldName("BackwardReferences")
+                gen.writeStartArray()
+                cld.getDeclarations().each { br ->
+                    gen.writeObject(br)
+                }
+                gen.writeEndArray()
             }
-            gen.writeEndArray()
             gen.writeEndObject()
         }
     }

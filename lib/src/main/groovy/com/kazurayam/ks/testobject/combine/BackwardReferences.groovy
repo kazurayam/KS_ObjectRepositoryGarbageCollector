@@ -138,7 +138,7 @@ class BackwardReferences implements Comparable<BackwardReferences> {
                        JsonGenerator gen, SerializerProvider serializer) {
             gen.writeStartObject()
             gen.writeObjectField("TestObjectId", br.getTestObjectId())
-            gen.writeNumberField("Number of references", br.getNumberOfReferences())
+            gen.writeNumberField("Number of ForwardReferences", br.getNumberOfReferences())
             gen.writeFieldName("ForwardReferences")
             gen.writeStartArray()
             br.getForwardReferences().each { fr ->
