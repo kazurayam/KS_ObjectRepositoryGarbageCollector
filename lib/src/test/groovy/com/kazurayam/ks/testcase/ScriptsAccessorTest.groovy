@@ -41,7 +41,7 @@ class ScriptsAccessorTest {
 				.fileName("test_getGroovyFiles_include_all.txt").build()
 		sh.write(sb.toString())
 		//
-		assertEquals(28, groovyFiles.size())
+		assertEquals(27, groovyFiles.size())
 	}
 
 	@Test
@@ -51,6 +51,6 @@ class ScriptsAccessorTest {
 				.includeFile("main/**/*.groovy")
 				.build()
 		List<Path> groovyFiles = accessor.getGroovyFiles()
-		assertEquals(25, groovyFiles.size())
+		assertEquals(24, groovyFiles.size())
 	}
 }

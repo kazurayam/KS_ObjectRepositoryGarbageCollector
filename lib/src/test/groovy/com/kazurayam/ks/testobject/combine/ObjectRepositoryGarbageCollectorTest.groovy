@@ -99,15 +99,28 @@ class ObjectRepositoryGarbageCollectorTest {
 				json.contains(expected))
 	}
 
+	/**
+	 * The test_jsonifyGarbage() reported that there are 5 unused Test Objects.
+	 * the CombinedLocatorIndex and the SuspiciousLocatorIndex must contain
+	 * these entities as well.
+	 */
+	private GARBAGE_LIST = [
+			"main/Page_CURA Healthcare Service/a_Foo",
+			"main/Page_CURA Healthcare Service/td_28",
+			"main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
+			"main/Page_CURA Healthcare Service/xtra/td_28",
+			"misc/dummy1"
+	]
+
 	@Test
 	void test_jsonifyCombinedLocatorIndex() {
 		String json = garbageCollector.jsonifyCombinedLocatorIndex()
 		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
 				.fileName("test_jsonifyCombinedLocatorIndex.json").build()
 		sh.write(JsonOutput.prettyPrint(json))
-		String expected = "main/Page_CURA Healthcare Service/a_Make Appointment"
-		assertTrue("json should contain `${expected}`",
-				json.contains(expected))
+		GARBAGE_LIST.each { testObjectId ->
+			assertTrue("json should contain `${testObjectId}`", json.contains(testObjectId))
+		}
 	}
 
 	@Test
@@ -116,10 +129,8 @@ class ObjectRepositoryGarbageCollectorTest {
 		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
 				.fileName("test_jsonifySuspiciousLocatorIndex.json").build()
 		sh.write(JsonOutput.prettyPrint(json))
-		String expected = "//body"
-		assertTrue("json should contain `${expected}`",
-				json.contains(expected))
+		GARBAGE_LIST.each { testObjectId ->
+			assertTrue("json should contain `${testObjectId}`", json.contains(testObjectId))
+		}
 	}
-
-
 }

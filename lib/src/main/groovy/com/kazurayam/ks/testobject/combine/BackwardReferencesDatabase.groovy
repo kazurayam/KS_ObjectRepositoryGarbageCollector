@@ -11,38 +11,39 @@ import com.kazurayam.ks.testobject.TestObjectId
 
 class BackwardReferencesDatabase {
 
-	Map<TestObjectId, Set<BackwardReferences>> backwardReferenceMap;
+	Map<TestObjectId, Set<BackwardReferences>> brDatabase;
 
 	BackwardReferencesDatabase() {
-		this.backwardReferenceMap = new TreeMap<>()
+		this.brDatabase = new TreeMap<>()
 	}
 
 	Set<TestObjectId> keySet() {
-		return backwardReferenceMap.keySet()
+		return brDatabase.keySet()
 	}
 
 	Iterator<Map.Entry<TestObjectId, Set<BackwardReferences>>> iterator() {
-		return backwardReferenceMap.entrySet().iterator()
+		return brDatabase.entrySet().iterator()
 	}
 
 	Set<BackwardReferences> get(TestObjectId testObjectId) {
 		Objects.requireNonNull(testObjectId)
-		return backwardReferenceMap.get(testObjectId)
+		return brDatabase.get(testObjectId)
 	}
 
 	void put(TestObjectId testObjectId, BackwardReferences backwardReferences) {
 		Objects.requireNonNull(testObjectId)
 		Objects.requireNonNull(backwardReferences)
-		if (!backwardReferenceMap.containsKey(testObjectId)) {
+		assert testObjectId == backwardReferences.getTestObjectId() : "${testObjectId} is not equal to ${backwardReferences.getTestObjectId}"
+		if (!brDatabase.containsKey(testObjectId)) {
 			Set<BackwardReferences> emptySet = new TreeSet<>()
-			backwardReferenceMap.put(testObjectId, emptySet)
+			brDatabase.put(testObjectId, emptySet)
 		}
-		Set<BackwardReferences> set = backwardReferenceMap.get(testObjectId)
+		Set<BackwardReferences> set = brDatabase.get(testObjectId)
 		set.add(backwardReferences)
 	}
 
 	int size() {
-		return backwardReferenceMap.size()
+		return brDatabase.size()
 	}
 
 	@Override

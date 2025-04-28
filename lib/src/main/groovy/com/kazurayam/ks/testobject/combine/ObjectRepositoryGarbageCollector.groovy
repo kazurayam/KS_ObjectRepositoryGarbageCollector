@@ -225,14 +225,19 @@ class ObjectRepositoryGarbageCollector {
 	 *
 	 */
 	CombinedLocatorIndex getCombinedLocatorIndex() {
-		CombinedLocatorIndex clx = new CombinedLocatorIndex()
-		List<TestObjectId> idList = ord.getTestObjectIdList()
-		idList.each {toi ->
+		Set<Locator> locatorSet = new TreeSet<>()
+		// create a set of all Locators found in the Object Repository directory
+		ord.getTestObjectIdList().each { toi ->
+			// find the Locator that this Test Object declares
 			Locator locator = ord.getLocator(toi)
+			locatorSet.add(locator)
+		}
+		CombinedLocatorIndex clx = new CombinedLocatorIndex()
+		locatorSet.each { locator ->
 			Set<TestObjectId> containers = ord.findTestObjectsWithLocator(locator)
-			CombinedLocatorDeclarations declarations = new CombinedLocatorDeclarations(toi)
-			containers.each {testObjectId ->
-				Set<BackwardReferences> backwardReferences = backwardReferencesDatabase.get(testObjectId)
+			containers.each { toi ->
+				CombinedLocatorDeclarations declarations = new CombinedLocatorDeclarations(toi)
+				Set<BackwardReferences> backwardReferences = backwardReferencesDatabase.get(toi)
 				backwardReferences.each { br ->
 					declarations.add(br)
 				}
