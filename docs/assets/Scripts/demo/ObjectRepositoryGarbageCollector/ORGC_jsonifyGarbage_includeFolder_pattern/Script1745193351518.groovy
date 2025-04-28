@@ -1,6 +1,6 @@
 import com.kazurayam.ks.reporting.Shorthand
-import com.kazurayam.ks.testobject.gc.Garbage
-import com.kazurayam.ks.testobject.gc.ObjectRepositoryGarbageCollector
+import com.kazurayam.ks.testobject.combine.Garbage
+import com.kazurayam.ks.testobject.combine.ObjectRepositoryGarbageCollector
 
 import groovy.json.JsonOutput
 import internal.GlobalVariable

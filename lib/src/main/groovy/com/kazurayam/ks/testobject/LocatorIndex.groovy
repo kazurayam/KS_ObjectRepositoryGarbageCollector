@@ -106,10 +106,13 @@ class LocatorIndex {
 		@Override
 		void serialize(LocatorIndex locatorIndex,
 					   JsonGenerator gen, SerializerProvider serializer) {
+			Set<Locator> keys = locatorIndex.keySet()
 			gen.writeStartObject()
 			gen.writeFieldName("LocatorIndex")
+			gen.writeStartObject()
+			gen.writeNumberField("Number of Locators", keys.size())
+			gen.writeFieldName("Locators")
 			gen.writeStartArray()
-			Set<Locator> keys = locatorIndex.keySet()
 			keys.each { locator ->
 				gen.writeStartObject()
 				gen.writeObjectField("Locator", locator)
@@ -127,6 +130,7 @@ class LocatorIndex {
 				gen.writeEndObject()
 			}
 			gen.writeEndArray()
+			gen.writeEndObject()
 			gen.writeEndObject()
 		}
 	}

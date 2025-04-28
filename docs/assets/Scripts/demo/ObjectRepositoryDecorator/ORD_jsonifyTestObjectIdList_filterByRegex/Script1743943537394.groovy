@@ -1,9 +1,8 @@
 import com.kazurayam.ks.reporting.Shorthand
 import com.kazurayam.ks.testobject.ObjectRepositoryDecorator
-import com.kms.katalon.core.testobject.ObjectRepository
 
-import internal.GlobalVariable
 import groovy.json.JsonOutput
+import internal.GlobalVariable
 
 ObjectRepositoryDecorator ord = new ObjectRepositoryDecorator.Builder()
 								.includeFolder("**/Page_CURA*")

@@ -3,7 +3,7 @@
     "includeObjectRepositoryFolder": [
         "**/Page_CURA*"
     ],
-    "Number of TestCases": 28,
+    "Number of TestCases": 27,
     "Number of TestObjects": 15,
     "Number of unused TestObjects": 4,
     "Unused TestObjects": [
@@ -12,5 +12,5 @@
         "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
         "main/Page_CURA Healthcare Service/xtra/td_28"
     ],
-    "Duration seconds": 1.277
+    "Duration seconds": 0.19
 }

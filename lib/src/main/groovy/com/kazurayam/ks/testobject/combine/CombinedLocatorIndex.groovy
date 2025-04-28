@@ -84,10 +84,13 @@ class CombinedLocatorIndex {
         @Override
         void serialize(CombinedLocatorIndex clx,
                        JsonGenerator gen, SerializerProvider provider) {
+            Set<Locator> keys = clx.keySet()
             gen.writeStartObject()
             gen.writeFieldName("CombinedLocatorIndex")
+            gen.writeStartObject()
+            gen.writeNumberField("Number of Locators", keys.size())
+            gen.writeFieldName("Locators")
             gen.writeStartArray()
-            Set<Locator> keys = clx.keySet()
             keys.each {locator ->
                 gen.writeStartObject()
                 gen.writeObjectField("Locator", locator)
@@ -104,6 +107,7 @@ class CombinedLocatorIndex {
                 gen.writeEndObject()
             }
             gen.writeEndArray()
+            gen.writeEndObject()
             gen.writeEndObject()
         }
     }
@@ -149,10 +153,19 @@ class CombinedLocatorIndex {
         @Override
         void serialize(CombinedLocatorIndex clx,
                        JsonGenerator gen, SerializerProvider provider) {
+            Set<Locator> keys = clx.keySet()
             gen.writeStartObject()
             gen.writeFieldName("SuspiciousLocatorIndex")
+            gen.writeStartObject()
+            int count = 0
+            keys.each {locator ->
+                if (isSuspicious(clx, locator)) {
+                    count += 1
+                }
+            }
+            gen.writeNumberField("Number of Suspicious Locators", count)
+            gen.writeFieldName("SuspiciousLocatorIndex")
             gen.writeStartArray()
-            Set<Locator> keys = clx.keySet()
             keys.each {locator ->
                 if (isSuspicious(clx, locator)) {
                     gen.writeStartObject()
@@ -171,6 +184,7 @@ class CombinedLocatorIndex {
                 }
             }
             gen.writeEndArray()
+            gen.writeEndObject()
             gen.writeEndObject()
         }
     }

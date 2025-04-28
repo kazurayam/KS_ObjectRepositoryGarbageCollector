@@ -171,10 +171,14 @@ class ObjectRepositoryDecorator {
 	 * as it means you have duplicating TestObjects with the same Locator.
 	 */
 	LocatorIndex getLocatorIndex() throws IOException {
-		LocatorIndex locatorIndex = new LocatorIndex()
+		Set<Locator> locatorSet = new TreeSet<>()
 		List<TestObjectId> idList = this.getTestObjectIdList()  // list of IDs of Test Object
 		idList.each { toi ->
 			Locator locator = getLocator(toi)
+			locatorSet.add(locator)
+		}
+		LocatorIndex locatorIndex = new LocatorIndex()
+		locatorSet.each { locator ->
 			Set<TestObjectId> testObjectIds = this.findTestObjectsWithLocator(locator)
 			LocatorDeclarations declarations = new LocatorDeclarations(locator, testObjectIds)
 			locatorIndex.put(locator, declarations)
