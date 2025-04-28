@@ -1,5 +1,5 @@
 plugins {
-    id "com.katalon.gradle-plugin" version "0.1.2"
+    id 'groovy'
 }
 
 repositories {
@@ -19,10 +19,15 @@ repositories {
     }
 }
 
-dependencies {
-    implementation('com.kazurayam:monk-directory-scanner:0.1.0')
-    implementation('com.kazurayam:ks-object-repository-garbage-collector:0.3.0')
+ext {
+    MDSVersion = '0.1.0'
+    ORGCVersion = '0.4.3'
 }
+
+//dependencies {
+//    implementation('com.kazurayam:monk-directory-scanner:0.1.0')
+//    implementation('com.kazurayam:ks-object-repository-garbage-collector:0.4.2')
+//}
 
 def userHome = System.getProperty('user.home')
 def rootProjectDir = rootProject.projectDir
@@ -43,22 +48,20 @@ tasks.register('importDrivers') {
         copy {
             into layout.projectDirectory.dir("Drivers")
             from("${rootProject.projectDir}/lib/build/libs") {
-                include "${rootProject.name}*.jar"
+                include "ks-object-repository-garbage-collector-${ORGCVersion}*.jar"
             }
         }
     }
     doLast {
         copy {
             into layout.projectDirectory.dir("Drivers")
-            from("$userHome/.m2/repository/com/kazurayam/monk-directory-scanner/0.1.0") {
+            from("$userHome/.m2/repository/com/kazurayam/monk-directory-scanner/${MDSVersion}") {
                 include '**/*.jar'
             }
         }
     }
     dependsOn 'cleanDrivers'
 }
-
-katalonCopyDependencies.dependsOn cleanDrivers
 
 tasks.register("cleanProject", Delete) {
     group = 'Custom'

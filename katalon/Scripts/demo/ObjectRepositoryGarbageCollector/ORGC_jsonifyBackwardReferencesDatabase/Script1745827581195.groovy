@@ -1,5 +1,5 @@
 import com.kazurayam.ks.reporting.Shorthand
-import com.kazurayam.ks.testobject.gc.ObjectRepositoryGarbageCollector
+import com.kazurayam.ks.testobject.combine.ObjectRepositoryGarbageCollector
 
 import groovy.json.JsonOutput
 import internal.GlobalVariable
@@ -13,7 +13,7 @@ ObjectRepositoryGarbageCollector gc =
 		.includeObjectRepositoryFolder("**/Page_CURA*")
 		.build()
 
-String json = gc.jsonifyBackwardReferences()
+String json = gc.jsonifyBackwardReferencesDatabase()
 
 Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
 					.fileName('garbage.json').build()

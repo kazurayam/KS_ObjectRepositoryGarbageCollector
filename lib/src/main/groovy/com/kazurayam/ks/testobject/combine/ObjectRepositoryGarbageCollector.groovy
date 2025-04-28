@@ -175,7 +175,7 @@ class ObjectRepositoryGarbageCollector {
 	/**
 	 *
 	 */
-	String jsonifyBackwardReferencesMap() {
+	String jsonifyBackwardReferencesDatabase() {
 		BackwardReferencesDatabase backwardReferencesMap = this.getBackwardReferencesDatabase()
 		return backwardReferencesMap.toJson()
 	}
@@ -246,6 +246,9 @@ class ObjectRepositoryGarbageCollector {
 		return getCombinedLocatorIndex().toJson()
 	}
 
+	/**
+	 * The most useful feature which this library provides to uses
+	 */
 	String jsonifySuspiciousLocatorIndex() {
 		return getCombinedLocatorIndex().suspect()
 	}

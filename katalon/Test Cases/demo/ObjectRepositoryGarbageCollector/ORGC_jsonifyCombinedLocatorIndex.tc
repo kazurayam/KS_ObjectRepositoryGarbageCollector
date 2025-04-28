@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>ORD_jsonifyLocatorIndex_filterByRegex</name>
+   <name>ORGC_jsonifyCombinedLocatorIndex</name>
    <tag></tag>
    <comment></comment>
    <recordOption>OTHER</recordOption>
-   <testCaseGuid>ffba59f9-0abd-4e67-b407-73138259ed31</testCaseGuid>
+   <testCaseGuid>08d370f2-496e-4b81-b399-af219c58e089</testCaseGuid>
 </TestCaseEntity>

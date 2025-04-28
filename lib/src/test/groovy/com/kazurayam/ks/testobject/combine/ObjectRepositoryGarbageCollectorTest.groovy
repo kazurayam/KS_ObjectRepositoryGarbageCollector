@@ -61,8 +61,8 @@ class ObjectRepositoryGarbageCollectorTest {
 	}
 
 	@Test
-	void test_jsonifyBackwardReferencesMap() {
-		String json = garbageCollector.jsonifyBackwardReferencesMap()
+	void test_jsonifyBackwardReferencesDatabase() {
+		String json = garbageCollector.jsonifyBackwardReferencesDatabase()
 		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
 				.fileName("test_jsonifyBackwardReferencesMap.json").build()
 		sh.write(JsonOutput.prettyPrint(json))
