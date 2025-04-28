@@ -145,7 +145,7 @@ This script produced this (trimmed):
 ...
 ```
 
-See the full code at [here]()
+See the full file at [here](https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector/blob/develop/docs/assets/testOutput/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyCombinedLocatorIndex/CombinedLocatorIndex.json)
 
 The CombinedLocatorIndex JSON tells me the following points:
 
