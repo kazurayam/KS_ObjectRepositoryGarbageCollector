@@ -20,10 +20,6 @@ ObjectRepositoryGarbageCollector gc =
 
 String json = gc.jsonifyCombinedLocatorIndex()
 
-Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-					.fileName('CombinedLocatorIndex.json').build()
-sh.write(JsonOutput.prettyPrint(json))
-
 Path projectDir = Paths.get(RunConfiguration.getProjectDir())
 Path classOutputDir = projectDir.resolve("build/tmp/testOutput/demo/ObjectRepositoryGarbageCollector")
 Path outDir = classOutputDir.resolve("ORGC_jsonifyCombinedLocatorIndex")
