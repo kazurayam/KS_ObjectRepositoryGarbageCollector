@@ -264,7 +264,7 @@ Let me explain about this JSON.
 
 ## How to install the library.
 
-1. Visit the [KS_ObjectRepositoryGargabeCollector, Releases](https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector/releases) page. Identify the latest version. Find a `KS_ObjectRepositoryGarbageCollector-x.x.x.jar` file attached. Download the jar file, save it into the `Drivers` folder of your Katalon project.
+1. Visit the [KS_ObjectRepositoryGargabeCollector, Releases](https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector/releases) page. Identify the latest version. Find a `ks-object-repository-garbage-collector-x.x.x.jar` file attached. Download the jar file, save it into the `Drivers` folder of your Katalon project.
 2. Visit the [MonkDirectoryScanner, Releases](https://github.com/kazurayam/MonkDirectoryScanner/releases/tag/0.1.0). Identify the latest version. Find a `MonkDirectoryScanner-x.x.x.jar` file attached. Download the jar file, save into the `Drivers` folder of your katalon project.
 3. Close and reopen the project. Confirm that the jars are recognized by Katalon Studio.
 4. Create a Test Case script, which should be similar to the above "GC" script.
