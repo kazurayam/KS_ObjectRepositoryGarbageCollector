@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.kazurayam"
-version = "0.4.4"
+version = "0.4.5-SNAPSHOT"
 
 ext {
     KATALON_STUDIO_INSTALLATION_DIRECTORY = resolveKatalonStudioInstallationDirectory()
@@ -52,8 +52,7 @@ dependencies {
     // will look into the Katalon Studio installation directory
     implementation fileTree(dir: "${KATALON_STUDIO_INSTALLATION_DIRECTORY}/Contents/Eclipse/configuration/resources/lib",
             include: [
-                    "groovy-${GroovyVersion}.jar",
-                    'selenium-server*.jar'
+                    "groovy-${GroovyVersion}.jar"
             ]
     )
     implementation fileTree(dir: "${KATALON_STUDIO_INSTALLATION_DIRECTORY}/Contents/Eclipse/plugins",
@@ -73,6 +72,7 @@ dependencies {
                     'org.apache.commons.lang*.jar',
                     'org.dom4j*.jar',
                     'org.eclipse.osgi*.jar',
+                    'org.seleniumhq.selenium.selenium-api*.jar',
                     'slf4j*.jar'
             ])
 
