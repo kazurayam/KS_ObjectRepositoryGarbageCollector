@@ -84,6 +84,13 @@ dependencies {
     testImplementation 'org.slf4j:slf4j-simple:1.7.25'
 }
 
+tasks.register('printGrVersions') {
+    doLast {
+        println "Gradle version: " + project.getGradle().getGradleVersion()
+        println "Groovy version: " + GroovySystem.getVersion()
+    }
+}
+
 tasks.register('printClasspath') {
     group = 'Custom'
     description = "show the entries included in the runtime classpath, sorted alphabetically"
