@@ -68,20 +68,6 @@
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
-      <guid>aac2d709-884f-4995-9a4b-ba727d98a8d9</guid>
-      <isReuseDriver>false</isReuseDriver>
-      <isRun>true</isRun>
-      <testCaseId>Test Cases/demo/ObjectRepositoryDecorator/ORD_jsonifyLocatorIndex_filterByString</testCaseId>
-      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
-   </testCaseLink>
-   <testCaseLink>
-      <guid>f0c694ab-79d8-42f2-bc73-eac9f3b72fd7</guid>
-      <isReuseDriver>false</isReuseDriver>
-      <isRun>true</isRun>
-      <testCaseId>Test Cases/demo/ObjectRepositoryDecorator/ORD_jsonifyLocatorIndex_filterByRegex</testCaseId>
-      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
-   </testCaseLink>
-   <testCaseLink>
       <guid>ad28ede3-8561-4843-bccf-746cc5bca2a5</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
@@ -113,7 +99,7 @@
       <guid>a4cad9f5-3b6e-445a-9af8-ae00892d59dd</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyBackwardReferences_includeFolder_pattern</testCaseId>
+      <testCaseId>Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyBackwardReferencesDatabase</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
@@ -142,6 +128,20 @@
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
       <testCaseId>Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage_includeFolder_single</testCaseId>
+      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
+   </testCaseLink>
+   <testCaseLink>
+      <guid>3921d365-a623-42d6-ba18-d31048c241cb</guid>
+      <isReuseDriver>false</isReuseDriver>
+      <isRun>true</isRun>
+      <testCaseId>Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyCombinedLocatorIndex</testCaseId>
+      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
+   </testCaseLink>
+   <testCaseLink>
+      <guid>c3242900-4c55-4041-a17c-19bc4342dc2b</guid>
+      <isReuseDriver>false</isReuseDriver>
+      <isRun>true</isRun>
+      <testCaseId>Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifySuspiciousLocatorIndex()</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
 </TestSuiteEntity>

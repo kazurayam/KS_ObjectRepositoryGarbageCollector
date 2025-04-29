@@ -1,12 +1,10 @@
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.Paths
-
-import com.kazurayam.ks.testobject.gc.Garbage
-import com.kazurayam.ks.testobject.gc.ObjectRepositoryGarbageCollector
-import com.kms.katalon.core.configuration.RunConfiguration
+import com.kazurayam.ks.reporting.Shorthand
+import com.kazurayam.ks.testobject.combine.Garbage
+import com.kazurayam.ks.testobject.combine.ObjectRepositoryGarbageCollector
 
 import groovy.json.JsonOutput
+import internal.GlobalVariable
+
 
 /**
  * Similar to the GC script but
@@ -20,13 +18,10 @@ ObjectRepositoryGarbageCollector gc =
 
 String json = gc.jsonifyGarbage()
 
-Path projectDir = Paths.get(RunConfiguration.getProjectDir())
-Path classOutputDir = projectDir.resolve("build/tmp/testOutput/demo/ObjectRepositoryGarbageCollector")
-Path outDir = classOutputDir.resolve("ORGC_jsonifyGarbage_includeFolder_multiple")
-Files.createDirectories(outDir)
-File outFile = outDir.resolve("garbage.json").toFile()
-
-outFile.text = JsonOutput.prettyPrint(json)
+Shorthand sh = new Shorthand.Builder()
+					.subDir(GlobalVariable.TESTCASE_ID)
+					.fileName('garbage.json').build()
+sh.write(JsonOutput.prettyPrint(json))
 
 Garbage garbage = gc.getGarbage()
 assert 4 == garbage.size() : "expected garbage.size()==4 but was ${garbage.size()}"

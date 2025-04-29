@@ -1,11 +1,8 @@
 import com.kazurayam.ks.reporting.Shorthand
+import com.kazurayam.ks.testobject.LocatorDeclarations
 import com.kazurayam.ks.testobject.LocatorIndex
 import com.kazurayam.ks.testobject.ObjectRepositoryDecorator
-import com.kazurayam.ks.testobject.TestObjectEssence
-import com.kms.katalon.core.cucumber.keyword.CucumberBuiltinKeywords as CucumberKW
-import com.kms.katalon.core.testobject.ObjectRepository
 
-import groovy.json.JsonOutput
 import internal.GlobalVariable
 
 ObjectRepositoryDecorator ord = new ObjectRepositoryDecorator.Builder()
@@ -17,8 +14,8 @@ LocatorIndex locatorIndex = ord.getLocatorIndex()
 StringBuilder sb = new StringBuilder()
 locatorIndex.iterator().each { entry ->
 	sb.append(entry.key.toString() + " : \n")
-	Set<TestObjectEssence> essences = entry.value
-	essences.each { essence -> sb.append("\t${essence}") }
+	Set<LocatorDeclarations> ldSet = entry.value
+	ldSet.each { locatorDeclarations -> sb.append("\t${locatorDeclarations}") }
 	sb.append("\n\n")
 }
 

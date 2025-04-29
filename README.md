@@ -3,23 +3,22 @@
 This project provides a Groovy class `com.kazurayam.ks.testobject.ObjectRepositoryGarbageCollector` class
 in a jar file. This class is useful to find out unused TestObjects in the "Object Repository".
 
-## A simple demo
+## Sample Usages
+
+### List of unused Test Objects, Garbage
 
 I made a Test Case script named "GC":
 
 ```
-import com.kazurayam.ks.testobject.gc.ObjectRepositoryGarbageCollector
+import com.kazurayam.ks.testobject.combine.ObjectRepositoryGarbageCollector
 
 import groovy.json.JsonOutput
 
 /**
- * A demonstration of ObjectRepositoryGarbageCollector.
+ * A demonstration of ObjectRepositoryGarbageCollector#jsonifyGarbage().
  *
- * This TestCase outputs a JSON file which contains a list of garbage Test Objects
- * in the "Object Repository" folder.
+ * This TestCase outputs a JSON file which contains a list of unused Test Objects.
  *
- * A "garbage" means a Test Object which is not used by any scripts
- * in the "Test Cases" folder.
  */
 
 // the Garbage Collector instance will scan 2 folders: "Object Repository" and "Test Cases"
@@ -72,6 +71,197 @@ It would take just a few minutes to scan through 3000 TestObjects in your large 
 
 This library compiles a report that tells where you have garbage to be cleaned, but does NOT remove any files. So this library is not really a garbage collector; it is just an informer.
 
+### List of *Locators* with containing Test Objects
+
+Another Test Case script generates a JSON titled "LocatorIndex"
+
+```
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
+
+import com.kazurayam.ks.reporting.Shorthand
+import com.kazurayam.ks.testobject.combine.ObjectRepositoryGarbageCollector
+import com.kms.katalon.core.configuration.RunConfiguration
+
+import groovy.json.JsonOutput
+import internal.GlobalVariable
+
+/**
+ * ObjectRepositoryGarbageCollector#jsonifyCombinedLocatorIndex() demonstration
+ */
+
+ObjectRepositoryGarbageCollector gc =
+	new ObjectRepositoryGarbageCollector.Builder()
+		.includeObjectRepositoryFolder("**/Page_CURA*")
+		.build()
+
+String json = gc.jsonifyCombinedLocatorIndex()
+
+Path projectDir = Paths.get(RunConfiguration.getProjectDir())
+Path classOutputDir = projectDir.resolve("build/tmp/testOutput/demo/ObjectRepositoryGarbageCollector")
+Path outDir = classOutputDir.resolve("ORGC_jsonifyCombinedLocatorIndex")
+Files.createDirectories(outDir)
+File outFile = outDir.resolve("garbage.json").toFile()
+
+outFile.text = JsonOutput.prettyPrint(json)
+
+```
+
+This script produced this (trimmed):
+
+```
+{
+    "CombinedLocatorIndex": {
+        "Number of Locators": 12,
+        "Locators": [
+            {
+                "Locator": {
+                    "Locator": "(.//*[normalize-space(text()) and normalize-space(.)='Sa'])[1]/following::td[31]",
+                    "Method": "XPATH"
+                },
+                "Number of container TestObjects": 2,
+                "Locator Declarations": [
+                    {
+                        "TestObjectId": "main/Page_CURA Healthcare Service/td_28",
+                        "Number of BackwardReferences": 0
+                    },
+                    {
+                        "TestObjectId": "main/Page_CURA Healthcare Service/xtra/td_28",
+                        "Number of BackwardReferences": 0
+                    }
+                ]
+            },
+            {
+                "Locator": {
+                    "Locator": "//a[@id='btn-make-appointment']",
+                    "Method": "XPATH"
+                },
+                "Number of container TestObjects": 1,
+...
+```
+
+See the full file at [here](https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector/blob/develop/docs/assets/testOutput/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyCombinedLocatorIndex/CombinedLocatorIndex.json)
+
+The CombinedLocatorIndex JSON tells me the following points:
+
+1. this project contains 12 "Locators" declared in the Object Repository.
+2. A Locator could be found in one or more Test Objects. If "Number of container TestObjects" has value 2 or more, it means that the Locator is duplicating. You may want to avoid duplication.
+3. A TestObject may be used by a Test Case; Or, it may be used by none. If "Number of BackwardReferences" of a TestObject is 0, it means the TestObject is unused. You may want to remove the unused TestObject.
+
+### Concise list of *Suspicious Locators*
+
+Final Test Case script generates a JSON titled "Suspicious Locator Index" which would be most useful.
+
+```
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
+
+import com.kazurayam.ks.testobject.combine.ObjectRepositoryGarbageCollector
+import com.kms.katalon.core.configuration.RunConfiguration
+
+import groovy.json.JsonOutput
+
+/**
+ * ObjectRepositoryGarbageCollector#jsonifySuspiciousLocatorIndex() demonstration
+ */
+
+ObjectRepositoryGarbageCollector gc =
+	new ObjectRepositoryGarbageCollector.Builder()
+		.includeObjectRepositoryFolder("**/Page_CURA*")
+		.build()
+
+String json = gc.jsonifySuspiciousLocatorIndex()
+
+Path projectDir = Paths.get(RunConfiguration.getProjectDir())
+Path classOutputDir = projectDir.resolve("build/tmp/testOutput/demo/ObjectRepositoryGarbageCollector")
+Path outDir = classOutputDir.resolve("ORGC_jsonifySuspiciousLocatorIndex")
+Files.createDirectories(outDir)
+File outFile = outDir.resolve("garbage.json").toFile()
+
+outFile.text = JsonOutput.prettyPrint(json)
+```
+
+This script generated a JSON as follows:
+
+```
+{
+    "SuspiciousLocatorIndex": {
+        "Number of Suspicious Locators": 2,
+        "SuspiciousLocatorIndex": [
+            {
+                "Locator": {
+                    "Locator": "(.//*[normalize-space(text()) and normalize-space(.)='Sa'])[1]/following::td[31]",
+                    "Method": "XPATH"
+                },
+                "Number of container TestObjects": 2,
+                "Locator Declarations": [
+                    {
+                        "TestObjectId": "main/Page_CURA Healthcare Service/td_28",
+                        "Number of BackwardReferences": 0
+                    },
+                    {
+                        "TestObjectId": "main/Page_CURA Healthcare Service/xtra/td_28",
+                        "Number of BackwardReferences": 0
+                    }
+                ]
+            },
+            {
+                "Locator": {
+                    "Locator": "//section[@id='summary']/div/div/div[7]/p/a",
+                    "Method": "XPATH"
+                },
+                "Number of container TestObjects": 3,
+                "Locator Declarations": [
+                    {
+                        "TestObjectId": "main/Page_CURA Healthcare Service/a_Foo",
+                        "Number of BackwardReferences": 0
+                    },
+                    {
+                        "TestObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
+                        "Number of BackwardReferences": 1,
+                        "BackwardReferences": [
+                            {
+                                "TestObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
+                                "Number of ForwardReferences": 1,
+                                "ForwardReferences": [
+                                    {
+                                        "testCaseId": {
+                                            "value": "main/TC1"
+                                        },
+                                        "digestedLine": {
+                                            "line": "WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/a_Go to Homepage'))",
+                                            "lineNo": 36,
+                                            "pattern": "main/Page_CURA Healthcare Service/a_Go to Homepage",
+                                            "matchAt": 47,
+                                            "matchEnd": 97,
+                                            "matched": true,
+                                            "regex": false
+                                        },
+                                        "testObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "TestObjectId": "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
+                        "Number of BackwardReferences": 0
+                    }
+                ]
+            }
+        ]
+    }
+}
+```
+
+Let me explain about this JSON.
+
+1. A Locator is *suspicious* if it is declared by a Test Object which is unused (referred by none of Test Cases)
+2. The "SuspiciousLocatorIndex" JSON contains only suspicious Locators. It doesn't contain trustworthy Locators. Therefore the JSON file would be far smaller than the full list of Locators. 
+3. As you work on cleaning your Object Repository, the "SuspiciousLocatorIndex" will become smaller. When the index has got 0 entries, you can be sure you have finished.
+
 ## How to install the library.
 
 1. Visit the [KS_ObjectRepositoryGargabeCollector, Releases](https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector/releases) page. Identify the latest version. Find a `KS_ObjectRepositoryGarbageCollector-x.x.x.jar` file attached. Download the jar file, save it into the `Drivers` folder of your Katalon project.
@@ -89,14 +279,7 @@ This library should run on Katalon Studio Free, Katalon Studio Enterprise, and K
 
 ## More features?
 
-This library supports more:
-
-1. You can drill-down to the sub-folders of "Object Repository" to select targets from a smaller set of Test Objects. By this, you can get more concise/focused report.
-2. It can report all *Forward Reference*s from TestCase scripts to TestObjects.
-3. It can report all *Backward Reference*s, which is a list of TestObjects associated with list of ForwardReferences to each TestObject.
-4. It can report all *Locator*s (XPath, CSS Selector) associated with list of duplicating TestObjects that implement the same locator.
-
-See [the doc](https://kazurayam.github.io/KS_ObjectRepositoryGarbageCollector/) for more detail.
+I will write more comprehensive doc later.
 
 ## Disclaimer
 

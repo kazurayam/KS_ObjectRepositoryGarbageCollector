@@ -1,0 +1,38 @@
+=== Example 1: Scanning entire Object Repository, find unused Test Objects, print the result into the console
+
+
+Script: `Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage`
+
+```
+include::assets/Scripts/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage/Script1745193334768.groovy[]
+```
+
+Output:
+```
+include::assets/consoleOutput/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage/output.txt[]
+```
+
+1. The script will look into the entire `Object Repository` folder to check the contained TestObjects if used or not by any of TestCase scripts
+2. there are 28 Test Cases in the `Test Cases` folder
+3. there are 16 Test Objects in the `Object Repository` folder
+4. amongst 16, there are 5 unused Test Objects
+5. The script took approximately 1.5 seconds to finish.
+
+=== Patterns
+```
+new ObjectRepositoryGarbageCollector.Builder()
+    .includeObjectRepositoryFolder("**/*")
+    .build()
+```
+
+this statement could be shortened to:
+
+```
+new ObjectRepositoryGarbageCollector.Builder().build()
+```
+
+because `.includeObjectRepositoryFolder("&#42;&#42;/&#42;")` is assumed as default.
+
+The pattern `"&#42;&#42;/&#42;"` stands for all sub-folders under the `Object Repository` folder.
+
+The pattern language is derived from the https://ant.apache.org/[Apache Ant] build tool. Refer to the https://ant.apache.org/manual/dirtasks.html#patterns[Ant manual] for detail.

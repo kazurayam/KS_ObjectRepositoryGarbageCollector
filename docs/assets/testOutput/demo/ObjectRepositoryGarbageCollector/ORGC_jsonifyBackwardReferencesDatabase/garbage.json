@@ -1,0 +1,318 @@
+{
+    "BackwardReferenceMap": [
+        {
+            "TestObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
+            "Number of TestObjects": 1,
+            "TestObjects": [
+                {
+                    "TestObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
+                    "Number of ForwardReferences": 1,
+                    "ForwardReferences": [
+                        {
+                            "TestCaseId": "main/TC1",
+                            "DigestedLine": {
+                                "line": "WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/a_Go to Homepage'))",
+                                "lineNo": 36,
+                                "pattern": "main/Page_CURA Healthcare Service/a_Go to Homepage",
+                                "matchAt": 47,
+                                "matchEnd": 97,
+                                "matched": true,
+                                "regex": false
+                            },
+                            "TestObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "TestObjectId": "main/Page_CURA Healthcare Service/a_Make Appointment",
+            "Number of TestObjects": 1,
+            "TestObjects": [
+                {
+                    "TestObjectId": "main/Page_CURA Healthcare Service/a_Make Appointment",
+                    "Number of ForwardReferences": 2,
+                    "ForwardReferences": [
+                        {
+                            "TestCaseId": "main/TC0",
+                            "DigestedLine": {
+                                "line": "WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/a_Make Appointment'))",
+                                "lineNo": 12,
+                                "pattern": "main/Page_CURA Healthcare Service/a_Make Appointment",
+                                "matchAt": 47,
+                                "matchEnd": 99,
+                                "matched": true,
+                                "regex": false
+                            },
+                            "TestObjectId": "main/Page_CURA Healthcare Service/a_Make Appointment"
+                        },
+                        {
+                            "TestCaseId": "main/TC1",
+                            "DigestedLine": {
+                                "line": "WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/a_Make Appointment'))",
+                                "lineNo": 11,
+                                "pattern": "main/Page_CURA Healthcare Service/a_Make Appointment",
+                                "matchAt": 47,
+                                "matchEnd": 99,
+                                "matched": true,
+                                "regex": false
+                            },
+                            "TestObjectId": "main/Page_CURA Healthcare Service/a_Make Appointment"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "TestObjectId": "main/Page_CURA Healthcare Service/button_Book Appointment",
+            "Number of TestObjects": 1,
+            "TestObjects": [
+                {
+                    "TestObjectId": "main/Page_CURA Healthcare Service/button_Book Appointment",
+                    "Number of ForwardReferences": 2,
+                    "ForwardReferences": [
+                        {
+                            "TestCaseId": "main/TC1",
+                            "DigestedLine": {
+                                "line": "WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/button_Book Appointment'))",
+                                "lineNo": 34,
+                                "pattern": "main/Page_CURA Healthcare Service/button_Book Appointment",
+                                "matchAt": 47,
+                                "matchEnd": 104,
+                                "matched": true,
+                                "regex": false
+                            },
+                            "TestObjectId": "main/Page_CURA Healthcare Service/button_Book Appointment"
+                        },
+                        {
+                            "TestCaseId": "misc/studyRunConfiguration",
+                            "DigestedLine": {
+                                "line": "TestObject tObj = findTestObject('main/Page_CURA Healthcare Service/button_Book Appointment')",
+                                "lineNo": 14,
+                                "pattern": "main/Page_CURA Healthcare Service/button_Book Appointment",
+                                "matchAt": 35,
+                                "matchEnd": 92,
+                                "matched": true,
+                                "regex": false
+                            },
+                            "TestObjectId": "main/Page_CURA Healthcare Service/button_Book Appointment"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "TestObjectId": "main/Page_CURA Healthcare Service/button_Login",
+            "Number of TestObjects": 1,
+            "TestObjects": [
+                {
+                    "TestObjectId": "main/Page_CURA Healthcare Service/button_Login",
+                    "Number of ForwardReferences": 1,
+                    "ForwardReferences": [
+                        {
+                            "TestCaseId": "main/TC1",
+                            "DigestedLine": {
+                                "line": "WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/button_Login'))",
+                                "lineNo": 19,
+                                "pattern": "main/Page_CURA Healthcare Service/button_Login",
+                                "matchAt": 47,
+                                "matchEnd": 93,
+                                "matched": true,
+                                "regex": false
+                            },
+                            "TestObjectId": "main/Page_CURA Healthcare Service/button_Login"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "TestObjectId": "main/Page_CURA Healthcare Service/input_Apply for hospital readmission_hospit_63901f",
+            "Number of TestObjects": 1,
+            "TestObjects": [
+                {
+                    "TestObjectId": "main/Page_CURA Healthcare Service/input_Apply for hospital readmission_hospit_63901f",
+                    "Number of ForwardReferences": 1,
+                    "ForwardReferences": [
+                        {
+                            "TestCaseId": "main/TC1",
+                            "DigestedLine": {
+                                "line": "WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/input_Apply for hospital readmission_hospit_63901f'))",
+                                "lineNo": 24,
+                                "pattern": "main/Page_CURA Healthcare Service/input_Apply for hospital readmission_hospit_63901f",
+                                "matchAt": 47,
+                                "matchEnd": 131,
+                                "matched": true,
+                                "regex": false
+                            },
+                            "TestObjectId": "main/Page_CURA Healthcare Service/input_Apply for hospital readmission_hospit_63901f"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "TestObjectId": "main/Page_CURA Healthcare Service/input_Medicaid_programs",
+            "Number of TestObjects": 1,
+            "TestObjects": [
+                {
+                    "TestObjectId": "main/Page_CURA Healthcare Service/input_Medicaid_programs",
+                    "Number of ForwardReferences": 1,
+                    "ForwardReferences": [
+                        {
+                            "TestCaseId": "main/TC1",
+                            "DigestedLine": {
+                                "line": "WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/input_Medicaid_programs'))",
+                                "lineNo": 26,
+                                "pattern": "main/Page_CURA Healthcare Service/input_Medicaid_programs",
+                                "matchAt": 47,
+                                "matchEnd": 104,
+                                "matched": true,
+                                "regex": false
+                            },
+                            "TestObjectId": "main/Page_CURA Healthcare Service/input_Medicaid_programs"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "TestObjectId": "main/Page_CURA Healthcare Service/input_Password_password",
+            "Number of TestObjects": 1,
+            "TestObjects": [
+                {
+                    "TestObjectId": "main/Page_CURA Healthcare Service/input_Password_password",
+                    "Number of ForwardReferences": 1,
+                    "ForwardReferences": [
+                        {
+                            "TestCaseId": "main/TC1",
+                            "DigestedLine": {
+                                "line": "WebUI.setEncryptedText(findTestObject('Object Repository/main/Page_CURA Healthcare Service/input_Password_password'), 'g3/DOGG74jC3Flrr3yH+3D/yKbOqqUNM')",
+                                "lineNo": 17,
+                                "pattern": "main/Page_CURA Healthcare Service/input_Password_password",
+                                "matchAt": 58,
+                                "matchEnd": 115,
+                                "matched": true,
+                                "regex": false
+                            },
+                            "TestObjectId": "main/Page_CURA Healthcare Service/input_Password_password"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "TestObjectId": "main/Page_CURA Healthcare Service/input_Username_username",
+            "Number of TestObjects": 1,
+            "TestObjects": [
+                {
+                    "TestObjectId": "main/Page_CURA Healthcare Service/input_Username_username",
+                    "Number of ForwardReferences": 1,
+                    "ForwardReferences": [
+                        {
+                            "TestCaseId": "main/TC1",
+                            "DigestedLine": {
+                                "line": "WebUI.setText(findTestObject('Object Repository/main/Page_CURA Healthcare Service/input_Username_username'), 'John Doe')",
+                                "lineNo": 15,
+                                "pattern": "main/Page_CURA Healthcare Service/input_Username_username",
+                                "matchAt": 49,
+                                "matchEnd": 106,
+                                "matched": true,
+                                "regex": false
+                            },
+                            "TestObjectId": "main/Page_CURA Healthcare Service/input_Username_username"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "TestObjectId": "main/Page_CURA Healthcare Service/input_Visit Date",
+            "Number of TestObjects": 1,
+            "TestObjects": [
+                {
+                    "TestObjectId": "main/Page_CURA Healthcare Service/input_Visit Date",
+                    "Number of ForwardReferences": 2,
+                    "ForwardReferences": [
+                        {
+                            "TestCaseId": "main/TC1",
+                            "DigestedLine": {
+                                "line": "WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/input_Visit Date'))",
+                                "lineNo": 28,
+                                "pattern": "main/Page_CURA Healthcare Service/input_Visit Date",
+                                "matchAt": 47,
+                                "matchEnd": 97,
+                                "matched": true,
+                                "regex": false
+                            },
+                            "TestObjectId": "main/Page_CURA Healthcare Service/input_Visit Date"
+                        },
+                        {
+                            "TestCaseId": "main/TC1",
+                            "DigestedLine": {
+                                "line": "WebUI.setText(findTestObject('Object Repository/main/Page_CURA Healthcare Service/input_Visit Date'), \"20230325\")",
+                                "lineNo": 30,
+                                "pattern": "main/Page_CURA Healthcare Service/input_Visit Date",
+                                "matchAt": 49,
+                                "matchEnd": 99,
+                                "matched": true,
+                                "regex": false
+                            },
+                            "TestObjectId": "main/Page_CURA Healthcare Service/input_Visit Date"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "TestObjectId": "main/Page_CURA Healthcare Service/select_Tokyo CURA Healthcare Center        _5b4107",
+            "Number of TestObjects": 1,
+            "TestObjects": [
+                {
+                    "TestObjectId": "main/Page_CURA Healthcare Service/select_Tokyo CURA Healthcare Center        _5b4107",
+                    "Number of ForwardReferences": 1,
+                    "ForwardReferences": [
+                        {
+                            "TestCaseId": "main/TC1",
+                            "DigestedLine": {
+                                "line": "WebUI.selectOptionByValue(findTestObject('Object Repository/main/Page_CURA Healthcare Service/select_Tokyo CURA Healthcare Center        _5b4107'), ",
+                                "lineNo": 21,
+                                "pattern": "main/Page_CURA Healthcare Service/select_Tokyo CURA Healthcare Center        _5b4107",
+                                "matchAt": 61,
+                                "matchEnd": 145,
+                                "matched": true,
+                                "regex": false
+                            },
+                            "TestObjectId": "main/Page_CURA Healthcare Service/select_Tokyo CURA Healthcare Center        _5b4107"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "TestObjectId": "main/Page_CURA Healthcare Service/textarea_Comment_comment",
+            "Number of TestObjects": 1,
+            "TestObjects": [
+                {
+                    "TestObjectId": "main/Page_CURA Healthcare Service/textarea_Comment_comment",
+                    "Number of ForwardReferences": 1,
+                    "ForwardReferences": [
+                        {
+                            "TestCaseId": "main/TC1",
+                            "DigestedLine": {
+                                "line": "WebUI.setText(findTestObject('Object Repository/main/Page_CURA Healthcare Service/textarea_Comment_comment'), 'This is a comment')",
+                                "lineNo": 32,
+                                "pattern": "main/Page_CURA Healthcare Service/textarea_Comment_comment",
+                                "matchAt": 49,
+                                "matchEnd": 107,
+                                "matched": true,
+                                "regex": false
+                            },
+                            "TestObjectId": "main/Page_CURA Healthcare Service/textarea_Comment_comment"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

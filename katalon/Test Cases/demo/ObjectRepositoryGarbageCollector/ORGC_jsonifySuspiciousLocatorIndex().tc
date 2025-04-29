@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>ORGC_jsonifySuspiciousLocatorIndex()</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>f15c0e69-2b7f-441b-8a09-6f72454f06a8</testCaseGuid>
+</TestCaseEntity>

@@ -1,0 +1,191 @@
+package com.kazurayam.ks.testobject.combine
+
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.Version
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.databind.module.SimpleModule
+import com.fasterxml.jackson.databind.ser.std.StdSerializer
+import com.kazurayam.ks.testobject.Locator
+import com.kazurayam.ks.testobject.LocatorDeclarations
+import com.kazurayam.ks.testobject.TestObjectId
+
+class CombinedLocatorIndex {
+
+    private Map<Locator, Set<CombinedLocatorDeclarations>> map
+
+    CombinedLocatorIndex() {
+        this.map = new TreeMap<>()
+    }
+
+    Set<Locator> keySet() {
+        return map.keySet()
+    }
+
+    Iterator<Map.Entry<Locator, Set<CombinedLocatorDeclarations>>> iterator() {
+        return map.entrySet().iterator()
+    }
+
+    Set<CombinedLocatorDeclarations> get(Locator locator) {
+        Objects.requireNonNull(locator)
+        return map.get(locator)
+    }
+
+    void put(Locator locator, Set<CombinedLocatorDeclarations> cldSet) {
+        Objects.requireNonNull(locator)
+        Objects.requireNonNull(cldSet)
+        map.put(locator, cldSet)
+    }
+
+    void put(Locator locator, CombinedLocatorDeclarations cld) {
+        Objects.requireNonNull(locator)
+        Objects.requireNonNull(cld)
+        if (!map.containsKey(locator)) {
+            map.put(locator, new TreeSet<CombinedLocatorDeclarations>())
+        }
+        Set<CombinedLocatorDeclarations> set = map.get(locator)
+        set.add(cld)
+    }
+
+    Set<CombinedLocatorDeclarations> remove(Locator locator) {
+        return map.remove(locator)
+    }
+
+    int size() {
+        return map.size()
+    }
+
+    @Override
+    String toString() {
+        return this.toJson()
+    }
+
+    String toJson() {
+        ObjectMapper mapper = new ObjectMapper()
+        SimpleModule module = new SimpleModule("CombinedLocatorIndexSerializer",
+                new Version(1, 0, 0, null, null, null))
+        module.addSerializer(CombinedLocatorIndex.class, new CombinedLocatorIndexSerializer())
+        module.addSerializer(CombinedLocatorDeclarations.class, new CombinedLocatorDeclarations.CombinedLocatorDeclarationsSerializer())
+        module.addSerializer(Locator.class, new Locator.LocatorSerializer())
+        module.addSerializer(LocatorDeclarations.class, new LocatorDeclarations.LocatorDeclarationsSerializer())
+        module.addSerializer(TestObjectId.class, new TestObjectId.TestObjectIdSerializer())
+        module.addSerializer(BackwardReferences.class, new BackwardReferences.BackwardReferencesSerializer())
+        mapper.registerModule(module)
+        return mapper.writeValueAsString(this)
+    }
+
+    static class CombinedLocatorIndexSerializer extends StdSerializer<CombinedLocatorIndex> {
+        CombinedLocatorIndexSerializer() {
+            this(null)
+        }
+        CombinedLocatorIndexSerializer(Class<CombinedLocatorIndex> t) {
+            super(t)
+        }
+        @Override
+        void serialize(CombinedLocatorIndex clx,
+                       JsonGenerator gen, SerializerProvider provider) {
+            Set<Locator> keys = clx.keySet()
+            gen.writeStartObject()
+            gen.writeFieldName("CombinedLocatorIndex")
+            gen.writeStartObject()
+            gen.writeNumberField("Number of Locators", keys.size())
+            gen.writeFieldName("Locators")
+            gen.writeStartArray()
+            keys.each {locator ->
+                gen.writeStartObject()
+                gen.writeObjectField("Locator", locator)
+                Set<CombinedLocatorDeclarations> cldSet = clx.get(locator)
+                gen.writeNumberField("Number of container TestObjects", cldSet.size())
+                if (cldSet.size() > 0) {
+                    gen.writeFieldName("Locator Declarations")
+                    gen.writeStartArray()
+                    cldSet.each {cld ->
+                        gen.writeObject(cld)
+                    }
+                    gen.writeEndArray()
+                }
+                gen.writeEndObject()
+            }
+            gen.writeEndArray()
+            gen.writeEndObject()
+            gen.writeEndObject()
+        }
+    }
+
+
+
+    String suspect() {
+        ObjectMapper mapper = new ObjectMapper()
+        SimpleModule module = new SimpleModule("SuspiciousLocatorIndexSerializer",
+                new Version(1, 0, 0, null, null, null))
+        module.addSerializer(CombinedLocatorIndex.class, new SuspiciousLocatorIndexSerializer())
+        module.addSerializer(CombinedLocatorDeclarations.class, new CombinedLocatorDeclarations.CombinedLocatorDeclarationsSerializer())
+        module.addSerializer(Locator.class, new Locator.LocatorSerializer())
+        module.addSerializer(LocatorDeclarations.class, new LocatorDeclarations.LocatorDeclarationsSerializer())
+        module.addSerializer(TestObjectId.class, new TestObjectId.TestObjectIdSerializer())
+        module.addSerializer(BackwardReferences.class, new BackwardReferences.BackwardReferencesSerializer())
+        mapper.registerModule(module)
+        return mapper.writeValueAsString(this)
+    }
+
+    static class SuspiciousLocatorIndexSerializer extends StdSerializer<CombinedLocatorIndex> {
+        SuspiciousLocatorIndexSerializer() {
+            this(null)
+        }
+        SuspiciousLocatorIndexSerializer(Class<CombinedLocatorIndex> t) {
+            super(t)
+        }
+
+        static boolean isSuspicious(CombinedLocatorIndex clx, Locator locator) {
+            boolean suspicious = false
+            Set<CombinedLocatorDeclarations> cldSet = clx.get(locator)
+            if (cldSet.size() == 0) {
+                suspicious = true
+            }
+            cldSet.each {cld ->
+                if (cld.getDeclarations().size() == 0) {
+                    suspicious = true
+                }
+            }
+            return suspicious
+        }
+
+        @Override
+        void serialize(CombinedLocatorIndex clx,
+                       JsonGenerator gen, SerializerProvider provider) {
+            Set<Locator> keys = clx.keySet()
+            gen.writeStartObject()
+            gen.writeFieldName("SuspiciousLocatorIndex")
+            gen.writeStartObject()
+            int count = 0
+            keys.each {locator ->
+                if (isSuspicious(clx, locator)) {
+                    count += 1
+                }
+            }
+            gen.writeNumberField("Number of Suspicious Locators", count)
+            gen.writeFieldName("SuspiciousLocatorIndex")
+            gen.writeStartArray()
+            keys.each {locator ->
+                if (isSuspicious(clx, locator)) {
+                    gen.writeStartObject()
+                    gen.writeObjectField("Locator", locator)
+                    Set<CombinedLocatorDeclarations> cldSet = clx.get(locator)
+                    gen.writeNumberField("Number of container TestObjects", cldSet.size())
+                    if (cldSet.size() > 0) {
+                        gen.writeFieldName("Locator Declarations")
+                        gen.writeStartArray()
+                        cldSet.each { cld ->
+                            gen.writeObject(cld)
+                        }
+                        gen.writeEndArray()
+                    }
+                    gen.writeEndObject()
+                }
+            }
+            gen.writeEndArray()
+            gen.writeEndObject()
+            gen.writeEndObject()
+        }
+    }
+}

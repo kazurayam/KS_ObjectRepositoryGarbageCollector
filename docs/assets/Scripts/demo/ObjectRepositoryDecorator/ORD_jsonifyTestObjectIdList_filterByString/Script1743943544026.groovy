@@ -1,9 +1,8 @@
 import com.kazurayam.ks.reporting.Shorthand
 import com.kazurayam.ks.testobject.ObjectRepositoryDecorator
-import com.kms.katalon.core.testobject.ObjectRepository
 
-import internal.GlobalVariable
 import groovy.json.JsonOutput
+import internal.GlobalVariable
 
 // modify com.kms.katalon.core.testobject.ObjectRepository object on the fly
 ObjectRepositoryDecorator ord = new ObjectRepositoryDecorator.Builder()

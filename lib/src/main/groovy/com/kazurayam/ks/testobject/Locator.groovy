@@ -12,20 +12,24 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer
  */
 class Locator implements Comparable<Locator> {
 
-	public static Locator NULL_OBJECT = new Locator("")
+	public static Locator NULL_OBJECT = new Locator("", SelectorMethod.BASIC)
 
 	private String value = ""
+	private SelectorMethod method
 
-	Locator(String value) {
-		if (value != null) {
-			this.value = value
-		} else {
-			this.value = ""
-		}
+	Locator(String value, SelectorMethod method) {
+		Objects.requireNonNull(value)
+		Objects.requireNonNull(method)
+		this.value = value
+		this.method = method
 	}
 
 	String getValue() {
 		return value
+	}
+
+	SelectorMethod getSelectorMethod() {
+		return method
 	}
 
 	@Override
@@ -35,6 +39,7 @@ class Locator implements Comparable<Locator> {
 		}
 		Locator other = (Locator)obj
 		return this.value == other.value
+				&& this.method == other.method
 	}
 
 	@Override
@@ -44,12 +49,17 @@ class Locator implements Comparable<Locator> {
 
 	@Override
 	String toString() {
-		return value
+		return toJson()
 	}
 
 	@Override
 	int compareTo(Locator other) {
-		return this.value.compareTo(other.value)
+		int v = this.value <=> other.value
+		if (v != 0) {
+			return v
+		} else {
+			return this.selectorMethod <=> other.selectorMethod
+		}
 	}
 
 	String toJson() {
@@ -73,6 +83,7 @@ class Locator implements Comparable<Locator> {
 				JsonGenerator gen, SerializerProvider serializer) {
 			gen.writeStartObject()
 			gen.writeStringField("Locator", locator.getValue())
+			gen.writeStringField("Method", locator.getSelectorMethod().toString())
 			gen.writeEndObject()
 		}
 	}

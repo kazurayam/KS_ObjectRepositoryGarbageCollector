@@ -1,0 +1,18 @@
+=== Example 4: Scanning sub-folders selected by pattern, find unused Test Objects, print the result into a JSON file
+
+Script: `Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage_includeFolder_pattern`
+
+```
+include::assets/Scripts/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage_includeFolder_pattern/Script1745193351518.groovy[]
+```
+
+This script selects Test Objects in multiple sub-folders in the Object Repository selected by a pattern `"&#42;&#42;/Page_CURA&#42;"`. This pattern matches the following 2 folders:
+
+1. `Object Repository/main/Page_CURA Healthcare Service`
+2. `Object Repository/main/Page_CURA Healthcare Service/xtra`
+
+Output:
+```
+include::assets/testOutput/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage_includeFolder_pattern/garbage.json[]
+```
+

@@ -1,37 +1,37 @@
-(.//*[normalize-space(text()) and normalize-space(.)='Sa'])[1]/following::td[31] : 
-	{"TestObjectId":"main/Page_CURA Healthcare Service/td_28","Method":"XPATH","Locator":"(.//*[normalize-space(text()) and normalize-space(.)='Sa'])[1]/following::td[31]"}	{"TestObjectId":"main/Page_CURA Healthcare Service/xtra/td_28","Method":"XPATH","Locator":"(.//*[normalize-space(text()) and normalize-space(.)='Sa'])[1]/following::td[31]"}
+{"Locator":"(.//*[normalize-space(text()) and normalize-space(.)='Sa'])[1]/following::td[31]","Method":"XPATH"} : 
+	{"Locator":{"value":"(.//*[normalize-space(text()) and normalize-space(.)='Sa'])[1]/following::td[31]","selectorMethod":"XPATH"},"Number of container TestObjects":2,"TestObjectIds":["main/Page_CURA Healthcare Service/td_28","main/Page_CURA Healthcare Service/xtra/td_28"]}
 
-//a[@id='btn-make-appointment'] : 
-	{"TestObjectId":"main/Page_CURA Healthcare Service/a_Make Appointment","Method":"XPATH","Locator":"//a[@id='btn-make-appointment']"}
+{"Locator":"//a[@id='btn-make-appointment']","Method":"XPATH"} : 
+	{"Locator":{"value":"//a[@id='btn-make-appointment']","selectorMethod":"XPATH"},"Number of container TestObjects":1,"TestObjectIds":["main/Page_CURA Healthcare Service/a_Make Appointment"]}
 
-//button[@id='btn-book-appointment'] : 
-	{"TestObjectId":"main/Page_CURA Healthcare Service/button_Book Appointment","Method":"XPATH","Locator":"//button[@id='btn-book-appointment']"}
+{"Locator":"//button[@id='btn-book-appointment']","Method":"XPATH"} : 
+	{"Locator":{"value":"//button[@id='btn-book-appointment']","selectorMethod":"XPATH"},"Number of container TestObjects":1,"TestObjectIds":["main/Page_CURA Healthcare Service/button_Book Appointment"]}
 
-//button[@id='btn-login'] : 
-	{"TestObjectId":"main/Page_CURA Healthcare Service/button_Login","Method":"XPATH","Locator":"//button[@id='btn-login']"}
+{"Locator":"//button[@id='btn-login']","Method":"XPATH"} : 
+	{"Locator":{"value":"//button[@id='btn-login']","selectorMethod":"XPATH"},"Number of container TestObjects":1,"TestObjectIds":["main/Page_CURA Healthcare Service/button_Login"]}
 
-//input[@id='chk_hospotal_readmission'] : 
-	{"TestObjectId":"main/Page_CURA Healthcare Service/input_Apply for hospital readmission_hospit_63901f","Method":"XPATH","Locator":"//input[@id='chk_hospotal_readmission']"}
+{"Locator":"//input[@id='chk_hospotal_readmission']","Method":"XPATH"} : 
+	{"Locator":{"value":"//input[@id='chk_hospotal_readmission']","selectorMethod":"XPATH"},"Number of container TestObjects":1,"TestObjectIds":["main/Page_CURA Healthcare Service/input_Apply for hospital readmission_hospit_63901f"]}
 
-//input[@id='radio_program_medicaid'] : 
-	{"TestObjectId":"main/Page_CURA Healthcare Service/input_Medicaid_programs","Method":"XPATH","Locator":"//input[@id='radio_program_medicaid']"}
+{"Locator":"//input[@id='radio_program_medicaid']","Method":"XPATH"} : 
+	{"Locator":{"value":"//input[@id='radio_program_medicaid']","selectorMethod":"XPATH"},"Number of container TestObjects":1,"TestObjectIds":["main/Page_CURA Healthcare Service/input_Medicaid_programs"]}
 
-//input[@id='txt-password'] : 
-	{"TestObjectId":"main/Page_CURA Healthcare Service/input_Password_password","Method":"XPATH","Locator":"//input[@id='txt-password']"}
+{"Locator":"//input[@id='txt-password']","Method":"XPATH"} : 
+	{"Locator":{"value":"//input[@id='txt-password']","selectorMethod":"XPATH"},"Number of container TestObjects":1,"TestObjectIds":["main/Page_CURA Healthcare Service/input_Password_password"]}
 
-//input[@id='txt-username'] : 
-	{"TestObjectId":"main/Page_CURA Healthcare Service/input_Username_username","Method":"XPATH","Locator":"//input[@id='txt-username']"}
+{"Locator":"//input[@id='txt-username']","Method":"XPATH"} : 
+	{"Locator":{"value":"//input[@id='txt-username']","selectorMethod":"XPATH"},"Number of container TestObjects":1,"TestObjectIds":["main/Page_CURA Healthcare Service/input_Username_username"]}
 
-//input[@id='txt_visit_date'] : 
-	{"TestObjectId":"main/Page_CURA Healthcare Service/input_Visit Date","Method":"XPATH","Locator":"//input[@id='txt_visit_date']"}
+{"Locator":"//input[@id='txt_visit_date']","Method":"XPATH"} : 
+	{"Locator":{"value":"//input[@id='txt_visit_date']","selectorMethod":"XPATH"},"Number of container TestObjects":1,"TestObjectIds":["main/Page_CURA Healthcare Service/input_Visit Date"]}
 
-//section[@id='summary']/div/div/div[7]/p/a : 
-	{"TestObjectId":"main/Page_CURA Healthcare Service/a_Foo","Method":"XPATH","Locator":"//section[@id='summary']/div/div/div[7]/p/a"}	{"TestObjectId":"main/Page_CURA Healthcare Service/a_Go to Homepage","Method":"XPATH","Locator":"//section[@id='summary']/div/div/div[7]/p/a"}	{"TestObjectId":"main/Page_CURA Healthcare Service/xtra/a_Go to Homepage","Method":"XPATH","Locator":"//section[@id='summary']/div/div/div[7]/p/a"}
+{"Locator":"//section[@id='summary']/div/div/div[7]/p/a","Method":"XPATH"} : 
+	{"Locator":{"value":"//section[@id='summary']/div/div/div[7]/p/a","selectorMethod":"XPATH"},"Number of container TestObjects":3,"TestObjectIds":["main/Page_CURA Healthcare Service/a_Foo","main/Page_CURA Healthcare Service/a_Go to Homepage","main/Page_CURA Healthcare Service/xtra/a_Go to Homepage"]}
 
-//select[@id='combo_facility'] : 
-	{"TestObjectId":"main/Page_CURA Healthcare Service/select_Tokyo CURA Healthcare Center        _5b4107","Method":"XPATH","Locator":"//select[@id='combo_facility']"}
+{"Locator":"//select[@id='combo_facility']","Method":"XPATH"} : 
+	{"Locator":{"value":"//select[@id='combo_facility']","selectorMethod":"XPATH"},"Number of container TestObjects":1,"TestObjectIds":["main/Page_CURA Healthcare Service/select_Tokyo CURA Healthcare Center        _5b4107"]}
 
-//textarea[@id='txt_comment'] : 
-	{"TestObjectId":"main/Page_CURA Healthcare Service/textarea_Comment_comment","Method":"XPATH","Locator":"//textarea[@id='txt_comment']"}
+{"Locator":"//textarea[@id='txt_comment']","Method":"XPATH"} : 
+	{"Locator":{"value":"//textarea[@id='txt_comment']","selectorMethod":"XPATH"},"Number of container TestObjects":1,"TestObjectIds":["main/Page_CURA Healthcare Service/textarea_Comment_comment"]}
 
 

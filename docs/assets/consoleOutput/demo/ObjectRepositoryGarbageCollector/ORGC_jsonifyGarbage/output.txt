@@ -1,0 +1,23 @@
+4月 21, 2025 6:24:13 午後 com.kms.katalon.core.logging.KeywordLogger startTest
+情報: --------------------
+4月 21, 2025 6:24:13 午後 com.kms.katalon.core.logging.KeywordLogger startTest
+情報: START Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage
+{
+    "Project name": "katalon",
+    "includeObjectRepositoryFolder": [
+        "**/*"
+    ],
+    "Number of TestCases": 28,
+    "Number of TestObjects": 16,
+    "Number of unused TestObjects": 5,
+    "Unused TestObjects": [
+        "main/Page_CURA Healthcare Service/a_Foo",
+        "main/Page_CURA Healthcare Service/td_28",
+        "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
+        "main/Page_CURA Healthcare Service/xtra/td_28",
+        "misc/dummy1"
+    ],
+    "Duration seconds": 1.515
+}
+4月 21, 2025 6:24:17 午後 com.kms.katalon.core.logging.KeywordLogger endTest
+情報: END Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage

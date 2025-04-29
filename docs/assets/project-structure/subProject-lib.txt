@@ -77,7 +77,8 @@ lib
 │   │       ├── package-list
 │   │       └── stylesheet.css
 │   └── libs
-│       └── KS_ObjectRepositoryGarbageCollector-0.3.1-SNAPSHOT.jar
+│       ├── KS_ObjectRepositoryGarbageCollector-0.3.1.jar
+│       └── KS_ObjectRepositoryGarbageCollector-0.3.1.jar.asc
 ├── build.gradle
 └── src
     └── main
@@ -115,4 +116,4 @@ lib
             └── internal
                 └── GlobalVariable.groovy
 
-26 directories, 90 files
+26 directories, 91 files
