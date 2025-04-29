@@ -24,6 +24,6 @@ Path projectDir = Paths.get(RunConfiguration.getProjectDir())
 Path classOutputDir = projectDir.resolve("build/tmp/testOutput/demo/ObjectRepositoryGarbageCollector")
 Path outDir = classOutputDir.resolve("ORGC_jsonifyCombinedLocatorIndex")
 Files.createDirectories(outDir)
-File outFile = outDir.resolve("garbage.json").toFile()
+File outFile = outDir.resolve("locatorIndex.json").toFile()
 
 outFile.text = JsonOutput.prettyPrint(json)

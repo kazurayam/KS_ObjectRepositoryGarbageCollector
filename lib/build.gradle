@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.kazurayam"
-version = "0.4.4"
+version = "0.4.5"
 
 ext {
     KATALON_STUDIO_INSTALLATION_DIRECTORY = resolveKatalonStudioInstallationDirectory()
@@ -23,14 +23,12 @@ repositories {
             password = project.findProperty('gpr.key')
         }
     }
-    //mavenLocal()   // to load the monk-directory-scanner from ${user.home}/.m2
+    mavenLocal()   // to load the monk-directory-scanner from ${user.home}/.m2
 }
 
 import org.gradle.internal.os.OperatingSystem
 String resolveKatalonStudioInstallationDirectory() {
     OperatingSystem os = OperatingSystem.current();
-    //println "*** Building on ${os.familyName} / ${os.name} / ${os.version} / ${System.getProperty("os.arch")}."
-    println "*** Building on ${os.toString()}."
     if (os.isMacOsX()) {
         return '/Applications/Katalon Studio.app'
     } else if (os.isWindows()) {
@@ -52,9 +50,7 @@ dependencies {
     // will look into the Katalon Studio installation directory
     implementation fileTree(dir: "${KATALON_STUDIO_INSTALLATION_DIRECTORY}/Contents/Eclipse/configuration/resources/lib",
             include: [
-                    "groovy-${GroovyVersion}.jar",
-                    'selenium-server*.jar',
-                    'slf4j*.jar'
+                    "groovy-${GroovyVersion}.jar"
             ]
     )
     implementation fileTree(dir: "${KATALON_STUDIO_INSTALLATION_DIRECTORY}/Contents/Eclipse/plugins",
@@ -73,7 +69,9 @@ dependencies {
 
                     'org.apache.commons.lang*.jar',
                     'org.dom4j*.jar',
-                    'org.eclipse.osgi*.jar'
+                    'org.eclipse.osgi*.jar',
+                    'org.seleniumhq.selenium.selenium-api*.jar',
+                    'slf4j*.jar'
             ])
 
     // will look into the GitHub Packages
@@ -82,6 +80,15 @@ dependencies {
     // will look into the Maven Central repository
     testImplementation "junit:junit:4.13.2"
     testImplementation 'org.slf4j:slf4j-simple:1.7.25'
+}
+
+tasks.register('printVersions') {
+    doLast {
+        OperatingSystem os = OperatingSystem.current();
+        println "OS: ${os.toString()}"
+        println "Gradle: " + project.getGradle().getGradleVersion()
+        println "Groovy: " + GroovySystem.getVersion()
+    }
 }
 
 tasks.register('printClasspath') {
@@ -93,7 +100,7 @@ tasks.register('printClasspath') {
 }
 
 groovydoc {
-    docTitle = 'ks-object-repository-garbage-collector' + ' ' + project.version + " API"
+    docTitle = ARTIFACT_ID  + ' ' + project.version + " API"
 }
 
 tasks.register("publishGroovydoc", Copy) {
