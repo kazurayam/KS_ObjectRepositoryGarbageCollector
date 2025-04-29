@@ -124,11 +124,11 @@ This script produced this (trimmed):
                 "Locator Declarations": [
                     {
                         "TestObjectId": "main/Page_CURA Healthcare Service/td_28",
-                        "Number of BackwardReferences": 0
+                        "Number of references from Test Case": 0
                     },
                     {
                         "TestObjectId": "main/Page_CURA Healthcare Service/xtra/td_28",
-                        "Number of BackwardReferences": 0
+                        "Number of references from Test Case": 0
                     }
                 ]
             },
@@ -147,7 +147,7 @@ The CombinedLocatorIndex JSON tells me the following points:
 
 1. this project contains 12 "Locators" declared in the Object Repository.
 2. A Locator could be found in one or more Test Objects. If "Number of container TestObjects" has value 2 or more, it means that the Locator is duplicating. You may want to avoid duplication.
-3. A TestObject may be used by a Test Case; Or, it may be used by none. If "Number of BackwardReferences" of a TestObject is 0, it means the TestObject is unused. You may want to remove the unused TestObject.
+3. A TestObject may be used by a Test Case; Or, it may be used by none. If "Number of references from Test Case" of a TestObject is 0, it means the TestObject is unused. You may want to remove the unused TestObject.
 4. This JSON could be large. The size depends on the number of TestObjects in your Object Repository. If you have 1000 Test Objects, JSON would be 500M characters or so. Such large JSON won't be useful at all.
 
 ### Concise list of *Suspicious Locators*
@@ -200,11 +200,11 @@ This script generated a JSON as follows:
                 "Locator Declarations": [
                     {
                         "TestObjectId": "main/Page_CURA Healthcare Service/td_28",
-                        "Number of BackwardReferences": 0
+                        "Number of references from Test Case": 0
                     },
                     {
                         "TestObjectId": "main/Page_CURA Healthcare Service/xtra/td_28",
-                        "Number of BackwardReferences": 0
+                        "Number of references from Test Case": 0
                     }
                 ]
             },
@@ -217,11 +217,11 @@ This script generated a JSON as follows:
                 "Locator Declarations": [
                     {
                         "TestObjectId": "main/Page_CURA Healthcare Service/a_Foo",
-                        "Number of BackwardReferences": 0
+                        "Number of references from Test Case": 0
                     },
                     {
                         "TestObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
-                        "Number of BackwardReferences": 1,
+                        "Number of references from Test Case": 1,
                         "BackwardReferences": [
                             {
                                 "TestObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
@@ -248,7 +248,7 @@ This script generated a JSON as follows:
                     },
                     {
                         "TestObjectId": "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
-                        "Number of BackwardReferences": 0
+                        "Number of references from Test Case": 0
                     }
                 ]
             }
