@@ -29,8 +29,6 @@ repositories {
 import org.gradle.internal.os.OperatingSystem
 String resolveKatalonStudioInstallationDirectory() {
     OperatingSystem os = OperatingSystem.current();
-    //println "*** Building on ${os.familyName} / ${os.name} / ${os.version} / ${System.getProperty("os.arch")}."
-    println "*** Building on ${os.toString()}."
     if (os.isMacOsX()) {
         return '/Applications/Katalon Studio.app'
     } else if (os.isWindows()) {
@@ -84,10 +82,12 @@ dependencies {
     testImplementation 'org.slf4j:slf4j-simple:1.7.25'
 }
 
-tasks.register('printGrVersions') {
+tasks.register('printVersions') {
     doLast {
-        println "Gradle version: " + project.getGradle().getGradleVersion()
-        println "Groovy version: " + GroovySystem.getVersion()
+        OperatingSystem os = OperatingSystem.current();
+        println "OS: ${os.toString()}"
+        println "Gradle: " + project.getGradle().getGradleVersion()
+        println "Groovy: " + GroovySystem.getVersion()
     }
 }
 
