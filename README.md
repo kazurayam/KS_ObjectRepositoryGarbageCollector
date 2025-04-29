@@ -71,7 +71,7 @@ It would take just a few minutes to scan through 3000 TestObjects in your large 
 
 This library compiles a report that tells where you have garbage to be cleaned, but does NOT remove any files. So this library is not really a garbage collector; it is just an informer.
 
-### List of *Locators* with containing Test Objects
+### List of *Locators* with container Test Objects
 
 Another Test Case script generates a JSON titled "LocatorIndex"
 
@@ -148,6 +148,7 @@ The CombinedLocatorIndex JSON tells me the following points:
 1. this project contains 12 "Locators" declared in the Object Repository.
 2. A Locator could be found in one or more Test Objects. If "Number of container TestObjects" has value 2 or more, it means that the Locator is duplicating. You may want to avoid duplication.
 3. A TestObject may be used by a Test Case; Or, it may be used by none. If "Number of BackwardReferences" of a TestObject is 0, it means the TestObject is unused. You may want to remove the unused TestObject.
+4. This JSON could be large. The size depends on the number of TestObjects in your Object Repository. If you have 1000 Test Objects, JSON would be 500M characters or so. Such large JSON won't be useful at all.
 
 ### Concise list of *Suspicious Locators*
 
@@ -264,8 +265,8 @@ Let me explain about this JSON.
 
 ## How to install the library.
 
-1. Visit the [KS_ObjectRepositoryGargabeCollector, Releases](https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector/releases) page. Identify the latest version. Find a `KS_ObjectRepositoryGarbageCollector-x.x.x.jar` file attached. Download the jar file, save it into the `Drivers` folder of your Katalon project.
-2. Visit the [MonkDirectoryScanner, Releases](https://github.com/kazurayam/MonkDirectoryScanner/releases/tag/0.1.0). Identify the latest version. Find a `MonkDirectoryScanner-x.x.x.jar` file attached. Download the jar file, save into the `Drivers` folder of your katalon project.
+1. Visit the [KS_ObjectRepositoryGargabeCollector, Releases](https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector/releases) page. Identify the latest version. Find a `ks-object-repository-garbage-collector-x.x.x.jar` file attached. Download the jar file, save it into the `Drivers` folder of your Katalon project.
+2. Visit the [MonkDirectoryScanner, Releases](https://github.com/kazurayam/MonkDirectoryScanner/releases/tag/0.1.0). Identify the latest version. Find a `monk-directory-scanner-x.x.x.jar` file attached. Download the jar file, save into the `Drivers` folder of your katalon project.
 3. Close and reopen the project. Confirm that the jars are recognized by Katalon Studio.
 4. Create a Test Case script, which should be similar to the above "GC" script.
 5. You are done. Run it and see how quickly you can get the result.

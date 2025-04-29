@@ -23,7 +23,7 @@ repositories {
             password = project.findProperty('gpr.key')
         }
     }
-    //mavenLocal()   // to load the monk-directory-scanner from ${user.home}/.m2
+    mavenLocal()   // to load the monk-directory-scanner from ${user.home}/.m2
 }
 
 import org.gradle.internal.os.OperatingSystem
@@ -53,8 +53,7 @@ dependencies {
     implementation fileTree(dir: "${KATALON_STUDIO_INSTALLATION_DIRECTORY}/Contents/Eclipse/configuration/resources/lib",
             include: [
                     "groovy-${GroovyVersion}.jar",
-                    'selenium-server*.jar',
-                    'slf4j*.jar'
+                    'selenium-server*.jar'
             ]
     )
     implementation fileTree(dir: "${KATALON_STUDIO_INSTALLATION_DIRECTORY}/Contents/Eclipse/plugins",
@@ -73,7 +72,8 @@ dependencies {
 
                     'org.apache.commons.lang*.jar',
                     'org.dom4j*.jar',
-                    'org.eclipse.osgi*.jar'
+                    'org.eclipse.osgi*.jar',
+                    'slf4j*.jar'
             ])
 
     // will look into the GitHub Packages
@@ -93,7 +93,7 @@ tasks.register('printClasspath') {
 }
 
 groovydoc {
-    docTitle = 'ks-object-repository-garbage-collector' + ' ' + project.version + " API"
+    docTitle = ARTIFACT_ID  + ' ' + project.version + " API"
 }
 
 tasks.register("publishGroovydoc", Copy) {
