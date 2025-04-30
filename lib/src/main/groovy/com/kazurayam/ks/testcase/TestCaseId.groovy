@@ -23,8 +23,9 @@ class TestCaseId implements Comparable<TestCaseId> {
 
 	TestCaseId(String value) {
 		Objects.requireNonNull(value)
-		assert !(value.startsWith('/')), "value='${value}' should not start with '/'"
-		this.value = value
+		String v = value.replace("\\", "/")
+		assert !(v.startsWith('/')), "v='${v}' should not start with '/'"
+		this.value = v
 	}
 
 	static TestCaseId resolveTestCaseId(Path scriptsDir, Path groovyFile) {

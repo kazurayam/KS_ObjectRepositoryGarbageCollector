@@ -27,15 +27,16 @@ repositories {
 }
 
 import org.gradle.internal.os.OperatingSystem
-String resolveKatalonStudioInstallationDirectory() {
+static String resolveKatalonStudioInstallationDirectory() {
     OperatingSystem os = OperatingSystem.current();
     if (os.isMacOsX()) {
-        return '/Applications/Katalon Studio.app'
+        return '/Applications/Katalon Studio.app/Contents/Eclipse'
     } else if (os.isWindows()) {
         // Users can install Katalon Studio anywhere they like. Therefore it impossible
         // to resolve the installation directory automatically.
         // You need to hard code the path
-        throw new UnsupportedOperationException("To be considered")
+        String userHome = System.getProperty("user.home")
+        return "${userHome}/Katalon_Studio_Windows_64-10.2.0"
     } else if (os.isLinux()) {
         // Consider Linux.
         throw new UnsupportedOperationException("I don't know")
@@ -47,13 +48,16 @@ String resolveKatalonStudioInstallationDirectory() {
 
 
 dependencies {
+    // https://mvnrepository.com/artifact/com.kazurayam/monk-directory-scanner
+    implementation 'com.kazurayam:monk-directory-scanner:0.1.1'
+
     // will look into the Katalon Studio installation directory
-    implementation fileTree(dir: "${KATALON_STUDIO_INSTALLATION_DIRECTORY}/Contents/Eclipse/configuration/resources/lib",
+    implementation fileTree(dir: "${KATALON_STUDIO_INSTALLATION_DIRECTORY}/configuration/resources/lib",
             include: [
                     "groovy-${GroovyVersion}.jar"
             ]
     )
-    implementation fileTree(dir: "${KATALON_STUDIO_INSTALLATION_DIRECTORY}/Contents/Eclipse/plugins",
+    implementation fileTree(dir: "${KATALON_STUDIO_INSTALLATION_DIRECTORY}/plugins",
             include: [
                     'com.fasterxml.jackson*.jar',
                     'com.google.gson*.jar',
