@@ -18,18 +18,25 @@ dependencies {
 def userHome = System.getProperty('user.home')
 def rootProjectDir = rootProject.projectDir
 
-tasks.register('cleanDrivers') {
+tasks.register('importMonkDirectoryScanner') {
     group = 'Custom'
-    description = "remove jars out of the Drivers folder"
+    description = 'import the MonkDirectoryScanner into the Drivers folder'
     doFirst {
-        delete 'Drivers'
-        mkdir 'Drivers'
+        delete fileTree("Drivers").matching {
+            include "*monk-directory-scanner-*.jar"
+        }
     }
 }
+importMonkDirectoryScanner.finalizedBy katalonCopyDependencies
 
-tasks.register('importDrivers') {
+tasks.register('importLibArtifact') {
     group = 'Custom'
     description = "import the KS_ObjectRepositoryGarbageCollector jar and the MockDirectoryScanner jar into the Drivers folder"
+    doFirst {
+        delete fileTree("Drivers").matching {
+            include "ks-object-repository-garbage-collector-*.jar"
+        }
+    }
     doLast {
         copy {
             into layout.projectDirectory.dir("Drivers")
@@ -38,15 +45,12 @@ tasks.register('importDrivers') {
             }
         }
     }
-    doLast {
-        copy {
-            into layout.projectDirectory.dir("Drivers")
-            from("$userHome/.m2/repository/com/kazurayam/monk-directory-scanner/${MDSVersion}") {
-                include '**/*.jar'
-            }
-        }
-    }
-    dependsOn 'cleanDrivers', 'katalonCopyDependencies'
+}
+
+tasks.register('importDrivers') {
+    group = 'Custom'
+    description = 'run importLibArtifact and importMonDirectoryScanner'
+    dependsOn importLibArtifact, importMonkDirectoryScanner
 }
 
 tasks.register("cleanProject", Delete) {
