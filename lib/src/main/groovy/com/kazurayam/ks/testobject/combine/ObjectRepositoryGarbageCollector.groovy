@@ -42,9 +42,6 @@ class ObjectRepositoryGarbageCollector {
 	private int numberOfTestCases = 0
 	private int numberOfTestObjects = 0
 
-	private LocalDateTime startedAt
-	private LocalDateTime finishedAt
-
 	/*
 	 * 
 	 */
@@ -55,12 +52,10 @@ class ObjectRepositoryGarbageCollector {
 		scriptsDir = builder.scriptsDir.toAbsolutePath().normalize()
 		includeScriptsFolder = builder.includeScriptsFolder
 		//
-		startedAt = LocalDateTime.now()
 		def recv = this.scan(this.objectRepositoryDir, this.scriptsDir)
 		this.db = (Database)recv[0]
 		this.ord = (ObjectRepositoryDecorator)recv[1]
 		this.backwardReferencesDatabase = this.getBackwardReferencesDatabase()
-		finishedAt = LocalDateTime.now()
 	}
 
 	/*
