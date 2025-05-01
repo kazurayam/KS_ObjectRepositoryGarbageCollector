@@ -106,7 +106,7 @@ public class ForwardReference implements Comparable<ForwardReference> {
 		ForwardReferenceSerializer() {
 			this(null)
 		}
-		ForwardReferenceSerializer(Class<ForwardReferenceSerializer> t) {
+		ForwardReferenceSerializer(Class<ForwardReference> t) {
 			super(t)
 		}
 		@Override

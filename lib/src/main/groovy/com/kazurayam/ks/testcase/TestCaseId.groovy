@@ -75,7 +75,7 @@ class TestCaseId implements Comparable<TestCaseId> {
 		TestCaseIdSerializer() {
 			this(null)
 		}
-		TestCaseIdSerializer(Class<TestCaseIdSerializer> t) {
+		TestCaseIdSerializer(Class<TestCaseId> t) {
 			super(t)
 		}
 		@Override

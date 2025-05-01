@@ -75,7 +75,7 @@ class Locator implements Comparable<Locator> {
 		LocatorSerializer() {
 			this(null)
 		}
-		LocatorSerializer(Class<LocatorSerializer> t) {
+		LocatorSerializer(Class<Locator> t) {
 			super(t)
 		}
 		@Override
