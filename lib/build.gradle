@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.kazurayam"
-version = "0.4.6"
+version = "0.4.7-SNAPSHOT"
 
 ext {
     KATALON_STUDIO_INSTALLATION_DIRECTORY = resolveKatalonStudioInstallationDirectory()

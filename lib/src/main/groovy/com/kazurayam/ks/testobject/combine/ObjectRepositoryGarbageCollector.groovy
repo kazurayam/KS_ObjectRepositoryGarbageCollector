@@ -202,7 +202,7 @@ class ObjectRepositoryGarbageCollector {
 				new Version(1, 0, 0, null, null, null))
 
 		module.addSerializer(ObjectRepositoryGarbageCollector.class,
-				new ObjectRepositoryGarbageCollector.ObjectRepositoryGarbageCollectorSerializer())
+				new ObjectRepositoryGarbageCollectorSerializer())
 
 		module.addSerializer(Garbage.class,
 				new Garbage.GarbageSerializer())
@@ -269,38 +269,46 @@ class ObjectRepositoryGarbageCollector {
 		void serialize(ObjectRepositoryGarbageCollector gc,
 				JsonGenerator gen, SerializerProvider serializer) {
 			gen.writeStartObject()
-			gen.writeStringField("Project name", gc.getProjectDir().getFileName().toString())
-			if (!gc.getIncludeScriptsFolder().isEmpty()) {
-				gen.writeFieldName("includeScriptsFolder")
-				gen.writeStartArray()
-				List<String> patterns = gc.getIncludeScriptsFolder()
-				patterns.each { ptrn ->
-					gen.writeString(ptrn)
-				}
-				gen.writeEndArray()
-			}
-			if (!gc.getIncludeObjectRepositoryFolder().isEmpty()) {
-				gen.writeFieldName("includeObjectRepositoryFolder")
-				gen.writeStartArray()
-				List<String> patterns = gc.getIncludeObjectRepositoryFolder()
-				patterns.each { ptrn ->
-					gen.writeString(ptrn)
-				}
-				gen.writeEndArray()
-			}
-			gen.writeNumberField("Number of TestCases", gc.getNumberOfTestCases())
-			gen.writeNumberField("Number of TestObjects", gc.getNumberOfTestObjects())
-			gen.writeNumberField("Number of unused TestObjects", gc.getGarbage().size())
-			gen.writeFieldName("Unused TestObjects")
+			gen.writeFieldName("Garbage")
 			gen.writeStartArray()
 			Set<TestObjectId> toiSet = gc.getGarbage().getAllTestObjectIds()
 			toiSet.each { TestObjectId toi ->
 				gen.writeString(toi.getValue())
 			}
 			gen.writeEndArray()
-			gen.writeNumberField("Duration seconds", gc.timeTaken())
+			writeRunDescription(gc, gen)
 			gen.writeEndObject()
 		}
+	}
+
+	private static void writeRunDescription(ObjectRepositoryGarbageCollector gc,
+									 JsonGenerator gen) {
+		gen.writeFieldName("RunDescription")
+		gen.writeStartObject()
+		gen.writeStringField("Project name", gc.getProjectDir().getFileName().toString())
+		if (!gc.getIncludeScriptsFolder().isEmpty()) {
+			gen.writeFieldName("includeScriptsFolder")
+			gen.writeStartArray()
+			List<String> patterns = gc.getIncludeScriptsFolder()
+			patterns.each { ptrn ->
+				gen.writeString(ptrn)
+			}
+			gen.writeEndArray()
+		}
+		if (!gc.getIncludeObjectRepositoryFolder().isEmpty()) {
+			gen.writeFieldName("includeObjectRepositoryFolder")
+			gen.writeStartArray()
+			List<String> patterns = gc.getIncludeObjectRepositoryFolder()
+			patterns.each { ptrn ->
+				gen.writeString(ptrn)
+			}
+			gen.writeEndArray()
+		}
+		gen.writeNumberField("Number of TestCases", gc.getNumberOfTestCases())
+		gen.writeNumberField("Number of TestObjects", gc.getNumberOfTestObjects())
+		gen.writeNumberField("Number of unused TestObjects", gc.getGarbage().size())
+		gen.writeNumberField("Duration seconds", gc.timeTaken())
+		gen.writeEndObject()
 	}
 
 	Double timeTaken() {
