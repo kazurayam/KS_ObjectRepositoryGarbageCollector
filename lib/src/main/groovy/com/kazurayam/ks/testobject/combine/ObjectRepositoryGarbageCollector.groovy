@@ -17,8 +17,6 @@ import com.kazurayam.ks.testobject.TestObjectId
 
 import java.nio.file.Files
 import java.nio.file.Path
-import java.time.Duration
-import java.time.LocalDateTime
 
 /**
  * A sort of "Garbage Collector" for the "Object Repository" of a Katalon Studio project.
@@ -40,10 +38,10 @@ class ObjectRepositoryGarbageCollector {
 	private ObjectRepositoryDecorator ord
 	private BackwardReferencesDatabase backwardReferencesDatabase
 
-	private LocalDateTime startedAt
-	private LocalDateTime finishedAt
 	private int numberOfTestCases = 0
 	private int numberOfTestObjects = 0
+
+	private RunDescription runDescription
 
 	/*
 	 * 
@@ -55,12 +53,19 @@ class ObjectRepositoryGarbageCollector {
 		scriptsDir = builder.scriptsDir.toAbsolutePath().normalize()
 		includeScriptsFolder = builder.includeScriptsFolder
 		//
-		startedAt = LocalDateTime.now()
 		def recv = this.scan(this.objectRepositoryDir, this.scriptsDir)
-		this.db = recv[0]
-		this.ord = recv[1]
+		this.db = (Database)recv[0]
+		this.ord = (ObjectRepositoryDecorator)recv[1]
 		this.backwardReferencesDatabase = this.getBackwardReferencesDatabase()
-		finishedAt = LocalDateTime.now()
+		String projectName = this.getProjectDir().getFileName().toString()
+		this.runDescription =
+				new RunDescription.Builder(projectName)
+						.includeScriptsFolder(this.includeScriptsFolder)
+						.includeObjectRepositoryFolder(this.includeObjectRepositoryFolder)
+						.numberOfTestCases(this.getNumberOfTestCases())
+						.numberOfTestObjects(this.getNumberOfTestObjects())
+						.numberOfUnusedTestObjects(this.getGarbage().size())
+						.build()
 	}
 
 	/*
@@ -110,7 +115,6 @@ class ObjectRepositoryGarbageCollector {
 		return [db, ord]
 	}
 
-
 	private static List<TestCaseId> getTestCaseIdList(Path scriptsDir, List<Path> groovyFiles) {
 		List<TestCaseId> list = new ArrayList<>()
 		groovyFiles.forEach ({ groovyFile ->
@@ -119,7 +123,6 @@ class ObjectRepositoryGarbageCollector {
 		})
 		return list
 	}
-
 
 	Database db() {
 		return db
@@ -161,7 +164,8 @@ class ObjectRepositoryGarbageCollector {
 		Set<TestObjectId> allTestObjectIds = db.getAllTestObjectIdsContained()
 		allTestObjectIds.each { testObjectId ->
 			BackwardReferences br = new BackwardReferences(testObjectId)
-			Set<ForwardReference> forwardReferences = db.findForwardReferencesTo(testObjectId)
+			Set<ForwardReference> forwardReferences =
+					db.findForwardReferencesTo(testObjectId)
 			if (forwardReferences != null) {
 				forwardReferences.each { fr ->
 					br.add(fr)
@@ -176,9 +180,12 @@ class ObjectRepositoryGarbageCollector {
 	 *
 	 */
 	String jsonifyBackwardReferencesDatabase() {
-		BackwardReferencesDatabase backwardReferencesMap = this.getBackwardReferencesDatabase()
+		BackwardReferencesDatabase backwardReferencesMap =
+				this.getBackwardReferencesDatabase()
 		return backwardReferencesMap.toJson()
 	}
+
+	//-----------------------------------------------------------------
 
 	/**
 	 * generate a Garbage object, which contains a list of the unused TestObject Id.
@@ -198,11 +205,14 @@ class ObjectRepositoryGarbageCollector {
 	}
 
 	String jsonifyGarbage( ) {
-		SimpleModule module = new SimpleModule("ObjectRepositoryGarbageCollectorSerializer",
+		SimpleModule module = new SimpleModule("GarbageSerializer",
 				new Version(1, 0, 0, null, null, null))
 
 		module.addSerializer(ObjectRepositoryGarbageCollector.class,
-				new ObjectRepositoryGarbageCollector.ObjectRepositoryGarbageCollectorSerializer())
+				new GarbageSerializer())
+
+		module.addSerializer(RunDescription.class,
+				new RunDescription.RunDescriptionSerializer())
 
 		module.addSerializer(Garbage.class,
 				new Garbage.GarbageSerializer())
@@ -220,6 +230,35 @@ class ObjectRepositoryGarbageCollector {
 		mapper.registerModule(module)
 		return mapper.writeValueAsString( this )
 	}
+
+	/**
+	 *
+	 */
+	static class GarbageSerializer extends StdSerializer<ObjectRepositoryGarbageCollector> {
+		GarbageSerializer() {
+			this(null)
+		}
+
+		GarbageSerializer(Class<ObjectRepositoryGarbageCollector> t) {
+			super(t)
+		}
+		@Override
+		void serialize(ObjectRepositoryGarbageCollector gc,
+					   JsonGenerator gen, SerializerProvider serializer) {
+			gen.writeStartObject()
+			gen.writeFieldName("Garbage")
+			gen.writeStartArray()
+			Set<TestObjectId> toiSet = gc.getGarbage().getAllTestObjectIds()
+			toiSet.each { TestObjectId toi ->
+				gen.writeString(toi.getValue())
+			}
+			gen.writeEndArray()
+			gen.writeObjectField("Run Description", gc.runDescription)
+			gen.writeEndObject()
+		}
+	}
+
+	//-----------------------------------------------------------------
 
 	/**
 	 *
@@ -248,78 +287,88 @@ class ObjectRepositoryGarbageCollector {
 	}
 
 	String jsonifyCombinedLocatorIndex() {
-		return getCombinedLocatorIndex().toJson()
+		SimpleModule module = new SimpleModule("jsonifyCombinedLocatorIndex",
+				new Version(1, 0, 0, null, null, null))
+		module.addSerializer(ObjectRepositoryGarbageCollector.class,
+				new CombinedLocatorIndexSerializer())
+		addComponentSerializers(module)
+		ObjectMapper mapper = new ObjectMapper()
+		mapper.registerModule(module)
+		return mapper.writeValueAsString( this )
 	}
 
 	/**
-	 * The most useful feature which this library provides to uses
+	 * The most useful feature for users
 	 */
 	String jsonifySuspiciousLocatorIndex() {
-		return getCombinedLocatorIndex().suspect()
+		SimpleModule module = new SimpleModule("jsonifySuspiciousLocatorIndex",
+				new Version(1, 0, 0, null, null, null))
+		module.addSerializer(ObjectRepositoryGarbageCollector.class,
+				new SuspiciousLocatorIndexSerializer())
+		addComponentSerializers(module)
+		ObjectMapper mapper = new ObjectMapper()
+		mapper.registerModule(module)
+		return mapper.writeValueAsString( this )
 	}
 
-	static class ObjectRepositoryGarbageCollectorSerializer extends StdSerializer<ObjectRepositoryGarbageCollector> {
-		ObjectRepositoryGarbageCollectorSerializer() {
+	private static void addComponentSerializers(SimpleModule module) {
+		module.addSerializer(CombinedLocatorIndex.class,
+				new CombinedLocatorIndex.CombinedLocatorIndexSerializer())
+		module.addSerializer(RunDescription.class,
+				new RunDescription.RunDescriptionSerializer())
+		module.addSerializer(ForwardReference.class,
+				new ForwardReference.ForwardReferenceSerializer())
+		module.addSerializer(TestCaseId.class,
+				new TestCaseId.TestCaseIdSerializer())
+		module.addSerializer(TestObjectId.class,
+				new TestObjectId.TestObjectIdSerializer())
+	}
+
+	static class CombinedLocatorIndexSerializer
+			extends StdSerializer<ObjectRepositoryGarbageCollector> {
+		CombinedLocatorIndexSerializer() {
 			this(null)
 		}
-		ObjectRepositoryGarbageCollectorSerializer(Class<ObjectRepositoryGarbageCollector> t) {
+		CombinedLocatorIndexSerializer(Class<ObjectRepositoryGarbageCollector> t) {
 			super(t)
 		}
 		@Override
 		void serialize(ObjectRepositoryGarbageCollector gc,
-				JsonGenerator gen, SerializerProvider serializer) {
+					   JsonGenerator gen, SerializerProvider serializer) {
 			gen.writeStartObject()
-			gen.writeStringField("Project name", gc.getProjectDir().getFileName().toString())
-			if (!gc.getIncludeScriptsFolder().isEmpty()) {
-				gen.writeFieldName("includeScriptsFolder")
-				gen.writeStartArray()
-				List<String> patterns = gc.getIncludeScriptsFolder()
-				patterns.each { ptrn ->
-					gen.writeString(ptrn)
-				}
-				gen.writeEndArray()
-			}
-			if (!gc.getIncludeObjectRepositoryFolder().isEmpty()) {
-				gen.writeFieldName("includeObjectRepositoryFolder")
-				gen.writeStartArray()
-				List<String> patterns = gc.getIncludeObjectRepositoryFolder()
-				patterns.each { ptrn ->
-					gen.writeString(ptrn)
-				}
-				gen.writeEndArray()
-			}
-			gen.writeNumberField("Number of TestCases", gc.getNumberOfTestCases())
-			gen.writeNumberField("Number of TestObjects", gc.getNumberOfTestObjects())
-			gen.writeNumberField("Number of unused TestObjects", gc.getGarbage().size())
-			gen.writeFieldName("Unused TestObjects")
-			gen.writeStartArray()
-			Set<TestObjectId> toiSet = gc.getGarbage().getAllTestObjectIds()
-			toiSet.each { TestObjectId toi ->
-				gen.writeString(toi.getValue())
-			}
-			gen.writeEndArray()
-			gen.writeNumberField("Duration seconds", gc.timeTaken())
+			gen.writeObjectField("CombinedLocatorIndex", gc.combinedLocatorIndex)
+			gen.writeObjectField("Run Description", gc.runDescription)
 			gen.writeEndObject()
 		}
 	}
 
-	Double timeTaken() {
-		Duration timeTaken = Duration.between(startedAt, finishedAt)
-		return toSeconds(timeTaken)
+	static class SuspiciousLocatorIndexSerializer
+			extends StdSerializer<ObjectRepositoryGarbageCollector> {
+		SuspiciousLocatorIndexSerializer() {
+			this(null)
+		}
+		SuspiciousLocatorIndexSerializer(Class<ObjectRepositoryGarbageCollector> t) {
+			super(t)
+		}
+		@Override
+		void serialize(ObjectRepositoryGarbageCollector gc,
+					   JsonGenerator gen, SerializerProvider serializer) {
+			gen.writeStartObject()
+			gen.writeObjectField("SuspiciousLocatorIndex",
+					CombinedLocatorIndex.suspect(gc.combinedLocatorIndex))
+			gen.writeObjectField("Run Description", gc.runDescription)
+			gen.writeEndObject()
+		}
 	}
 
-	private Double toSeconds(Duration dur) {
-		Double v = dur.toMillis() / 1000
-		return v
-	}
-
+	//-----------------------------------------------------------------
 
 	/**
 	 * Joshua Bloch's Builder pattern in Effective Java
 	 *
 	 * @author kazuarayam
 	 */
-	public static class Builder {
+	static class Builder {
 
 		private Path objectRepositoryDir // non null
 		private List<String> includeObjectRepositoryFolder  // sub-folders in the "Object Repository" directory, may be empty
@@ -388,7 +437,7 @@ class ObjectRepositoryGarbageCollector {
 		}
 
 
-		public ObjectRepositoryGarbageCollector build() {
+		ObjectRepositoryGarbageCollector build() {
 			return new ObjectRepositoryGarbageCollector(this)
 		}
 	}

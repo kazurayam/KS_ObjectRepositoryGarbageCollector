@@ -8,11 +8,11 @@ repositories {
 
 ext {
     MDSVersion = '0.1.1'
-    ORGCVersion = '0.4.6'
+    ORGCVersion = '0.4.7'
 }
 
 dependencies {
-    implementation('com.kazurayam:monk-directory-scanner:0.1.1')
+    implementation("com.kazurayam:monk-directory-scanner:${MDSVersion}")
 }
 
 def userHome = System.getProperty('user.home')

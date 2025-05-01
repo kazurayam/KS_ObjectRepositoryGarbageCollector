@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.kazurayam"
-version = "0.4.6"
+version = "0.4.7"
 
 ext {
     KATALON_STUDIO_INSTALLATION_DIRECTORY = resolveKatalonStudioInstallationDirectory()
@@ -83,7 +83,7 @@ dependencies {
 
     // will look into the Maven Central repository
     testImplementation "junit:junit:4.13.2"
-    testImplementation 'org.slf4j:slf4j-simple:1.7.25'
+    testImplementation 'org.slf4j:slf4j-simple:2.0.16'
 }
 
 tasks.register('printVersions') {

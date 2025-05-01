@@ -84,13 +84,18 @@ class CombinedLocatorIndex {
         @Override
         void serialize(CombinedLocatorIndex clx,
                        JsonGenerator gen, SerializerProvider provider) {
-            Set<Locator> keys = clx.keySet()
             gen.writeStartObject()
-            gen.writeFieldName("CombinedLocatorIndex")
-            gen.writeStartObject()
-            gen.writeNumberField("Number of Locators", keys.size())
+            int count = 0
+            clx.iterator().each {entry ->
+                if (isSuspiciousEntry(entry)) {
+                    count += 1
+                }
+            }
+            gen.writeNumberField("Number of Locators", clx.size())
+            gen.writeNumberField("Number of Suspicious Locators", count)
             gen.writeFieldName("Locators")
             gen.writeStartArray()
+            Set<Locator> keys = clx.keySet()
             keys.each {locator ->
                 gen.writeStartObject()
                 gen.writeObjectField("Locator", locator)
@@ -99,7 +104,7 @@ class CombinedLocatorIndex {
                 if (cldSet.size() > 0) {
                     gen.writeFieldName("Locator Declarations")
                     gen.writeStartArray()
-                    cldSet.each {cld ->
+                    cldSet.each { cld ->
                         gen.writeObject(cld)
                     }
                     gen.writeEndArray()
@@ -108,84 +113,38 @@ class CombinedLocatorIndex {
             }
             gen.writeEndArray()
             gen.writeEndObject()
-            gen.writeEndObject()
         }
     }
 
-
-
-    String suspect() {
-        ObjectMapper mapper = new ObjectMapper()
-        SimpleModule module = new SimpleModule("SuspiciousLocatorIndexSerializer",
-                new Version(1, 0, 0, null, null, null))
-        module.addSerializer(CombinedLocatorIndex.class, new SuspiciousLocatorIndexSerializer())
-        module.addSerializer(CombinedLocatorDeclarations.class, new CombinedLocatorDeclarations.CombinedLocatorDeclarationsSerializer())
-        module.addSerializer(Locator.class, new Locator.LocatorSerializer())
-        module.addSerializer(LocatorDeclarations.class, new LocatorDeclarations.LocatorDeclarationsSerializer())
-        module.addSerializer(TestObjectId.class, new TestObjectId.TestObjectIdSerializer())
-        module.addSerializer(BackwardReferences.class, new BackwardReferences.BackwardReferencesSerializer())
-        mapper.registerModule(module)
-        return mapper.writeValueAsString(this)
+    /**
+     * A sort of copy constructor which chooses the suspicious locators
+     * out of the source while dropping the trustworthy locators
+     *
+     * @param source
+     * @return another CombinedLocatorIndex that contains suspicious locators only
+     */
+    static CombinedLocatorIndex suspect(CombinedLocatorIndex source) {
+        CombinedLocatorIndex target = new CombinedLocatorIndex()
+        source.iterator().each { entry ->
+            if (isSuspiciousEntry(entry)) {
+                target.put(entry.key, entry.value)
+            }
+        }
+        return target
     }
 
-    static class SuspiciousLocatorIndexSerializer extends StdSerializer<CombinedLocatorIndex> {
-        SuspiciousLocatorIndexSerializer() {
-            this(null)
+    private static boolean isSuspiciousEntry(Map.Entry<Locator,
+            Set<CombinedLocatorDeclarations>> entry) {
+        boolean suspicious = false
+        Set<CombinedLocatorDeclarations> cldSet = entry.value
+        if (cldSet.size() == 0) {
+            suspicious = true
         }
-        SuspiciousLocatorIndexSerializer(Class<CombinedLocatorIndex> t) {
-            super(t)
-        }
-
-        static boolean isSuspicious(CombinedLocatorIndex clx, Locator locator) {
-            boolean suspicious = false
-            Set<CombinedLocatorDeclarations> cldSet = clx.get(locator)
-            if (cldSet.size() == 0) {
+        cldSet.each {cld ->
+            if (cld.getDeclarations().size() == 0) {
                 suspicious = true
             }
-            cldSet.each {cld ->
-                if (cld.getDeclarations().size() == 0) {
-                    suspicious = true
-                }
-            }
-            return suspicious
         }
-
-        @Override
-        void serialize(CombinedLocatorIndex clx,
-                       JsonGenerator gen, SerializerProvider provider) {
-            Set<Locator> keys = clx.keySet()
-            gen.writeStartObject()
-            gen.writeFieldName("SuspiciousLocatorIndex")
-            gen.writeStartObject()
-            int count = 0
-            keys.each {locator ->
-                if (isSuspicious(clx, locator)) {
-                    count += 1
-                }
-            }
-            gen.writeNumberField("Number of Suspicious Locators", count)
-            gen.writeFieldName("SuspiciousLocatorIndex")
-            gen.writeStartArray()
-            keys.each {locator ->
-                if (isSuspicious(clx, locator)) {
-                    gen.writeStartObject()
-                    gen.writeObjectField("Locator", locator)
-                    Set<CombinedLocatorDeclarations> cldSet = clx.get(locator)
-                    gen.writeNumberField("Number of container TestObjects", cldSet.size())
-                    if (cldSet.size() > 0) {
-                        gen.writeFieldName("Locator Declarations")
-                        gen.writeStartArray()
-                        cldSet.each { cld ->
-                            gen.writeObject(cld)
-                        }
-                        gen.writeEndArray()
-                    }
-                    gen.writeEndObject()
-                }
-            }
-            gen.writeEndArray()
-            gen.writeEndObject()
-            gen.writeEndObject()
-        }
+        return suspicious
     }
 }

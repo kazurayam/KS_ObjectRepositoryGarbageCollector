@@ -132,7 +132,7 @@ class DigestedLine implements Comparable<DigestedLine> {
 		DigestedLineSerializer() {
 			this(null)
 		}
-		DigestedLineSerializer(Class<DigestedLineSerializer> t) {
+		DigestedLineSerializer(Class<DigestedLine> t) {
 			super(t)
 		}
 		@Override

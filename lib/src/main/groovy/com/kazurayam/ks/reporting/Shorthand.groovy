@@ -1,7 +1,5 @@
 package com.kazurayam.ks.reporting
 
-import com.kazurayam.ks.configuration.KatalonProjectDirectoryResolver
-
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path

@@ -1,4 +1,6 @@
+import com.kazurayam.ks.logging.SimplifiedStopWatch
 import com.kazurayam.ks.testobject.combine.ObjectRepositoryGarbageCollector
+import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords as WebUI
 
 import groovy.json.JsonOutput
 
@@ -21,6 +23,8 @@ ObjectRepositoryGarbageCollector gc =
 			.includeObjectRepositoryFolder("**/*")
 			.build()
 
+SimplifiedStopWatch ssw = new SimplifiedStopWatch()
+			
 // gc.jsonifyGarbage() triggers scanning through the entire "Object Repository".
 // All references from TestCase scripts to TestObjects will be identified.
 // Consequently, it can result a list of unused TestObjects.
@@ -29,4 +33,8 @@ String json = gc.jsonifyGarbage()
 
 // just print the JSON into the console
 println JsonOutput.prettyPrint(json)
+
+ssw.stop()
+WebUI.comment(ssw.toString())
+
 

@@ -47,7 +47,7 @@ class DigestedText {
 		DigestedTextSerializer() {
 			this(null)
 		}
-		DigestedTextSerializer(Class<DigestedTextSerializer> t) {
+		DigestedTextSerializer(Class<DigestedText> t) {
 			super(t)
 		}
 		@Override
