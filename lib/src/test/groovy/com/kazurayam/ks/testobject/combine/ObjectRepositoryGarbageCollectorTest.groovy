@@ -40,12 +40,12 @@ class ObjectRepositoryGarbageCollectorTest {
 
 	@Test
 	void test_db() {
-		Database db = garbageCollector.db()
-		assertNotNull(db)
-		assertNotEquals(0, db.size())
+		ForwardReferences forwardReferences = garbageCollector.db()
+		assertNotNull(forwardReferences)
+		assertNotEquals(0, forwardReferences.size())
 		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
 				.fileName("test_db.json").build()
-		sh.write(JsonOutput.prettyPrint(db.toJson()))
+		sh.write(JsonOutput.prettyPrint(forwardReferences.toJson()))
 	}
 
 	@Test

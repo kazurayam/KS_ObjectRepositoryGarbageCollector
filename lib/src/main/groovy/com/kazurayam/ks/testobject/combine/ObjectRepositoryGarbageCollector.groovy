@@ -34,7 +34,7 @@ class ObjectRepositoryGarbageCollector {
 	private Path scriptsDir // must not be null
 	private List<String> includeScriptsFolder // could be empty
 
-	private Database db
+	private ForwardReferences forwardReferences
 	private ObjectRepositoryDecorator ord
 	private BackwardReferencesDatabase backwardReferencesDatabase
 
@@ -54,7 +54,7 @@ class ObjectRepositoryGarbageCollector {
 		includeScriptsFolder = builder.includeScriptsFolder
 		//
 		def recv = this.scan(this.objectRepositoryDir, this.scriptsDir)
-		this.db = (Database)recv[0]
+		this.forwardReferences = (ForwardReferences)recv[0]
 		this.ord = (ObjectRepositoryDecorator)recv[1]
 		this.backwardReferencesDatabase = this.getBackwardReferencesDatabase()
 		String projectName = this.getProjectDir().getFileName().toString()
@@ -70,15 +70,15 @@ class ObjectRepositoryGarbageCollector {
 
 	/*
 	 * This method will scan the "Object Repository" folder and the "Scripts" folder.
-	 * to create an instance of Database internally and fill it with information found
+	 * to create an instance of ForwardReferences internally and fill it with information found
 	 * out of the directories.
-	 * You can retrieve the Database by calling "db()" method.
+	 * You can retrieve the ForwardReferences by calling "db()" method.
 	 * You can retrieve an Garbage Collection plan by calling "getGarbage()" method, in which you can
 	 * find a list of "garbage" Test Objects which are not used by any of the Test Cases.
 	 */
 	private def scan(Path objectRepositoryDir, Path scriptsDir) {
 
-		Database db = new Database()
+		ForwardReferences db = new ForwardReferences()
 
 		ObjectRepositoryDecorator ord =
 				new ObjectRepositoryDecorator.Builder(objectRepositoryDir)
@@ -124,15 +124,15 @@ class ObjectRepositoryGarbageCollector {
 		return list
 	}
 
-	Database db() {
-		return db
+	ForwardReferences db() {
+		return forwardReferences
 	}
 
 	/**
 	 *
 	 */
 	String jsonifyDatabase() {
-		return db.toJson()
+		return forwardReferences.toJson()
 	}
 
 
@@ -161,11 +161,11 @@ class ObjectRepositoryGarbageCollector {
 	 */
 	BackwardReferencesDatabase getBackwardReferencesDatabase() {
 		BackwardReferencesDatabase brdb = new BackwardReferencesDatabase()
-		Set<TestObjectId> allTestObjectIds = db.getAllTestObjectIdsContained()
+		Set<TestObjectId> allTestObjectIds = forwardReferences.getAllTestObjectIdsContained()
 		allTestObjectIds.each { testObjectId ->
 			BackwardReferences br = new BackwardReferences(testObjectId)
 			Set<ForwardReference> forwardReferences =
-					db.findForwardReferencesTo(testObjectId)
+					forwardReferences.findForwardReferencesTo(testObjectId)
 			if (forwardReferences != null) {
 				forwardReferences.each { fr ->
 					br.add(fr)
@@ -194,7 +194,7 @@ class ObjectRepositoryGarbageCollector {
 		Garbage garbage = new Garbage()
 		//println "ord.getAllTestObjectIdSet().size()=" + ord.getAllTestObjectIdSet().size()
 		this.ord.getAllTestObjectIdSet().each { testObjectId ->
-			Set<ForwardReference> forwardReferences = db.findForwardReferencesTo(testObjectId)
+			Set<ForwardReference> forwardReferences = forwardReferences.findForwardReferencesTo(testObjectId)
 			//println "testObjectId=" + testObjectId.getValue() + " forwardReferences.size()=" + forwardReferences.size()
 			if (forwardReferences.size() == 0) {
 				// Oh, no TestCase uses this TestObject, this TestObject is unused

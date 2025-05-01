@@ -12,11 +12,11 @@ import com.kazurayam.ks.testobject.TestObjectId
 
 import java.util.stream.Collectors
 
-public class Database {
+public class ForwardReferences {
 
 	private Set<ForwardReference> db
 
-	Database() {
+	ForwardReferences() {
 		db = new TreeSet<>()
 	}
 
@@ -104,7 +104,7 @@ public class Database {
 		ObjectMapper mapper = new ObjectMapper()
 		SimpleModule module = new SimpleModule("DatabaseSerializer",
 				new Version(1, 0, 0, null, null, null))
-		module.addSerializer(Database.class, new Database.DatabaseSerializer())
+		module.addSerializer(ForwardReferences.class, new ForwardReferences.DatabaseSerializer())
 		module.addSerializer(ForwardReference.class, new ForwardReference.ForwardReferenceSerializer())
 		module.addSerializer(TestCaseId.class, new TestCaseId.TestCaseIdSerializer())
 		module.addSerializer(DigestedLine.class, new DigestedLine.DigestedLineSerializer())
@@ -112,18 +112,18 @@ public class Database {
 		return mapper.writeValueAsString(this)
 	}
 
-	static class DatabaseSerializer extends StdSerializer<Database> {
+	static class DatabaseSerializer extends StdSerializer<ForwardReferences> {
 		DatabaseSerializer() {
 			this(null)
 		}
-		DatabaseSerializer(Class<Database> t) {
+		DatabaseSerializer(Class<ForwardReferences> t) {
 			super(t)
 		}
 		@Override
-		void serialize(Database db,
-				JsonGenerator gen, SerializerProvider serializer) {
+		void serialize(ForwardReferences db,
+					   JsonGenerator gen, SerializerProvider serializer) {
 			gen.writeStartObject()
-			gen.writeFieldName("Database")
+			gen.writeFieldName("ForwardReferences")
 			gen.writeStartArray()
 			db.getAll().each { forwardReference ->
 				gen.writeObject(forwardReference)

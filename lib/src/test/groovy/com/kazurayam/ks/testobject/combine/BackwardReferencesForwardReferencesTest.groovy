@@ -17,7 +17,7 @@ import static org.junit.Assert.assertNotNull;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(JUnit4.class)
-class BackwardReferencesDatabaseTest {
+class BackwardReferencesForwardReferencesTest {
 
     private static Path projectDir = KatalonProjectDirectoryResolver.getProjectDir()
     private static Path objectRepositoryDir = projectDir.resolve("Object Repository")
