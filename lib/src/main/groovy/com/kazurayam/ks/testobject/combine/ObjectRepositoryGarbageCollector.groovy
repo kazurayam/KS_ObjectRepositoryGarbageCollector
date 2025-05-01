@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import com.kazurayam.ks.configuration.KatalonProjectDirectoryResolver
+import com.kazurayam.ks.logging.SimplifiedStopWatch
 import com.kazurayam.ks.testcase.DigestedLine
 import com.kazurayam.ks.testcase.ScriptsDecorator
 import com.kazurayam.ks.testcase.TestCaseId
@@ -40,10 +41,11 @@ class ObjectRepositoryGarbageCollector {
 	private ObjectRepositoryDecorator ord
 	private BackwardReferencesDatabase backwardReferencesDatabase
 
-	private LocalDateTime startedAt
-	private LocalDateTime finishedAt
 	private int numberOfTestCases = 0
 	private int numberOfTestObjects = 0
+
+	private LocalDateTime startedAt
+	private LocalDateTime finishedAt
 
 	/*
 	 * 
@@ -276,14 +278,15 @@ class ObjectRepositoryGarbageCollector {
 				gen.writeString(toi.getValue())
 			}
 			gen.writeEndArray()
-			writeRunDescription(gc, gen)
+			writeRunCondition(gc, gen)
+			writeRunDuration(gc, gen)
 			gen.writeEndObject()
 		}
 	}
 
-	private static void writeRunDescription(ObjectRepositoryGarbageCollector gc,
+	private static void writeRunCondition(ObjectRepositoryGarbageCollector gc,
 									 JsonGenerator gen) {
-		gen.writeFieldName("RunDescription")
+		gen.writeFieldName("RunCondition")
 		gen.writeStartObject()
 		gen.writeStringField("Project name", gc.getProjectDir().getFileName().toString())
 		if (!gc.getIncludeScriptsFolder().isEmpty()) {
@@ -307,7 +310,14 @@ class ObjectRepositoryGarbageCollector {
 		gen.writeNumberField("Number of TestCases", gc.getNumberOfTestCases())
 		gen.writeNumberField("Number of TestObjects", gc.getNumberOfTestObjects())
 		gen.writeNumberField("Number of unused TestObjects", gc.getGarbage().size())
-		gen.writeNumberField("Duration seconds", gc.timeTaken())
+		gen.writeEndObject()
+	}
+
+	private static void writeRunDuration(ObjectRepositoryGarbageCollector gc,
+											JsonGenerator gen) {
+		gen.writeFieldName("RunDuration")
+		gen.writeStartObject()
+		gen.writeNumberField("SimplifiedStopWatch seconds", gc.timeTaken())
 		gen.writeEndObject()
 	}
 

@@ -11,11 +11,11 @@
                 "Locator Declarations": [
                     {
                         "TestObjectId": "main/Page_CURA Healthcare Service/td_28",
-                        "Number of BackwardReferences": 0
+                        "Number of references from Test Case": 0
                     },
                     {
                         "TestObjectId": "main/Page_CURA Healthcare Service/xtra/td_28",
-                        "Number of BackwardReferences": 0
+                        "Number of references from Test Case": 0
                     }
                 ]
             },
@@ -28,12 +28,12 @@
                 "Locator Declarations": [
                     {
                         "TestObjectId": "main/Page_CURA Healthcare Service/a_Foo",
-                        "Number of BackwardReferences": 0
+                        "Number of references from Test Case": 0
                     },
                     {
                         "TestObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
-                        "Number of BackwardReferences": 1,
-                        "BackwardReferences": [
+                        "Number of references from Test Case": 1,
+                        "References from Test Case": [
                             {
                                 "TestObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
                                 "Number of ForwardReferences": 1,
@@ -59,7 +59,7 @@
                     },
                     {
                         "TestObjectId": "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
-                        "Number of BackwardReferences": 0
+                        "Number of references from Test Case": 0
                     }
                 ]
             }

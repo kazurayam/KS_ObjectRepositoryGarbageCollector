@@ -22,8 +22,9 @@ class SimplifiedStopWatch {
         stopWatch.start()
     }
 
-    void stop() {
+    SimplifiedStopWatch stop() {
         stopWatch.stop()
+        return this
     }
 
     String getStartTimeAsString() {
