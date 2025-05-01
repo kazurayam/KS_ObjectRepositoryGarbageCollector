@@ -17,7 +17,6 @@ import com.kazurayam.ks.testobject.TestObjectId
 
 import java.nio.file.Files
 import java.nio.file.Path
-import java.time.LocalDateTime
 
 /**
  * A sort of "Garbage Collector" for the "Object Repository" of a Katalon Studio project.
@@ -165,7 +164,8 @@ class ObjectRepositoryGarbageCollector {
 		Set<TestObjectId> allTestObjectIds = db.getAllTestObjectIdsContained()
 		allTestObjectIds.each { testObjectId ->
 			BackwardReferences br = new BackwardReferences(testObjectId)
-			Set<ForwardReference> forwardReferences = db.findForwardReferencesTo(testObjectId)
+			Set<ForwardReference> forwardReferences =
+					db.findForwardReferencesTo(testObjectId)
 			if (forwardReferences != null) {
 				forwardReferences.each { fr ->
 					br.add(fr)
@@ -180,9 +180,12 @@ class ObjectRepositoryGarbageCollector {
 	 *
 	 */
 	String jsonifyBackwardReferencesDatabase() {
-		BackwardReferencesDatabase backwardReferencesMap = this.getBackwardReferencesDatabase()
+		BackwardReferencesDatabase backwardReferencesMap =
+				this.getBackwardReferencesDatabase()
 		return backwardReferencesMap.toJson()
 	}
+
+	//-----------------------------------------------------------------
 
 	/**
 	 * generate a Garbage object, which contains a list of the unused TestObject Id.
@@ -202,11 +205,11 @@ class ObjectRepositoryGarbageCollector {
 	}
 
 	String jsonifyGarbage( ) {
-		SimpleModule module = new SimpleModule("ObjectRepositoryGarbageCollectorSerializer",
+		SimpleModule module = new SimpleModule("GarbageSerializer",
 				new Version(1, 0, 0, null, null, null))
 
 		module.addSerializer(ObjectRepositoryGarbageCollector.class,
-				new ObjectRepositoryGarbageCollectorSerializer())
+				new GarbageSerializer())
 
 		module.addSerializer(RunDescription.class,
 				new RunDescription.RunDescriptionSerializer())
@@ -227,6 +230,35 @@ class ObjectRepositoryGarbageCollector {
 		mapper.registerModule(module)
 		return mapper.writeValueAsString( this )
 	}
+
+	/**
+	 *
+	 */
+	static class GarbageSerializer extends StdSerializer<ObjectRepositoryGarbageCollector> {
+		GarbageSerializer() {
+			this(null)
+		}
+
+		GarbageSerializer(Class<ObjectRepositoryGarbageCollector> t) {
+			super(t)
+		}
+		@Override
+		void serialize(ObjectRepositoryGarbageCollector gc,
+					   JsonGenerator gen, SerializerProvider serializer) {
+			gen.writeStartObject()
+			gen.writeFieldName("Garbage")
+			gen.writeStartArray()
+			Set<TestObjectId> toiSet = gc.getGarbage().getAllTestObjectIds()
+			toiSet.each { TestObjectId toi ->
+				gen.writeString(toi.getValue())
+			}
+			gen.writeEndArray()
+			gen.writeObjectField("Run Description", gc.runDescription)
+			gen.writeEndObject()
+		}
+	}
+
+	//-----------------------------------------------------------------
 
 	/**
 	 *
@@ -255,38 +287,81 @@ class ObjectRepositoryGarbageCollector {
 	}
 
 	String jsonifyCombinedLocatorIndex() {
-		return getCombinedLocatorIndex().toJson()
+		SimpleModule module = new SimpleModule("jsonifyCombinedLocatorIndex",
+				new Version(1, 0, 0, null, null, null))
+		module.addSerializer(ObjectRepositoryGarbageCollector.class,
+				new CombinedLocatorIndexSerializer())
+		addComponentSerializers(module)
+		ObjectMapper mapper = new ObjectMapper()
+		mapper.registerModule(module)
+		return mapper.writeValueAsString( this )
 	}
 
 	/**
-	 * The most useful feature which this library provides to uses
+	 * The most useful feature for users
 	 */
 	String jsonifySuspiciousLocatorIndex() {
-		return getCombinedLocatorIndex().suspect()
+		SimpleModule module = new SimpleModule("jsonifySuspiciousLocatorIndex",
+				new Version(1, 0, 0, null, null, null))
+		module.addSerializer(ObjectRepositoryGarbageCollector.class,
+				new SuspiciousLocatorIndexSerializer())
+		addComponentSerializers(module)
+		ObjectMapper mapper = new ObjectMapper()
+		mapper.registerModule(module)
+		return mapper.writeValueAsString( this )
 	}
 
-	static class ObjectRepositoryGarbageCollectorSerializer extends StdSerializer<ObjectRepositoryGarbageCollector> {
-		ObjectRepositoryGarbageCollectorSerializer() {
+	private static void addComponentSerializers(SimpleModule module) {
+		module.addSerializer(CombinedLocatorIndex.class,
+				new CombinedLocatorIndex.CombinedLocatorIndexSerializer())
+		module.addSerializer(RunDescription.class,
+				new RunDescription.RunDescriptionSerializer())
+		module.addSerializer(ForwardReference.class,
+				new ForwardReference.ForwardReferenceSerializer())
+		module.addSerializer(TestCaseId.class,
+				new TestCaseId.TestCaseIdSerializer())
+		module.addSerializer(TestObjectId.class,
+				new TestObjectId.TestObjectIdSerializer())
+	}
+
+	static class CombinedLocatorIndexSerializer
+			extends StdSerializer<ObjectRepositoryGarbageCollector> {
+		CombinedLocatorIndexSerializer() {
 			this(null)
 		}
-		ObjectRepositoryGarbageCollectorSerializer(Class<ObjectRepositoryGarbageCollector> t) {
+		CombinedLocatorIndexSerializer(Class<ObjectRepositoryGarbageCollector> t) {
 			super(t)
 		}
 		@Override
 		void serialize(ObjectRepositoryGarbageCollector gc,
-				JsonGenerator gen, SerializerProvider serializer) {
+					   JsonGenerator gen, SerializerProvider serializer) {
 			gen.writeStartObject()
-			gen.writeFieldName("Garbage")
-			gen.writeStartArray()
-			Set<TestObjectId> toiSet = gc.getGarbage().getAllTestObjectIds()
-			toiSet.each { TestObjectId toi ->
-				gen.writeString(toi.getValue())
-			}
-			gen.writeEndArray()
+			gen.writeObjectField("CombinedLocatorIndex", gc.combinedLocatorIndex)
 			gen.writeObjectField("Run Description", gc.runDescription)
 			gen.writeEndObject()
 		}
 	}
+
+	static class SuspiciousLocatorIndexSerializer
+			extends StdSerializer<ObjectRepositoryGarbageCollector> {
+		SuspiciousLocatorIndexSerializer() {
+			this(null)
+		}
+		SuspiciousLocatorIndexSerializer(Class<ObjectRepositoryGarbageCollector> t) {
+			super(t)
+		}
+		@Override
+		void serialize(ObjectRepositoryGarbageCollector gc,
+					   JsonGenerator gen, SerializerProvider serializer) {
+			gen.writeStartObject()
+			gen.writeObjectField("SuspiciousLocatorIndex",
+					CombinedLocatorIndex.suspect(gc.combinedLocatorIndex))
+			gen.writeObjectField("Run Description", gc.runDescription)
+			gen.writeEndObject()
+		}
+	}
+
+	//-----------------------------------------------------------------
 
 	/**
 	 * Joshua Bloch's Builder pattern in Effective Java
@@ -362,7 +437,7 @@ class ObjectRepositoryGarbageCollector {
 		}
 
 
-		public ObjectRepositoryGarbageCollector build() {
+		ObjectRepositoryGarbageCollector build() {
 			return new ObjectRepositoryGarbageCollector(this)
 		}
 	}
