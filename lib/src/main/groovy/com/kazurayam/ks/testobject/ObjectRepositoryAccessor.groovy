@@ -44,7 +44,9 @@ class ObjectRepositoryAccessor {
 		List<TestObjectId> result = new ArrayList<>()
 		for (int i = 0; i < includedFiles.length; i++) {
 			if (includedFiles[i].endsWith(".rs")) {
-				TestObjectId toi = new TestObjectId(includedFiles[i].replaceAll('\\.rs$', ''))
+				String filePath = includedFiles[i].replaceAll('\\.rs$', '')
+				String idString = filePath.replace("\\", "/")
+				TestObjectId toi = new TestObjectId(idString)
 				result.add(toi)
 			} else {
 				logger.warn("found a file that does not end with '.rs'; ${includedFiles[i]}")
