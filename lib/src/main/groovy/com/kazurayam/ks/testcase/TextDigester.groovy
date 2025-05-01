@@ -1,6 +1,5 @@
 package com.kazurayam.ks.testcase
 
-
 import java.nio.file.Path
 import java.util.regex.Matcher
 import java.util.regex.Pattern

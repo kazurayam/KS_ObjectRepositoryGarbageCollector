@@ -8,7 +8,7 @@ repositories {
 
 ext {
     MDSVersion = '0.1.1'
-    ORGCVersion = '0.4.6'
+    ORGCVersion = '0.4.7-SNAPSHOT'
 }
 
 dependencies {
