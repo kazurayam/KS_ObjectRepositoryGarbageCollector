@@ -6,13 +6,12 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
-import com.kazurayam.ks.testobject.Locator
 
 class RunDescription {
 
     private String projectName
-    private Set<String> includeScriptsFolder
-    private Set<String> includeObjectRepositoryFolder
+    private List<String> includeScriptsFolder
+    private List<String> includeObjectRepositoryFolder
     private int numberOfTestCases
     private int numberOfTestObjects
     private int numberOfUnusedTestObjects
@@ -28,25 +27,25 @@ class RunDescription {
 
     static class Builder {
         private String projectName
-        private Set<String> includeScriptsFolder
-        private Set<String> includeObjectRepositoryFolder
+        private List<String> includeScriptsFolder
+        private List<String> includeObjectRepositoryFolder
         private int numberOfTestCases
         private int numberOfTestObjects
         private int numberOfUnusedTestObjects
         Builder(String projectName) {
             this.projectName = projectName
-            includeScriptsFolder = new TreeSet<>()
-            includeObjectRepositoryFolder = new TreeSet<>()
+            includeScriptsFolder = new ArrayList<>()
+            includeObjectRepositoryFolder = new ArrayList<>()
             numberOfTestCases = 0
             numberOfTestObjects = 0
             numberOfUnusedTestObjects = 0
         }
-        Builder includeScriptsFolder(String... includeScriptsFolder) {
-            this.includeScriptsFolder.addAll(includeScriptsFolder)
+        Builder includeScriptsFolder(List<String> includeScriptsFolder) {
+            this.includeScriptsFolder.addAll(includeScriptsFolder.toSorted())
             return this
         }
-        Builder includeObjectRepositoryFolder(String... includeObjectRepositoryFolder) {
-            this.includeObjectRepositoryFolder.addAll(includeObjectRepositoryFolder)
+        Builder includeObjectRepositoryFolder(List<String> includeObjectRepositoryFolder) {
+            this.includeObjectRepositoryFolder.addAll(includeObjectRepositoryFolder.toSorted())
             return this
         }
         Builder numberOfTestCases(int numberOfTestCases) {

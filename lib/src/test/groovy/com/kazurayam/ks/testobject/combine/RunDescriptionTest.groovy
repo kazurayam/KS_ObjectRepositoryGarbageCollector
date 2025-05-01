@@ -29,8 +29,8 @@ class RunDescriptionTest {
     @Before
     void setup() {
         runDescription = new RunDescription.Builder("katalon")
-                .includeScriptsFolder("main", "misc")
-                .includeObjectRepositoryFolder("main", "misc")
+                .includeScriptsFolder(["main", "misc"])
+                .includeObjectRepositoryFolder(["main", "misc"])
                 .numberOfTestCases(5)
                 .numberOfTestObjects(16)
                 .numberOfUnusedTestObjects(5)

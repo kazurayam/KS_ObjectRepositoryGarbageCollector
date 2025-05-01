@@ -42,6 +42,8 @@ class ObjectRepositoryGarbageCollector {
 	private int numberOfTestCases = 0
 	private int numberOfTestObjects = 0
 
+	private RunDescription runDescription
+
 	/*
 	 * 
 	 */
@@ -56,6 +58,15 @@ class ObjectRepositoryGarbageCollector {
 		this.db = (Database)recv[0]
 		this.ord = (ObjectRepositoryDecorator)recv[1]
 		this.backwardReferencesDatabase = this.getBackwardReferencesDatabase()
+		String projectName = this.getProjectDir().getFileName().toString()
+		this.runDescription =
+				new RunDescription.Builder(projectName)
+						.includeScriptsFolder(this.includeScriptsFolder)
+						.includeObjectRepositoryFolder(this.includeObjectRepositoryFolder)
+						.numberOfTestCases(this.getNumberOfTestCases())
+						.numberOfTestObjects(this.getNumberOfTestObjects())
+						.numberOfUnusedTestObjects(this.getGarbage().size())
+						.build()
 	}
 
 	/*
@@ -197,6 +208,9 @@ class ObjectRepositoryGarbageCollector {
 		module.addSerializer(ObjectRepositoryGarbageCollector.class,
 				new ObjectRepositoryGarbageCollectorSerializer())
 
+		module.addSerializer(RunDescription.class,
+				new RunDescription.RunDescriptionSerializer())
+
 		module.addSerializer(Garbage.class,
 				new Garbage.GarbageSerializer())
 
@@ -269,35 +283,7 @@ class ObjectRepositoryGarbageCollector {
 				gen.writeString(toi.getValue())
 			}
 			gen.writeEndArray()
-			writeRunCondition(gc, gen)
-			gen.writeEndObject()
-		}
-		private static void writeRunCondition(ObjectRepositoryGarbageCollector gc,
-											  JsonGenerator gen) {
-			gen.writeFieldName("RunCondition")
-			gen.writeStartObject()
-			gen.writeStringField("Project name", gc.getProjectDir().getFileName().toString())
-			if (!gc.getIncludeScriptsFolder().isEmpty()) {
-				gen.writeFieldName("includeScriptsFolder")
-				gen.writeStartArray()
-				List<String> patterns = gc.getIncludeScriptsFolder()
-				patterns.each { ptrn ->
-					gen.writeString(ptrn)
-				}
-				gen.writeEndArray()
-			}
-			if (!gc.getIncludeObjectRepositoryFolder().isEmpty()) {
-				gen.writeFieldName("includeObjectRepositoryFolder")
-				gen.writeStartArray()
-				List<String> patterns = gc.getIncludeObjectRepositoryFolder()
-				patterns.each { ptrn ->
-					gen.writeString(ptrn)
-				}
-				gen.writeEndArray()
-			}
-			gen.writeNumberField("Number of TestCases", gc.getNumberOfTestCases())
-			gen.writeNumberField("Number of TestObjects", gc.getNumberOfTestObjects())
-			gen.writeNumberField("Number of unused TestObjects", gc.getGarbage().size())
+			gen.writeObjectField("Run Description", gc.runDescription)
 			gen.writeEndObject()
 		}
 	}
