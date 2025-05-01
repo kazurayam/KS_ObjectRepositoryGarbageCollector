@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import com.kazurayam.ks.configuration.KatalonProjectDirectoryResolver
-import com.kazurayam.ks.logging.SimplifiedStopWatch
 import com.kazurayam.ks.testcase.DigestedLine
 import com.kazurayam.ks.testcase.ScriptsDecorator
 import com.kazurayam.ks.testcase.TestCaseId
@@ -18,7 +17,6 @@ import com.kazurayam.ks.testobject.TestObjectId
 
 import java.nio.file.Files
 import java.nio.file.Path
-import java.time.Duration
 import java.time.LocalDateTime
 
 /**
@@ -59,8 +57,8 @@ class ObjectRepositoryGarbageCollector {
 		//
 		startedAt = LocalDateTime.now()
 		def recv = this.scan(this.objectRepositoryDir, this.scriptsDir)
-		this.db = recv[0]
-		this.ord = recv[1]
+		this.db = (Database)recv[0]
+		this.ord = (ObjectRepositoryDecorator)recv[1]
 		this.backwardReferencesDatabase = this.getBackwardReferencesDatabase()
 		finishedAt = LocalDateTime.now()
 	}
@@ -112,7 +110,6 @@ class ObjectRepositoryGarbageCollector {
 		return [db, ord]
 	}
 
-
 	private static List<TestCaseId> getTestCaseIdList(Path scriptsDir, List<Path> groovyFiles) {
 		List<TestCaseId> list = new ArrayList<>()
 		groovyFiles.forEach ({ groovyFile ->
@@ -121,7 +118,6 @@ class ObjectRepositoryGarbageCollector {
 		})
 		return list
 	}
-
 
 	Database db() {
 		return db
@@ -279,65 +275,44 @@ class ObjectRepositoryGarbageCollector {
 			}
 			gen.writeEndArray()
 			writeRunCondition(gc, gen)
-			writeRunDuration(gc, gen)
+			gen.writeEndObject()
+		}
+		private static void writeRunCondition(ObjectRepositoryGarbageCollector gc,
+											  JsonGenerator gen) {
+			gen.writeFieldName("RunCondition")
+			gen.writeStartObject()
+			gen.writeStringField("Project name", gc.getProjectDir().getFileName().toString())
+			if (!gc.getIncludeScriptsFolder().isEmpty()) {
+				gen.writeFieldName("includeScriptsFolder")
+				gen.writeStartArray()
+				List<String> patterns = gc.getIncludeScriptsFolder()
+				patterns.each { ptrn ->
+					gen.writeString(ptrn)
+				}
+				gen.writeEndArray()
+			}
+			if (!gc.getIncludeObjectRepositoryFolder().isEmpty()) {
+				gen.writeFieldName("includeObjectRepositoryFolder")
+				gen.writeStartArray()
+				List<String> patterns = gc.getIncludeObjectRepositoryFolder()
+				patterns.each { ptrn ->
+					gen.writeString(ptrn)
+				}
+				gen.writeEndArray()
+			}
+			gen.writeNumberField("Number of TestCases", gc.getNumberOfTestCases())
+			gen.writeNumberField("Number of TestObjects", gc.getNumberOfTestObjects())
+			gen.writeNumberField("Number of unused TestObjects", gc.getGarbage().size())
 			gen.writeEndObject()
 		}
 	}
-
-	private static void writeRunCondition(ObjectRepositoryGarbageCollector gc,
-									 JsonGenerator gen) {
-		gen.writeFieldName("RunCondition")
-		gen.writeStartObject()
-		gen.writeStringField("Project name", gc.getProjectDir().getFileName().toString())
-		if (!gc.getIncludeScriptsFolder().isEmpty()) {
-			gen.writeFieldName("includeScriptsFolder")
-			gen.writeStartArray()
-			List<String> patterns = gc.getIncludeScriptsFolder()
-			patterns.each { ptrn ->
-				gen.writeString(ptrn)
-			}
-			gen.writeEndArray()
-		}
-		if (!gc.getIncludeObjectRepositoryFolder().isEmpty()) {
-			gen.writeFieldName("includeObjectRepositoryFolder")
-			gen.writeStartArray()
-			List<String> patterns = gc.getIncludeObjectRepositoryFolder()
-			patterns.each { ptrn ->
-				gen.writeString(ptrn)
-			}
-			gen.writeEndArray()
-		}
-		gen.writeNumberField("Number of TestCases", gc.getNumberOfTestCases())
-		gen.writeNumberField("Number of TestObjects", gc.getNumberOfTestObjects())
-		gen.writeNumberField("Number of unused TestObjects", gc.getGarbage().size())
-		gen.writeEndObject()
-	}
-
-	private static void writeRunDuration(ObjectRepositoryGarbageCollector gc,
-											JsonGenerator gen) {
-		gen.writeFieldName("RunDuration")
-		gen.writeStartObject()
-		gen.writeNumberField("SimplifiedStopWatch seconds", gc.timeTaken())
-		gen.writeEndObject()
-	}
-
-	Double timeTaken() {
-		Duration timeTaken = Duration.between(startedAt, finishedAt)
-		return toSeconds(timeTaken)
-	}
-
-	private Double toSeconds(Duration dur) {
-		Double v = dur.toMillis() / 1000
-		return v
-	}
-
 
 	/**
 	 * Joshua Bloch's Builder pattern in Effective Java
 	 *
 	 * @author kazuarayam
 	 */
-	public static class Builder {
+	static class Builder {
 
 		private Path objectRepositoryDir // non null
 		private List<String> includeObjectRepositoryFolder  // sub-folders in the "Object Repository" directory, may be empty
