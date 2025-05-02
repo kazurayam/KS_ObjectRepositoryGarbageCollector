@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
-import com.kazurayam.ks.testcase.DigestedLine
+import com.kazurayam.ks.text.DigestedLine
 import com.kazurayam.ks.testcase.TestCaseId
 import com.kazurayam.ks.testobject.TestObjectId
 

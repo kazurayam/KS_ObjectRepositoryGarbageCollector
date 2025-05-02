@@ -2,6 +2,7 @@ package com.kazurayam.ks.testcase
 
 import com.kazurayam.ks.configuration.KatalonProjectDirectoryResolver
 import com.kazurayam.ks.reporting.Shorthand
+import com.kazurayam.ks.text.DigestedLine
 import groovy.json.JsonOutput
 import org.junit.Before
 import org.junit.Test
@@ -9,7 +10,6 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 import java.nio.file.Path
-import java.nio.file.Paths
 
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNotNull

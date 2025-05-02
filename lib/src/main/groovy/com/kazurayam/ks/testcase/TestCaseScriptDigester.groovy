@@ -1,5 +1,8 @@
 package com.kazurayam.ks.testcase
 
+import com.kazurayam.ks.text.DigestedLine
+import com.kazurayam.ks.text.TextDigester
+
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.stream.Collectors

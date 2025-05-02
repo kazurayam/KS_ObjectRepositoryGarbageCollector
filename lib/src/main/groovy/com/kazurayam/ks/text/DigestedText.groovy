@@ -1,4 +1,4 @@
-package com.kazurayam.ks.testcase
+package com.kazurayam.ks.text
 
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.Version

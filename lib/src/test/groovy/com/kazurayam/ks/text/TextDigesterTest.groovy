@@ -1,4 +1,4 @@
-package com.kazurayam.ks.testcase
+package com.kazurayam.ks.text
 
 import com.kazurayam.ks.configuration.KatalonProjectDirectoryResolver
 import com.kazurayam.ks.reporting.Shorthand
@@ -8,7 +8,6 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 import java.nio.file.Path
-import java.nio.file.Paths
 
 import static org.junit.Assert.assertEquals
 
