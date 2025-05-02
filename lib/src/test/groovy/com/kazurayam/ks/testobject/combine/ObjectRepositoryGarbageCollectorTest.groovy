@@ -50,7 +50,7 @@ class ObjectRepositoryGarbageCollectorTest {
 
 	@Test
 	void test_getBackwardReferencesMap() {
-		BackwardReferencesDatabase brm = garbageCollector.getBackwardReferencesDatabase()
+		BackwardReferenceIndex brm = garbageCollector.getBackwardReferenceIndex()
 		assertNotNull(brm)
 		TestObjectId toi = new TestObjectId("main/Page_CURA Healthcare Service/a_Go to Homepage")
 		assertTrue(brm.keySet().contains(toi))
@@ -61,10 +61,10 @@ class ObjectRepositoryGarbageCollectorTest {
 	}
 
 	@Test
-	void test_jsonifyBackwardReferencesDatabase() {
-		String json = garbageCollector.jsonifyBackwardReferencesDatabase()
+	void test_jsonifyBackwardReferenceIndex() {
+		String json = garbageCollector.jsonifyBackwardReferenceIndex()
 		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
-				.fileName("test_jsonifyBackwardReferencesMap.json").build()
+				.fileName("test_jsonifyBackwardReferenceIndex.json").build()
 		sh.write(JsonOutput.prettyPrint(json))
 	}
 

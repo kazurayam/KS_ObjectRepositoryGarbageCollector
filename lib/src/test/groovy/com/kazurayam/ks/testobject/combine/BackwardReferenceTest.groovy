@@ -19,9 +19,9 @@ class BackwardReferenceTest {
     private static Path scriptsDir = projectDir.resolve("Scripts")
 
     private static ObjectRepositoryGarbageCollector garbageCollector
-    private static BackwardReferencesDatabase backwardReferencesDatabase
+    private static BackwardReferenceIndex index
 
-    private Set<BackwardReference> backwardReferenceSet
+    private Set<BackwardReference> backwardReferencSet
 
     @BeforeClass
     static void beforeClass() {
@@ -31,18 +31,18 @@ class BackwardReferenceTest {
                 .includeObjectRepositoryFolder("main")
                 .includeObjectRepositoryFolder("misc")
                 .build()
-        backwardReferencesDatabase = garbageCollector.getBackwardReferencesDatabase()
+        index = garbageCollector.getBackwardReferenceIndex()
     }
 
     @Before
     void setup() {
         TestObjectId testObjectId = new TestObjectId("main/Page_CURA Healthcare Service/a_Make Appointment")
-        backwardReferenceSet = backwardReferencesDatabase.get(testObjectId)
+        backwardReferencSet = index.get(testObjectId)
     }
 
     @Test
     void test_toJson() {
-        List<BackwardReference> list = backwardReferenceSet as List
+        List<BackwardReference> list = backwardReferencSet as List
         assert list.size() > 0
         String json = list.get(0).toJson()
         Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())

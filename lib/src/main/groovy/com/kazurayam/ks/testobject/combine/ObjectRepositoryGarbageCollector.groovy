@@ -36,7 +36,7 @@ class ObjectRepositoryGarbageCollector {
 
 	private ForwardReferences forwardReferences
 	private ObjectRepositoryDecorator ord
-	private BackwardReferencesDatabase backwardReferencesDatabase
+	private BackwardReferenceIndex backwardReferenceIndex
 
 	private int numberOfTestCases = 0
 	private int numberOfTestObjects = 0
@@ -56,7 +56,7 @@ class ObjectRepositoryGarbageCollector {
 		def recv = this.scan(this.objectRepositoryDir, this.scriptsDir)
 		this.forwardReferences = (ForwardReferences)recv[0]
 		this.ord = (ObjectRepositoryDecorator)recv[1]
-		this.backwardReferencesDatabase = this.getBackwardReferencesDatabase()
+		this.backwardReferenceIndex = this.getBackwardReferenceIndex()
 		String projectName = this.getProjectDir().getFileName().toString()
 		this.runDescription =
 				new RunDescription.Builder(projectName)
@@ -159,8 +159,8 @@ class ObjectRepositoryGarbageCollector {
 	/**
 	 *
 	 */
-	BackwardReferencesDatabase getBackwardReferencesDatabase() {
-		BackwardReferencesDatabase brdb = new BackwardReferencesDatabase()
+	BackwardReferenceIndex getBackwardReferenceIndex() {
+		BackwardReferenceIndex index = new BackwardReferenceIndex()
 		Set<TestObjectId> allTestObjectIds = forwardReferences.getAllTestObjectIdsContained()
 		allTestObjectIds.each { testObjectId ->
 			BackwardReference br = new BackwardReference(testObjectId)
@@ -171,18 +171,18 @@ class ObjectRepositoryGarbageCollector {
 					br.add(fr)
 				}
 			}
-			brdb.put(testObjectId, br)
+			index.put(testObjectId, br)
 		}
-		return brdb
+		return index
 	}
 
 	/**
 	 *
 	 */
-	String jsonifyBackwardReferencesDatabase() {
-		BackwardReferencesDatabase backwardReferencesMap =
-				this.getBackwardReferencesDatabase()
-		return backwardReferencesMap.toJson()
+	String jsonifyBackwardReferenceIndex() {
+		BackwardReferenceIndex index =
+				this.getBackwardReferenceIndex()
+		return index.toJson()
 	}
 
 	//-----------------------------------------------------------------
@@ -276,7 +276,7 @@ class ObjectRepositoryGarbageCollector {
 			Set<TestObjectId> containers = ord.findTestObjectsWithLocator(locator)
 			containers.each { toi ->
 				CombinedLocatorDeclarations declarations = new CombinedLocatorDeclarations(toi)
-				Set<BackwardReference> backwardReferences = backwardReferencesDatabase.get(toi)
+				Set<BackwardReference> backwardReferences = backwardReferenceIndex.get(toi)
 				backwardReferences.each { br ->
 					declarations.add(br)
 				}
