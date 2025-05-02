@@ -54,8 +54,8 @@ class ObjectRepositoryGarbageCollectorTest {
 		assertNotNull(brm)
 		TestObjectId toi = new TestObjectId("main/Page_CURA Healthcare Service/a_Go to Homepage")
 		assertTrue(brm.keySet().contains(toi))
-		Set<BackwardReferences> brSet = brm.get(toi)
-		List<BackwardReferences> brList = brSet as List
+		Set<BackwardReference> brSet = brm.get(toi)
+		List<BackwardReference> brList = brSet as List
 		assertEquals(1, brList.size())
 		assertEquals(toi, brList.get(0).getTestObjectId())
 	}

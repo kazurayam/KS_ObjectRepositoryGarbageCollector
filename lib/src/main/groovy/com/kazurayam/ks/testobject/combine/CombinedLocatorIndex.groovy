@@ -12,47 +12,47 @@ import com.kazurayam.ks.testobject.TestObjectId
 
 class CombinedLocatorIndex {
 
-    private Map<Locator, Set<CombinedLocatorDeclarations>> map
+    private Map<Locator, Set<CombinedLocatorDeclarations>> index
 
     CombinedLocatorIndex() {
-        this.map = new TreeMap<>()
+        this.index = new TreeMap<>()
     }
 
     Set<Locator> keySet() {
-        return map.keySet()
+        return index.keySet()
     }
 
     Iterator<Map.Entry<Locator, Set<CombinedLocatorDeclarations>>> iterator() {
-        return map.entrySet().iterator()
+        return index.entrySet().iterator()
     }
 
     Set<CombinedLocatorDeclarations> get(Locator locator) {
         Objects.requireNonNull(locator)
-        return map.get(locator)
+        return index.get(locator)
     }
 
     void put(Locator locator, Set<CombinedLocatorDeclarations> cldSet) {
         Objects.requireNonNull(locator)
         Objects.requireNonNull(cldSet)
-        map.put(locator, cldSet)
+        index.put(locator, cldSet)
     }
 
     void put(Locator locator, CombinedLocatorDeclarations cld) {
         Objects.requireNonNull(locator)
         Objects.requireNonNull(cld)
-        if (!map.containsKey(locator)) {
-            map.put(locator, new TreeSet<CombinedLocatorDeclarations>())
+        if (!index.containsKey(locator)) {
+            index.put(locator, new TreeSet<CombinedLocatorDeclarations>())
         }
-        Set<CombinedLocatorDeclarations> set = map.get(locator)
+        Set<CombinedLocatorDeclarations> set = index.get(locator)
         set.add(cld)
     }
 
     Set<CombinedLocatorDeclarations> remove(Locator locator) {
-        return map.remove(locator)
+        return index.remove(locator)
     }
 
     int size() {
-        return map.size()
+        return index.size()
     }
 
     @Override
@@ -69,7 +69,7 @@ class CombinedLocatorIndex {
         module.addSerializer(Locator.class, new Locator.LocatorSerializer())
         module.addSerializer(LocatorDeclarations.class, new LocatorDeclarations.LocatorDeclarationsSerializer())
         module.addSerializer(TestObjectId.class, new TestObjectId.TestObjectIdSerializer())
-        module.addSerializer(BackwardReferences.class, new BackwardReferences.BackwardReferencesSerializer())
+        module.addSerializer(BackwardReference.class, new BackwardReference.BackwardReferencesSerializer())
         mapper.registerModule(module)
         return mapper.writeValueAsString(this)
     }

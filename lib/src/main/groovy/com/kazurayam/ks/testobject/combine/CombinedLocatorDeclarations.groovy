@@ -11,9 +11,9 @@ import com.kazurayam.ks.testobject.TestObjectId
 class CombinedLocatorDeclarations implements Comparable<CombinedLocatorDeclarations> {
 
     private TestObjectId testObjectId
-    private Set<BackwardReferences> declarations
+    private Set<BackwardReference> declarations
 
-    CombinedLocatorDeclarations(TestObjectId testObjectId, Set<BackwardReferences> declarations) {
+    CombinedLocatorDeclarations(TestObjectId testObjectId, Set<BackwardReference> declarations) {
         Objects.requireNonNull(testObjectId)
         Objects.requireNonNull(declarations)
         this.testObjectId = testObjectId
@@ -21,7 +21,7 @@ class CombinedLocatorDeclarations implements Comparable<CombinedLocatorDeclarati
     }
 
     CombinedLocatorDeclarations(TestObjectId testObjectId) {
-        this(testObjectId, new TreeSet<BackwardReferences>())
+        this(testObjectId, new TreeSet<BackwardReference>())
     }
 
     CombinedLocatorDeclarations(CombinedLocatorDeclarations that) {
@@ -36,7 +36,7 @@ class CombinedLocatorDeclarations implements Comparable<CombinedLocatorDeclarati
         return this.testObjectId
     }
 
-    Set<BackwardReferences> getDeclarations() {
+    Set<BackwardReference> getDeclarations() {
         return this.declarations
     }
 
@@ -44,7 +44,7 @@ class CombinedLocatorDeclarations implements Comparable<CombinedLocatorDeclarati
         return getDeclarations().size()
     }
 
-    void add(BackwardReferences declaration) {
+    void add(BackwardReference declaration) {
         Objects.requireNonNull(declaration)
         declarations.add(declaration)
     }
@@ -61,8 +61,8 @@ class CombinedLocatorDeclarations implements Comparable<CombinedLocatorDeclarati
         if (this.getDeclarations().size() != that.getDeclarations().size()) {
             return false
         }
-        List<BackwardReferences> thisList = this.getDeclarations() as List
-        List<BackwardReferences> thatList = that.getDeclarations() as List
+        List<BackwardReference> thisList = this.getDeclarations() as List
+        List<BackwardReference> thatList = that.getDeclarations() as List
         for (int i = 0; i < thisList.size(); i++) {
             if (thisList.get(i) != thatList.get(i)) {
                 return false
@@ -86,8 +86,8 @@ class CombinedLocatorDeclarations implements Comparable<CombinedLocatorDeclarati
             if (v != 0) {
                 return v
             } else {
-                List<BackwardReferences> thisList = this.getDeclarations() as List
-                List<BackwardReferences> thatList = that.getDeclarations() as List
+                List<BackwardReference> thisList = this.getDeclarations() as List
+                List<BackwardReference> thatList = that.getDeclarations() as List
                 for (int i = 0; i < thisList.size(); i++) {
                     v = thisList.get(i).compareTo(thatList.get(i))
                     if (v != 0) {
@@ -110,7 +110,7 @@ class CombinedLocatorDeclarations implements Comparable<CombinedLocatorDeclarati
                 new Version(1, 0, 0, null, null, null))
         module.addSerializer(CombinedLocatorDeclarations.class, new CombinedLocatorDeclarationsSerializer())
         module.addSerializer(TestObjectId.class, new TestObjectId.TestObjectIdSerializer())
-        module.addSerializer(BackwardReferences.class, new BackwardReferences.BackwardReferencesSerializer())
+        module.addSerializer(BackwardReference.class, new BackwardReference.BackwardReferencesSerializer())
         mapper.registerModules(module)
         return mapper.writeValueAsString(this)
     }

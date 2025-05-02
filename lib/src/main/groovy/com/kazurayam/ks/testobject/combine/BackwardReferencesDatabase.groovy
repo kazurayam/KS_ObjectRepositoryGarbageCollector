@@ -11,7 +11,7 @@ import com.kazurayam.ks.testobject.TestObjectId
 
 class BackwardReferencesDatabase {
 
-	Map<TestObjectId, Set<BackwardReferences>> brDatabase;
+	Map<TestObjectId, Set<BackwardReference>> brDatabase;
 
 	BackwardReferencesDatabase() {
 		this.brDatabase = new TreeMap<>()
@@ -21,24 +21,24 @@ class BackwardReferencesDatabase {
 		return brDatabase.keySet()
 	}
 
-	Iterator<Map.Entry<TestObjectId, Set<BackwardReferences>>> iterator() {
+	Iterator<Map.Entry<TestObjectId, Set<BackwardReference>>> iterator() {
 		return brDatabase.entrySet().iterator()
 	}
 
-	Set<BackwardReferences> get(TestObjectId testObjectId) {
+	Set<BackwardReference> get(TestObjectId testObjectId) {
 		Objects.requireNonNull(testObjectId)
 		return brDatabase.get(testObjectId)
 	}
 
-	void put(TestObjectId testObjectId, BackwardReferences backwardReferences) {
+	void put(TestObjectId testObjectId, BackwardReference backwardReferences) {
 		Objects.requireNonNull(testObjectId)
 		Objects.requireNonNull(backwardReferences)
 		assert testObjectId == backwardReferences.getTestObjectId() : "${testObjectId} is not equal to ${backwardReferences.getTestObjectId}"
 		if (!brDatabase.containsKey(testObjectId)) {
-			Set<BackwardReferences> emptySet = new TreeSet<>()
+			Set<BackwardReference> emptySet = new TreeSet<>()
 			brDatabase.put(testObjectId, emptySet)
 		}
-		Set<BackwardReferences> set = brDatabase.get(testObjectId)
+		Set<BackwardReference> set = brDatabase.get(testObjectId)
 		set.add(backwardReferences)
 	}
 
@@ -53,12 +53,12 @@ class BackwardReferencesDatabase {
 
 	String toJson() {
 		ObjectMapper mapper = new ObjectMapper()
-		SimpleModule module = new SimpleModule("BackwardReferencesSerializer",
+		SimpleModule module = new SimpleModule("BackwardReferencesDatabaseSerializer",
 				new Version(1, 0, 0, null, null, null))
 		module.addSerializer(BackwardReferencesDatabase.class, new BackwardReferenceDatabaseSerializer())
 		module.addSerializer(TestCaseId.class, new TestCaseId.TestCaseIdSerializer())
 		module.addSerializer(TestObjectId.class, new TestObjectId.TestObjectIdSerializer())
-		module.addSerializer(BackwardReferences.class, new BackwardReferences.BackwardReferencesSerializer())
+		module.addSerializer(BackwardReference.class, new BackwardReference.BackwardReferencesSerializer())
 		module.addSerializer(ForwardReference.class, new ForwardReference.ForwardReferenceSerializer())
 		mapper.registerModule(module)
 		return mapper.writeValueAsString(this)
@@ -76,7 +76,7 @@ class BackwardReferencesDatabase {
 		void serialize(BackwardReferencesDatabase brm,
 					   JsonGenerator gen, SerializerProvider serializer) {
 			gen.writeStartObject()
-			gen.writeFieldName("BackwardReferenceMap")
+			gen.writeFieldName("BackwardReferencesDatabase")
 			gen.writeStartArray()
 			brm.iterator().each { entry ->
 				gen.writeStartObject()
@@ -84,7 +84,7 @@ class BackwardReferencesDatabase {
 				TestObjectId testObjectId = entry.key
 				gen.writeStringField("TestObjectId", testObjectId.getValue())
 				//
-				Set<BackwardReferences> backwardReferences = entry.value
+				Set<BackwardReference> backwardReferences = entry.value
 				gen.writeNumberField("Number of TestObjects", backwardReferences.size())
 				gen.writeFieldName("TestObjects")
 				gen.writeStartArray()

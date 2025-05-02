@@ -163,7 +163,7 @@ class ObjectRepositoryGarbageCollector {
 		BackwardReferencesDatabase brdb = new BackwardReferencesDatabase()
 		Set<TestObjectId> allTestObjectIds = forwardReferences.getAllTestObjectIdsContained()
 		allTestObjectIds.each { testObjectId ->
-			BackwardReferences br = new BackwardReferences(testObjectId)
+			BackwardReference br = new BackwardReference(testObjectId)
 			Set<ForwardReference> forwardReferences =
 					forwardReferences.findForwardReferencesTo(testObjectId)
 			if (forwardReferences != null) {
@@ -276,7 +276,7 @@ class ObjectRepositoryGarbageCollector {
 			Set<TestObjectId> containers = ord.findTestObjectsWithLocator(locator)
 			containers.each { toi ->
 				CombinedLocatorDeclarations declarations = new CombinedLocatorDeclarations(toi)
-				Set<BackwardReferences> backwardReferences = backwardReferencesDatabase.get(toi)
+				Set<BackwardReference> backwardReferences = backwardReferencesDatabase.get(toi)
 				backwardReferences.each { br ->
 					declarations.add(br)
 				}

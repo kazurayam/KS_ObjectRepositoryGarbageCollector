@@ -8,12 +8,12 @@ import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import com.kazurayam.ks.testobject.TestObjectId
 
-class BackwardReferences implements Comparable<BackwardReferences> {
+class BackwardReference implements Comparable<BackwardReference> {
 
     private TestObjectId testObjectId
     private Set<ForwardReference> forwardReferences
 
-    BackwardReferences(TestObjectId testObjectId) {
+    BackwardReference(TestObjectId testObjectId) {
         Objects.requireNonNull(testObjectId)
         this.testObjectId = testObjectId
         this.forwardReferences = new TreeSet<>()
@@ -22,7 +22,7 @@ class BackwardReferences implements Comparable<BackwardReferences> {
     /**
      * Copy constructor
      */
-    BackwardReferences(BackwardReferences that) {
+    BackwardReference(BackwardReference that) {
         this.testObjectId = that.getTestObjectId()
         this.forwardReferences = new TreeSet<>()
         that.getForwardReferences().each { ForwardReference ref ->
@@ -52,10 +52,10 @@ class BackwardReferences implements Comparable<BackwardReferences> {
 
     @Override
     boolean equals(Object obj) {
-        if (!(obj instanceof BackwardReferences)) {
+        if (!(obj instanceof BackwardReference)) {
             return false
         }
-        BackwardReferences other = (BackwardReferences) obj
+        BackwardReference other = (BackwardReference) obj
         if (this.testObjectId != other.testObjectId) {
             return false
         }
@@ -85,7 +85,7 @@ class BackwardReferences implements Comparable<BackwardReferences> {
     }
 
     @Override
-    int compareTo(BackwardReferences other) {
+    int compareTo(BackwardReference other) {
         int v = this.getTestObjectId().compareTo(other.getTestObjectId())
         if (v != 0) {
             return v
@@ -118,23 +118,23 @@ class BackwardReferences implements Comparable<BackwardReferences> {
         ObjectMapper mapper = new ObjectMapper()
         SimpleModule module = new SimpleModule("BackwardReferencesSerializer",
                 new Version(1, 0, 0, null, null, null))
-        module.addSerializer(BackwardReferences.class, new BackwardReferencesSerializer())
+        module.addSerializer(BackwardReference.class, new BackwardReferencesSerializer())
         module.addSerializer(TestObjectId.class, new TestObjectId.TestObjectIdSerializer())
         module.addSerializer(ForwardReference.class, new ForwardReference.ForwardReferenceSerializer())
         mapper.registerModule(module)
         return mapper.writeValueAsString(this)
     }
 
-    static class BackwardReferencesSerializer extends StdSerializer<BackwardReferences> {
+    static class BackwardReferencesSerializer extends StdSerializer<BackwardReference> {
         BackwardReferencesSerializer() {
             this(null)
         }
 
-        BackwardReferencesSerializer(Class<BackwardReferences> t) {
+        BackwardReferencesSerializer(Class<BackwardReference> t) {
             super(t)
         }
         @Override
-        void serialize(BackwardReferences br,
+        void serialize(BackwardReference br,
                        JsonGenerator gen, SerializerProvider serializer) {
             gen.writeStartObject()
             gen.writeObjectField("TestObjectId", br.getTestObjectId())

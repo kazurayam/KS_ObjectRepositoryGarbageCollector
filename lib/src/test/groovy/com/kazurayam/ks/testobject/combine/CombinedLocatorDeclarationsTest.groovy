@@ -1,8 +1,6 @@
 package com.kazurayam.ks.testobject.combine
 
 import com.kazurayam.ks.reporting.Shorthand
-import com.kazurayam.ks.testobject.Locator
-import com.kazurayam.ks.testobject.SelectorMethod
 import com.kazurayam.ks.testobject.TestObjectId
 import groovy.json.JsonOutput
 import org.junit.Test
@@ -18,11 +16,11 @@ class CombinedLocatorDeclarationsTest {
         //Locator locator = new Locator("//body", SelectorMethod.XPATH)
         TestObjectId testObjectId = new TestObjectId("misc/dummy1")
         cld = new CombinedLocatorDeclarations(testObjectId)
-        BackwardReferences br = new BackwardReferences(testObjectId)
+        BackwardReference br = new BackwardReference(testObjectId)
         cld.add(br)
         //
         assertEquals(1, cld.getDeclarations().size())
-        Set<BackwardReferences> brSet = cld.getDeclarations()
+        Set<BackwardReference> brSet = cld.getDeclarations()
         brSet.each { brEntry ->
             assertEquals(0, brEntry.getNumberOfReferences())
         }
