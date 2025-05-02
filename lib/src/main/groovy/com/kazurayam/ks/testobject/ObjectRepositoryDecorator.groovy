@@ -27,33 +27,29 @@ class ObjectRepositoryDecorator {
 
 	private Path objectRepositoryDir
 	private List<String> includeFolderSpecification
+	private List<String> excludeFolderSpecification
 	private ObjectRepositoryAccessor accessor
 
 	private ObjectRepositoryDecorator(Builder builder) {
 		objectRepositoryDir = builder.objectRepositoryDir
 		includeFolderSpecification = builder.includeFolder
+		excludeFolderSpecification = builder.excludeFolder
 		Objects.requireNonNull(this.objectRepositoryDir)
 		Objects.requireNonNull(this.includeFolderSpecification)
+		Objects.requireNonNull(this.excludeFolderSpecification)
 		init()
 	}
 
 	private init() {
 		// the following line is the whole reason why we need this class
-		List<String> patternsForFile = translatePatterns(includeFolderSpecification)
+		List<String> includes = translatePatterns(includeFolderSpecification)
+		List<String> excludes = translatePatterns(excludeFolderSpecification)
 		accessor =
 				new ObjectRepositoryAccessor.Builder(objectRepositoryDir)
-				.includeFiles(patternsForFile)
+				.includeFiles(includes)
+				.excludeFiles(excludes)
 				.build()
 	}
-
-	Path getObjectRepositoryDir() {
-		return objectRepositoryDir
-	}
-
-	List<String> getIncludeFolderSpecification() {
-		return includeFolderSpecification
-	}
-
 
 	/**
 	 * 
@@ -84,7 +80,7 @@ class ObjectRepositoryDecorator {
 	 * @param includeFolderSpecification
 	 * @return
 	 */
-	protected List<String> translatePatterns(List<String> patterns) {
+	protected static List<String> translatePatterns(List<String> patterns) {
 		List<String> patternsForFile = new ArrayList<>()
 		patterns.each { ptrn ->
 			StringBuilder sb = new StringBuilder()
@@ -206,8 +202,6 @@ class ObjectRepositoryDecorator {
 		return locatorIndex.toJson()
 	}
 
-
-
 	/**
 	 * 
 	 * @author kazurayam
@@ -215,6 +209,7 @@ class ObjectRepositoryDecorator {
 	static class Builder {
 		private Path objectRepositoryDir
 		private List<String> includeFolder
+		private List<String> excludeFolder
 		Builder() {
 			this(KatalonProjectDirectoryResolver.getProjectDir().resolve("Object Repository"))
 		}
@@ -223,15 +218,26 @@ class ObjectRepositoryDecorator {
 			assert Files.exists(dir)
 			objectRepositoryDir = dir
 			includeFolder = new ArrayList<>()
+			excludeFolder = new ArrayList<>()
 		}
 		Builder includeFolder(String pattern) {
 			Objects.requireNonNull(pattern)
 			this.includeFolder.add(pattern)
 			return this
 		}
-		Builder includeFolder(List<String> pattern) {
+		Builder includeFolder(List<String> patterns) {
+			Objects.requireNonNull(patterns)
+			this.includeFolder.addAll(patterns)
+			return this
+		}
+		Builder excludeFolder(String pattern) {
 			Objects.requireNonNull(pattern)
-			this.includeFolder.addAll(pattern)
+			this.excludeFolder.add(pattern)
+			return this
+		}
+		Builder excludeFolder(List<String> patterns) {
+			Objects.requireNonNull(patterns)
+			this.excludeFolder.addAll(patterns)
 			return this
 		}
 		ObjectRepositoryDecorator build() {
@@ -250,11 +256,13 @@ class ObjectRepositoryDecorator {
 
 		private Path objectRepositoryDir
 		private List<String> includeFilesSpecification
+		private List<String> excludeFilesSpecification
 		private DirectoryScanner ds
 
 		private ObjectRepositoryAccessor(Builder builder) {
 			this.objectRepositoryDir = builder.objectRepositoryDir
 			this.includeFilesSpecification = builder.includeFiles
+			this.excludeFilesSpecification = builder.excludeFiles
 			init()
 		}
 
@@ -264,6 +272,10 @@ class ObjectRepositoryDecorator {
 			if (includeFilesSpecification.size() > 0) {
 				String[] includes = includeFilesSpecification.toArray(new String[0])
 				ds.setIncludes(includes)
+			}
+			if (excludeFilesSpecification.size() > 0) {
+				String[] excludes = excludeFilesSpecification.toArray(new String[0])
+				ds.setExcludes(excludes)
 			}
 			ds.scan()
 		}
@@ -311,9 +323,11 @@ class ObjectRepositoryDecorator {
 		static class Builder {
 			private Path objectRepositoryDir
 			private List<String> includeFiles
+			private List<String> excludeFiles
 			Builder(Path orDir) {
 				objectRepositoryDir = orDir.toAbsolutePath().normalize()
 				includeFiles = new ArrayList<>()
+				excludeFiles = new ArrayList<>()
 			}
 
 			ObjectRepositoryAccessor.Builder includeFile(String pattern) {
@@ -327,6 +341,19 @@ class ObjectRepositoryDecorator {
 				includeFiles.addAll(patterns)
 				return this
 			}
+
+			ObjectRepositoryAccessor.Builder excludeFile(String pattern) {
+				Objects.requireNonNull(pattern)
+				excludeFiles.add(pattern)
+				return this
+			}
+
+			ObjectRepositoryAccessor.Builder excludeFiles(List<String> patterns) {
+				Objects.requireNonNull(patterns)
+				excludeFiles.addAll(patterns)
+				return this
+			}
+
 			ObjectRepositoryAccessor build() {
 				return new ObjectRepositoryAccessor(this)
 			}
