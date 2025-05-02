@@ -119,27 +119,23 @@ This script produced this (trimmed):
 ```
 {
     "CombinedLocatorIndex": {
-        "Number of Locators": 12,
-        "Number of Suspicious Locators": 2,
+        "Number of Locators": 13,
+        "Number of Suspicious Locators": 3,
         "Locators": [
             {
                 "Locator": {
                     "value": "(.//*[normalize-space(text()) and normalize-space(.)='Sa'])[1]/following::td[31]",
                     "selectorMethod": "XPATH"
                 },
-                "Number of container TestObjects": 2,
-                "Locator Declarations": [
+                "Number of Container TestObjects": 2,
+                "Container TestObjects": [
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/td_28",
-                        "declarations": [
-                            
-                        ]
+                        "TestObjectId": "main/Page_CURA Healthcare Service/td_28",
+                        "is used": false
                     },
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/xtra/td_28",
-                        "declarations": [
-                            
-                        ]
+                        "TestObjectId": "main/Page_CURA Healthcare Service/xtra/td_28",
+                        "is used": false
                     }
                 ]
             },
@@ -148,14 +144,16 @@ This script produced this (trimmed):
                     "value": "//a[@id='btn-make-appointment']",
                     "selectorMethod": "XPATH"
                 },
-                "Number of container TestObjects": 1,
-                "Locator Declarations": [
+                "Number of Container TestObjects": 1,
+                "Container TestObjects": [
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/a_Make Appointment",
-                        "declarations": [
+                        "TestObjectId": "main/Page_CURA Healthcare Service/a_Make Appointment",
+                        "is used": true,
+                        "References from TestCase": [
                             {
-                                "testObjectId": "main/Page_CURA Healthcare Service/a_Make Appointment",
-                                "forwardReferences": [
+                                "TestObjectId": "main/Page_CURA Healthcare Service/a_Make Appointment",
+                                "Number of ForwardReferences": 2,
+                                "ForwardReferences": [
                                     {
                                         "TestCaseId": "main/TC0",
                                         "DigestedLine": {
@@ -182,18 +180,12 @@ This script produced this (trimmed):
                                         },
                                         "TestObjectId": "main/Page_CURA Healthcare Service/a_Make Appointment"
                                     }
-                                ],
-                                "numberOfReferences": 2
+                                ]
                             }
                         ]
                     }
                 ]
             },
-            {
-                "Locator": {
-                    "value": "//button[@id='btn-book-appointment']",
-                    "selectorMethod": "XPATH"
-                },
 ...
 ```
 
@@ -253,27 +245,36 @@ This script generated a JSON as follows:
 ```
 {
     "SuspiciousLocatorIndex": {
-        "Number of Locators": 2,
-        "Number of Suspicious Locators": 2,
+        "Number of Locators": 3,
+        "Number of Suspicious Locators": 3,
         "Locators": [
             {
                 "Locator": {
                     "value": "(.//*[normalize-space(text()) and normalize-space(.)='Sa'])[1]/following::td[31]",
                     "selectorMethod": "XPATH"
                 },
-                "Number of container TestObjects": 2,
-                "Locator Declarations": [
+                "Number of Container TestObjects": 2,
+                "Container TestObjects": [
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/td_28",
-                        "declarations": [
-                            
-                        ]
+                        "TestObjectId": "main/Page_CURA Healthcare Service/td_28",
+                        "is used": false
                     },
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/xtra/td_28",
-                        "declarations": [
-                            
-                        ]
+                        "TestObjectId": "main/Page_CURA Healthcare Service/xtra/td_28",
+                        "is used": false
+                    }
+                ]
+            },
+            {
+                "Locator": {
+                    "value": "//body",
+                    "selectorMethod": "XPATH"
+                },
+                "Number of Container TestObjects": 1,
+                "Container TestObjects": [
+                    {
+                        "TestObjectId": "misc/dummy1",
+                        "is used": false
                     }
                 ]
             },
@@ -282,20 +283,20 @@ This script generated a JSON as follows:
                     "value": "//section[@id='summary']/div/div/div[7]/p/a",
                     "selectorMethod": "XPATH"
                 },
-                "Number of container TestObjects": 3,
-                "Locator Declarations": [
+                "Number of Container TestObjects": 3,
+                "Container TestObjects": [
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/a_Foo",
-                        "declarations": [
-                            
-                        ]
+                        "TestObjectId": "main/Page_CURA Healthcare Service/a_Foo",
+                        "is used": false
                     },
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
-                        "declarations": [
+                        "TestObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
+                        "is used": true,
+                        "References from TestCase": [
                             {
-                                "testObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
-                                "forwardReferences": [
+                                "TestObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
+                                "Number of ForwardReferences": 1,
+                                "ForwardReferences": [
                                     {
                                         "TestCaseId": "main/TC1",
                                         "DigestedLine": {
@@ -309,16 +310,13 @@ This script generated a JSON as follows:
                                         },
                                         "TestObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage"
                                     }
-                                ],
-                                "numberOfReferences": 1
+                                ]
                             }
                         ]
                     },
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
-                        "declarations": [
-                            
-                        ]
+                        "TestObjectId": "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
+                        "is used": false
                     }
                 ]
             }
@@ -327,14 +325,16 @@ This script generated a JSON as follows:
     "Run Description": {
         "Project name": "katalon",
         "includeScriptsFolder": [
-            
+            "main",
+            "misc"
         ],
         "includeObjectRepositoryFolder": [
-            "**/Page_CURA*"
+            "main",
+            "misc"
         ],
-        "Number of TestCases": 27,
-        "Number of TestObjects": 15,
-        "Number of unused TestObjects": 4
+        "Number of TestCases": 5,
+        "Number of TestObjects": 16,
+        "Number of unused TestObjects": 5
     }
 }
 ```
