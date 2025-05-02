@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.kazurayam"
-version = "0.4.8"
+version = "0.4.9-SNAPSHOT"
 
 ext {
     KATALON_STUDIO_INSTALLATION_DIRECTORY = resolveKatalonStudioInstallationDirectory()
@@ -28,7 +28,7 @@ repositories {
 
 import org.gradle.internal.os.OperatingSystem
 static String resolveKatalonStudioInstallationDirectory() {
-    OperatingSystem os = OperatingSystem.current();
+    OperatingSystem os = OperatingSystem.current()
     if (os.isMacOsX()) {
         return '/Applications/Katalon Studio.app/Contents/Eclipse'
     } else if (os.isWindows()) {
@@ -88,7 +88,7 @@ dependencies {
 
 tasks.register('printVersions') {
     doLast {
-        OperatingSystem os = OperatingSystem.current();
+        OperatingSystem os = OperatingSystem.current()
         println "OS: ${os.toString()}"
         println "Gradle: " + project.getGradle().getGradleVersion()
         println "Groovy: " + GroovySystem.getVersion()

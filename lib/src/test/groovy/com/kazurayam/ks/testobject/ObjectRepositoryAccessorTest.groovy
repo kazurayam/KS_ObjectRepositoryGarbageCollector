@@ -31,8 +31,8 @@ public class ObjectRepositoryAccessorTest {
 
 	@Test
 	public void test_getIncludedFiles() {
-		ObjectRepositoryAccessor accessor = 
-				new ObjectRepositoryAccessor.Builder(objectRepositoryDir).build()
+		ObjectRepositoryDecorator.ObjectRepositoryAccessor accessor =
+				new ObjectRepositoryDecorator.ObjectRepositoryAccessor.Builder(objectRepositoryDir).build()
 		String[] includedFiles = accessor.getIncludedFiles()
 		StringBuilder sb = new StringBuilder()
 		for (int i = 0; i < includedFiles.length; i++) {
@@ -47,8 +47,8 @@ public class ObjectRepositoryAccessorTest {
 	
 	@Test
 	public void test_getIncludedFiles_mutiple() {
-		ObjectRepositoryAccessor accessor =
-				new ObjectRepositoryAccessor.Builder(objectRepositoryDir)
+		ObjectRepositoryDecorator.ObjectRepositoryAccessor accessor =
+				new ObjectRepositoryDecorator.ObjectRepositoryAccessor.Builder(objectRepositoryDir)
 					.includeFile("**/main/**/*.rs")
 					.includeFile("**/misc/**/*.rs")
 					.build()
@@ -58,8 +58,8 @@ public class ObjectRepositoryAccessorTest {
 
 	@Test
 	public void test_getTestObjectIdList() {
-		ObjectRepositoryAccessor accessor =
-				new ObjectRepositoryAccessor.Builder(objectRepositoryDir).build()
+		ObjectRepositoryDecorator.ObjectRepositoryAccessor accessor =
+				new ObjectRepositoryDecorator.ObjectRepositoryAccessor.Builder(objectRepositoryDir).build()
 		List<TestObjectId> list = accessor.getTestObjectIdList()
 		StringBuilder sb = new StringBuilder()
 		list.each { id ->
@@ -74,8 +74,8 @@ public class ObjectRepositoryAccessorTest {
 
 	@Test
 	public void test_getRsFiles() {
-		ObjectRepositoryAccessor accessor =
-				new ObjectRepositoryAccessor.Builder(objectRepositoryDir).build()
+		ObjectRepositoryDecorator.ObjectRepositoryAccessor accessor =
+				new ObjectRepositoryDecorator.ObjectRepositoryAccessor.Builder(objectRepositoryDir).build()
 		List<Path> rsFiles = accessor.getRsFiles()
 		assertTrue("rsFiles is empty", rsFiles.size() > 0)
 		StringBuilder sb = new StringBuilder()
