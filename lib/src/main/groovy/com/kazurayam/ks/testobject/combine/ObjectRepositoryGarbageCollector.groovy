@@ -38,9 +38,6 @@ class ObjectRepositoryGarbageCollector {
 	private ObjectRepositoryDecorator ord
 	private BackwardReferenceIndex backwardReferenceIndex
 
-	private int numberOfTestCases = 0
-	private int numberOfTestObjects = 0
-
 	private RunDescription runDescription
 
 	/*
@@ -56,14 +53,17 @@ class ObjectRepositoryGarbageCollector {
 		def recv = this.scan(this.objectRepositoryDir, this.scriptsDir)
 		this.forwardReferences = (ForwardReferences)recv[0]
 		this.ord = (ObjectRepositoryDecorator)recv[1]
+		Integer numberOfTestCases = (Integer)recv[2]
+		Integer numberOfTestObjects = (Integer)recv[3]
+		//
 		this.backwardReferenceIndex = this.getBackwardReferenceIndex()
 		String projectName = this.getProjectDir().getFileName().toString()
 		this.runDescription =
 				new RunDescription.Builder(projectName)
 						.includeScriptsFolder(this.includeScriptsFolder)
 						.includeObjectRepositoryFolder(this.includeObjectRepositoryFolder)
-						.numberOfTestCases(this.getNumberOfTestCases())
-						.numberOfTestObjects(this.getNumberOfTestObjects())
+						.numberOfTestCases(numberOfTestCases)
+						.numberOfTestObjects(numberOfTestObjects)
 						.numberOfUnusedTestObjects(this.getGarbage().size())
 						.build()
 	}
@@ -78,7 +78,7 @@ class ObjectRepositoryGarbageCollector {
 	 */
 	private def scan(Path objectRepositoryDir, Path scriptsDir) {
 
-		ForwardReferences db = new ForwardReferences()
+		ForwardReferences forwardReferences = new ForwardReferences()
 
 		ObjectRepositoryDecorator ord =
 				new ObjectRepositoryDecorator.Builder(objectRepositoryDir)
@@ -87,7 +87,7 @@ class ObjectRepositoryGarbageCollector {
 
 		List<TestObjectId> testObjectIdList = ord.getTestObjectIdList("", false)
 		//
-		numberOfTestObjects = testObjectIdList.size()
+		Integer numberOfTestObjects = testObjectIdList.size()
 
 		// scan the Scripts directory to make a list of TestCaseIds
 		ScriptsDecorator scriptsDecorator =
@@ -97,7 +97,7 @@ class ObjectRepositoryGarbageCollector {
 		List<TestCaseId> testCaseIdList = getTestCaseIdList(scriptsDir, scriptsDecorator.getGroovyFiles())
 
 		//
-		numberOfTestCases = testCaseIdList.size()
+		Integer numberOfTestCases = testCaseIdList.size()
 
 		// Iterate over the list of TestCaseIds.
 		// Read the TestCase script, check if it contains any references to the TestObjects.
@@ -108,11 +108,11 @@ class ObjectRepositoryGarbageCollector {
 				List<DigestedLine> digestedLines = scriptTraverser.digestTestCase(testCaseId, testObjectId.getValue(), false)
 				digestedLines.each { digestedLine ->
 					ForwardReference reference = new ForwardReference(testCaseId, digestedLine, testObjectId)
-					db.add(reference)
+					forwardReferences.add(reference)
 				}
 			}
 		}
-		return [db, ord]
+		return [forwardReferences, ord, numberOfTestCases, numberOfTestObjects]
 	}
 
 	private static List<TestCaseId> getTestCaseIdList(Path scriptsDir, List<Path> groovyFiles) {
@@ -146,14 +146,6 @@ class ObjectRepositoryGarbageCollector {
 
 	List<String> getIncludeScriptsFolder() {
 		return includeScriptsFolder
-	}
-
-	int getNumberOfTestCases() {
-		return numberOfTestCases
-	}
-
-	int getNumberOfTestObjects() {
-		return numberOfTestObjects
 	}
 
 	/**
