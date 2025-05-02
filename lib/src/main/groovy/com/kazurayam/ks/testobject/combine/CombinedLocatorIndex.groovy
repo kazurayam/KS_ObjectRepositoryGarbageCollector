@@ -100,9 +100,9 @@ class CombinedLocatorIndex {
                 gen.writeStartObject()
                 gen.writeObjectField("Locator", locator)
                 Set<CombinedLocatorDeclarations> cldSet = clx.get(locator)
-                gen.writeNumberField("Number of container TestObjects", cldSet.size())
+                gen.writeNumberField("Number of Container TestObjects", cldSet.size())
                 if (cldSet.size() > 0) {
-                    gen.writeFieldName("Locator Declarations")
+                    gen.writeFieldName("Container TestObjects")
                     gen.writeStartArray()
                     cldSet.each { cld ->
                         gen.writeObject(cld)

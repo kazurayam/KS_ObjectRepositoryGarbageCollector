@@ -291,6 +291,10 @@ class ObjectRepositoryGarbageCollector {
 	private static void addComponentSerializers(SimpleModule module) {
 		module.addSerializer(CombinedLocatorIndex.class,
 				new CombinedLocatorIndex.CombinedLocatorIndexSerializer())
+		module.addSerializer(CombinedLocatorDeclarations.class,
+				new CombinedLocatorDeclarations.CombinedLocatorDeclarationsSerializer())
+		module.addSerializer(BackwardReference.class,
+				new BackwardReference.BackwardReferencesSerializer())
 		module.addSerializer(RunDescription.class,
 				new RunDescription.RunDescriptionSerializer())
 		module.addSerializer(ForwardReference.class,
