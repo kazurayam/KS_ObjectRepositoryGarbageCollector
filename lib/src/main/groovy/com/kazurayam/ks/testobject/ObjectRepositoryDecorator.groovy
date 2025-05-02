@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.Version
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.kazurayam.ks.configuration.KatalonProjectDirectoryResolver
+import com.kazurayam.ks.text.RegexOptedTextMatcher
 import com.kms.katalon.core.testobject.ObjectRepository
 import com.kms.katalon.core.testobject.SelectorMethod as KsSelectorMethod
 import com.kms.katalon.core.testobject.TestObject

@@ -1,4 +1,5 @@
-package com.kazurayam.ks.testobject
+package com.kazurayam.ks.text
+
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -9,19 +10,19 @@ import static org.junit.Assert.assertTrue
 
 
 @RunWith(JUnit4.class)
-public class RegexOptedTextMateherTest {
+class RegexOptedTextMateherTest {
 
-	private RegexOptedTextMatcher bim
+	private RegexOptedTextMatcher matcher
 
 	@Test
-	public void test_isRegex() {
+	void test_isRegex() {
 		RegexOptedTextMatcher bim = new RegexOptedTextMatcher("button\\[@id", true)
 		assertTrue(bim.found("//button[@id='foo']"))
 		assertFalse(bim.found("//a[@id='bar']"))
 	}
 
 	@Test
-	public void test_isNotRegex() {
+	void test_isNotRegex() {
 		RegexOptedTextMatcher bim = new RegexOptedTextMatcher("button[@id", false)
 		assertTrue(bim.found("//button[@id='foo']"))
 		assertFalse(bim.found("//a[@id='bar']"))
@@ -31,7 +32,7 @@ public class RegexOptedTextMateherTest {
 	 * isRegex should default to false
 	 */
 	@Test
-	public void test_default() {
+	void test_default() {
 		RegexOptedTextMatcher bim = new RegexOptedTextMatcher("button[@id")
 		assertTrue(bim.found("//button[@id='foo']"))
 		assertFalse(bim.found("//a[@id='bar']"))
