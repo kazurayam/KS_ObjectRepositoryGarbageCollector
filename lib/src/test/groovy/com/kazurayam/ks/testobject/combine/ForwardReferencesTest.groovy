@@ -14,19 +14,19 @@ import com.kazurayam.ks.testobject.TestObjectId
 import groovy.json.JsonOutput
 
 @RunWith(JUnit4.class)
-class DatabaseTest {
+class ForwardReferencesTest {
 
-	private Database db
+	private ForwardReferences forwardReferences
 	private TestCaseId testCaseId
 	private ForwardReference reference
 	private TestObjectId testObjectId
 
 	@Before
 	void setup() {
-		db = new Database()
+		forwardReferences = new ForwardReferences()
 		testCaseId = new TestCaseId("main/TC1")
 		reference = ForwardReferenceTest.createSampleInstance()
-		db.add(reference)
+		forwardReferences.add(reference)
 		//
 		assertEquals("main/TC1", reference.getTestCaseId().getValue())
 		testObjectId = reference.getTestObjectId()
@@ -36,24 +36,24 @@ class DatabaseTest {
 
 	@Test
 	void test_size() {
-		assertEquals(1, db.size())
+		assertEquals(1, forwardReferences.size())
 	}
 
 	@Test
 	void test_get() {
-		ForwardReference ref = db.get(0)
+		ForwardReference ref = forwardReferences.get(0)
 		assertNotNull(ref)
 	}
 
 	@Test
 	void test_getAll() {
-		Set<ForwardReference> allRefs = db.getAll()
+		Set<ForwardReference> allRefs = forwardReferences.getAll()
 		assertEquals(1, allRefs.size())
 	}
 
 	@Test
 	void test_toString() {
-		String s = db.toString()
+		String s = forwardReferences.toString()
 		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
 				.fileName("test_toString.json").build()
 		sh.write(JsonOutput.prettyPrint(s))
@@ -63,7 +63,7 @@ class DatabaseTest {
 
 	@Test
 	void test_toJson() {
-		String json = db.toJson()
+		String json = forwardReferences.toJson()
 		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
 				.fileName("test_toJson.json").build()
 		sh.write(JsonOutput.prettyPrint(json))
@@ -73,43 +73,43 @@ class DatabaseTest {
 
 	@Test
 	void test_findForwardReferencesFrom() {
-		Set<ForwardReference> filled = db.findForwardReferencesFrom(new TestCaseId("main/TC1"))
+		Set<ForwardReference> filled = forwardReferences.findForwardReferencesFrom(new TestCaseId("main/TC1"))
 		assertEquals(1, filled.size())
 		//
-		Set<ForwardReference> empty = db.findForwardReferencesFrom(new TestCaseId("foo"))
+		Set<ForwardReference> empty = forwardReferences.findForwardReferencesFrom(new TestCaseId("foo"))
 		assertEquals(0, empty.size())
 	}
 
 	@Test
 	void test_containsTestCaseId() {
-		assertTrue(db.containsTestCaseId(new TestCaseId("main/TC1")))
-		assertFalse(db.containsTestCaseId(new TestCaseId("foo")))
+		assertTrue(forwardReferences.containsTestCaseId(new TestCaseId("main/TC1")))
+		assertFalse(forwardReferences.containsTestCaseId(new TestCaseId("foo")))
 	}
 
 	@Test
 	void test_getAllTestCaseIdsContaind() {
-		Set<TestCaseId> testCaseIds = db.getAllTestCaseIdsContained()
+		Set<TestCaseId> testCaseIds = forwardReferences.getAllTestCaseIdsContained()
 		assertEquals(1, testCaseIds.size())
 	}
 
 	@Test
 	void test_findForwardReferencesTo() {
-		Set<ForwardReference> filled = db.findForwardReferencesTo(new TestObjectId("Page_CURA Healthcare Service/a_Make Appointment"))
+		Set<ForwardReference> filled = forwardReferences.findForwardReferencesTo(new TestObjectId("Page_CURA Healthcare Service/a_Make Appointment"))
 		assertEquals(1, filled.size())
 		//
-		Set<ForwardReference> empty = db.findForwardReferencesTo(new TestObjectId("bar"))
+		Set<ForwardReference> empty = forwardReferences.findForwardReferencesTo(new TestObjectId("bar"))
 		assertEquals(0, empty.size())
 	}
 
 	@Test
 	void test_containsTestObjectId() {
-		assertTrue(db.containsTestObjectId(new TestObjectId("Page_CURA Healthcare Service/a_Make Appointment")))
-		assertFalse(db.containsTestObjectId(new TestObjectId("bar")))
+		assertTrue(forwardReferences.containsTestObjectId(new TestObjectId("Page_CURA Healthcare Service/a_Make Appointment")))
+		assertFalse(forwardReferences.containsTestObjectId(new TestObjectId("bar")))
 	}
 
 	@Test
 	void test_getAllTestObjectIdsContained() {
-		Set<TestObjectId> testObjectIds = db.getAllTestObjectIdsContained()
+		Set<TestObjectId> testObjectIds = forwardReferences.getAllTestObjectIdsContained()
 		assertEquals(1, testObjectIds.size())
 	}
 }

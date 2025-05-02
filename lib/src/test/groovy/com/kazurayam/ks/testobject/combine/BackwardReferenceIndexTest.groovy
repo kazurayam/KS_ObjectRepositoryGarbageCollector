@@ -17,7 +17,7 @@ import static org.junit.Assert.assertNotNull;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(JUnit4.class)
-class BackwardReferencesDatabaseTest {
+class BackwardReferenceIndexTest {
 
     private static Path projectDir = KatalonProjectDirectoryResolver.getProjectDir()
     private static Path objectRepositoryDir = projectDir.resolve("Object Repository")
@@ -25,7 +25,7 @@ class BackwardReferencesDatabaseTest {
 
     private static ObjectRepositoryGarbageCollector garbageCollector
 
-    private BackwardReferencesDatabase backwardReferenceMap
+    private BackwardReferenceIndex index
 
     @BeforeClass
     static void beforeClass() {
@@ -39,13 +39,13 @@ class BackwardReferencesDatabaseTest {
 
     @Before
     void setup() {
-        backwardReferenceMap = garbageCollector.getBackwardReferencesDatabase()
-        assertNotNull(backwardReferenceMap)
+        index = garbageCollector.getBackwardReferenceIndex()
+        assertNotNull(index)
     }
 
     @Test
     void test_toJson() {
-        String json = backwardReferenceMap.toJson()
+        String json = index.toJson()
         Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
                 .fileName("test_toJson.json").build()
         sh.write(JsonOutput.prettyPrint(json))

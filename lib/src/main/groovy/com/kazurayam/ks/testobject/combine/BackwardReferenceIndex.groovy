@@ -9,41 +9,41 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import com.kazurayam.ks.testcase.TestCaseId
 import com.kazurayam.ks.testobject.TestObjectId
 
-class BackwardReferencesDatabase {
+class BackwardReferenceIndex {
 
-	Map<TestObjectId, Set<BackwardReferences>> brDatabase;
+	Map<TestObjectId, Set<BackwardReference>> index;
 
-	BackwardReferencesDatabase() {
-		this.brDatabase = new TreeMap<>()
+	BackwardReferenceIndex() {
+		this.index = new TreeMap<>()
 	}
 
 	Set<TestObjectId> keySet() {
-		return brDatabase.keySet()
+		return index.keySet()
 	}
 
-	Iterator<Map.Entry<TestObjectId, Set<BackwardReferences>>> iterator() {
-		return brDatabase.entrySet().iterator()
+	Iterator<Map.Entry<TestObjectId, Set<BackwardReference>>> iterator() {
+		return index.entrySet().iterator()
 	}
 
-	Set<BackwardReferences> get(TestObjectId testObjectId) {
+	Set<BackwardReference> get(TestObjectId testObjectId) {
 		Objects.requireNonNull(testObjectId)
-		return brDatabase.get(testObjectId)
+		return index.get(testObjectId)
 	}
 
-	void put(TestObjectId testObjectId, BackwardReferences backwardReferences) {
+	void put(TestObjectId testObjectId, BackwardReference backwardReferences) {
 		Objects.requireNonNull(testObjectId)
 		Objects.requireNonNull(backwardReferences)
 		assert testObjectId == backwardReferences.getTestObjectId() : "${testObjectId} is not equal to ${backwardReferences.getTestObjectId}"
-		if (!brDatabase.containsKey(testObjectId)) {
-			Set<BackwardReferences> emptySet = new TreeSet<>()
-			brDatabase.put(testObjectId, emptySet)
+		if (!index.containsKey(testObjectId)) {
+			Set<BackwardReference> emptySet = new TreeSet<>()
+			index.put(testObjectId, emptySet)
 		}
-		Set<BackwardReferences> set = brDatabase.get(testObjectId)
+		Set<BackwardReference> set = index.get(testObjectId)
 		set.add(backwardReferences)
 	}
 
 	int size() {
-		return brDatabase.size()
+		return index.size()
 	}
 
 	@Override
@@ -53,30 +53,30 @@ class BackwardReferencesDatabase {
 
 	String toJson() {
 		ObjectMapper mapper = new ObjectMapper()
-		SimpleModule module = new SimpleModule("BackwardReferencesSerializer",
+		SimpleModule module = new SimpleModule("BackwardReferencesDatabaseSerializer",
 				new Version(1, 0, 0, null, null, null))
-		module.addSerializer(BackwardReferencesDatabase.class, new BackwardReferenceDatabaseSerializer())
+		module.addSerializer(BackwardReferenceIndex.class, new BackwardReferenceDatabaseSerializer())
 		module.addSerializer(TestCaseId.class, new TestCaseId.TestCaseIdSerializer())
 		module.addSerializer(TestObjectId.class, new TestObjectId.TestObjectIdSerializer())
-		module.addSerializer(BackwardReferences.class, new BackwardReferences.BackwardReferencesSerializer())
+		module.addSerializer(BackwardReference.class, new BackwardReference.BackwardReferencesSerializer())
 		module.addSerializer(ForwardReference.class, new ForwardReference.ForwardReferenceSerializer())
 		mapper.registerModule(module)
 		return mapper.writeValueAsString(this)
 	}
 
-	static class BackwardReferenceDatabaseSerializer extends StdSerializer<BackwardReferencesDatabase> {
+	static class BackwardReferenceDatabaseSerializer extends StdSerializer<BackwardReferenceIndex> {
 		BackwardReferenceDatabaseSerializer() {
 			this(null)
 		}
 
-		BackwardReferenceDatabaseSerializer(Class<BackwardReferencesDatabase> t) {
+		BackwardReferenceDatabaseSerializer(Class<BackwardReferenceIndex> t) {
 			super(t)
 		}
 		@Override
-		void serialize(BackwardReferencesDatabase brm,
+		void serialize(BackwardReferenceIndex brm,
 					   JsonGenerator gen, SerializerProvider serializer) {
 			gen.writeStartObject()
-			gen.writeFieldName("BackwardReferenceMap")
+			gen.writeFieldName("BackwardReferenceIndex")
 			gen.writeStartArray()
 			brm.iterator().each { entry ->
 				gen.writeStartObject()
@@ -84,7 +84,7 @@ class BackwardReferencesDatabase {
 				TestObjectId testObjectId = entry.key
 				gen.writeStringField("TestObjectId", testObjectId.getValue())
 				//
-				Set<BackwardReferences> backwardReferences = entry.value
+				Set<BackwardReference> backwardReferences = entry.value
 				gen.writeNumberField("Number of TestObjects", backwardReferences.size())
 				gen.writeFieldName("TestObjects")
 				gen.writeStartArray()

@@ -1,48 +1,51 @@
 {
     "SuspiciousLocatorIndex": {
+        "Number of Locators": 2,
         "Number of Suspicious Locators": 2,
-        "SuspiciousLocatorIndex": [
+        "Locators": [
             {
                 "Locator": {
-                    "Locator": "(.//*[normalize-space(text()) and normalize-space(.)='Sa'])[1]/following::td[31]",
-                    "Method": "XPATH"
+                    "value": "(.//*[normalize-space(text()) and normalize-space(.)='Sa'])[1]/following::td[31]",
+                    "selectorMethod": "XPATH"
                 },
                 "Number of container TestObjects": 2,
                 "Locator Declarations": [
                     {
-                        "TestObjectId": "main/Page_CURA Healthcare Service/td_28",
-                        "Number of references from Test Case": 0
+                        "testObjectId": "main/Page_CURA Healthcare Service/td_28",
+                        "declarations": [
+                            
+                        ]
                     },
                     {
-                        "TestObjectId": "main/Page_CURA Healthcare Service/xtra/td_28",
-                        "Number of references from Test Case": 0
+                        "testObjectId": "main/Page_CURA Healthcare Service/xtra/td_28",
+                        "declarations": [
+                            
+                        ]
                     }
                 ]
             },
             {
                 "Locator": {
-                    "Locator": "//section[@id='summary']/div/div/div[7]/p/a",
-                    "Method": "XPATH"
+                    "value": "//section[@id='summary']/div/div/div[7]/p/a",
+                    "selectorMethod": "XPATH"
                 },
                 "Number of container TestObjects": 3,
                 "Locator Declarations": [
                     {
-                        "TestObjectId": "main/Page_CURA Healthcare Service/a_Foo",
-                        "Number of references from Test Case": 0
+                        "testObjectId": "main/Page_CURA Healthcare Service/a_Foo",
+                        "declarations": [
+                            
+                        ]
                     },
                     {
-                        "TestObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
-                        "Number of references from Test Case": 1,
-                        "References from Test Case": [
+                        "testObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
+                        "declarations": [
                             {
-                                "TestObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
-                                "Number of ForwardReferences": 1,
-                                "ForwardReferences": [
+                                "testObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
+                                "forwardReferences": [
                                     {
-                                        "testCaseId": {
-                                            "value": "main/TC1"
-                                        },
-                                        "digestedLine": {
+                                        "TestCaseId": "main/TC1",
+                                        "DigestedLine": {
                                             "line": "WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/a_Go to Homepage'))",
                                             "lineNo": 36,
                                             "pattern": "main/Page_CURA Healthcare Service/a_Go to Homepage",
@@ -51,18 +54,33 @@
                                             "matched": true,
                                             "regex": false
                                         },
-                                        "testObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage"
+                                        "TestObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage"
                                     }
-                                ]
+                                ],
+                                "numberOfReferences": 1
                             }
                         ]
                     },
                     {
-                        "TestObjectId": "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
-                        "Number of references from Test Case": 0
+                        "testObjectId": "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
+                        "declarations": [
+                            
+                        ]
                     }
                 ]
             }
         ]
+    },
+    "Run Description": {
+        "Project name": "katalon",
+        "includeScriptsFolder": [
+            
+        ],
+        "includeObjectRepositoryFolder": [
+            "**/Page_CURA*"
+        ],
+        "Number of TestCases": 27,
+        "Number of TestObjects": 15,
+        "Number of unused TestObjects": 4
     }
 }

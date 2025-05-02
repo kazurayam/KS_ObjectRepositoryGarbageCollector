@@ -39,32 +39,32 @@ class ObjectRepositoryGarbageCollectorTest {
 	}
 
 	@Test
-	void test_db() {
-		Database db = garbageCollector.db()
-		assertNotNull(db)
-		assertNotEquals(0, db.size())
+	void test_getForwardReferences() {
+		ForwardReferences forwardReferences = garbageCollector.getForwardReferences()
+		assertNotNull(forwardReferences)
+		assertNotEquals(0, forwardReferences.size())
 		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
-				.fileName("test_db.json").build()
-		sh.write(JsonOutput.prettyPrint(db.toJson()))
+				.fileName("test_getForwardReferences.json").build()
+		sh.write(JsonOutput.prettyPrint(forwardReferences.toJson()))
 	}
 
 	@Test
 	void test_getBackwardReferencesMap() {
-		BackwardReferencesDatabase brm = garbageCollector.getBackwardReferencesDatabase()
+		BackwardReferenceIndex brm = garbageCollector.getBackwardReferenceIndex()
 		assertNotNull(brm)
 		TestObjectId toi = new TestObjectId("main/Page_CURA Healthcare Service/a_Go to Homepage")
 		assertTrue(brm.keySet().contains(toi))
-		Set<BackwardReferences> brSet = brm.get(toi)
-		List<BackwardReferences> brList = brSet as List
+		Set<BackwardReference> brSet = brm.get(toi)
+		List<BackwardReference> brList = brSet as List
 		assertEquals(1, brList.size())
 		assertEquals(toi, brList.get(0).getTestObjectId())
 	}
 
 	@Test
-	void test_jsonifyBackwardReferencesDatabase() {
-		String json = garbageCollector.jsonifyBackwardReferencesDatabase()
+	void test_jsonifyBackwardReferenceIndex() {
+		String json = garbageCollector.jsonifyBackwardReferenceIndex()
 		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
-				.fileName("test_jsonifyBackwardReferencesMap.json").build()
+				.fileName("test_jsonifyBackwardReferenceIndex.json").build()
 		sh.write(JsonOutput.prettyPrint(json))
 	}
 
@@ -89,8 +89,8 @@ class ObjectRepositoryGarbageCollectorTest {
 	}
 
 	@Test
-	void test_jsonifyDatabase() {
-		String json = garbageCollector.jsonifyDatabase()
+	void test_jsonifyForwardReferences() {
+		String json = garbageCollector.jsonifyForwardReferences()
 		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
 				.fileName("test_jsonifyDatabase.json").build()
 		sh.write(JsonOutput.prettyPrint(json))

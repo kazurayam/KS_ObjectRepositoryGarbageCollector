@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue
 class ScriptsAccessorTest {
 
 	private static Path scriptsDir
-	private ScriptsAccessor accessor
+	private ScriptsDecorator.ScriptsAccessor accessor
 
 	@BeforeClass
 	public static void beforeClass() {
@@ -28,7 +28,7 @@ class ScriptsAccessorTest {
 
 	@Test
 	public void test_getGroovyFiles_include_all() {
-		accessor = new ScriptsAccessor.Builder(scriptsDir).build()
+		accessor = new ScriptsDecorator.ScriptsAccessor.Builder(scriptsDir).build()
 		List<Path> groovyFiles = accessor.getGroovyFiles()
 		assertTrue("groovyFiles is empty", groovyFiles.size() > 0)
 		//
@@ -46,7 +46,7 @@ class ScriptsAccessorTest {
 
 	@Test
 	public void test_getGroovyFiles_include_demo_and_main() {
-		accessor = new ScriptsAccessor.Builder(scriptsDir)
+		accessor = new ScriptsDecorator.ScriptsAccessor.Builder(scriptsDir)
 				.includeFile("demo/**/*.groovy")
 				.includeFile("main/**/*.groovy")
 				.build()

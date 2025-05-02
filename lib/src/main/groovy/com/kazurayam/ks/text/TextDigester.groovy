@@ -1,4 +1,5 @@
-package com.kazurayam.ks.testcase
+package com.kazurayam.ks.text
+
 
 import java.nio.file.Path
 import java.util.regex.Matcher

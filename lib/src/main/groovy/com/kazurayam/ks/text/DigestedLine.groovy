@@ -1,4 +1,4 @@
-package com.kazurayam.ks.testcase
+package com.kazurayam.ks.text
 
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.Version
@@ -34,7 +34,7 @@ class DigestedLine implements Comparable<DigestedLine> {
 	}
 
 	DigestedLine(DigestedLine that) {
-		this(new DigestedLine.Builder(that.getLine(), that.getLineNo())
+		this(new Builder(that.getLine(), that.getLineNo())
 				.pattern(that.getPattern(), that.isRegex)
 				.matchFound(that.getMatchAt(), that.getMatchEnd()
 				)

@@ -12,16 +12,16 @@ import org.junit.Test
 
 import java.nio.file.Path
 
-class BackwardReferencesTest {
+class BackwardReferenceTest {
 
     private static Path projectDir = KatalonProjectDirectoryResolver .getProjectDir()
     private static Path objectRepositoryDir = projectDir.resolve("Object Repository")
     private static Path scriptsDir = projectDir.resolve("Scripts")
 
     private static ObjectRepositoryGarbageCollector garbageCollector
-    private static BackwardReferencesDatabase backwardReferencesMap
+    private static BackwardReferenceIndex index
 
-    private Set<BackwardReferences> backwardReferencesSet
+    private Set<BackwardReference> backwardReferencSet
 
     @BeforeClass
     static void beforeClass() {
@@ -31,18 +31,18 @@ class BackwardReferencesTest {
                 .includeObjectRepositoryFolder("main")
                 .includeObjectRepositoryFolder("misc")
                 .build()
-        backwardReferencesMap = garbageCollector.getBackwardReferencesDatabase()
+        index = garbageCollector.getBackwardReferenceIndex()
     }
 
     @Before
     void setup() {
         TestObjectId testObjectId = new TestObjectId("main/Page_CURA Healthcare Service/a_Make Appointment")
-        backwardReferencesSet = backwardReferencesMap.get(testObjectId)
+        backwardReferencSet = index.get(testObjectId)
     }
 
     @Test
     void test_toJson() {
-        List<BackwardReferences> list = backwardReferencesSet as List
+        List<BackwardReference> list = backwardReferencSet as List
         assert list.size() > 0
         String json = list.get(0).toJson()
         Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())

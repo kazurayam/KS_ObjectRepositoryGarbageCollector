@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 import com.kazurayam.ks.configuration.KatalonProjectDirectoryResolver
-import com.kazurayam.ks.testcase.DigestedLine
+import com.kazurayam.ks.text.DigestedLine
 import com.kazurayam.ks.testcase.ScriptsDecorator
 import com.kazurayam.ks.testcase.TestCaseId
 import com.kazurayam.ks.testcase.TestCaseScriptDigester
@@ -34,12 +34,9 @@ class ObjectRepositoryGarbageCollector {
 	private Path scriptsDir // must not be null
 	private List<String> includeScriptsFolder // could be empty
 
-	private Database db
+	private ForwardReferences forwardReferences
 	private ObjectRepositoryDecorator ord
-	private BackwardReferencesDatabase backwardReferencesDatabase
-
-	private int numberOfTestCases = 0
-	private int numberOfTestObjects = 0
+	private BackwardReferenceIndex backwardReferenceIndex
 
 	private RunDescription runDescription
 
@@ -54,31 +51,34 @@ class ObjectRepositoryGarbageCollector {
 		includeScriptsFolder = builder.includeScriptsFolder
 		//
 		def recv = this.scan(this.objectRepositoryDir, this.scriptsDir)
-		this.db = (Database)recv[0]
+		this.forwardReferences = (ForwardReferences)recv[0]
 		this.ord = (ObjectRepositoryDecorator)recv[1]
-		this.backwardReferencesDatabase = this.getBackwardReferencesDatabase()
+		Integer numberOfTestCases = (Integer)recv[2]
+		Integer numberOfTestObjects = (Integer)recv[3]
+		//
+		this.backwardReferenceIndex = this.getBackwardReferenceIndex()
 		String projectName = this.getProjectDir().getFileName().toString()
 		this.runDescription =
 				new RunDescription.Builder(projectName)
 						.includeScriptsFolder(this.includeScriptsFolder)
 						.includeObjectRepositoryFolder(this.includeObjectRepositoryFolder)
-						.numberOfTestCases(this.getNumberOfTestCases())
-						.numberOfTestObjects(this.getNumberOfTestObjects())
+						.numberOfTestCases(numberOfTestCases)
+						.numberOfTestObjects(numberOfTestObjects)
 						.numberOfUnusedTestObjects(this.getGarbage().size())
 						.build()
 	}
 
 	/*
 	 * This method will scan the "Object Repository" folder and the "Scripts" folder.
-	 * to create an instance of Database internally and fill it with information found
+	 * to create an instance of ForwardReferences internally and fill it with information found
 	 * out of the directories.
-	 * You can retrieve the Database by calling "db()" method.
+	 * You can retrieve the ForwardReferences by calling "db()" method.
 	 * You can retrieve an Garbage Collection plan by calling "getGarbage()" method, in which you can
 	 * find a list of "garbage" Test Objects which are not used by any of the Test Cases.
 	 */
 	private def scan(Path objectRepositoryDir, Path scriptsDir) {
 
-		Database db = new Database()
+		ForwardReferences forwardReferences = new ForwardReferences()
 
 		ObjectRepositoryDecorator ord =
 				new ObjectRepositoryDecorator.Builder(objectRepositoryDir)
@@ -87,7 +87,7 @@ class ObjectRepositoryGarbageCollector {
 
 		List<TestObjectId> testObjectIdList = ord.getTestObjectIdList("", false)
 		//
-		numberOfTestObjects = testObjectIdList.size()
+		Integer numberOfTestObjects = testObjectIdList.size()
 
 		// scan the Scripts directory to make a list of TestCaseIds
 		ScriptsDecorator scriptsDecorator =
@@ -97,7 +97,7 @@ class ObjectRepositoryGarbageCollector {
 		List<TestCaseId> testCaseIdList = getTestCaseIdList(scriptsDir, scriptsDecorator.getGroovyFiles())
 
 		//
-		numberOfTestCases = testCaseIdList.size()
+		Integer numberOfTestCases = testCaseIdList.size()
 
 		// Iterate over the list of TestCaseIds.
 		// Read the TestCase script, check if it contains any references to the TestObjects.
@@ -108,11 +108,11 @@ class ObjectRepositoryGarbageCollector {
 				List<DigestedLine> digestedLines = scriptTraverser.digestTestCase(testCaseId, testObjectId.getValue(), false)
 				digestedLines.each { digestedLine ->
 					ForwardReference reference = new ForwardReference(testCaseId, digestedLine, testObjectId)
-					db.add(reference)
+					forwardReferences.add(reference)
 				}
 			}
 		}
-		return [db, ord]
+		return [forwardReferences, ord, numberOfTestCases, numberOfTestObjects]
 	}
 
 	private static List<TestCaseId> getTestCaseIdList(Path scriptsDir, List<Path> groovyFiles) {
@@ -124,65 +124,49 @@ class ObjectRepositoryGarbageCollector {
 		return list
 	}
 
-	Database db() {
-		return db
-	}
-
-	/**
-	 *
-	 */
-	String jsonifyDatabase() {
-		return db.toJson()
-	}
-
-
 	Path getProjectDir() {
 		return this.objectRepositoryDir.getParent().normalize().toAbsolutePath()
 	}
 
-	List<String> getIncludeObjectRepositoryFolder() {
-		return includeObjectRepositoryFolder
+	//-----------------------------------------------------------------
+
+	ForwardReferences getForwardReferences() {
+		return forwardReferences
 	}
 
-	List<String> getIncludeScriptsFolder() {
-		return includeScriptsFolder
+	String jsonifyForwardReferences() {
+		return forwardReferences.toJson()
 	}
 
-	int getNumberOfTestCases() {
-		return numberOfTestCases
-	}
-
-	int getNumberOfTestObjects() {
-		return numberOfTestObjects
-	}
+	//-----------------------------------------------------------------
 
 	/**
 	 *
 	 */
-	BackwardReferencesDatabase getBackwardReferencesDatabase() {
-		BackwardReferencesDatabase brdb = new BackwardReferencesDatabase()
-		Set<TestObjectId> allTestObjectIds = db.getAllTestObjectIdsContained()
+	BackwardReferenceIndex getBackwardReferenceIndex() {
+		BackwardReferenceIndex index = new BackwardReferenceIndex()
+		Set<TestObjectId> allTestObjectIds = forwardReferences.getAllTestObjectIdsContained()
 		allTestObjectIds.each { testObjectId ->
-			BackwardReferences br = new BackwardReferences(testObjectId)
+			BackwardReference br = new BackwardReference(testObjectId)
 			Set<ForwardReference> forwardReferences =
-					db.findForwardReferencesTo(testObjectId)
+					forwardReferences.findForwardReferencesTo(testObjectId)
 			if (forwardReferences != null) {
 				forwardReferences.each { fr ->
 					br.add(fr)
 				}
 			}
-			brdb.put(testObjectId, br)
+			index.put(testObjectId, br)
 		}
-		return brdb
+		return index
 	}
 
 	/**
 	 *
 	 */
-	String jsonifyBackwardReferencesDatabase() {
-		BackwardReferencesDatabase backwardReferencesMap =
-				this.getBackwardReferencesDatabase()
-		return backwardReferencesMap.toJson()
+	String jsonifyBackwardReferenceIndex() {
+		BackwardReferenceIndex index =
+				this.getBackwardReferenceIndex()
+		return index.toJson()
 	}
 
 	//-----------------------------------------------------------------
@@ -194,7 +178,7 @@ class ObjectRepositoryGarbageCollector {
 		Garbage garbage = new Garbage()
 		//println "ord.getAllTestObjectIdSet().size()=" + ord.getAllTestObjectIdSet().size()
 		this.ord.getAllTestObjectIdSet().each { testObjectId ->
-			Set<ForwardReference> forwardReferences = db.findForwardReferencesTo(testObjectId)
+			Set<ForwardReference> forwardReferences = forwardReferences.findForwardReferencesTo(testObjectId)
 			//println "testObjectId=" + testObjectId.getValue() + " forwardReferences.size()=" + forwardReferences.size()
 			if (forwardReferences.size() == 0) {
 				// Oh, no TestCase uses this TestObject, this TestObject is unused
@@ -207,25 +191,18 @@ class ObjectRepositoryGarbageCollector {
 	String jsonifyGarbage( ) {
 		SimpleModule module = new SimpleModule("GarbageSerializer",
 				new Version(1, 0, 0, null, null, null))
-
 		module.addSerializer(ObjectRepositoryGarbageCollector.class,
 				new GarbageSerializer())
-
 		module.addSerializer(RunDescription.class,
 				new RunDescription.RunDescriptionSerializer())
-
 		module.addSerializer(Garbage.class,
 				new Garbage.GarbageSerializer())
-
 		module.addSerializer(ForwardReference.class,
 				new ForwardReference.ForwardReferenceSerializer())
-
 		module.addSerializer(TestCaseId.class,
 				new TestCaseId.TestCaseIdSerializer())
-
 		module.addSerializer(TestObjectId.class,
 				new TestObjectId.TestObjectIdSerializer())
-
 		ObjectMapper mapper = new ObjectMapper()
 		mapper.registerModule(module)
 		return mapper.writeValueAsString( this )
@@ -276,7 +253,7 @@ class ObjectRepositoryGarbageCollector {
 			Set<TestObjectId> containers = ord.findTestObjectsWithLocator(locator)
 			containers.each { toi ->
 				CombinedLocatorDeclarations declarations = new CombinedLocatorDeclarations(toi)
-				Set<BackwardReferences> backwardReferences = backwardReferencesDatabase.get(toi)
+				Set<BackwardReference> backwardReferences = backwardReferenceIndex.get(toi)
 				backwardReferences.each { br ->
 					declarations.add(br)
 				}
