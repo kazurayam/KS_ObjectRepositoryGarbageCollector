@@ -9,21 +9,20 @@ repositories {
 ext {
     MDSVersion = '0.1.1'
     ORGCVersion = '0.4.7'
+    userHome = System.getProperty('user.home')
+    rootProjectDir = rootProject.projectDir as File
 }
 
 dependencies {
     implementation("com.kazurayam:monk-directory-scanner:${MDSVersion}")
 }
 
-def userHome = System.getProperty('user.home')
-def rootProjectDir = rootProject.projectDir
-
 tasks.register('importMonkDirectoryScanner') {
     group = 'Custom'
     description = 'import the MonkDirectoryScanner into the Drivers folder'
     doFirst {
         delete fileTree("Drivers").matching {
-            include "*monk-directory-scanner-*.jar"
+            include '*monk-directory-scanner-*.jar'
         }
     }
 }
@@ -56,9 +55,11 @@ tasks.register('importDrivers') {
 tasks.register("cleanProject", Delete) {
     group = 'Custom'
     description = "remove the bin folder and others to clean up the Katalon project"
-    delete '.cache'
-    delete 'bin'
-    delete 'Libs'
+    doFirst {
+        delete '.cache'
+        delete 'bin'
+        delete 'Libs'
+    }
 }
 
 tasks.register("publishDemoToDocs") {

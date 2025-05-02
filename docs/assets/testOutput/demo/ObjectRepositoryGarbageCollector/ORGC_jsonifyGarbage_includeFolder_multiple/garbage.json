@@ -1,17 +1,21 @@
 {
-    "Project name": "katalon",
-    "includeObjectRepositoryFolder": [
-        "main/Page_CURA Healthcare Service",
-        "main/Page_CURA Healthcare Service/xtra"
-    ],
-    "Number of TestCases": 27,
-    "Number of TestObjects": 15,
-    "Number of unused TestObjects": 4,
-    "Unused TestObjects": [
+    "Garbage": [
         "main/Page_CURA Healthcare Service/a_Foo",
         "main/Page_CURA Healthcare Service/td_28",
         "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
         "main/Page_CURA Healthcare Service/xtra/td_28"
     ],
-    "Duration seconds": 0.205
+    "Run Description": {
+        "Project name": "katalon",
+        "includeScriptsFolder": [
+            
+        ],
+        "includeObjectRepositoryFolder": [
+            "main/Page_CURA Healthcare Service",
+            "main/Page_CURA Healthcare Service/xtra"
+        ],
+        "Number of TestCases": 27,
+        "Number of TestObjects": 15,
+        "Number of unused TestObjects": 4
+    }
 }

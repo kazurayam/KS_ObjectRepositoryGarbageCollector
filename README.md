@@ -41,33 +41,39 @@ println JsonOutput.prettyPrint(json)
 When I ran this, I got the following output in the console:
 
 ```
+2025-05-02 20:53:28.048 INFO  c.k.katalon.core.main.TestCaseExecutor   - START Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyGarbage
 {
-    "Project name": "katalon",
-    "includeObjectRepositoryFolder": [
-        "**/*"
-    ],
-    "Number of TestCases": 28,
-    "Number of TestObjects": 16,
-    "Number of unused TestObjects": 5,
-    "Unused TestObjects": [
+    "Garbage": [
         "main/Page_CURA Healthcare Service/a_Foo",
         "main/Page_CURA Healthcare Service/td_28",
         "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
         "main/Page_CURA Healthcare Service/xtra/td_28",
         "misc/dummy1"
     ],
-    "Duration seconds": 1.153
+    "Run Description": {
+        "Project name": "katalon",
+        "includeScriptsFolder": [
+            
+        ],
+        "includeObjectRepositoryFolder": [
+            "**/*"
+        ],
+        "Number of TestCases": 27,
+        "Number of TestObjects": 16,
+        "Number of unused TestObjects": 5
+    }
 }
+2025-05-02 20:53:29.897 INFO  c.k.k.c.keyword.builtin.CommentKeyword   - {"started at":"2025-05-02T20:53:29.438","duration seconds":0.258}
 ```
 
 I found that this project contains
 
-- 28 TestCase scripts
+- 27 TestCase scripts
 - 16 TestObjects
 - out of 16, 5 TestObjects are unused by any of TestCase scripts.
-- it took approximately 1.2 seconds to get the result.
+- it took approximately 0.3 seconds to get the result.
 
-It would take just a few minutes to scan through 3000 TestObjects in your large Katalon project. It would tell you over the half TestObjects are unused (garbage).
+Very quick, isn't it?
 
 This library compiles a report that tells where you have garbage to be cleaned, but does NOT remove any files. So this library is not really a garbage collector; it is just an informer.
 
@@ -114,30 +120,80 @@ This script produced this (trimmed):
 {
     "CombinedLocatorIndex": {
         "Number of Locators": 12,
+        "Number of Suspicious Locators": 2,
         "Locators": [
             {
                 "Locator": {
-                    "Locator": "(.//*[normalize-space(text()) and normalize-space(.)='Sa'])[1]/following::td[31]",
-                    "Method": "XPATH"
+                    "value": "(.//*[normalize-space(text()) and normalize-space(.)='Sa'])[1]/following::td[31]",
+                    "selectorMethod": "XPATH"
                 },
                 "Number of container TestObjects": 2,
                 "Locator Declarations": [
                     {
-                        "TestObjectId": "main/Page_CURA Healthcare Service/td_28",
-                        "Number of references from Test Case": 0
+                        "testObjectId": "main/Page_CURA Healthcare Service/td_28",
+                        "declarations": [
+                            
+                        ]
                     },
                     {
-                        "TestObjectId": "main/Page_CURA Healthcare Service/xtra/td_28",
-                        "Number of references from Test Case": 0
+                        "testObjectId": "main/Page_CURA Healthcare Service/xtra/td_28",
+                        "declarations": [
+                            
+                        ]
                     }
                 ]
             },
             {
                 "Locator": {
-                    "Locator": "//a[@id='btn-make-appointment']",
-                    "Method": "XPATH"
+                    "value": "//a[@id='btn-make-appointment']",
+                    "selectorMethod": "XPATH"
                 },
                 "Number of container TestObjects": 1,
+                "Locator Declarations": [
+                    {
+                        "testObjectId": "main/Page_CURA Healthcare Service/a_Make Appointment",
+                        "declarations": [
+                            {
+                                "testObjectId": "main/Page_CURA Healthcare Service/a_Make Appointment",
+                                "forwardReferences": [
+                                    {
+                                        "TestCaseId": "main/TC0",
+                                        "DigestedLine": {
+                                            "line": "WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/a_Make Appointment'))",
+                                            "lineNo": 12,
+                                            "pattern": "main/Page_CURA Healthcare Service/a_Make Appointment",
+                                            "matchAt": 47,
+                                            "matchEnd": 99,
+                                            "matched": true,
+                                            "regex": false
+                                        },
+                                        "TestObjectId": "main/Page_CURA Healthcare Service/a_Make Appointment"
+                                    },
+                                    {
+                                        "TestCaseId": "main/TC1",
+                                        "DigestedLine": {
+                                            "line": "WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/a_Make Appointment'))",
+                                            "lineNo": 11,
+                                            "pattern": "main/Page_CURA Healthcare Service/a_Make Appointment",
+                                            "matchAt": 47,
+                                            "matchEnd": 99,
+                                            "matched": true,
+                                            "regex": false
+                                        },
+                                        "TestObjectId": "main/Page_CURA Healthcare Service/a_Make Appointment"
+                                    }
+                                ],
+                                "numberOfReferences": 2
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "Locator": {
+                    "value": "//button[@id='btn-book-appointment']",
+                    "selectorMethod": "XPATH"
+                },
 ...
 ```
 
@@ -189,49 +245,52 @@ This script generated a JSON as follows:
 ```
 {
     "SuspiciousLocatorIndex": {
+        "Number of Locators": 2,
         "Number of Suspicious Locators": 2,
-        "SuspiciousLocatorIndex": [
+        "Locators": [
             {
                 "Locator": {
-                    "Locator": "(.//*[normalize-space(text()) and normalize-space(.)='Sa'])[1]/following::td[31]",
-                    "Method": "XPATH"
+                    "value": "(.//*[normalize-space(text()) and normalize-space(.)='Sa'])[1]/following::td[31]",
+                    "selectorMethod": "XPATH"
                 },
                 "Number of container TestObjects": 2,
                 "Locator Declarations": [
                     {
-                        "TestObjectId": "main/Page_CURA Healthcare Service/td_28",
-                        "Number of references from Test Case": 0
+                        "testObjectId": "main/Page_CURA Healthcare Service/td_28",
+                        "declarations": [
+                            
+                        ]
                     },
                     {
-                        "TestObjectId": "main/Page_CURA Healthcare Service/xtra/td_28",
-                        "Number of references from Test Case": 0
+                        "testObjectId": "main/Page_CURA Healthcare Service/xtra/td_28",
+                        "declarations": [
+                            
+                        ]
                     }
                 ]
             },
             {
                 "Locator": {
-                    "Locator": "//section[@id='summary']/div/div/div[7]/p/a",
-                    "Method": "XPATH"
+                    "value": "//section[@id='summary']/div/div/div[7]/p/a",
+                    "selectorMethod": "XPATH"
                 },
                 "Number of container TestObjects": 3,
                 "Locator Declarations": [
                     {
-                        "TestObjectId": "main/Page_CURA Healthcare Service/a_Foo",
-                        "Number of references from Test Case": 0
+                        "testObjectId": "main/Page_CURA Healthcare Service/a_Foo",
+                        "declarations": [
+                            
+                        ]
                     },
                     {
-                        "TestObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
-                        "Number of references from Test Case": 1,
-                        "BackwardReferences": [
+                        "testObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
+                        "declarations": [
                             {
-                                "TestObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
-                                "Number of ForwardReferences": 1,
-                                "ForwardReferences": [
+                                "testObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
+                                "forwardReferences": [
                                     {
-                                        "testCaseId": {
-                                            "value": "main/TC1"
-                                        },
-                                        "digestedLine": {
+                                        "TestCaseId": "main/TC1",
+                                        "DigestedLine": {
                                             "line": "WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/a_Go to Homepage'))",
                                             "lineNo": 36,
                                             "pattern": "main/Page_CURA Healthcare Service/a_Go to Homepage",
@@ -240,19 +299,34 @@ This script generated a JSON as follows:
                                             "matched": true,
                                             "regex": false
                                         },
-                                        "testObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage"
+                                        "TestObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage"
                                     }
-                                ]
+                                ],
+                                "numberOfReferences": 1
                             }
                         ]
                     },
                     {
-                        "TestObjectId": "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
-                        "Number of references from Test Case": 0
+                        "testObjectId": "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
+                        "declarations": [
+                            
+                        ]
                     }
                 ]
             }
         ]
+    },
+    "Run Description": {
+        "Project name": "katalon",
+        "includeScriptsFolder": [
+            
+        ],
+        "includeObjectRepositoryFolder": [
+            "**/Page_CURA*"
+        ],
+        "Number of TestCases": 27,
+        "Number of TestObjects": 15,
+        "Number of unused TestObjects": 4
     }
 }
 ```
