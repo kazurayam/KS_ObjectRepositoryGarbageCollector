@@ -89,8 +89,8 @@ class ObjectRepositoryGarbageCollectorTest {
 	}
 
 	@Test
-	void test_jsonifyDatabase() {
-		String json = garbageCollector.jsonifyDatabase()
+	void test_jsonifyForwardReferences() {
+		String json = garbageCollector.jsonifyForwardReferences()
 		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
 				.fileName("test_jsonifyDatabase.json").build()
 		sh.write(JsonOutput.prettyPrint(json))

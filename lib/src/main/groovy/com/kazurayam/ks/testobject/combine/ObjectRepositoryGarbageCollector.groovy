@@ -131,7 +131,7 @@ class ObjectRepositoryGarbageCollector {
 	/**
 	 *
 	 */
-	String jsonifyDatabase() {
+	String jsonifyForwardReferences() {
 		return forwardReferences.toJson()
 	}
 
