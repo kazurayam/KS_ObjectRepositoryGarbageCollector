@@ -124,29 +124,21 @@ class ObjectRepositoryGarbageCollector {
 		return list
 	}
 
-	ForwardReferences getForwardReferences() {
-		return forwardReferences
-	}
-
-	/**
-	 *
-	 */
-	String jsonifyForwardReferences() {
-		return forwardReferences.toJson()
-	}
-
-
 	Path getProjectDir() {
 		return this.objectRepositoryDir.getParent().normalize().toAbsolutePath()
 	}
 
-	List<String> getIncludeObjectRepositoryFolder() {
-		return includeObjectRepositoryFolder
+	//-----------------------------------------------------------------
+
+	ForwardReferences getForwardReferences() {
+		return forwardReferences
 	}
 
-	List<String> getIncludeScriptsFolder() {
-		return includeScriptsFolder
+	String jsonifyForwardReferences() {
+		return forwardReferences.toJson()
 	}
+
+	//-----------------------------------------------------------------
 
 	/**
 	 *
@@ -199,25 +191,18 @@ class ObjectRepositoryGarbageCollector {
 	String jsonifyGarbage( ) {
 		SimpleModule module = new SimpleModule("GarbageSerializer",
 				new Version(1, 0, 0, null, null, null))
-
 		module.addSerializer(ObjectRepositoryGarbageCollector.class,
 				new GarbageSerializer())
-
 		module.addSerializer(RunDescription.class,
 				new RunDescription.RunDescriptionSerializer())
-
 		module.addSerializer(Garbage.class,
 				new Garbage.GarbageSerializer())
-
 		module.addSerializer(ForwardReference.class,
 				new ForwardReference.ForwardReferenceSerializer())
-
 		module.addSerializer(TestCaseId.class,
 				new TestCaseId.TestCaseIdSerializer())
-
 		module.addSerializer(TestObjectId.class,
 				new TestObjectId.TestObjectIdSerializer())
-
 		ObjectMapper mapper = new ObjectMapper()
 		mapper.registerModule(module)
 		return mapper.writeValueAsString( this )
