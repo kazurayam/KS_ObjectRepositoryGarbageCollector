@@ -124,7 +124,7 @@ class ObjectRepositoryGarbageCollector {
 		return list
 	}
 
-	ForwardReferences db() {
+	ForwardReferences getForwardReferences() {
 		return forwardReferences
 	}
 
