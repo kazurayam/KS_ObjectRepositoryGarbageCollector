@@ -127,10 +127,9 @@ class CombinedLocatorDeclarations implements Comparable<CombinedLocatorDeclarati
                        JsonGenerator gen, SerializerProvider serializer) {
             gen.writeStartObject()
             gen.writeStringField("TestObjectId", cld.getTestObjectId().getValue())
-            gen.writeNumberField("Number of References from Test Case",
-                    cld.getDeclarations().size())
+            gen.writeBooleanField("is used", (cld.getDeclarations().size() > 0))
             if (cld.getDeclarations().size() > 0) {
-                gen.writeFieldName("References from Test Case")
+                gen.writeFieldName("References from TestCase")
                 gen.writeStartArray()
                 cld.getDeclarations().each { br ->
                     gen.writeObject(br)
