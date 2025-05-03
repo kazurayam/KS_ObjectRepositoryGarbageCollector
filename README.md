@@ -195,8 +195,8 @@ The CombinedLocatorIndex JSON tells me the following points:
 
 1. this project contains 12 "Locators" declared in the Object Repository.
 2. A Locator could be found in one or more Test Objects. If "Number of container TestObjects" has value 2 or more, it means that the Locator is duplicating. You may want to avoid duplication.
-3. A TestObject may be used by zero or more Test Cases. If "Number of references from Test Case" of a TestObject is 0, it means the TestObject is unused. You may want to remove the unused TestObject.
-4. This JSON could be large. The size depends on the number of TestObjects in your Object Repository. If you have 1000 Test Objects, JSON would be 500M characters or so. Such large JSON won't be useful at all.
+3. A TestObject may be used by zero or more Test Cases. If the number of references from TestCase" of a TestObject is 0, it means the TestObject is unused. `"is used": false` denotes this. You may want to remove the unused TestObject.
+4. This JSON could be large. As large as mega-bytes. The size depends on the number of TestObjects in your Object Repository. A too-large JSON won't be very useful.
 5. The ObjectRepositoryGarbageCollector supports `includeObjectRepositoryFolder(pattern)` and `excludeObjectRepositoryFolder(pattern)`. For example:
 ```
 ObjectRepositoryGarbageCollector gc =
