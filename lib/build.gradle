@@ -85,13 +85,14 @@ dependencies {
 tasks.register('printVersions') {
     doLast {
         OperatingSystem os = OperatingSystem.current()
-        println "OS: ${os.toString()}"
-        println "Java: ${JavaVersion.current()}"
-        println "Gradle: " + project.getGradle().getGradleVersion()
-        println "Groovy: " + GroovySystem.getVersion()
+        println "${os.toString()}"
+        println "Java ${JavaVersion.current()}"
+        println "Groovy ${GroovySystem.getVersion()}"
+        println GradleVersion.current().toString()
     }
 }
 
+import org.gradle.internal.os.OperatingSystem
 tasks.register('printClasspath') {
     group = 'Custom'
     description = "show the entries included in the runtime classpath, sorted alphabetically"
