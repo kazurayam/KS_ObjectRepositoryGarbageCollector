@@ -5,26 +5,7 @@ plugins {
 }
 
 group = "com.kazurayam"
-version = "0.4.12-SNAPSHOT"
-
-ext {
-    KATALON_STUDIO_INSTALLATION_DIRECTORY = resolveKatalonStudioInstallationDirectory()
-    GroovyVersion = '3.0.17'
-    ARTIFACT_ID = 'ks-object-repository-garbage-collector'
-    isReleaseVersion = ! version.endsWith("SNAPSHOT")
-}
-
-repositories {
-    mavenCentral() // to load the jars of Groovy for the Gradle's compile tasks
-    maven {
-        url = uri("https://maven.pkg.github.com/kazurayam/monk-directory-scanner")
-        credentials {
-            username = project.findProperty('gpr.user')
-            password = project.findProperty('gpr.key')
-        }
-    }
-    mavenLocal()   // to load the monk-directory-scanner from ${user.home}/.m2
-}
+version = "0.4.12"
 
 import org.gradle.internal.os.OperatingSystem
 static String resolveKatalonStudioInstallationDirectory() {
@@ -46,6 +27,24 @@ static String resolveKatalonStudioInstallationDirectory() {
     }
 }
 
+ext {
+    KATALON_STUDIO_INSTALLATION_DIRECTORY = resolveKatalonStudioInstallationDirectory()
+    GroovyVersion = '3.0.17'
+    ARTIFACT_ID = 'ks-object-repository-garbage-collector'
+    isReleaseVersion = ! version.endsWith("SNAPSHOT")
+}
+
+repositories {
+    mavenCentral() // to load the jars of Groovy for the Gradle's compile tasks
+    maven {
+        url = uri("https://maven.pkg.github.com/kazurayam/monk-directory-scanner")
+        credentials {
+            username = project.findProperty('gpr.user')
+            password = project.findProperty('gpr.key')
+        }
+    }
+    mavenLocal()   // to load the monk-directory-scanner from ${user.home}/.m2
+}
 
 dependencies {
     implementation libs.directoryscanner

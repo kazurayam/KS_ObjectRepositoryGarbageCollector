@@ -5,7 +5,7 @@ import groovy.json.JsonOutput
 import internal.GlobalVariable
 
 /**
- * ObjectRepositoryGarbageCollector#getBackwardReference() demonstration
+ * ObjectRepositoryGarbageCollector#getBackwardReferenceIndex() demonstration
  */
 
 ObjectRepositoryGarbageCollector gc =
@@ -13,8 +13,8 @@ ObjectRepositoryGarbageCollector gc =
 		.includeObjectRepositoryFolder("**/Page_CURA*")
 		.build()
 
-String json = gc.jsonifyBackwardReferencesDatabase()
+String json = gc.jsonifyBackwardReferenceIndex()
 
 Shorthand sh = new Shorthand.Builder().subDir(GlobalVariable.TESTCASE_ID)
-					.fileName('backwardReferences.json').build()
+					.fileName('backwardReferenceIndex.json').build()
 sh.write(JsonOutput.prettyPrint(json))

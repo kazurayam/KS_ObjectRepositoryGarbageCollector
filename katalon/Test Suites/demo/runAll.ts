@@ -99,7 +99,7 @@
       <guid>a4cad9f5-3b6e-445a-9af8-ae00892d59dd</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyBackwardReferencesDatabase</testCaseId>
+      <testCaseId>Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyBackwardReferenceIndex</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>

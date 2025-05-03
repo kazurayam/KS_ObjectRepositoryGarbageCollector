@@ -8,7 +8,7 @@ repositories {
 
 ext {
     MDSVersion = '0.1.1'
-    ORGCVersion = '0.4.11'
+    ORGCVersion = '0.4.12'
     userHome = System.getProperty('user.home')
     rootProjectDir = rootProject.projectDir as File
 }

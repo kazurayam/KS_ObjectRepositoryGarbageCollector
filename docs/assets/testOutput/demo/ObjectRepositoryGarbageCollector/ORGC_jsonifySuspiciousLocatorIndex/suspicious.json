@@ -8,19 +8,15 @@
                     "value": "(.//*[normalize-space(text()) and normalize-space(.)='Sa'])[1]/following::td[31]",
                     "selectorMethod": "XPATH"
                 },
-                "Number of container TestObjects": 2,
-                "Locator Declarations": [
+                "Number of Container TestObjects": 2,
+                "Container TestObjects": [
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/td_28",
-                        "declarations": [
-                            
-                        ]
+                        "TestObjectId": "main/Page_CURA Healthcare Service/td_28",
+                        "is used": false
                     },
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/xtra/td_28",
-                        "declarations": [
-                            
-                        ]
+                        "TestObjectId": "main/Page_CURA Healthcare Service/xtra/td_28",
+                        "is used": false
                     }
                 ]
             },
@@ -29,20 +25,20 @@
                     "value": "//section[@id='summary']/div/div/div[7]/p/a",
                     "selectorMethod": "XPATH"
                 },
-                "Number of container TestObjects": 3,
-                "Locator Declarations": [
+                "Number of Container TestObjects": 3,
+                "Container TestObjects": [
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/a_Foo",
-                        "declarations": [
-                            
-                        ]
+                        "TestObjectId": "main/Page_CURA Healthcare Service/a_Foo",
+                        "is used": false
                     },
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
-                        "declarations": [
+                        "TestObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
+                        "is used": true,
+                        "References from TestCase": [
                             {
-                                "testObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
-                                "forwardReferences": [
+                                "TestObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
+                                "Number of ForwardReferences": 1,
+                                "ForwardReferences": [
                                     {
                                         "TestCaseId": "main/TC1",
                                         "DigestedLine": {
@@ -56,16 +52,13 @@
                                         },
                                         "TestObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage"
                                     }
-                                ],
-                                "numberOfReferences": 1
+                                ]
                             }
                         ]
                     },
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
-                        "declarations": [
-                            
-                        ]
+                        "TestObjectId": "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
+                        "is used": false
                     }
                 ]
             }
