@@ -29,8 +29,8 @@ tasks.register('importMDS') {
             }
         }
     }
-
 }
+
 tasks.register('importLibArtifact') {
     group = 'Custom'
     description = "import the KS_ObjectRepositoryGarbageCollector jar and the MockDirectoryScanner jar into the Drivers folder"

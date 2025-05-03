@@ -5,14 +5,13 @@ plugins {
 }
 
 group = "com.kazurayam"
-version = "0.4.11"
+version = "0.4.12-SNAPSHOT"
 
 ext {
     KATALON_STUDIO_INSTALLATION_DIRECTORY = resolveKatalonStudioInstallationDirectory()
     GroovyVersion = '3.0.17'
     ARTIFACT_ID = 'ks-object-repository-garbage-collector'
     isReleaseVersion = ! version.endsWith("SNAPSHOT")
-    MDSVersion = '0.1.1'
 }
 
 repositories {
@@ -49,8 +48,7 @@ static String resolveKatalonStudioInstallationDirectory() {
 
 
 dependencies {
-    // https://mvnrepository.com/artifact/com.kazurayam/monk-directory-scanner
-    implementation "com.kazurayam:monk-directory-scanner:${MDSVersion}"
+    implementation libs.directoryscanner
 
     // will look into the Katalon Studio installation directory
     implementation fileTree(dir: "${KATALON_STUDIO_INSTALLATION_DIRECTORY}/configuration/resources/lib",
@@ -79,12 +77,9 @@ dependencies {
                     'slf4j*.jar'
             ])
 
-    // will look into the GitHub Packages
-    implementation('com.kazurayam:monk-directory-scanner:0.1.0')
-
     // will look into the Maven Central repository
-    testImplementation "junit:junit:4.13.2"
-    testImplementation 'org.slf4j:slf4j-simple:2.0.16'
+    testImplementation libs.junit4
+    testImplementation libs.slf4j.simple
 }
 
 tasks.register('printVersions') {
