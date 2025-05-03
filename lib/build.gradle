@@ -12,6 +12,7 @@ ext {
     GroovyVersion = '3.0.17'
     ARTIFACT_ID = 'ks-object-repository-garbage-collector'
     isReleaseVersion = ! version.endsWith("SNAPSHOT")
+    MDSVersion = '0.1.1'
 }
 
 repositories {
@@ -49,7 +50,7 @@ static String resolveKatalonStudioInstallationDirectory() {
 
 dependencies {
     // https://mvnrepository.com/artifact/com.kazurayam/monk-directory-scanner
-    implementation 'com.kazurayam:monk-directory-scanner:0.1.1'
+    implementation "com.kazurayam:monk-directory-scanner:${MDSVersion}"
 
     // will look into the Katalon Studio installation directory
     implementation fileTree(dir: "${KATALON_STUDIO_INSTALLATION_DIRECTORY}/configuration/resources/lib",
