@@ -35,7 +35,8 @@ ext {
 }
 
 repositories {
-    mavenCentral() // to load the jars of Groovy for the Gradle's compile tasks
+    mavenCentral()
+    /*
     maven {
         url = uri("https://maven.pkg.github.com/kazurayam/monk-directory-scanner")
         credentials {
@@ -43,7 +44,8 @@ repositories {
             password = project.findProperty('gpr.key')
         }
     }
-    mavenLocal()   // to load the monk-directory-scanner from ${user.home}/.m2
+     */
+    mavenLocal()
 }
 
 dependencies {
