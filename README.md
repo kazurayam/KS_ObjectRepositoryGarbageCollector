@@ -350,7 +350,7 @@ Let me explain about this JSON.
 
 In the Katalon Community, some people wrote that they have thousands of unused Test Objects in their projects. See [this topic](https://forum.katalon.com/t/performance-issue-for-show-unused-test-objects/51791) for example. They hope to clean up their project. But it is too hard to delete this amount of Test Objects manually. Is it possible to remove the unused Test Objects from Object Repository programatically?
 
-The following Test Case script shows the way how to.
+Yes. The following Test Case script shows an example.
 
 - [ORGC_delete_garbage_programatically](https://kazurayam.github.io/ObjectRepositoryGarbageCollector/assets/Scripts/demo/ObjectRepositoryGarbageCollector/ORGC_delete_garbage_programatically)
 
@@ -412,6 +412,8 @@ for (TestObjectId toi : testObjectIds) {
 // erase the `Object Repository/temp` directory to tear down
 FileUtils.deleteDirectory(temp.toFile())
 ```
+
+Once you ran this script, you need to close the project and reopen it so that Katalon Studio recognize the amended Object Repository.
 
 ## How to install the library.
 
