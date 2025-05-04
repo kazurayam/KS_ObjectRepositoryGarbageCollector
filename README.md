@@ -352,7 +352,7 @@ In the Katalon Community, some people wrote that they have thousands of unused T
 
 Yes. The following Test Case script shows an example.
 
-- [ORGC_delete_garbage_programatically](https://kazurayam.github.io/ObjectRepositoryGarbageCollector/assets/Scripts/demo/ObjectRepositoryGarbageCollector/ORGC_delete_garbage_programatically)
+- [ORGC_delete_garbage_programatically](https://github.com/kazurayam/KS_ObjectRepositoryGarbageCollector/tree/develop/katalon/Scripts/demo/ObjectRepositoryGarbageCollector/ORGC_delete_garbage_programatically/Script1746359789100.groovy)
 
 ```
 import java.nio.file.Files
