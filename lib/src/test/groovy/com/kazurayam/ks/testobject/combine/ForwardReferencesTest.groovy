@@ -13,6 +13,9 @@ import com.kazurayam.ks.testobject.TestObjectId
 
 import groovy.json.JsonOutput
 
+import java.nio.file.Path
+import java.nio.file.Paths
+
 @RunWith(JUnit4.class)
 class ForwardReferencesTest {
 
@@ -30,7 +33,7 @@ class ForwardReferencesTest {
 		//
 		assertEquals("main/TC1", reference.getTestCaseId().getValue())
 		testObjectId = reference.getTestObjectId()
-		assertEquals("Page_CURA Healthcare Service/a_Make Appointment",
+		assertEquals("main/Page_CURA Healthcare Service/a_Make Appointment",
 				testObjectId.getValue())
 	}
 
@@ -94,17 +97,21 @@ class ForwardReferencesTest {
 
 	@Test
 	void test_findForwardReferencesTo() {
-		Set<ForwardReference> filled = forwardReferences.findForwardReferencesTo(new TestObjectId("Page_CURA Healthcare Service/a_Make Appointment"))
+		Set<ForwardReference> filled = forwardReferences.findForwardReferencesTo(
+				new TestObjectId(Paths.get("main/Page_CURA Healthcare Service/a_Make Appointment.rs")))
 		assertEquals(1, filled.size())
 		//
-		Set<ForwardReference> empty = forwardReferences.findForwardReferencesTo(new TestObjectId("bar"))
+		Set<ForwardReference> empty = forwardReferences.findForwardReferencesTo(
+				new TestObjectId(Paths.get("bar")))
 		assertEquals(0, empty.size())
 	}
 
 	@Test
 	void test_containsTestObjectId() {
-		assertTrue(forwardReferences.containsTestObjectId(new TestObjectId("Page_CURA Healthcare Service/a_Make Appointment")))
-		assertFalse(forwardReferences.containsTestObjectId(new TestObjectId("bar")))
+		assertTrue(forwardReferences.containsTestObjectId(
+				new TestObjectId(Paths.get("main/Page_CURA Healthcare Service/a_Make Appointment"))))
+		assertFalse(forwardReferences.containsTestObjectId(
+				new TestObjectId(Paths.get("bar"))))
 	}
 
 	@Test

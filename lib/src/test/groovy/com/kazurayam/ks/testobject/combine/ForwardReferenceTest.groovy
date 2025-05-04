@@ -1,5 +1,7 @@
 package com.kazurayam.ks.testobject.combine
 
+import java.nio.file.Path
+import java.nio.file.Paths
 
 import static org.junit.Assert.*
 
@@ -22,7 +24,7 @@ import groovy.json.JsonOutput
 @RunWith(JUnit4.class)
 class ForwardReferenceTest {
 
-	private ForwardReference fref
+	private ForwardReference forwardReference
 
 	@BeforeClass
 	static void beforeClass() {}
@@ -32,41 +34,41 @@ class ForwardReferenceTest {
 	 */
 	@Before
 	void setup() {
-		fref = createSampleInstance()
+		forwardReference = createSampleInstance()
 	}
 
 	static final ForwardReference createSampleInstance() {
 		String testCaseIdValue = "main/TC1"
 		String line = '''WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/a_Make Appointment')'''
-		String toiValue = "Page_CURA Healthcare Service/a_Make Appointment"
 		TestCaseId testCaseId = new TestCaseId(testCaseIdValue)
 		DigestedLine textSearchResult = new DigestedLine.Builder(line, 9)
-				.pattern(toiValue, false)
+				.pattern('Page_CURA Healthcare Service/a_Make Appointment', false)
 				.build()
-		TestObjectId testObjectId = new TestObjectId(toiValue)
+		Path relativePath = Paths.get("main/Page_CURA Healthcare Service/a_Make Appointment.rs")
+		TestObjectId testObjectId = new TestObjectId(relativePath)
 		return new ForwardReference(testCaseId, textSearchResult, testObjectId)
 	}
 
 	@Test
 	void test_testCaseId() {
-		assertEquals("main/TC1", fref.getTestCaseId().getValue())
+		assertEquals("main/TC1", forwardReference.getTestCaseId().getValue())
 	}
 
 	@Test
 	void test_digestedLine() {
 		assertEquals('''WebUI.click(findTestObject('Object Repository/main/Page_CURA Healthcare Service/a_Make Appointment')''',
-				fref.getDigestedLine().getLine())
+				forwardReference.getDigestedLine().getLine())
 	}
 
 	@Test
 	void test_getTestObjectId() {
-		TestObjectId toi = fref.getTestObjectId()
-		assertEquals("Page_CURA Healthcare Service/a_Make Appointment", toi.getValue())
+		TestObjectId toi = forwardReference.getTestObjectId()
+		assertEquals("main/Page_CURA Healthcare Service/a_Make Appointment", toi.getValue())
 	}
 
 	@Test
 	void test_toJson() {
-		String json = fref.toJson()
+		String json = forwardReference.toJson()
 		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
 				.fileName("test_toJson.json").build()
 		sh.write(JsonOutput.prettyPrint(json))
@@ -75,10 +77,10 @@ class ForwardReferenceTest {
 
 	@Test
 	void test_toString() {
-		String s = fref.toString()
+		String s = forwardReference.toString()
 		Shorthand sh = new Shorthand.Builder().subDir(this.getClass().getName())
 				.fileName("test_toString.json").build()
 		sh.write(JsonOutput.prettyPrint(s))
-		assertTrue(fref.toJson().contains("Page_CURA Healthcare Service/a_Make Appointment"))
+		assertTrue(forwardReference.toJson().contains("Page_CURA Healthcare Service/a_Make Appointment"))
 	}
 }

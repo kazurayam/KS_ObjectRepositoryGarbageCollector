@@ -13,6 +13,7 @@ import org.junit.runners.JUnit4
 import org.junit.runners.MethodSorters
 
 import java.nio.file.Path
+import java.nio.file.Paths
 
 import static org.junit.Assert.*
 
@@ -23,13 +24,13 @@ class ObjectRepositoryDecoratorIncludeExcludeTest {
     private Path objectRepositoryDir
 
     private TestObjectId toAGoToHomepage =
-            new TestObjectId("main/Page_CURA Healthcare Service/a_Go to Homepage")
+            new TestObjectId(Paths.get("main/Page_CURA Healthcare Service/a_Go to Homepage.rs"))
 
     private TestObjectId toXtraAGoToHomepage =
-            new TestObjectId("main/Page_CURA Healthcare Service/xtra/a_Go to Homepage")
+            new TestObjectId(Paths.get("main/Page_CURA Healthcare Service/xtra/a_Go to Homepage.rs"))
 
     private TestObjectId toDummy1 =
-            new TestObjectId("misc/dummy1")
+            new TestObjectId(Paths.get("misc/dummy1.rs"))
 
     @BeforeClass
     static void beforeClass() {

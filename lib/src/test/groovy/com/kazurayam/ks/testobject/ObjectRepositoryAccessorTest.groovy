@@ -15,22 +15,22 @@ import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
 
 @RunWith(JUnit4.class)
-public class ObjectRepositoryAccessorTest {
+class ObjectRepositoryAccessorTest {
 
 	private static Path objectRepositoryDir
 
 	@BeforeClass
-	public static void beforeClass() {
+	static void beforeClass() {
 		objectRepositoryDir = KatalonProjectDirectoryResolver.getProjectDir().resolve("Object Repository")
 		assert Files.exists(objectRepositoryDir)
 	}
 
 	@Before
-	public void setup() {
+	void setup() {
 	}
 
 	@Test
-	public void test_getIncludedFiles() {
+	void test_getIncludedFiles() {
 		ObjectRepositoryDecorator.ObjectRepositoryAccessor accessor =
 				new ObjectRepositoryDecorator.ObjectRepositoryAccessor.Builder(objectRepositoryDir).build()
 		String[] includedFiles = accessor.getIncludedFiles()
@@ -46,7 +46,7 @@ public class ObjectRepositoryAccessorTest {
 	}
 	
 	@Test
-	public void test_getIncludedFiles_mutiple() {
+	void test_getIncludedFiles_mutiple() {
 		ObjectRepositoryDecorator.ObjectRepositoryAccessor accessor =
 				new ObjectRepositoryDecorator.ObjectRepositoryAccessor.Builder(objectRepositoryDir)
 					.includeFile("**/main/**/*.rs")
@@ -57,7 +57,7 @@ public class ObjectRepositoryAccessorTest {
 	}
 
 	@Test
-	public void test_getTestObjectIdList() {
+	void test_getTestObjectIdList() {
 		ObjectRepositoryDecorator.ObjectRepositoryAccessor accessor =
 				new ObjectRepositoryDecorator.ObjectRepositoryAccessor.Builder(objectRepositoryDir).build()
 		List<TestObjectId> list = accessor.getTestObjectIdList()
@@ -73,7 +73,7 @@ public class ObjectRepositoryAccessorTest {
 	}
 
 	@Test
-	public void test_getRsFiles() {
+	void test_getRsFiles() {
 		ObjectRepositoryDecorator.ObjectRepositoryAccessor accessor =
 				new ObjectRepositoryDecorator.ObjectRepositoryAccessor.Builder(objectRepositoryDir).build()
 		List<Path> rsFiles = accessor.getRsFiles()

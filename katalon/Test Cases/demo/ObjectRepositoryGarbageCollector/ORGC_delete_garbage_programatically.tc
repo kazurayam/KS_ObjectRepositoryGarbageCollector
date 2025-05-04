@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>ORGC_delete_garbage_programatically</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>c5150943-fa91-4511-80b3-7ca58d161302</testCaseGuid>
+</TestCaseEntity>

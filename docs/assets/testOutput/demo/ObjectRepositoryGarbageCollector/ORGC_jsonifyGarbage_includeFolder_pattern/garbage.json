@@ -13,7 +13,7 @@
         "includeObjectRepositoryFolder": [
             "**/Page_CURA*"
         ],
-        "Number of TestCases": 27,
+        "Number of TestCases": 28,
         "Number of TestObjects": 15,
         "Number of unused TestObjects": 4
     }
