@@ -7,24 +7,37 @@ import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
 
+import java.nio.file.Path
+import java.nio.file.Paths
+
 /**
- * E.g, "Object Repository/main/Page_CURA Healthcare Service/a_Make Appointment"
+ * Given with a Path "Object Repository\\main\\Page_CURA Healthcare Service\\a_Make Appointment.rs",
+ * this.getValue() will return a String "main/Page_CURA Healthcare Service/a_Make Appointment"
  */
 class TestObjectId implements Comparable<TestObjectId>{
 
 	private String value
 
-	TestObjectId(String value) {
-		Objects.requireNonNull(value)
-		this.value = value
+	TestObjectId(Path relativePath) {
+		Objects.requireNonNull(relativePath)
+		if (relativePath.isAbsolute()) {
+			throw new IllegalArgumentException("argument ${relativePath} is not relative")
+		}
+		String filePath = relativePath.normalize().toString()
+				.replaceAll('\\.rs$', '')
+		this.value = filePath.replace("\\", "/")
 	}
 
 	TestObjectId(TestObjectId that) {
-		this(that.getValue())
+		this(that.getRelativePath())
 	}
 
 	String getValue() {
 		return value
+	}
+
+	Path getRelativePath() {
+		return Paths.get(value + ".rs")
 	}
 
 	@Override

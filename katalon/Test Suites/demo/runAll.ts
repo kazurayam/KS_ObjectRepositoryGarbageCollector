@@ -89,6 +89,13 @@
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>
+      <guid>d6790579-be39-41be-8161-a7f12b002159</guid>
+      <isReuseDriver>false</isReuseDriver>
+      <isRun>true</isRun>
+      <testCaseId>Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_delete_garbage_programatically</testCaseId>
+      <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
+   </testCaseLink>
+   <testCaseLink>
       <guid>40d48176-fbb1-4028-96ed-3e92e13e327d</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
@@ -99,7 +106,7 @@
       <guid>a4cad9f5-3b6e-445a-9af8-ae00892d59dd</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyBackwardReferencesDatabase</testCaseId>
+      <testCaseId>Test Cases/demo/ObjectRepositoryGarbageCollector/ORGC_jsonifyBackwardReferenceIndex</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
    <testCaseLink>

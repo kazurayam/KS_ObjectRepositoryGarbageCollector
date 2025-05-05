@@ -5,6 +5,8 @@ import com.kazurayam.ks.testobject.TestObjectId
 import groovy.json.JsonOutput
 import org.junit.Test
 
+import java.nio.file.Paths
+
 import static org.junit.Assert.assertEquals
 
 class CombinedLocatorDeclarationsTest {
@@ -14,7 +16,7 @@ class CombinedLocatorDeclarationsTest {
     @Test
     void test_caseOfUnusedTestObject() {
         //Locator locator = new Locator("//body", SelectorMethod.XPATH)
-        TestObjectId testObjectId = new TestObjectId("misc/dummy1")
+        TestObjectId testObjectId = new TestObjectId(Paths.get("misc/dummy1.rs"))
         cld = new CombinedLocatorDeclarations(testObjectId)
         BackwardReference br = new BackwardReference(testObjectId)
         cld.add(br)

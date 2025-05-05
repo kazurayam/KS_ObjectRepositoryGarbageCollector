@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory
 
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 
 /**
  * ObjectRepositoryDecorator implements methods that returns a list of TestObjectId,
@@ -289,9 +290,8 @@ class ObjectRepositoryDecorator {
 			List<TestObjectId> result = new ArrayList<>()
 			for (int i = 0; i < includedFiles.length; i++) {
 				if (includedFiles[i].endsWith(".rs")) {
-					String filePath = includedFiles[i].replaceAll('\\.rs$', '')
-					String idString = filePath.replace("\\", "/")
-					TestObjectId toi = new TestObjectId(idString)
+					Path relativePath = Paths.get(includedFiles[i])
+					TestObjectId toi = new TestObjectId(relativePath)
 					result.add(toi)
 				} else {
 					logger.warn("found a file that does not end with '.rs'; ${includedFiles[i]}")

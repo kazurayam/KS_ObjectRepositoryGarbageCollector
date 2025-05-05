@@ -8,19 +8,15 @@
                     "value": "(.//*[normalize-space(text()) and normalize-space(.)='Sa'])[1]/following::td[31]",
                     "selectorMethod": "XPATH"
                 },
-                "Number of container TestObjects": 2,
-                "Locator Declarations": [
+                "Number of Container TestObjects": 2,
+                "Container TestObjects": [
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/td_28",
-                        "declarations": [
-                            
-                        ]
+                        "TestObjectId": "main/Page_CURA Healthcare Service/td_28",
+                        "is used": false
                     },
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/xtra/td_28",
-                        "declarations": [
-                            
-                        ]
+                        "TestObjectId": "main/Page_CURA Healthcare Service/xtra/td_28",
+                        "is used": false
                     }
                 ]
             },
@@ -29,14 +25,16 @@
                     "value": "//a[@id='btn-make-appointment']",
                     "selectorMethod": "XPATH"
                 },
-                "Number of container TestObjects": 1,
-                "Locator Declarations": [
+                "Number of Container TestObjects": 1,
+                "Container TestObjects": [
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/a_Make Appointment",
-                        "declarations": [
+                        "TestObjectId": "main/Page_CURA Healthcare Service/a_Make Appointment",
+                        "is used": true,
+                        "References from TestCase": [
                             {
-                                "testObjectId": "main/Page_CURA Healthcare Service/a_Make Appointment",
-                                "forwardReferences": [
+                                "TestObjectId": "main/Page_CURA Healthcare Service/a_Make Appointment",
+                                "Number of ForwardReferences": 2,
+                                "ForwardReferences": [
                                     {
                                         "TestCaseId": "main/TC0",
                                         "DigestedLine": {
@@ -63,8 +61,7 @@
                                         },
                                         "TestObjectId": "main/Page_CURA Healthcare Service/a_Make Appointment"
                                     }
-                                ],
-                                "numberOfReferences": 2
+                                ]
                             }
                         ]
                     }
@@ -75,14 +72,16 @@
                     "value": "//button[@id='btn-book-appointment']",
                     "selectorMethod": "XPATH"
                 },
-                "Number of container TestObjects": 1,
-                "Locator Declarations": [
+                "Number of Container TestObjects": 1,
+                "Container TestObjects": [
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/button_Book Appointment",
-                        "declarations": [
+                        "TestObjectId": "main/Page_CURA Healthcare Service/button_Book Appointment",
+                        "is used": true,
+                        "References from TestCase": [
                             {
-                                "testObjectId": "main/Page_CURA Healthcare Service/button_Book Appointment",
-                                "forwardReferences": [
+                                "TestObjectId": "main/Page_CURA Healthcare Service/button_Book Appointment",
+                                "Number of ForwardReferences": 2,
+                                "ForwardReferences": [
                                     {
                                         "TestCaseId": "main/TC1",
                                         "DigestedLine": {
@@ -109,8 +108,7 @@
                                         },
                                         "TestObjectId": "main/Page_CURA Healthcare Service/button_Book Appointment"
                                     }
-                                ],
-                                "numberOfReferences": 2
+                                ]
                             }
                         ]
                     }
@@ -121,14 +119,16 @@
                     "value": "//button[@id='btn-login']",
                     "selectorMethod": "XPATH"
                 },
-                "Number of container TestObjects": 1,
-                "Locator Declarations": [
+                "Number of Container TestObjects": 1,
+                "Container TestObjects": [
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/button_Login",
-                        "declarations": [
+                        "TestObjectId": "main/Page_CURA Healthcare Service/button_Login",
+                        "is used": true,
+                        "References from TestCase": [
                             {
-                                "testObjectId": "main/Page_CURA Healthcare Service/button_Login",
-                                "forwardReferences": [
+                                "TestObjectId": "main/Page_CURA Healthcare Service/button_Login",
+                                "Number of ForwardReferences": 1,
+                                "ForwardReferences": [
                                     {
                                         "TestCaseId": "main/TC1",
                                         "DigestedLine": {
@@ -142,8 +142,7 @@
                                         },
                                         "TestObjectId": "main/Page_CURA Healthcare Service/button_Login"
                                     }
-                                ],
-                                "numberOfReferences": 1
+                                ]
                             }
                         ]
                     }
@@ -154,14 +153,16 @@
                     "value": "//input[@id='chk_hospotal_readmission']",
                     "selectorMethod": "XPATH"
                 },
-                "Number of container TestObjects": 1,
-                "Locator Declarations": [
+                "Number of Container TestObjects": 1,
+                "Container TestObjects": [
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/input_Apply for hospital readmission_hospit_63901f",
-                        "declarations": [
+                        "TestObjectId": "main/Page_CURA Healthcare Service/input_Apply for hospital readmission_hospit_63901f",
+                        "is used": true,
+                        "References from TestCase": [
                             {
-                                "testObjectId": "main/Page_CURA Healthcare Service/input_Apply for hospital readmission_hospit_63901f",
-                                "forwardReferences": [
+                                "TestObjectId": "main/Page_CURA Healthcare Service/input_Apply for hospital readmission_hospit_63901f",
+                                "Number of ForwardReferences": 1,
+                                "ForwardReferences": [
                                     {
                                         "TestCaseId": "main/TC1",
                                         "DigestedLine": {
@@ -175,8 +176,7 @@
                                         },
                                         "TestObjectId": "main/Page_CURA Healthcare Service/input_Apply for hospital readmission_hospit_63901f"
                                     }
-                                ],
-                                "numberOfReferences": 1
+                                ]
                             }
                         ]
                     }
@@ -187,14 +187,16 @@
                     "value": "//input[@id='radio_program_medicaid']",
                     "selectorMethod": "XPATH"
                 },
-                "Number of container TestObjects": 1,
-                "Locator Declarations": [
+                "Number of Container TestObjects": 1,
+                "Container TestObjects": [
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/input_Medicaid_programs",
-                        "declarations": [
+                        "TestObjectId": "main/Page_CURA Healthcare Service/input_Medicaid_programs",
+                        "is used": true,
+                        "References from TestCase": [
                             {
-                                "testObjectId": "main/Page_CURA Healthcare Service/input_Medicaid_programs",
-                                "forwardReferences": [
+                                "TestObjectId": "main/Page_CURA Healthcare Service/input_Medicaid_programs",
+                                "Number of ForwardReferences": 1,
+                                "ForwardReferences": [
                                     {
                                         "TestCaseId": "main/TC1",
                                         "DigestedLine": {
@@ -208,8 +210,7 @@
                                         },
                                         "TestObjectId": "main/Page_CURA Healthcare Service/input_Medicaid_programs"
                                     }
-                                ],
-                                "numberOfReferences": 1
+                                ]
                             }
                         ]
                     }
@@ -220,14 +221,16 @@
                     "value": "//input[@id='txt-password']",
                     "selectorMethod": "XPATH"
                 },
-                "Number of container TestObjects": 1,
-                "Locator Declarations": [
+                "Number of Container TestObjects": 1,
+                "Container TestObjects": [
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/input_Password_password",
-                        "declarations": [
+                        "TestObjectId": "main/Page_CURA Healthcare Service/input_Password_password",
+                        "is used": true,
+                        "References from TestCase": [
                             {
-                                "testObjectId": "main/Page_CURA Healthcare Service/input_Password_password",
-                                "forwardReferences": [
+                                "TestObjectId": "main/Page_CURA Healthcare Service/input_Password_password",
+                                "Number of ForwardReferences": 1,
+                                "ForwardReferences": [
                                     {
                                         "TestCaseId": "main/TC1",
                                         "DigestedLine": {
@@ -241,8 +244,7 @@
                                         },
                                         "TestObjectId": "main/Page_CURA Healthcare Service/input_Password_password"
                                     }
-                                ],
-                                "numberOfReferences": 1
+                                ]
                             }
                         ]
                     }
@@ -253,14 +255,16 @@
                     "value": "//input[@id='txt-username']",
                     "selectorMethod": "XPATH"
                 },
-                "Number of container TestObjects": 1,
-                "Locator Declarations": [
+                "Number of Container TestObjects": 1,
+                "Container TestObjects": [
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/input_Username_username",
-                        "declarations": [
+                        "TestObjectId": "main/Page_CURA Healthcare Service/input_Username_username",
+                        "is used": true,
+                        "References from TestCase": [
                             {
-                                "testObjectId": "main/Page_CURA Healthcare Service/input_Username_username",
-                                "forwardReferences": [
+                                "TestObjectId": "main/Page_CURA Healthcare Service/input_Username_username",
+                                "Number of ForwardReferences": 1,
+                                "ForwardReferences": [
                                     {
                                         "TestCaseId": "main/TC1",
                                         "DigestedLine": {
@@ -274,8 +278,7 @@
                                         },
                                         "TestObjectId": "main/Page_CURA Healthcare Service/input_Username_username"
                                     }
-                                ],
-                                "numberOfReferences": 1
+                                ]
                             }
                         ]
                     }
@@ -286,14 +289,16 @@
                     "value": "//input[@id='txt_visit_date']",
                     "selectorMethod": "XPATH"
                 },
-                "Number of container TestObjects": 1,
-                "Locator Declarations": [
+                "Number of Container TestObjects": 1,
+                "Container TestObjects": [
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/input_Visit Date",
-                        "declarations": [
+                        "TestObjectId": "main/Page_CURA Healthcare Service/input_Visit Date",
+                        "is used": true,
+                        "References from TestCase": [
                             {
-                                "testObjectId": "main/Page_CURA Healthcare Service/input_Visit Date",
-                                "forwardReferences": [
+                                "TestObjectId": "main/Page_CURA Healthcare Service/input_Visit Date",
+                                "Number of ForwardReferences": 2,
+                                "ForwardReferences": [
                                     {
                                         "TestCaseId": "main/TC1",
                                         "DigestedLine": {
@@ -320,8 +325,7 @@
                                         },
                                         "TestObjectId": "main/Page_CURA Healthcare Service/input_Visit Date"
                                     }
-                                ],
-                                "numberOfReferences": 2
+                                ]
                             }
                         ]
                     }
@@ -332,20 +336,20 @@
                     "value": "//section[@id='summary']/div/div/div[7]/p/a",
                     "selectorMethod": "XPATH"
                 },
-                "Number of container TestObjects": 3,
-                "Locator Declarations": [
+                "Number of Container TestObjects": 3,
+                "Container TestObjects": [
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/a_Foo",
-                        "declarations": [
-                            
-                        ]
+                        "TestObjectId": "main/Page_CURA Healthcare Service/a_Foo",
+                        "is used": false
                     },
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
-                        "declarations": [
+                        "TestObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
+                        "is used": true,
+                        "References from TestCase": [
                             {
-                                "testObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
-                                "forwardReferences": [
+                                "TestObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage",
+                                "Number of ForwardReferences": 1,
+                                "ForwardReferences": [
                                     {
                                         "TestCaseId": "main/TC1",
                                         "DigestedLine": {
@@ -359,16 +363,13 @@
                                         },
                                         "TestObjectId": "main/Page_CURA Healthcare Service/a_Go to Homepage"
                                     }
-                                ],
-                                "numberOfReferences": 1
+                                ]
                             }
                         ]
                     },
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
-                        "declarations": [
-                            
-                        ]
+                        "TestObjectId": "main/Page_CURA Healthcare Service/xtra/a_Go to Homepage",
+                        "is used": false
                     }
                 ]
             },
@@ -377,14 +378,16 @@
                     "value": "//select[@id='combo_facility']",
                     "selectorMethod": "XPATH"
                 },
-                "Number of container TestObjects": 1,
-                "Locator Declarations": [
+                "Number of Container TestObjects": 1,
+                "Container TestObjects": [
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/select_Tokyo CURA Healthcare Center        _5b4107",
-                        "declarations": [
+                        "TestObjectId": "main/Page_CURA Healthcare Service/select_Tokyo CURA Healthcare Center        _5b4107",
+                        "is used": true,
+                        "References from TestCase": [
                             {
-                                "testObjectId": "main/Page_CURA Healthcare Service/select_Tokyo CURA Healthcare Center        _5b4107",
-                                "forwardReferences": [
+                                "TestObjectId": "main/Page_CURA Healthcare Service/select_Tokyo CURA Healthcare Center        _5b4107",
+                                "Number of ForwardReferences": 1,
+                                "ForwardReferences": [
                                     {
                                         "TestCaseId": "main/TC1",
                                         "DigestedLine": {
@@ -398,8 +401,7 @@
                                         },
                                         "TestObjectId": "main/Page_CURA Healthcare Service/select_Tokyo CURA Healthcare Center        _5b4107"
                                     }
-                                ],
-                                "numberOfReferences": 1
+                                ]
                             }
                         ]
                     }
@@ -410,14 +412,16 @@
                     "value": "//textarea[@id='txt_comment']",
                     "selectorMethod": "XPATH"
                 },
-                "Number of container TestObjects": 1,
-                "Locator Declarations": [
+                "Number of Container TestObjects": 1,
+                "Container TestObjects": [
                     {
-                        "testObjectId": "main/Page_CURA Healthcare Service/textarea_Comment_comment",
-                        "declarations": [
+                        "TestObjectId": "main/Page_CURA Healthcare Service/textarea_Comment_comment",
+                        "is used": true,
+                        "References from TestCase": [
                             {
-                                "testObjectId": "main/Page_CURA Healthcare Service/textarea_Comment_comment",
-                                "forwardReferences": [
+                                "TestObjectId": "main/Page_CURA Healthcare Service/textarea_Comment_comment",
+                                "Number of ForwardReferences": 1,
+                                "ForwardReferences": [
                                     {
                                         "TestCaseId": "main/TC1",
                                         "DigestedLine": {
@@ -431,8 +435,7 @@
                                         },
                                         "TestObjectId": "main/Page_CURA Healthcare Service/textarea_Comment_comment"
                                     }
-                                ],
-                                "numberOfReferences": 1
+                                ]
                             }
                         ]
                     }
@@ -448,7 +451,7 @@
         "includeObjectRepositoryFolder": [
             "**/Page_CURA*"
         ],
-        "Number of TestCases": 27,
+        "Number of TestCases": 28,
         "Number of TestObjects": 15,
         "Number of unused TestObjects": 4
     }

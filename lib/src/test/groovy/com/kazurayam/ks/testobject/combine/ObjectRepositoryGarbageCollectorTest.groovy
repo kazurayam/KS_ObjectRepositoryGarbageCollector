@@ -13,6 +13,7 @@ import org.junit.runners.JUnit4
 import org.junit.runners.MethodSorters
 
 import java.nio.file.Path
+import java.nio.file.Paths
 
 import static org.junit.Assert.*
 
@@ -49,10 +50,11 @@ class ObjectRepositoryGarbageCollectorTest {
 	}
 
 	@Test
-	void test_getBackwardReferencesMap() {
+	void test_getBackwardReferenceIndex() {
 		BackwardReferenceIndex brm = garbageCollector.getBackwardReferenceIndex()
 		assertNotNull(brm)
-		TestObjectId toi = new TestObjectId("main/Page_CURA Healthcare Service/a_Go to Homepage")
+		Path relativePath = Paths.get("main/Page_CURA Healthcare Service/a_Go to Homepage.rs")
+		TestObjectId toi = new TestObjectId(relativePath)
 		assertTrue(brm.keySet().contains(toi))
 		Set<BackwardReference> brSet = brm.get(toi)
 		List<BackwardReference> brList = brSet as List

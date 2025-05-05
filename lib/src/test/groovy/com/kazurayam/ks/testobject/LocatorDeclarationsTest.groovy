@@ -7,7 +7,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
-import static org.junit.Assert.assertEquals
+import java.nio.file.Paths
+
 import static org.junit.Assert.assertTrue
 
 @RunWith(JUnit4.class)
@@ -19,7 +20,7 @@ class LocatorDeclarationsTest {
     void setup() {
         Locator locator = new Locator("//body", SelectorMethod.XPATH)
         locatorDeclarations = new LocatorDeclarations(locator)
-        TestObjectId testObjectId = new TestObjectId("misc/dummy1")
+        TestObjectId testObjectId = new TestObjectId(Paths.get("misc/dummy1.rs"))
         locatorDeclarations.add(testObjectId)
     }
 

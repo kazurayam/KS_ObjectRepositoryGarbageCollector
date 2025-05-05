@@ -1,5 +1,5 @@
 plugins {
-    id("com.katalon.gradle-plugin") version "0.1.2"
+    id 'groovy'
 }
 
 repositories {
@@ -8,25 +8,28 @@ repositories {
 
 ext {
     MDSVersion = '0.1.1'
-    ORGCVersion = '0.4.7'
+    ORGCVersion = '0.4.13-SNAPSHOT'
     userHome = System.getProperty('user.home')
     rootProjectDir = rootProject.projectDir as File
 }
 
-dependencies {
-    implementation("com.kazurayam:monk-directory-scanner:${MDSVersion}")
-}
-
-tasks.register('importMonkDirectoryScanner') {
+tasks.register('importMDS') {
     group = 'Custom'
-    description = 'import the MonkDirectoryScanner into the Drivers folder'
+    description = "import the KS_ObjectRepositoryGarbageCollector jar and the MockDirectoryScanner jar into the Drivers folder"
     doFirst {
         delete fileTree("Drivers").matching {
-            include '*monk-directory-scanner-*.jar'
+            include "monk-directory-scanner-*.jar"
+        }
+    }
+    doLast {
+        copy {
+            into layout.projectDirectory.dir("Drivers")
+            from("$userHome/.m2/repository/com/kazurayam/monk-directory-scanner/${MDSVersion}") {
+                include "**/monk-directory-scanner-${MDSVersion}.jar"
+            }
         }
     }
 }
-importMonkDirectoryScanner.finalizedBy katalonCopyDependencies
 
 tasks.register('importLibArtifact') {
     group = 'Custom'
@@ -40,7 +43,7 @@ tasks.register('importLibArtifact') {
         copy {
             into layout.projectDirectory.dir("Drivers")
             from("${rootProject.projectDir}/lib/build/libs") {
-                include "ks-object-repository-garbage-collector-${ORGCVersion}*.jar"
+                include "ks-object-repository-garbage-collector-${ORGCVersion}.jar"
             }
         }
     }
@@ -49,7 +52,7 @@ tasks.register('importLibArtifact') {
 tasks.register('importDrivers') {
     group = 'Custom'
     description = 'run importLibArtifact and importMonDirectoryScanner'
-    dependsOn importLibArtifact, importMonkDirectoryScanner
+    dependsOn importLibArtifact, importMDS
 }
 
 tasks.register("cleanProject", Delete) {

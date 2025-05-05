@@ -5,26 +5,7 @@ plugins {
 }
 
 group = "com.kazurayam"
-version = "0.4.11"
-
-ext {
-    KATALON_STUDIO_INSTALLATION_DIRECTORY = resolveKatalonStudioInstallationDirectory()
-    GroovyVersion = '3.0.17'
-    ARTIFACT_ID = 'ks-object-repository-garbage-collector'
-    isReleaseVersion = ! version.endsWith("SNAPSHOT")
-}
-
-repositories {
-    mavenCentral() // to load the jars of Groovy for the Gradle's compile tasks
-    maven {
-        url = uri("https://maven.pkg.github.com/kazurayam/monk-directory-scanner")
-        credentials {
-            username = project.findProperty('gpr.user')
-            password = project.findProperty('gpr.key')
-        }
-    }
-    mavenLocal()   // to load the monk-directory-scanner from ${user.home}/.m2
-}
+version = "0.4.13-SNAPSHOT"
 
 import org.gradle.internal.os.OperatingSystem
 static String resolveKatalonStudioInstallationDirectory() {
@@ -46,10 +27,29 @@ static String resolveKatalonStudioInstallationDirectory() {
     }
 }
 
+ext {
+    KATALON_STUDIO_INSTALLATION_DIRECTORY = resolveKatalonStudioInstallationDirectory()
+    GroovyVersion = '3.0.17'
+    ARTIFACT_ID = 'ks-object-repository-garbage-collector'
+    isReleaseVersion = ! version.endsWith("SNAPSHOT")
+}
+
+repositories {
+    mavenCentral()
+    /*
+    maven {
+        url = uri("https://maven.pkg.github.com/kazurayam/monk-directory-scanner")
+        credentials {
+            username = project.findProperty('gpr.user')
+            password = project.findProperty('gpr.key')
+        }
+    }
+     */
+    mavenLocal()
+}
 
 dependencies {
-    // https://mvnrepository.com/artifact/com.kazurayam/monk-directory-scanner
-    implementation 'com.kazurayam:monk-directory-scanner:0.1.1'
+    implementation libs.directoryscanner
 
     // will look into the Katalon Studio installation directory
     implementation fileTree(dir: "${KATALON_STUDIO_INSTALLATION_DIRECTORY}/configuration/resources/lib",
@@ -78,24 +78,22 @@ dependencies {
                     'slf4j*.jar'
             ])
 
-    // will look into the GitHub Packages
-    implementation('com.kazurayam:monk-directory-scanner:0.1.0')
-
     // will look into the Maven Central repository
-    testImplementation "junit:junit:4.13.2"
-    testImplementation 'org.slf4j:slf4j-simple:2.0.16'
+    testImplementation libs.junit4
+    testImplementation libs.slf4j.simple
 }
 
 tasks.register('printVersions') {
     doLast {
         OperatingSystem os = OperatingSystem.current()
-        println "OS: ${os.toString()}"
-        println "Java: ${JavaVersion.current()}"
-        println "Gradle: " + project.getGradle().getGradleVersion()
-        println "Groovy: " + GroovySystem.getVersion()
+        println "${os.toString()}"
+        println "Java ${JavaVersion.current()}"
+        println "Groovy ${GroovySystem.getVersion()}"
+        println GradleVersion.current().toString()
     }
 }
 
+import org.gradle.internal.os.OperatingSystem
 tasks.register('printClasspath') {
     group = 'Custom'
     description = "show the entries included in the runtime classpath, sorted alphabetically"

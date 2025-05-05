@@ -11,6 +11,7 @@ import org.junit.BeforeClass
 import org.junit.Test
 
 import java.nio.file.Path
+import java.nio.file.Paths
 
 class BackwardReferenceTest {
 
@@ -36,7 +37,8 @@ class BackwardReferenceTest {
 
     @Before
     void setup() {
-        TestObjectId testObjectId = new TestObjectId("main/Page_CURA Healthcare Service/a_Make Appointment")
+        TestObjectId testObjectId =
+                new TestObjectId(Paths.get("main/Page_CURA Healthcare Service/a_Make Appointment.rs"))
         backwardReferencSet = index.get(testObjectId)
     }
 
